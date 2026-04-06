@@ -6,7 +6,9 @@ package org.example.shield.ai.dto;
  * TODO:
  * - choices: List<Choice>
  *   - choice.message.content: String (Grok 응답 텍스트)
- * - Grok API 응답 구조: { choices: [{ message: { content: "..." } }] }
+ *
+ * Grok API 응답 구조:
+ * { "choices": [{ "message": { "content": "..." } }] }
  */
 public class GrokResponse {
 }

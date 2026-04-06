@@ -62,6 +62,7 @@ docker-compose.override.yml
 .agents/
 skills-lock.json
 schema.sql
+CLAUDE.md
 
 ### Python 스크립트 (임시) ###
 *.py

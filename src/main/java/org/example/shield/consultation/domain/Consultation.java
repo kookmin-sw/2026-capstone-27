@@ -5,11 +5,10 @@ package org.example.shield.consultation.domain;
  *
  * TODO: @Entity 구현
  * - id: UUID (PK)
- * - userId: UUID (FK → users.id)
- * - status: String (IN_PROGRESS / ANALYZED / COMPLETED)
- * - classificationStatus: String (NONE / CLASSIFIED / CONFIRMED)
- * - structureStatus: String (NONE / DRAFT / CONFIRMED)
- * - chatSessionId: String (MongoDB chat_sessions._id 참조)
+ * - userId: UUID (FK -> users.id)
+ * - status: ConsultationStatus (CLASSIFYING / IN_PROGRESS / COMPLETED / REJECTED)
+ * - primaryField: String (nullable, 분류 전 null)
+ * - chatMessages: JSONB (대화 내역 배열)
  * - createdAt, updatedAt: LocalDateTime
  */
 public class Consultation {

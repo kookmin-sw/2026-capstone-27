@@ -1,23 +1,25 @@
 package org.example.shield.ai.application;
 
 /**
- * Grok AI 서비스 - Grok API 호출 추상화.
+ * Grok AI 서비스 - AiClient를 활용한 AI 기능.
  *
  * Layer: application
- * Called by: MessageService (챗봇), AnalysisService (분류+구조화)
- * Calls: GrokClient, GrokPromptFactory
+ * Called by: ClassifyService, AnalysisService, MessageService
+ * Calls: AiClient (GrokClient 구현체)
  *
  * TODO:
- * - chatbotResponse(messages): 챗봇 대화 응답 생성
- *   → GrokPromptFactory.chatbotPrompt() + messages → GrokClient.chat()
+ * - classify(content): 사건 유형 분류
+ *   → AiClient.classify(content)
+ *   → primaryField 반환 (DEPOSIT_FRAUD / LEASE_DISPUTE / ...)
  *
- * - classify(messages): AI Router로 법률 분야 분류
- *   → GrokPromptFactory.routerPrompt() + messages → GrokClient.chat()
- *   → 응답 JSON 파싱 → {primaryField, confidence, reasoning}
+ * - generateBrief(chatMessages): 의뢰서 생성
+ *   → chat_messages를 프롬프트로 조립
+ *   → AiClient.generateBrief(prompt)
+ *   → title, content, keywords 반환
  *
- * - generateBrief(messages, legalField): MoE Expert로 줄글 의뢰서 생성
- *   → GrokPromptFactory.expertPrompt(legalField) + messages → GrokClient.chat()
- *   → 줄글 텍스트 + [키워드: ...] 파싱 → {content, keywords}
+ * - generateNextQuestion(chatMessages, formFields): 다음 챗봇 질문 생성
+ *   → 수집 안 된 필드 확인
+ *   → 해당 필드의 label을 기반으로 질문 생성
  */
 public class GrokService {
 }

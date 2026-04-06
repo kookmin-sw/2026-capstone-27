@@ -19,10 +19,6 @@ spring:
       hibernate:
         format_sql: true
 
-  # MongoDB Atlas (Spring Boot 4.x)
-  mongodb:
-    uri: ${MONGODB_URI}
-
 # Swagger
 springdoc:
   swagger-ui:

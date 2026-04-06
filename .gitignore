@@ -59,6 +59,8 @@ docker-compose.override.yml
 ### Claude Code ###
 .claude/
 .claude.json
+.agents/
+skills-lock.json
 
 ### Python 스크립트 (임시) ###
 *.py

@@ -1,20 +1,24 @@
 package org.example.shield.consultation.application;
 
 /**
- * 분석 서비스 - 도메인 에이전트로 의뢰서 생성 (비동기).
+ * 분석 서비스 - 의뢰서 생성 (비동기).
  *
  * Layer: application
- * Called by: ConsultationController.analyze()
- * Calls: ConsultationReader, BriefWriter, AiClient, NotificationSender
+ * Called by: MessageService (allCompleted 시), ConsultationController.analyze()
+ * Calls: MessageReader, ConsultationReader, BriefWriter, ConsultationWriter, AiClient, NotificationSender
  *
  * TODO:
  * - analyze(consultationId): @Async 비동기 처리
- *   1. consultations.chat_messages JSONB에서 대화 내역 조회
- *   2. 누락 정보 검증
- *   3. AiClient.generateBrief(대화 내역) → 도메인 에이전트(Grok)로 의뢰서 생성
- *   4. briefs 테이블에 저장 (legal_field, keywords, content, status: DRAFT)
- *   5. consultations.status → COMPLETED
+ *   1. messages 테이블에서 전체 chatHistory 조립
+ *   2. AiClient에 { domain, chatHistory } 전송 (의뢰서 생성용)
+ *   3. AI Response: { title, content, keyIssues, keywords, strategy }
+ *   4. briefs 테이블에 저장
+ *   5. consultations.status → AWAITING_CONFIRM
  *   6. NotificationSender로 의뢰인에게 이메일 알림
+ *
+ * 실패 시:
+ *   → consultations.status → REJECTED
+ *   → 사용자에게 실패 알림
  */
 public class AnalysisService {
 }

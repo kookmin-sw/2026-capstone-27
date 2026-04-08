@@ -5,14 +5,17 @@ package org.example.shield.consultation.application;
  *
  * Layer: application
  * Called by: ConsultationController
- * Calls: ConsultationReader, ConsultationWriter
+ * Calls: ConsultationReader, ConsultationWriter, MessageWriter
  *
  * TODO:
- * - createConsultation(userId):
- *   1. consultations 테이블에 새 row 생성 (status: CLASSIFYING)
- *   2. chat_messages JSONB 빈 배열로 초기화
+ * - createConsultation(userId, domain):
+ *   1. consultations 테이블에 새 row 생성 (status: COLLECTING)
+ *   2. selected_domain 저장 (nullable)
+ *   3. 환영 메시지를 messages 테이블에 AI 메시지로 저장
+ *   4. welcomeMessage 반환
  *
- * - getMyConsultations(userId, pageable): 내 상담 목록 (brief 포함)
+ * - getMyConsultations(userId, pageable): 내 상담 목록
+ *   → brief, primaryField, tags, lastMessage 포함
  */
 public class ConsultationService {
 }

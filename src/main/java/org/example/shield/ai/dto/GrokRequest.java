@@ -6,11 +6,11 @@ package org.example.shield.ai.dto;
  * TODO:
  * - model: String ("grok-3")
  * - messages: List<Message>
- *   - role: "system" → AI 역할 정의
- *   - role: "user" → 프롬프트 (대화 내역 + 지침)
+ *   - role: "system" → AI 팀이 제공한 프롬프트
+ *   - role: "user" → 백엔드가 domain + chatHistory를 텍스트로 조립
  *
- * 우리 chat_messages의 USER/AI와는 다름.
- * chat_messages의 대화 내역을 하나의 텍스트로 조립해서
+ * messages 테이블의 USER/AI와 Grok API의 role은 다름.
+ * messages 테이블의 대화 내역을 하나의 텍스트로 조립해서
  * Grok API의 "user" role에 넣어서 전송.
  */
 public class GrokRequest {

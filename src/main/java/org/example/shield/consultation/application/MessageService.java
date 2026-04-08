@@ -5,17 +5,22 @@ package org.example.shield.consultation.application;
  *
  * Layer: application
  * Called by: ConsultationController.sendMessage(), getMessages()
- * Calls: ConsultationReader, ConsultationWriter, AiClient
+ * Calls: MessageReader, MessageWriter, ConsultationReader, ConsultationWriter, AiClient
  *
  * TODO:
  * - sendMessage(consultationId, content):
- *   1. USER 메시지를 consultations.chat_messages JSONB에 저장
- *   2. AiClient로 다음 질문 생성
- *   3. AI 메시지도 chat_messages에 저장
- *   4. completed이면 AI 마무리 멘트 저장
- *   5. MessageResponse (userMessage + aiMessage + formProgress) 반환
+ *   1. messages 테이블에 USER 메시지 INSERT
+ *   2. messages 테이블에서 전체 chatHistory 조립
+ *   3. AiClient에 { domain, chatHistory } 전송
+ *   4. AI Response: { nextQuestion, primaryField, tags, allCompleted }
+ *   5. primaryField != null → consultations.primary_field 덮어쓰기
+ *   6. tags != null → consultations.tags 덮어쓰기
+ *   7. messages 테이블에 AI 메시지 INSERT
+ *   8. allCompleted = true → analyze 자동 시작
+ *   9. Response: { content, timestamp, allCompleted, classification(완료 시만) }
  *
- * - getMessages(consultationId, pageable): chat_messages JSONB에서 메시지 조회
+ * - getMessages(consultationId, pageable):
+ *   → messages 테이블에서 sequence 순서로 조회
  */
 public class MessageService {
 }

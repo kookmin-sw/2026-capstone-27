@@ -1,8 +1,11 @@
 package org.example.shield.auth.exception;
 
-/**
- * OAuth 인증 실패 예외.
- * Google OAuth 인증코드가 유효하지 않거나 Google API 장애 시 발생.
- */
-public class OAuthFailedException {
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
+
+public class OAuthFailedException extends BusinessException {
+
+    public OAuthFailedException() {
+        super(ErrorCode.OAUTH_FAILED);
+    }
 }

@@ -1,15 +1,31 @@
 package org.example.shield.user.application;
 
-/**
- * 사용자 서비스 - 사용자 정보 조회/수정.
- *
- * Layer: application
- * Called by: UserController
- * Calls: UserRepository
- *
- * TODO:
- * - getMyInfo(userId): JWT에서 추출한 userId로 사용자 정보 조회 → UserResponse 반환
- * - updateMyInfo(userId, request): 이름 등 기본 정보 수정 (차후 구현)
- */
+import lombok.RequiredArgsConstructor;
+import org.example.shield.user.controller.dto.UserResponse;
+import org.example.shield.user.controller.dto.UserUpdateRequest;
+import org.example.shield.user.domain.User;
+import org.example.shield.user.domain.UserReader;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
+
+    private final UserReader userReader;
+
+    public UserResponse getMyInfo(UUID userId) {
+        User user = userReader.findById(userId);
+        return UserResponse.from(user);
+    }
+
+    @Transactional
+    public UserResponse updateMyInfo(UUID userId, UserUpdateRequest request) {
+        User user = userReader.findById(userId);
+        user.updateName(request.name());
+        return UserResponse.from(user);
+    }
 }

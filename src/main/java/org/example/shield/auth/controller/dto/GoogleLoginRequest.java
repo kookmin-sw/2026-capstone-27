@@ -1,11 +1,11 @@
 package org.example.shield.auth.controller.dto;
 
-/**
- * 구글 로그인 요청 DTO.
- *
- * TODO: record로 구현
- * - authorizationCode: String (Google OAuth 인증 코드)
- * - role: String (USER / LAWYER / ADMIN)
- */
-public class GoogleLoginRequest {
-}
+import jakarta.validation.constraints.NotBlank;
+
+public record GoogleLoginRequest(
+        @NotBlank(message = "인증 코드는 필수입니다")
+        String authorizationCode,
+
+        @NotBlank(message = "역할은 필수입니다")
+        String role
+) {}

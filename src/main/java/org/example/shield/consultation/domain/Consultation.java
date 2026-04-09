@@ -15,6 +15,7 @@ import org.example.shield.common.enums.DomainType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +44,11 @@ public class Consultation extends BaseEntity {
     @Column(columnDefinition = "jsonb")
     private List<String> tags;
 
+    @Column(columnDefinition = "text")
+    private String lastMessage;
+
+    private LocalDateTime lastMessageAt;
+
     @Builder
     private Consultation(UUID userId, DomainType selectedDomain) {
         this.userId = userId;
@@ -63,5 +69,10 @@ public class Consultation extends BaseEntity {
 
     public void updateStatus(ConsultationStatus status) {
         this.status = status;
+    }
+
+    public void updateLastMessage(String content, LocalDateTime timestamp) {
+        this.lastMessage = content;
+        this.lastMessageAt = timestamp;
     }
 }

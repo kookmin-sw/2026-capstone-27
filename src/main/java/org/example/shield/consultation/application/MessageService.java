@@ -33,17 +33,18 @@ public class MessageService {
         Message userMessage = Message.createUserMessage(consultationId, content);
         Message saved = messageWriter.save(userMessage);
 
-        // 상담 updatedAt 갱신 (최신 대화순 정렬용)
-        consultation.touch();
-
         // TODO: AI 연동 시 여기서 AiClient 호출 → 아래 목 응답 제거
         Message aiMessage = Message.createAiMessage(
                 consultationId,
                 "해당 내용을 확인했습니다. 추가로 관련 서류나 계약서가 있으시면 알려주세요.",
                 "mock", null, null, null);
-        messageWriter.save(aiMessage);
+        Message savedAi = messageWriter.save(aiMessage);
 
-        return SendMessageResponse.from(aiMessage, false);
+        // 상담 마지막 메시지 + updatedAt 갱신
+        consultation.updateLastMessage(savedAi.getContent(), savedAi.getCreatedAt());
+        consultation.touch();
+
+        return SendMessageResponse.from(savedAi, false);
     }
 
     public PageResponse<MessageResponse> getMessages(UUID consultationId, Pageable pageable) {

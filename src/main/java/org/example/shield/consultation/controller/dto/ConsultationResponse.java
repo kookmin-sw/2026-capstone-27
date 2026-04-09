@@ -15,16 +15,14 @@ public record ConsultationResponse(
         LocalDateTime lastMessageAt,
         LocalDateTime createdAt
 ) {
-    public static ConsultationResponse of(Consultation consultation,
-                                          String lastMessage,
-                                          LocalDateTime lastMessageAt) {
+    public static ConsultationResponse from(Consultation consultation) {
         return new ConsultationResponse(
                 consultation.getId(),
                 consultation.getStatus().name(),
                 consultation.getPrimaryField(),
                 consultation.getTags(),
-                lastMessage,
-                lastMessageAt,
+                consultation.getLastMessage(),
+                consultation.getLastMessageAt(),
                 consultation.getCreatedAt()
         );
     }

@@ -10,7 +10,6 @@ import org.example.shield.consultation.domain.Consultation;
 import org.example.shield.consultation.domain.ConsultationReader;
 import org.example.shield.consultation.domain.ConsultationWriter;
 import org.example.shield.consultation.domain.Message;
-import org.example.shield.consultation.domain.MessageReader;
 import org.example.shield.consultation.domain.MessageWriter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +27,6 @@ public class ConsultationService {
     private final ConsultationReader consultationReader;
     private final ConsultationWriter consultationWriter;
     private final MessageWriter messageWriter;
-    private final MessageReader messageReader;
 
     private static final String WELCOME_MESSAGE =
             "반갑습니다. SHIELD 법률 AI입니다. 어떤 법률 문제로 어려움을 겪고 계신가요? 구체적인 상황을 말씀해 주시면 정보 정리를 도와드리겠습니다.";
@@ -40,7 +38,9 @@ public class ConsultationService {
 
         Message welcomeMsg = Message.createAiMessage(
                 saved.getId(), WELCOME_MESSAGE, null, null, null, null);
-        messageWriter.save(welcomeMsg);
+        Message savedMsg = messageWriter.save(welcomeMsg);
+
+        saved.updateLastMessage(savedMsg.getContent(), savedMsg.getCreatedAt());
 
         return new CreateConsultationResponse(
                 saved.getId(),
@@ -52,18 +52,7 @@ public class ConsultationService {
 
     public PageResponse<ConsultationResponse> getMyConsultations(UUID userId, Pageable pageable) {
         Page<Consultation> consultations = consultationReader.findAllByUserId(userId, pageable);
-
-        Page<ConsultationResponse> responsePage = consultations.map(c -> {
-            // 마지막 메시지 조회
-            var lastMessage = messageReader.findLastByConsultationId(c.getId());
-
-            return ConsultationResponse.of(
-                    c,
-                    lastMessage.map(Message::getContent).orElse(null),
-                    lastMessage.map(Message::getCreatedAt).orElse(null)
-            );
-        });
-
+        Page<ConsultationResponse> responsePage = consultations.map(ConsultationResponse::from);
         return PageResponse.from(responsePage);
     }
 

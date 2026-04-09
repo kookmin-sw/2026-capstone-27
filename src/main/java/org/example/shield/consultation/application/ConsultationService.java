@@ -2,7 +2,6 @@ package org.example.shield.consultation.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shield.common.enums.DomainType;
-import org.example.shield.common.enums.MessageRole;
 import org.example.shield.common.response.PageResponse;
 import org.example.shield.consultation.controller.dto.ClassifyResponse;
 import org.example.shield.consultation.controller.dto.ConsultationResponse;
@@ -18,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -68,11 +68,11 @@ public class ConsultationService {
     }
 
     @Transactional
-    public ClassifyResponse updateClassification(UUID consultationId, DomainType primaryField) {
+    public ClassifyResponse updateClassification(UUID consultationId, List<String> primaryField) {
         Consultation consultation = consultationReader.findById(consultationId);
         consultation.updateClassification(primaryField);
         consultationWriter.save(consultation);
 
-        return new ClassifyResponse(primaryField.name());
+        return new ClassifyResponse(primaryField);
     }
 }

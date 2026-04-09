@@ -57,8 +57,8 @@ public class Consultation extends BaseEntity {
                 .build();
     }
 
-    public void updateClassification(DomainType primaryField) {
-        this.selectedDomain = primaryField;
+    public void updateClassification(List<String> primaryField) {
+        this.primaryField = primaryField;
     }
 
     public void updateStatus(ConsultationStatus status) {

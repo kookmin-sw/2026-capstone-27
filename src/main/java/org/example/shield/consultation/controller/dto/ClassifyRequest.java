@@ -1,9 +1,10 @@
 package org.example.shield.consultation.controller.dto;
 
-import jakarta.validation.constraints.NotNull;
-import org.example.shield.common.enums.DomainType;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.util.List;
 
 public record ClassifyRequest(
-        @NotNull(message = "분류 값은 필수입니다")
-        DomainType primaryField
+        @NotEmpty(message = "분류 값은 필수입니다")
+        List<String> primaryField
 ) {}

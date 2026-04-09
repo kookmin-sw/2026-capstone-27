@@ -1,5 +1,7 @@
 package org.example.shield.consultation.controller.dto;
 
+import java.util.List;
+
 public record ClassifyResponse(
-        String primaryField
+        List<String> primaryField
 ) {}

@@ -30,4 +30,8 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public void touch() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

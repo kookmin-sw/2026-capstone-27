@@ -1,8 +1,10 @@
 package org.example.shield.common.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
 @Getter
+@JsonPropertyOrder({"result", "message", "data"})
 public class ApiResponse<T> {
 
     private final boolean result;

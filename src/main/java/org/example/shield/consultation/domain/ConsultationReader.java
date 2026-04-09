@@ -1,11 +1,13 @@
 package org.example.shield.consultation.domain;
 
-/**
- * Consultation 조회 인터페이스.
- *
- * TODO:
- * - findById(UUID id): Consultation
- * - findAllByUserId(UUID userId, Pageable pageable): Page<Consultation>
- */
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.UUID;
+
 public interface ConsultationReader {
+
+    Consultation findById(UUID id);
+
+    Page<Consultation> findAllByUserId(UUID userId, Pageable pageable);
 }

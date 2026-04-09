@@ -1,18 +1,78 @@
 package org.example.shield.consultation.domain;
 
-/**
- * 상담 엔티티 - consultations 테이블 매핑.
- *
- * TODO: @Entity 구현
- * - id: UUID (PK)
- * - userId: UUID (FK -> users.id)
- * - status: ConsultationStatus (COLLECTING / ANALYZING / AWAITING_CONFIRM / CONFIRMED / REJECTED)
- * - selectedDomain: DomainType (nullable, "잘 모르겠어요" = null)
- * - primaryField: JSONB (nullable, AI 분류 결과, 복수 가능)
- * - tags: JSONB (nullable, AI 분류 태그)
- * - createdAt, updatedAt: LocalDateTime
- *
- * 대화 내역은 messages 테이블에 별도 저장 (1:N 관계)
- */
-public class Consultation {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.example.shield.common.domain.BaseEntity;
+import org.example.shield.common.enums.ConsultationStatus;
+import org.example.shield.common.enums.DomainType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Table(name = "consultations")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Consultation extends BaseEntity {
+
+    @Column(nullable = false)
+    private UUID userId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "consultation_status")
+    private ConsultationStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "domain_type")
+    private DomainType selectedDomain;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> primaryField;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> tags;
+
+    @Column(columnDefinition = "text")
+    private String lastMessage;
+
+    private LocalDateTime lastMessageAt;
+
+    @Builder
+    private Consultation(UUID userId, DomainType selectedDomain) {
+        this.userId = userId;
+        this.selectedDomain = selectedDomain;
+        this.status = ConsultationStatus.COLLECTING;
+    }
+
+    public static Consultation create(UUID userId, DomainType selectedDomain) {
+        return Consultation.builder()
+                .userId(userId)
+                .selectedDomain(selectedDomain)
+                .build();
+    }
+
+    public void updateClassification(List<String> primaryField) {
+        this.primaryField = primaryField;
+    }
+
+    public void updateStatus(ConsultationStatus status) {
+        this.status = status;
+    }
+
+    public void updateLastMessage(String content, LocalDateTime timestamp) {
+        this.lastMessage = content;
+        this.lastMessageAt = timestamp;
+    }
 }

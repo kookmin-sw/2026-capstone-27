@@ -1,8 +1,14 @@
 package org.example.shield.consultation.exception;
 
-/**
- * 상담 없음 예외.
- * consultationId로 조회했는데 없을 때 발생.
- */
-public class ConsultationNotFoundException {
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
+
+import java.util.UUID;
+
+public class ConsultationNotFoundException extends BusinessException {
+
+    public ConsultationNotFoundException(UUID consultationId) {
+        super(ErrorCode.CONSULTATION_NOT_FOUND,
+                "상담을 찾을 수 없습니다. ID: " + consultationId);
+    }
 }

@@ -1,12 +1,17 @@
 package org.example.shield.consultation.domain;
 
-/**
- * Message 조회 인터페이스.
- *
- * TODO:
- * - findAllByConsultationId(UUID consultationId): List<Message> (sequence 순)
- * - findLastByConsultationId(UUID consultationId): Optional<Message>
- * - getMaxSequence(UUID consultationId): int
- */
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 public interface MessageReader {
+
+    List<Message> findAllByConsultationId(UUID consultationId);
+
+    Page<Message> findAllByConsultationId(UUID consultationId, Pageable pageable);
+
+    Optional<Message> findLastByConsultationId(UUID consultationId);
 }

@@ -2,7 +2,13 @@ package org.example.shield.common.enums;
 
 /**
  * 사용자 역할 ENUM.
- * TODO: enum으로 변경. CLIENT, LAWYER, ADMIN
+ *
+ * USER   - 일반 사용자 (의뢰인)
+ * LAWYER - 변호사
+ * ADMIN  - 관리자
  */
-public class UserRole {
+public enum UserRole {
+    USER,
+    LAWYER,
+    ADMIN
 }

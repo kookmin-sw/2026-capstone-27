@@ -3,11 +3,16 @@ package org.example.shield.brief.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.example.shield.brief.application.BriefService;
+import org.example.shield.brief.application.DeliveryService;
 import org.example.shield.brief.controller.dto.BriefResponse;
 import org.example.shield.brief.controller.dto.BriefSummaryResponse;
 import org.example.shield.brief.controller.dto.BriefUpdateRequest;
 import org.example.shield.brief.controller.dto.BriefUpdateResponse;
+import org.example.shield.brief.controller.dto.DeliveryListResponse;
+import org.example.shield.brief.controller.dto.DeliveryRequest;
+import org.example.shield.brief.controller.dto.DeliveryResponse;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.common.response.PageResponse;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +37,7 @@ import java.util.UUID;
 public class BriefController {
 
     private final BriefService briefService;
+    private final DeliveryService deliveryService;
 
     @Operation(summary = "내 의뢰서 목록", description = "로그인한 사용자의 의뢰서 목록을 조회합니다")
     @GetMapping
@@ -60,5 +67,24 @@ public class BriefController {
             @RequestBody BriefUpdateRequest request) {
         BriefUpdateResponse result = briefService.updateBrief(briefId, userId, request);
         return ApiResponse.success("의뢰서가 수정되었습니다", result);
+    }
+
+    @Operation(summary = "의뢰서 전달", description = "확정된 의뢰서를 변호사에게 전달합니다")
+    @PostMapping("/{briefId}/deliveries")
+    public ApiResponse<DeliveryResponse> createDelivery(
+            @PathVariable UUID briefId,
+            @AuthenticationPrincipal UUID userId,
+            @Valid @RequestBody DeliveryRequest request) {
+        DeliveryResponse result = deliveryService.createDelivery(briefId, request.lawyerId(), userId);
+        return ApiResponse.success("의뢰서가 전달되었습니다", result);
+    }
+
+    @Operation(summary = "전달 현황 조회", description = "의뢰서의 전달 현황을 조회합니다")
+    @GetMapping("/{briefId}/deliveries")
+    public ApiResponse<DeliveryListResponse> getDeliveries(
+            @PathVariable UUID briefId,
+            @AuthenticationPrincipal UUID userId) {
+        DeliveryListResponse result = deliveryService.getDeliveries(briefId, userId);
+        return ApiResponse.success("조회 성공", result);
     }
 }

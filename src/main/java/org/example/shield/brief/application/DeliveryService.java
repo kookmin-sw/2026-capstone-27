@@ -1,24 +1,78 @@
 package org.example.shield.brief.application;
 
-/**
- * 의뢰서 전달 서비스 - 전달/현황조회/접수/거절.
- *
- * Layer: application
- * Called by: BriefController, LawyerInboxController
- * Calls: DeliveryReader, DeliveryWriter, BriefReader, NotificationSender
- *
- * TODO:
- * - createDelivery(briefId, lawyerId):
- *   1. brief가 CONFIRMED 상태인지 확인
- *   2. deliveries에 새 row (status: DELIVERED, sentAt: now())
- *   3. NotificationSender로 변호사에게 이메일 알림
- *
- * - getDeliveries(briefId): 전달 현황 (sentAt, viewedAt, respondedAt 포함)
- * - getInbox(lawyerId, pageable): 수신 의뢰서 목록 (변호사용)
- * - getInboxDetail(deliveryId): 수신 의뢰서 상세 (privacySetting 적용)
- * - updateDeliveryStatus(deliveryId, status, rejectionReason):
- *   - CONFIRMED: 수락 → respondedAt 기록 + 의뢰인에게 알림
- *   - REJECTED: 거절 → rejectionReason 저장 + respondedAt 기록 + 의뢰인에게 알림
- */
+import lombok.RequiredArgsConstructor;
+import org.example.shield.brief.controller.dto.DeliveryListResponse;
+import org.example.shield.brief.controller.dto.DeliveryResponse;
+import org.example.shield.brief.domain.Brief;
+import org.example.shield.brief.domain.BriefDelivery;
+import org.example.shield.brief.domain.BriefReader;
+import org.example.shield.brief.exception.BriefNotFoundException;
+import org.example.shield.brief.infrastructure.BriefDeliveryRepository;
+import org.example.shield.common.enums.BriefStatus;
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
+import org.example.shield.user.domain.User;
+import org.example.shield.user.domain.UserReader;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DeliveryService {
+
+    private final BriefReader briefReader;
+    private final BriefDeliveryRepository deliveryRepository;
+    private final UserReader userReader;
+
+    @Transactional
+    public DeliveryResponse createDelivery(UUID briefId, UUID lawyerId, UUID userId) {
+        Brief brief = briefReader.findById(briefId);
+        validateOwner(brief, userId);
+
+        if (brief.getStatus() != BriefStatus.CONFIRMED) {
+            throw new BusinessException(ErrorCode.BRIEF_NOT_CONFIRMED) {};
+        }
+
+        // 중복 전달 방지
+        boolean alreadySent = deliveryRepository.findAllByBriefId(briefId).stream()
+                .anyMatch(d -> d.getLawyerId().equals(lawyerId));
+        if (alreadySent) {
+            throw new BusinessException(ErrorCode.DELIVERY_ALREADY_EXISTS) {};
+        }
+
+        BriefDelivery delivery = BriefDelivery.create(briefId, lawyerId);
+        BriefDelivery saved = deliveryRepository.save(delivery);
+
+        // 의뢰서 상태를 DELIVERED로 변경
+        brief.markDelivered();
+
+        User lawyer = userReader.findById(lawyerId);
+        return DeliveryResponse.of(saved, lawyer.getName());
+    }
+
+    public DeliveryListResponse getDeliveries(UUID briefId, UUID userId) {
+        Brief brief = briefReader.findById(briefId);
+        validateOwner(brief, userId);
+
+        List<BriefDelivery> deliveries = deliveryRepository.findAllByBriefId(briefId);
+
+        List<DeliveryResponse> responses = deliveries.stream()
+                .map(d -> {
+                    User lawyer = userReader.findById(d.getLawyerId());
+                    return DeliveryResponse.of(d, lawyer.getName());
+                })
+                .toList();
+
+        return new DeliveryListResponse(responses);
+    }
+
+    private void validateOwner(Brief brief, UUID userId) {
+        if (!brief.getUserId().equals(userId)) {
+            throw new BriefNotFoundException(brief.getId());
+        }
+    }
 }

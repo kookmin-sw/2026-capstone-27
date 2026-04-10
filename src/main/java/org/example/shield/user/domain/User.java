@@ -61,7 +61,4 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public void updateName(String name) {
-        this.name = name;
-    }
 }

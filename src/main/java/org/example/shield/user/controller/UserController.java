@@ -2,17 +2,13 @@ package org.example.shield.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.user.application.UserService;
 import org.example.shield.user.controller.dto.UserResponse;
-import org.example.shield.user.controller.dto.UserUpdateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,14 +28,5 @@ public class UserController {
             @AuthenticationPrincipal UUID userId) {
         UserResponse response = userService.getMyInfo(userId);
         return ResponseEntity.ok(ApiResponse.success("사용자 정보 조회 성공", response));
-    }
-
-    @Operation(summary = "내 정보 수정", description = "현재 로그인한 사용자 이름 수정")
-    @PatchMapping("/me")
-    public ResponseEntity<ApiResponse<UserResponse>> updateMyInfo(
-            @AuthenticationPrincipal UUID userId,
-            @Valid @RequestBody UserUpdateRequest request) {
-        UserResponse response = userService.updateMyInfo(userId, request);
-        return ResponseEntity.ok(ApiResponse.success("사용자 정보 수정 성공", response));
     }
 }

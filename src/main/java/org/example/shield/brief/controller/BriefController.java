@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import org.example.shield.brief.application.BriefService;
 import org.example.shield.brief.application.DeliveryService;
+import org.example.shield.brief.application.LawyerMatchingService;
 import org.example.shield.brief.controller.dto.BriefResponse;
 import org.example.shield.brief.controller.dto.BriefSummaryResponse;
 import org.example.shield.brief.controller.dto.BriefUpdateRequest;
@@ -13,6 +14,7 @@ import org.example.shield.brief.controller.dto.BriefUpdateResponse;
 import org.example.shield.brief.controller.dto.DeliveryListResponse;
 import org.example.shield.brief.controller.dto.DeliveryRequest;
 import org.example.shield.brief.controller.dto.DeliveryResponse;
+import org.example.shield.brief.controller.dto.MatchingResponse;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.common.response.PageResponse;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +40,7 @@ public class BriefController {
 
     private final BriefService briefService;
     private final DeliveryService deliveryService;
+    private final LawyerMatchingService lawyerMatchingService;
 
     @Operation(summary = "내 의뢰서 목록", description = "로그인한 사용자의 의뢰서 목록을 조회합니다")
     @GetMapping
@@ -86,5 +89,17 @@ public class BriefController {
             @AuthenticationPrincipal UUID userId) {
         DeliveryListResponse result = deliveryService.getDeliveries(briefId, userId);
         return ApiResponse.success("조회 성공", result);
+    }
+
+    @Operation(summary = "변호사 매칭 조회", description = "의뢰서 키워드 기반으로 매칭된 변호사 목록을 조회합니다")
+    @GetMapping("/{briefId}/lawyer-recommendations")
+    public ApiResponse<PageResponse<MatchingResponse>> getLawyerRecommendations(
+            @PathVariable UUID briefId,
+            @AuthenticationPrincipal UUID userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "experienceYears"));
+        PageResponse<MatchingResponse> result = lawyerMatchingService.findMatching(briefId, userId, pageable);
+        return ApiResponse.success("매칭 완료", result);
     }
 }

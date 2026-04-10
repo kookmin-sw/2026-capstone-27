@@ -1,19 +1,54 @@
 package org.example.shield.lawyer.domain;
 
-/**
- * 변호사 프로필 엔티티 - lawyers 테이블 매핑 (BaseEntity 상속).
- *
- * TODO: @Entity 구현
- * - userId: UUID (FK -> users.id, UNIQUE)
- * - specializations: String (전문 분야)
- * - experienceYears: Integer (nullable)
- * - barAssociationNumber: String (NOT NULL)
- * - verificationStatus: VerificationStatus (PENDING / VERIFIED / REJECTED)
- * - verifiedAt: LocalDateTime (nullable)
- * - tags: JSONB (세부 전문 키워드)
- * - bio: String (nullable, 소개글)
- * - certifications: JSONB (자격증 목록)
- * - caseCount: Integer (수행 사례 수, DEFAULT 0)
- */
-public class LawyerProfile {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.example.shield.common.domain.BaseEntity;
+import org.example.shield.common.enums.VerificationStatus;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Table(name = "lawyers")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class LawyerProfile extends BaseEntity {
+
+    @Column(nullable = false, unique = true)
+    private UUID userId;
+
+    private String specializations;
+
+    private Integer experienceYears;
+
+    @Column(nullable = false)
+    private String barAssociationNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "verification_status")
+    private VerificationStatus verificationStatus;
+
+    private LocalDateTime verifiedAt;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> tags;
+
+    @Column(columnDefinition = "text")
+    private String bio;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> certifications;
+
+    private Integer caseCount;
 }

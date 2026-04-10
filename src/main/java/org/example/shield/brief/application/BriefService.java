@@ -10,6 +10,8 @@ import org.example.shield.brief.domain.BriefReader;
 import org.example.shield.brief.domain.BriefWriter;
 import org.example.shield.brief.exception.BriefAlreadyConfirmedException;
 import org.example.shield.common.enums.PrivacySetting;
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
 import org.example.shield.common.response.PageResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,28 +49,31 @@ public class BriefService {
             throw new BriefAlreadyConfirmedException();
         }
 
+        // 내용 수정
+        brief.updateContent(
+                request.title() != null ? request.title() : brief.getTitle(),
+                request.content() != null ? request.content() : brief.getContent(),
+                request.keywords() != null ? request.keywords() : brief.getKeywords(),
+                request.keyIssues() != null ? request.keyIssues() : brief.getKeyIssues(),
+                brief.getStrategy()
+        );
+
+        // 개인정보 설정 변경
+        if (request.privacySetting() != null) {
+            try {
+                brief.updatePrivacySetting(PrivacySetting.valueOf(request.privacySetting()));
+            } catch (IllegalArgumentException e) {
+                throw new BusinessException(ErrorCode.INVALID_INPUT_VALUE) {};
+            }
+        }
+
         // 상태 변경
         if (request.status() != null) {
             switch (request.status()) {
                 case "CONFIRMED" -> brief.confirm();
                 case "DISCARDED" -> brief.discard();
+                default -> throw new BusinessException(ErrorCode.INVALID_INPUT_VALUE) {};
             }
-        }
-
-        // 개인정보 설정 변경
-        if (request.privacySetting() != null) {
-            brief.updatePrivacySetting(PrivacySetting.valueOf(request.privacySetting()));
-        }
-
-        // 내용 수정 (상태 변경이 아닌 경우)
-        if (request.status() == null) {
-            brief.updateContent(
-                    request.title() != null ? request.title() : brief.getTitle(),
-                    request.content() != null ? request.content() : brief.getContent(),
-                    request.keywords() != null ? request.keywords() : brief.getKeywords(),
-                    request.keyIssues() != null ? request.keyIssues() : brief.getKeyIssues(),
-                    brief.getStrategy()
-            );
         }
 
         Brief saved = briefWriter.save(brief);

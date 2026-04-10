@@ -56,6 +56,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        if (path.equals("/api/auth/logout")) {
+            return false;
+        }
         return path.startsWith("/api/auth/")
                 || path.startsWith("/swagger-ui/")
                 || path.startsWith("/api-docs")

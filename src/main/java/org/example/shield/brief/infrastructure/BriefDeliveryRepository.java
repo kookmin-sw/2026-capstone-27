@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface BriefDeliveryRepository extends JpaRepository<BriefDelivery, UUID> {
     List<BriefDelivery> findAllByBriefId(UUID briefId);
     Page<BriefDelivery> findAllByLawyerId(UUID lawyerId, Pageable pageable);
+    boolean existsByBriefIdAndLawyerId(UUID briefId, UUID lawyerId);
 }

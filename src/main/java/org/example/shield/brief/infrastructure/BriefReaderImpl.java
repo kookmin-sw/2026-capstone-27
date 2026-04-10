@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +22,11 @@ public class BriefReaderImpl implements BriefReader {
     public Brief findById(UUID id) {
         return briefRepository.findById(id)
                 .orElseThrow(() -> new BriefNotFoundException(id));
+    }
+
+    @Override
+    public List<Brief> findAllByIds(List<UUID> ids) {
+        return briefRepository.findAllById(ids);
     }
 
     @Override

@@ -46,9 +46,7 @@ public class DeliveryService {
             throw new BusinessException(ErrorCode.BRIEF_NOT_CONFIRMED) {};
         }
 
-        boolean alreadySent = deliveryRepository.findAllByBriefId(briefId).stream()
-                .anyMatch(d -> d.getLawyerId().equals(lawyerId));
-        if (alreadySent) {
+        if (deliveryRepository.existsByBriefIdAndLawyerId(briefId, lawyerId)) {
             throw new BusinessException(ErrorCode.DELIVERY_ALREADY_EXISTS) {};
         }
 
@@ -85,11 +83,10 @@ public class DeliveryService {
     public PageResponse<InboxResponse> getInbox(UUID lawyerId, Pageable pageable) {
         Page<BriefDelivery> deliveries = deliveryRepository.findAllByLawyerId(lawyerId, pageable);
 
-        // N+1 방지: Brief ID를 모아서 한 번에 조회
         List<UUID> briefIds = deliveries.getContent().stream()
                 .map(BriefDelivery::getBriefId).toList();
-        Map<UUID, Brief> briefMap = briefIds.stream()
-                .collect(Collectors.toMap(id -> id, briefReader::findById));
+        Map<UUID, Brief> briefMap = briefReader.findAllByIds(briefIds).stream()
+                .collect(Collectors.toMap(Brief::getId, Function.identity()));
 
         Page<InboxResponse> responsePage = deliveries.map(d -> {
             Brief brief = briefMap.get(d.getBriefId());

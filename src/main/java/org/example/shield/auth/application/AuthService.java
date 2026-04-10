@@ -85,7 +85,7 @@ public class AuthService {
         user.updateRefreshToken(null);
     }
 
-    public String refreshToken(String refreshToken) {
+    public JwtToken refreshToken(String refreshToken) {
         if (!jwtService.validateToken(refreshToken)) {
             throw new InvalidTokenException(ErrorCode.TOKEN_EXPIRED);
         }
@@ -100,7 +100,7 @@ public class AuthService {
         JwtToken tokenPair = jwtService.createTokenPair(userId, user.getRole().name());
         user.updateRefreshToken(tokenPair.refreshToken());
 
-        return tokenPair.accessToken();
+        return tokenPair;
     }
 
     private UserRole parseRole(String role) {

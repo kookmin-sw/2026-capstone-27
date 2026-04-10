@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shield.auth.application.AuthService;
 import org.example.shield.auth.controller.dto.DevLoginRequest;
+import org.example.shield.auth.domain.JwtToken;
 import org.example.shield.auth.controller.dto.GoogleLoginRequest;
 import org.example.shield.auth.controller.dto.LoginResponse;
 import org.example.shield.auth.exception.InvalidTokenException;
@@ -64,15 +65,17 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"));
     }
 
-    @Operation(summary = "토큰 갱신", description = "Refresh Token으로 새 Access Token 발급")
+    @Operation(summary = "토큰 갱신", description = "Refresh Token으로 새 Access Token + Refresh Token 재발급")
     @PostMapping("/token/refresh")
     public ResponseEntity<ApiResponse<String>> refreshToken(
-            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
+            @CookieValue(name = "refreshToken", required = false) String refreshToken,
+            HttpServletResponse response) {
         if (refreshToken == null) {
             throw new InvalidTokenException();
         }
-        String newAccessToken = authService.refreshToken(refreshToken);
-        return ResponseEntity.ok(ApiResponse.success("토큰 갱신 성공", newAccessToken));
+        JwtToken tokenPair = authService.refreshToken(refreshToken);
+        addRefreshTokenCookie(response, tokenPair.refreshToken());
+        return ResponseEntity.ok(ApiResponse.success("토큰 갱신 성공", tokenPair.accessToken()));
     }
 
     private void addRefreshTokenCookie(HttpServletResponse response, String token) {

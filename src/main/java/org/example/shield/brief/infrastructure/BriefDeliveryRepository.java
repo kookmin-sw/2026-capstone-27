@@ -1,11 +1,14 @@
 package org.example.shield.brief.infrastructure;
 
-/**
- * 의뢰서 전달 JPA Repository.
- *
- * TODO: extends JpaRepository<BriefDelivery, UUID>
- * - findByBriefId(UUID briefId): List<BriefDelivery>
- * - findByLawyerId(UUID lawyerId): List<BriefDelivery>
- */
-public interface BriefDeliveryRepository {
+import org.example.shield.brief.domain.BriefDelivery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface BriefDeliveryRepository extends JpaRepository<BriefDelivery, UUID> {
+    List<BriefDelivery> findAllByBriefId(UUID briefId);
+    Page<BriefDelivery> findAllByLawyerId(UUID lawyerId, Pageable pageable);
 }

@@ -1,8 +1,12 @@
 package org.example.shield.brief.exception;
 
-/**
- * 의뢰서 없음 예외.
- * briefId로 조회했는데 없을 때 발생.
- */
-public class BriefNotFoundException {
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
+
+import java.util.UUID;
+
+public class BriefNotFoundException extends BusinessException {
+    public BriefNotFoundException(UUID briefId) {
+        super(ErrorCode.BRIEF_NOT_FOUND);
+    }
 }

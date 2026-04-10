@@ -1,12 +1,13 @@
 package org.example.shield.user.domain;
 
-/**
- * User 조회 인터페이스.
- *
- * TODO:
- * - findById(UUID id): User
- * - findOptionalByEmail(String email): Optional<User>
- * - existsByEmail(String email): boolean
- */
+import java.util.Optional;
+import java.util.UUID;
+
 public interface UserReader {
+
+    User findById(UUID id);
+
+    Optional<User> findByGoogleId(String googleId);
+
+    Optional<User> findByEmail(String email);
 }

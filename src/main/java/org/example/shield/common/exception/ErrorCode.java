@@ -14,6 +14,18 @@ public enum ErrorCode {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다"),
 
+    // Auth - Token
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다"),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
+    REFRESH_TOKEN_MISMATCH(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 일치하지 않습니다"),
+
+    // Auth - OAuth
+    OAUTH_CODE_INVALID(HttpStatus.UNAUTHORIZED, "OAuth 인증 코드가 유효하지 않습니다"),
+    OAUTH_USER_INFO_FAILED(HttpStatus.UNAUTHORIZED, "OAuth 사용자 정보 조회에 실패했습니다"),
+
+    // Auth - Role
+    INVALID_ROLE(HttpStatus.BAD_REQUEST, "유효하지 않은 역할입니다 (USER, LAWYER, ADMIN)"),
+
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다"),
 

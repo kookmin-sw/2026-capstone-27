@@ -2,6 +2,12 @@ spring:
   application:
     name: shield
 
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
   # PostgreSQL
   datasource:
     url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
@@ -17,6 +23,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiry: 1800000
+  refresh-token-expiry: 1209600000
+
+# Google OAuth
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: ${GOOGLE_REDIRECT_URI}
 
 # Swagger
 springdoc:

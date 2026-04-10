@@ -1,17 +1,36 @@
 package org.example.shield.auth.application;
 
-/**
- * JWT 서비스 - JWT 토큰 생성/검증/파싱 로직.
- *
- * Layer: application
- * Called by: AuthService, JwtAuthFilter
- * Calls: JwtTokenProvider
- *
- * TODO:
- * - createTokenPair(userId, role): Access Token(30분) + Refresh Token(14일) 생성
- * - validateToken(token): 토큰 유효성 검증 (만료, 위조, 블랙리스트)
- * - getUserIdFromToken(token): 토큰에서 userId 추출
- * - getRoleFromToken(token): 토큰에서 role 추출
- */
+import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
+import org.example.shield.auth.domain.JwtToken;
+import org.example.shield.auth.infrastructure.JwtTokenProvider;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
 public class JwtService {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public JwtToken createTokenPair(UUID userId, String role) {
+        String accessToken = jwtTokenProvider.generateAccessToken(userId, role);
+        String refreshToken = jwtTokenProvider.generateRefreshToken(userId, role);
+        return new JwtToken(accessToken, refreshToken);
+    }
+
+    public boolean validateToken(String token) {
+        return jwtTokenProvider.isValid(token);
+    }
+
+    public UUID getUserIdFromToken(String token) {
+        Claims claims = jwtTokenProvider.parseClaims(token);
+        return UUID.fromString(claims.getSubject());
+    }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = jwtTokenProvider.parseClaims(token);
+        return claims.get("role", String.class);
+    }
 }

@@ -1,15 +1,25 @@
 package org.example.shield.user.controller.dto;
 
-/**
- * 사용자 정보 응답 DTO.
- *
- * TODO: record로 구현
- * - userId: UUID
- * - email: String
- * - name: String
- * - role: String (USER / LAWYER / ADMIN)
- * - provider: String (GOOGLE)
- * - profileImageUrl: String (nullable)
- */
-public class UserResponse {
+import org.example.shield.user.domain.User;
+
+import java.util.UUID;
+
+public record UserResponse(
+        UUID userId,
+        String email,
+        String name,
+        String role,
+        String provider,
+        String profileImageUrl
+) {
+    public static UserResponse from(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getRole().name(),
+                user.getProvider(),
+                user.getProfileImageUrl()
+        );
+    }
 }

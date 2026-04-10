@@ -4,7 +4,7 @@ spring:
 
   # PostgreSQL
   datasource:
-    url: ${DB_URL}&prepareThreshold=0
+    url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 

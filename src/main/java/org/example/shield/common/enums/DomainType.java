@@ -3,16 +3,16 @@ package org.example.shield.common.enums;
 /**
  * 법률 분야 ENUM.
  *
- * DEPOSIT_FRAUD  - 전세사기
- * LEASE_DISPUTE  - 임대차 분쟁
- * PRESALE        - 분양 계약
- * PROPERTY_TRADE - 매매/등기
- * OTHER          - 기타
+ * CIVIL            - 민사 (손해배상, 대여금, 부동산 등)
+ * CRIMINAL         - 형사 (사기, 절도, 폭행 등)
+ * LABOR            - 노동법 (부당해고, 임금체불 등)
+ * SCHOOL_VIOLENCE  - 학교폭력 (학폭 심의, 징계처분 등)
+ *
+ * null = "잘 모르겠어요"
  */
 public enum DomainType {
-    DEPOSIT_FRAUD,
-    LEASE_DISPUTE,
-    PRESALE,
-    PROPERTY_TRADE,
-    OTHER
+    CIVIL,
+    CRIMINAL,
+    LABOR,
+    SCHOOL_VIOLENCE
 }

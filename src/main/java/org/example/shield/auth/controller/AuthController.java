@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shield.auth.application.AuthService;
+import org.example.shield.auth.controller.dto.DevLoginRequest;
 import org.example.shield.auth.controller.dto.GoogleLoginRequest;
 import org.example.shield.auth.controller.dto.LoginResponse;
 import org.example.shield.auth.exception.InvalidTokenException;
@@ -35,6 +36,17 @@ public class AuthController {
 
         addRefreshTokenCookie(response, result.refreshToken());
         return ResponseEntity.ok(ApiResponse.success("로그인 성공", result.response()));
+    }
+
+    @PostMapping("/dev/login")
+    public ResponseEntity<ApiResponse<LoginResponse>> devLogin(
+            @RequestBody DevLoginRequest request,
+            HttpServletResponse response) {
+        AuthService.LoginResult result = authService.devLogin(
+                request.email(), request.name(), request.role());
+
+        addRefreshTokenCookie(response, result.refreshToken());
+        return ResponseEntity.ok(ApiResponse.success("개발용 로그인 성공", result.response()));
     }
 
     @PostMapping("/logout")

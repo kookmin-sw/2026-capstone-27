@@ -34,9 +34,33 @@ public class AuthService {
                         User.builder()
                                 .email(userInfo.email())
                                 .name(userInfo.name())
-                                .role(UserRole.valueOf(role))
+                                .role(UserRole.valueOf(role.toUpperCase()))
                                 .provider("GOOGLE")
                                 .googleId(userInfo.googleId())
+                                .build()
+                ));
+
+        JwtToken tokenPair = jwtService.createTokenPair(user.getId(), user.getRole().name());
+        user.updateRefreshToken(tokenPair.refreshToken());
+
+        LoginResponse response = new LoginResponse(
+                tokenPair.accessToken(),
+                user.getId(),
+                user.getName(),
+                user.getRole().name()
+        );
+        return new LoginResult(response, tokenPair.refreshToken());
+    }
+
+    public LoginResult devLogin(String email, String name, String role) {
+        User user = userReader.findByEmail(email)
+                .orElseGet(() -> userWriter.save(
+                        User.builder()
+                                .email(email)
+                                .name(name)
+                                .role(UserRole.valueOf(role.toUpperCase()))
+                                .provider("DEV")
+                                .googleId("dev-" + UUID.randomUUID())
                                 .build()
                 ));
 

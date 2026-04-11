@@ -1,8 +1,10 @@
 package org.example.shield.brief.exception;
 
-/**
- * 의뢰서 이미 확정됨 예외.
- * CONFIRMED 상태의 의뢰서를 수정하려 할 때 발생.
- */
-public class BriefAlreadyConfirmedException {
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
+
+public class BriefAlreadyConfirmedException extends BusinessException {
+    public BriefAlreadyConfirmedException() {
+        super(ErrorCode.BRIEF_ALREADY_CONFIRMED);
+    }
 }

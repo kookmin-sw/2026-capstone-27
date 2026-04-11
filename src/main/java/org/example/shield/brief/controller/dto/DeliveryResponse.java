@@ -1,15 +1,28 @@
 package org.example.shield.brief.controller.dto;
 
-/**
- * 의뢰서 전달 응답 DTO.
- *
- * TODO: record로 구현
- * - deliveryId: UUID
- * - lawyerName: String
- * - status: String (DELIVERED / CONFIRMED / REJECTED)
- * - sentAt: LocalDateTime
- * - viewedAt: LocalDateTime (nullable)
- * - respondedAt: LocalDateTime (nullable)
- */
-public class DeliveryResponse {
+import org.example.shield.brief.domain.BriefDelivery;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public record DeliveryResponse(
+        UUID deliveryId,
+        UUID lawyerId,
+        String lawyerName,
+        String status,
+        LocalDateTime sentAt,
+        LocalDateTime viewedAt,
+        LocalDateTime respondedAt
+) {
+    public static DeliveryResponse of(BriefDelivery delivery, String lawyerName) {
+        return new DeliveryResponse(
+                delivery.getId(),
+                delivery.getLawyerId(),
+                lawyerName,
+                delivery.getStatus().name(),
+                delivery.getSentAt(),
+                delivery.getViewedAt(),
+                delivery.getRespondedAt()
+        );
+    }
 }

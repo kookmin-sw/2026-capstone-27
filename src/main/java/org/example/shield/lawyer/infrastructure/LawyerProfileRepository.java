@@ -1,12 +1,15 @@
 package org.example.shield.lawyer.infrastructure;
 
-/**
- * 변호사 프로필 JPA Repository.
- *
- * TODO: extends JpaRepository<LawyerProfile, UUID>
- * - findByUserId(UUID userId): Optional<LawyerProfile>
- * - findByVerificationStatus(String status): List<LawyerProfile>
- * - findBySpecializationsContaining(String field): 전문분야로 검색 (매칭용)
- */
-public interface LawyerProfileRepository {
+import org.example.shield.common.enums.VerificationStatus;
+import org.example.shield.lawyer.domain.LawyerProfile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface LawyerProfileRepository extends JpaRepository<LawyerProfile, UUID> {
+    Optional<LawyerProfile> findByUserId(UUID userId);
+    Page<LawyerProfile> findAllByVerificationStatus(VerificationStatus status, Pageable pageable);
 }

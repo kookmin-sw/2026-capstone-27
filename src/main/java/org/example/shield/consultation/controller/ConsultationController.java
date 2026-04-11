@@ -20,7 +20,7 @@ import org.example.shield.consultation.controller.dto.SendMessageResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,10 +50,9 @@ public class ConsultationController {
 
     @Operation(summary = "상담 생성", description = "새로운 상담을 생성하고 환영 메시지를 반환합니다")
     @PostMapping
-    public ApiResponse<CreateConsultationResponse> create(@RequestBody CreateConsultationRequest request) {
-        // TODO: Auth 연동 후 JWT에서 userId 추출
-        UUID userId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
-
+    public ApiResponse<CreateConsultationResponse> create(
+            @RequestBody CreateConsultationRequest request,
+            @AuthenticationPrincipal UUID userId) {
         CreateConsultationResponse result = consultationService.createConsultation(userId, request.domain());
         return ApiResponse.success("상담이 생성되었습니다", result);
     }
@@ -61,11 +60,9 @@ public class ConsultationController {
     @Operation(summary = "내 상담 목록", description = "로그인한 사용자의 상담 목록을 조회합니다")
     @GetMapping
     public ApiResponse<PageResponse<ConsultationResponse>> getMyConsultations(
+            @AuthenticationPrincipal UUID userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        // TODO: Auth 연동 후 JWT에서 userId 추출
-        UUID userId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
-
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         PageResponse<ConsultationResponse> result = consultationService.getMyConsultations(userId, pageable);
         return ApiResponse.success("조회 성공", result);

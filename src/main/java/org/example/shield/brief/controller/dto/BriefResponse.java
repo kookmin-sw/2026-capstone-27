@@ -1,17 +1,35 @@
 package org.example.shield.brief.controller.dto;
 
-/**
- * 의뢰서 조회 응답 DTO.
- *
- * TODO:
- * - briefId: String (UUID)
- * - title: String ("[노동] 부당해고 관련 의뢰서")
- * - legalField: String
- * - content: String (줄글 의뢰서 전체 내용)
- * - keywords: List<String> (매칭용 키워드)
- * - privacySetting: String (FULL / PARTIAL / PRIVATE)
- * - status: String (DRAFT / CONFIRMED / DELIVERED / DISCARDED)
- * - createdAt: LocalDateTime
- */
-public class BriefResponse {
+import org.example.shield.brief.domain.Brief;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+public record BriefResponse(
+        UUID briefId,
+        String title,
+        String legalField,
+        String content,
+        List<String> keyIssues,
+        List<String> keywords,
+        String strategy,
+        String privacySetting,
+        String status,
+        LocalDateTime createdAt
+) {
+    public static BriefResponse from(Brief brief) {
+        return new BriefResponse(
+                brief.getId(),
+                brief.getTitle(),
+                brief.getLegalField(),
+                brief.getContent(),
+                brief.getKeyIssues(),
+                brief.getKeywords(),
+                brief.getStrategy(),
+                brief.getPrivacySetting().name(),
+                brief.getStatus().name(),
+                brief.getCreatedAt()
+        );
+    }
 }

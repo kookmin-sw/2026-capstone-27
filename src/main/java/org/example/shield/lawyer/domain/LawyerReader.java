@@ -1,13 +1,13 @@
 package org.example.shield.lawyer.domain;
 
-/**
- * Lawyer 조회 인터페이스.
- *
- * TODO:
- * - findById(UUID id): LawyerProfile
- * - findByUserId(UUID userId): LawyerProfile
- * - findAll(Pageable pageable): Page<LawyerProfile>
- * - findAllByVerificationStatus(VerificationStatus status, Pageable pageable): Page<LawyerProfile>
- */
+import org.example.shield.common.enums.VerificationStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.UUID;
+
 public interface LawyerReader {
+    LawyerProfile findById(UUID id);
+    LawyerProfile findByUserId(UUID userId);
+    Page<LawyerProfile> findAllByVerificationStatus(VerificationStatus status, Pageable pageable);
 }

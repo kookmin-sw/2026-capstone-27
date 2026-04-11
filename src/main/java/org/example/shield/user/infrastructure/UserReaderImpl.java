@@ -6,6 +6,7 @@ import org.example.shield.user.domain.UserReader;
 import org.example.shield.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,11 @@ public class UserReaderImpl implements UserReader {
     public User findById(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public List<User> findAllByIds(List<UUID> ids) {
+        return userRepository.findAllById(ids);
     }
 
     @Override

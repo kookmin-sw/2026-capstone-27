@@ -1,12 +1,15 @@
 package org.example.shield.brief.domain;
 
-/**
- * Brief 조회 인터페이스.
- *
- * TODO:
- * - findById(UUID id): Brief
- * - findAllByUserId(UUID userId, Pageable pageable): Page<Brief>
- * - findByConsultationId(UUID consultationId): Optional<Brief>
- */
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 public interface BriefReader {
+    Brief findById(UUID id);
+    List<Brief> findAllByIds(List<UUID> ids);
+    Page<Brief> findAllByUserId(UUID userId, Pageable pageable);
+    Optional<Brief> findOptionalByConsultationId(UUID consultationId);
 }

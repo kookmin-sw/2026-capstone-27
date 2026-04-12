@@ -31,6 +31,7 @@ public enum ErrorCode {
 
     // Lawyer
     LAWYER_NOT_FOUND(HttpStatus.NOT_FOUND, "변호사를 찾을 수 없습니다"),
+    LAWYER_NOT_VERIFIED(HttpStatus.BAD_REQUEST, "인증되지 않은 변호사에게는 전달할 수 없습니다"),
 
     // Consultation
     CONSULTATION_NOT_FOUND(HttpStatus.NOT_FOUND, "상담을 찾을 수 없습니다"),

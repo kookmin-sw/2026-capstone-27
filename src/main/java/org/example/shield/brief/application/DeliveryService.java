@@ -11,8 +11,10 @@ import org.example.shield.brief.domain.BriefReader;
 import org.example.shield.brief.exception.BriefNotFoundException;
 import org.example.shield.brief.infrastructure.BriefDeliveryRepository;
 import org.example.shield.common.enums.BriefStatus;
-import org.example.shield.common.enums.UserRole;
 import org.example.shield.common.enums.PrivacySetting;
+import org.example.shield.common.enums.VerificationStatus;
+import org.example.shield.lawyer.domain.LawyerProfile;
+import org.example.shield.lawyer.domain.LawyerReader;
 import org.example.shield.common.exception.BusinessException;
 import org.example.shield.common.exception.ErrorCode;
 import org.example.shield.common.response.PageResponse;
@@ -37,6 +39,7 @@ public class DeliveryService {
     private final BriefReader briefReader;
     private final BriefDeliveryRepository deliveryRepository;
     private final UserReader userReader;
+    private final LawyerReader lawyerReader;
 
     @Transactional
     public DeliveryResponse createDelivery(UUID briefId, UUID lawyerId, UUID userId) {
@@ -48,8 +51,9 @@ public class DeliveryService {
         }
 
         User lawyer = userReader.findById(lawyerId);
-        if (lawyer.getRole() != UserRole.LAWYER) {
-            throw new BusinessException(ErrorCode.INVALID_ROLE) {};
+        LawyerProfile lawyerProfile = lawyerReader.findByUserId(lawyerId);
+        if (lawyerProfile.getVerificationStatus() != VerificationStatus.VERIFIED) {
+            throw new BusinessException(ErrorCode.LAWYER_NOT_VERIFIED) {};
         }
 
         if (deliveryRepository.existsByBriefIdAndLawyerId(briefId, lawyerId)) {

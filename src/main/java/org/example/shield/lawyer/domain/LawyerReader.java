@@ -10,4 +10,6 @@ public interface LawyerReader {
     LawyerProfile findById(UUID id);
     LawyerProfile findByUserId(UUID userId);
     Page<LawyerProfile> findAllByVerificationStatus(VerificationStatus status, Pageable pageable);
+    Page<LawyerProfile> searchByStatusAndKeyword(String status, String keyword, Pageable pageable);
+    long countByVerificationStatus(VerificationStatus status);
 }

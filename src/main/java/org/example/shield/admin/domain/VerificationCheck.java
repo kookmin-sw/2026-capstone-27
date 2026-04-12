@@ -1,24 +1,108 @@
 package org.example.shield.admin.domain;
 
-/**
- * 변호사 자동 검증 결과 + 관리자 체크리스트 엔티티.
- *
- * Table: verification_checks
- *
- * TODO: @Entity 구현
- * - id (UUID PK)
- * - lawyerId (UUID FK → lawyers, UNIQUE 1:1)
- * - emailDuplicate (boolean, 이메일 중복 없음)
- * - phoneDuplicate (boolean, 전화번호 중복 없음)
- * - nameDuplicate (boolean, 동일 이름 계정 없음)
- * - requiredFields (boolean, 필수 항목 누락 없음)
- * - licenseVerified (boolean, 변호사 자격 증빙 확인)
- * - documentMatched (boolean, 서류 정보 일치)
- * - specializationValid (boolean, 전문 분야 기재 적절)
- * - experienceVerified (boolean, 경력 정보 확인)
- * - duplicateSignup (boolean, 중복 가입 여부 확인)
- * - documentComplete (boolean, 필수 서류 누락 없음)
- * - updatedAt (LocalDateTime)
- */
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "verification_checks")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VerificationCheck {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
+    private UUID lawyerId;
+
+    @Column(nullable = false)
+    private boolean emailDuplicate;
+
+    @Column(nullable = false)
+    private boolean phoneDuplicate;
+
+    @Column(nullable = false)
+    private boolean nameDuplicate;
+
+    @Column(nullable = false)
+    private boolean requiredFields;
+
+    @Column(nullable = false)
+    private boolean licenseVerified;
+
+    @Column(nullable = false)
+    private boolean documentMatched;
+
+    @Column(nullable = false)
+    private boolean specializationValid;
+
+    @Column(nullable = false)
+    private boolean experienceVerified;
+
+    @Column(nullable = false)
+    private boolean duplicateSignup;
+
+    @Column(nullable = false)
+    private boolean documentComplete;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    public static VerificationCheck create(UUID lawyerId) {
+        VerificationCheck check = new VerificationCheck();
+        check.lawyerId = lawyerId;
+        check.updatedAt = LocalDateTime.now();
+        return check;
+    }
+
+    public void updateAutoChecks(boolean emailDuplicate, boolean phoneDuplicate,
+                                 boolean nameDuplicate, boolean requiredFields) {
+        this.emailDuplicate = emailDuplicate;
+        this.phoneDuplicate = phoneDuplicate;
+        this.nameDuplicate = nameDuplicate;
+        this.requiredFields = requiredFields;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateManualChecks(boolean licenseVerified, boolean documentMatched,
+                                   boolean specializationValid, boolean experienceVerified,
+                                   boolean duplicateSignup, boolean documentComplete) {
+        this.licenseVerified = licenseVerified;
+        this.documentMatched = documentMatched;
+        this.specializationValid = specializationValid;
+        this.experienceVerified = experienceVerified;
+        this.duplicateSignup = duplicateSignup;
+        this.documentComplete = documentComplete;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public int getCompletedCount() {
+        int count = 0;
+        if (emailDuplicate) count++;
+        if (phoneDuplicate) count++;
+        if (nameDuplicate) count++;
+        if (requiredFields) count++;
+        if (licenseVerified) count++;
+        if (documentMatched) count++;
+        if (specializationValid) count++;
+        if (experienceVerified) count++;
+        if (duplicateSignup) count++;
+        if (documentComplete) count++;
+        return count;
+    }
+
+    public int getTotalCount() {
+        return 10;
+    }
 }

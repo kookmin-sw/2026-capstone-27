@@ -31,6 +31,7 @@ public enum ErrorCode {
 
     // Lawyer
     LAWYER_NOT_FOUND(HttpStatus.NOT_FOUND, "변호사를 찾을 수 없습니다"),
+    LAWYER_NOT_VERIFIED(HttpStatus.BAD_REQUEST, "인증되지 않은 변호사에게는 전달할 수 없습니다"),
 
     // Consultation
     CONSULTATION_NOT_FOUND(HttpStatus.NOT_FOUND, "상담을 찾을 수 없습니다"),
@@ -48,7 +49,16 @@ public enum ErrorCode {
     BRIEF_NOT_CONFIRMED(HttpStatus.BAD_REQUEST, "의뢰서를 먼저 확정해 주세요"),
 
     // Verification
-    VERIFICATION_ALREADY_SUBMITTED(HttpStatus.CONFLICT, "이미 검증 신청된 상태입니다");
+    VERIFICATION_ALREADY_SUBMITTED(HttpStatus.CONFLICT, "이미 검증 신청된 상태입니다"),
+
+    // Admin
+    ADMIN_ACCESS_DENIED(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다"),
+    VERIFICATION_CONFLICT(HttpStatus.CONFLICT, "다른 관리자가 이미 처리한 건입니다. 새로고침 후 다시 시도해주세요"),
+
+    // Document
+    DOCUMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "서류를 찾을 수 없습니다"),
+    DOCUMENT_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "파일 크기가 10MB를 초과합니다"),
+    DOCUMENT_TYPE_NOT_SUPPORTED(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식입니다");
 
     private final HttpStatus httpStatus;
     private final String message;

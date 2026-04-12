@@ -34,4 +34,14 @@ public class LawyerReaderImpl implements LawyerReader {
     public Page<LawyerProfile> findAllByVerificationStatus(VerificationStatus status, Pageable pageable) {
         return lawyerProfileRepository.findAllByVerificationStatus(status, pageable);
     }
+
+    @Override
+    public Page<LawyerProfile> searchByStatusAndKeyword(String status, String keyword, Pageable pageable) {
+        return lawyerProfileRepository.searchByStatusAndKeyword(status, keyword, pageable);
+    }
+
+    @Override
+    public long countByVerificationStatus(VerificationStatus status) {
+        return lawyerProfileRepository.countByVerificationStatus(status);
+    }
 }

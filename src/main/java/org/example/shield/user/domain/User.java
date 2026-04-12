@@ -46,15 +46,19 @@ public class User {
 
     private String profileImageUrl;
 
+    @Column(length = 20)
+    private String phone;
+
     @Builder
     public User(String email, String name, UserRole role, String provider,
-                String googleId, String profileImageUrl) {
+                String googleId, String profileImageUrl, String phone) {
         this.email = email;
         this.name = name;
         this.role = role;
         this.provider = provider;
         this.googleId = googleId;
         this.profileImageUrl = profileImageUrl;
+        this.phone = phone;
     }
 
     public void updateRefreshToken(String refreshToken) {

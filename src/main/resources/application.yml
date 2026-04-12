@@ -7,12 +7,17 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   # PostgreSQL
   datasource:
     url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
 
   jpa:
     hibernate:
@@ -35,6 +40,13 @@ google:
   client-id: ${GOOGLE_CLIENT_ID}
   client-secret: ${GOOGLE_CLIENT_SECRET}
   redirect-uri: ${GOOGLE_REDIRECT_URI}
+
+# Supabase Storage
+supabase:
+  url: ${SUPABASE_URL}
+  service-role-key: ${SUPABASE_SERVICE_ROLE_KEY}
+  storage:
+    bucket: lawyer_documents
 
 # Swagger
 springdoc:

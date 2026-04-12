@@ -1,10 +1,18 @@
 package org.example.shield.lawyer.infrastructure;
 
-/**
- * LawyerWriter 구현체.
- *
- * TODO: @Repository + implements LawyerWriter
- * - LawyerProfileRepository 주입
- */
-public class LawyerWriterImpl {
+import lombok.RequiredArgsConstructor;
+import org.example.shield.lawyer.domain.LawyerProfile;
+import org.example.shield.lawyer.domain.LawyerWriter;
+import org.springframework.stereotype.Repository;
+
+@Repository
+@RequiredArgsConstructor
+public class LawyerWriterImpl implements LawyerWriter {
+
+    private final LawyerProfileRepository lawyerProfileRepository;
+
+    @Override
+    public LawyerProfile save(LawyerProfile profile) {
+        return lawyerProfileRepository.save(profile);
+    }
 }

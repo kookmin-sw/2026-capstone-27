@@ -52,6 +52,7 @@ public enum ErrorCode {
 
     // Admin
     ADMIN_ACCESS_DENIED(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다"),
+    VERIFICATION_CONFLICT(HttpStatus.CONFLICT, "다른 관리자가 이미 처리한 건입니다. 새로고침 후 다시 시도해주세요"),
 
     // Document
     DOCUMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "서류를 찾을 수 없습니다"),

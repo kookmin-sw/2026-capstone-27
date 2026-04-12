@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,6 +55,9 @@ public class LawyerProfile extends BaseEntity {
 
     @Column(length = 50)
     private String region;
+
+    @Version
+    private Long version;
 
     public void updateVerificationStatus(VerificationStatus newStatus) {
         this.verificationStatus = newStatus;

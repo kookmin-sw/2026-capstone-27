@@ -12,6 +12,8 @@ import org.example.shield.admin.controller.dto.VerificationRequest;
 import org.example.shield.admin.controller.dto.VerificationResponse;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.common.response.PageResponse;
+import org.example.shield.lawyer.application.LawyerDocumentService;
+import org.example.shield.lawyer.controller.dto.DocumentResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @Tag(name = "Admin", description = "관리자 API")
@@ -34,6 +37,7 @@ import java.util.UUID;
 public class AdminController {
 
     private final AdminService adminService;
+    private final LawyerDocumentService lawyerDocumentService;
 
     @Operation(summary = "변호사 가입 심사 목록", description = "검색, 상태 필터, 페이징을 지원하는 변호사 심사 목록을 조회합니다")
     @GetMapping("/lawyers/pending")
@@ -72,9 +76,15 @@ public class AdminController {
         return ApiResponse.success("조회 성공", result);
     }
 
+    @Operation(summary = "변호사 서류 조회", description = "변호사가 업로드한 서류 목록을 조회합니다")
+    @GetMapping("/lawyers/{lawyerId}/documents")
+    public ApiResponse<List<DocumentResponse>> getLawyerDocuments(@PathVariable UUID lawyerId) {
+        List<DocumentResponse> result = lawyerDocumentService.getDocuments(lawyerId);
+        return ApiResponse.success("조회 성공", result);
+    }
+
     // TODO: GET  /api/admin/dashboard/stats                        — 대시보드 통계
     // TODO: GET  /api/admin/dashboard/alerts                       — 긴급 알림
-    // TODO: GET  /api/admin/lawyers/{lawyerId}/documents           — 서류 조회
     // TODO: GET  /api/admin/verification-logs                      — 처리 이력
     // TODO: GET  /api/admin/consultations                          — 상담 모니터링 (차후)
 }

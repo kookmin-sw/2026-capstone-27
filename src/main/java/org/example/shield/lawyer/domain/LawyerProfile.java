@@ -87,6 +87,11 @@ public class LawyerProfile extends BaseEntity {
         this.region = region;
     }
 
+    public void requestVerification(String barAssociationNumber) {
+        this.barAssociationNumber = barAssociationNumber;
+        this.verificationStatus = VerificationStatus.PENDING;
+    }
+
     public void updateVerificationStatus(VerificationStatus newStatus) {
         this.verificationStatus = newStatus;
         if (newStatus == VerificationStatus.VERIFIED) {

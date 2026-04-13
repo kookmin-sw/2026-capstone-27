@@ -28,7 +28,7 @@ public class VerificationService {
                     || existing.getVerificationStatus() == VerificationStatus.REVIEWING) {
                 throw new BusinessException(ErrorCode.VERIFICATION_ALREADY_SUBMITTED) {};
             }
-            existing.updateVerificationStatus(VerificationStatus.PENDING);
+            existing.requestVerification(barAssociationNumber);
             return VerificationResponse.from(existing);
         } catch (BusinessException e) {
             if (e.getErrorCode() == ErrorCode.LAWYER_NOT_FOUND) {

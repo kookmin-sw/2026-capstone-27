@@ -1,25 +1,51 @@
 package org.example.shield.lawyer.application;
 
-/**
- * 변호사 검증 서비스 - 검증 신청/상태 확인/관리자 처리.
- *
- * Layer: application
- * Called by: LawyerController (신청/상태), AdminController (처리)
- * Calls: LawyerReader, LawyerWriter, NotificationSender
- *
- * TODO:
- * - requestVerification(userId, barAssociationNumber):
- *   1. lawyers에 barAssociationNumber 저장
- *   2. verificationStatus를 PENDING으로 설정
- *   3. 이미 PENDING이면 409 에러
- *
- * - getVerificationStatus(userId): verificationStatus + verifiedAt 반환
- *
- * - processVerification(lawyerId, action, reason):
- *   1. action이 APPROVE → VERIFIED + verifiedAt 설정
- *   2. action이 REJECT → REJECTED
- *   3. 관리자(ADMIN)만 호출 가능
- *   4. NotificationSender로 변호사에게 이메일 알림
- */
+import lombok.RequiredArgsConstructor;
+import org.example.shield.common.enums.VerificationStatus;
+import org.example.shield.common.exception.BusinessException;
+import org.example.shield.common.exception.ErrorCode;
+import org.example.shield.lawyer.controller.dto.VerificationResponse;
+import org.example.shield.lawyer.domain.LawyerProfile;
+import org.example.shield.lawyer.domain.LawyerReader;
+import org.example.shield.lawyer.domain.LawyerWriter;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
 public class VerificationService {
+
+    private final LawyerReader lawyerReader;
+    private final LawyerWriter lawyerWriter;
+
+    public VerificationResponse requestVerification(UUID userId, String barAssociationNumber) {
+        try {
+            LawyerProfile existing = lawyerReader.findByUserId(userId);
+            if (existing.getVerificationStatus() == VerificationStatus.PENDING
+                    || existing.getVerificationStatus() == VerificationStatus.REVIEWING) {
+                throw new BusinessException(ErrorCode.VERIFICATION_ALREADY_SUBMITTED) {};
+            }
+            existing.requestVerification(barAssociationNumber);
+            return VerificationResponse.from(existing);
+        } catch (BusinessException e) {
+            if (e.getErrorCode() == ErrorCode.LAWYER_NOT_FOUND) {
+                LawyerProfile profile = LawyerProfile.builder()
+                        .userId(userId)
+                        .barAssociationNumber(barAssociationNumber)
+                        .build();
+                LawyerProfile saved = lawyerWriter.save(profile);
+                return VerificationResponse.from(saved);
+            }
+            throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public VerificationResponse getVerificationStatus(UUID userId) {
+        LawyerProfile profile = lawyerReader.findByUserId(userId);
+        return VerificationResponse.from(profile);
+    }
 }

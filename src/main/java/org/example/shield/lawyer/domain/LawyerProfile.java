@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.shield.common.domain.BaseEntity;
@@ -58,6 +59,38 @@ public class LawyerProfile extends BaseEntity {
 
     @Version
     private Long version;
+
+    @Builder
+    public LawyerProfile(UUID userId, String barAssociationNumber, String specializations,
+                         Integer experienceYears, List<String> tags, String bio,
+                         List<String> certifications, String region) {
+        this.userId = userId;
+        this.barAssociationNumber = barAssociationNumber;
+        this.specializations = specializations;
+        this.experienceYears = experienceYears;
+        this.tags = tags;
+        this.bio = bio;
+        this.certifications = certifications;
+        this.region = region;
+        this.verificationStatus = VerificationStatus.PENDING;
+        this.caseCount = 0;
+    }
+
+    public void updateProfile(String specializations, Integer experienceYears,
+                              List<String> certifications, List<String> tags,
+                              String bio, String region) {
+        this.specializations = specializations;
+        this.experienceYears = experienceYears;
+        this.certifications = certifications;
+        this.tags = tags;
+        this.bio = bio;
+        this.region = region;
+    }
+
+    public void requestVerification(String barAssociationNumber) {
+        this.barAssociationNumber = barAssociationNumber;
+        this.verificationStatus = VerificationStatus.PENDING;
+    }
 
     public void updateVerificationStatus(VerificationStatus newStatus) {
         this.verificationStatus = newStatus;

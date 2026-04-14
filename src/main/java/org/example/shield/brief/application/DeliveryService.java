@@ -52,8 +52,8 @@ public class DeliveryService {
 
     @Transactional
     public DeliveryStatusResponse updateDeliveryStatus(UUID deliveryId, UUID lawyerId,
-                                                        String statusStr, String rejectionReason) {
-        log.info("의뢰서 수락/거절 요청. deliveryId={}, lawyerId={}, status={}", deliveryId, lawyerId, statusStr);
+                                                        DeliveryStatus status, String rejectionReason) {
+        log.info("의뢰서 수락/거절 요청. deliveryId={}, lawyerId={}, status={}", deliveryId, lawyerId, status);
 
         BriefDelivery delivery = deliveryReader.findById(deliveryId);
 
@@ -65,9 +65,9 @@ public class DeliveryService {
             throw new BusinessException(ErrorCode.DELIVERY_ALREADY_PROCESSED) {};
         }
 
-        switch (statusStr.toUpperCase()) {
-            case "CONFIRMED" -> delivery.accept();
-            case "REJECTED" -> {
+        switch (status) {
+            case CONFIRMED -> delivery.accept();
+            case REJECTED -> {
                 if (rejectionReason == null || rejectionReason.isBlank()) {
                     throw new BusinessException(ErrorCode.INVALID_INPUT_VALUE) {};
                 }
@@ -165,11 +165,11 @@ public class DeliveryService {
     }
 
     public InboxStatsResponse getInboxStats(UUID lawyerId) {
-        long total = deliveryReader.countByLawyerId(lawyerId);
-        long pending = deliveryReader.countByLawyerIdAndStatus(lawyerId, DeliveryStatus.DELIVERED);
-        long confirmed = deliveryReader.countByLawyerIdAndStatus(lawyerId, DeliveryStatus.CONFIRMED);
-        long rejected = deliveryReader.countByLawyerIdAndStatus(lawyerId, DeliveryStatus.REJECTED);
-        return new InboxStatsResponse(total, pending, confirmed, rejected);
+        Map<DeliveryStatus, Long> statusCountMap = deliveryReader.countGroupByStatus(lawyerId);
+        long pending = statusCountMap.getOrDefault(DeliveryStatus.DELIVERED, 0L);
+        long confirmed = statusCountMap.getOrDefault(DeliveryStatus.CONFIRMED, 0L);
+        long rejected = statusCountMap.getOrDefault(DeliveryStatus.REJECTED, 0L);
+        return new InboxStatsResponse(pending + confirmed + rejected, pending, confirmed, rejected);
     }
 
     @Transactional

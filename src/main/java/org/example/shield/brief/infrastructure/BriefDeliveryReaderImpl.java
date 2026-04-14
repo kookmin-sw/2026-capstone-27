@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -46,12 +48,11 @@ public class BriefDeliveryReaderImpl implements BriefDeliveryReader {
     }
 
     @Override
-    public long countByLawyerId(UUID lawyerId) {
-        return briefDeliveryRepository.countByLawyerId(lawyerId);
-    }
-
-    @Override
-    public long countByLawyerIdAndStatus(UUID lawyerId, DeliveryStatus status) {
-        return briefDeliveryRepository.countByLawyerIdAndStatus(lawyerId, status);
+    public Map<DeliveryStatus, Long> countGroupByStatus(UUID lawyerId) {
+        return briefDeliveryRepository.countGroupByStatus(lawyerId).stream()
+                .collect(Collectors.toMap(
+                        row -> (DeliveryStatus) row[0],
+                        row -> (Long) row[1]
+                ));
     }
 }

@@ -7,6 +7,7 @@ import org.example.shield.brief.controller.dto.DeliveryResponse;
 import org.example.shield.brief.controller.dto.DeliveryStatusResponse;
 import org.example.shield.brief.controller.dto.InboxDetailResponse;
 import org.example.shield.brief.controller.dto.InboxResponse;
+import org.example.shield.brief.controller.dto.InboxStatsResponse;
 import org.example.shield.brief.domain.Brief;
 import org.example.shield.brief.domain.BriefDelivery;
 import org.example.shield.brief.domain.BriefDeliveryReader;
@@ -145,8 +146,10 @@ public class DeliveryService {
         return new DeliveryListResponse(responses);
     }
 
-    public PageResponse<InboxResponse> getInbox(UUID lawyerId, Pageable pageable) {
-        Page<BriefDelivery> deliveries = deliveryReader.findAllByLawyerId(lawyerId, pageable);
+    public PageResponse<InboxResponse> getInbox(UUID lawyerId, DeliveryStatus status, Pageable pageable) {
+        Page<BriefDelivery> deliveries = (status != null)
+                ? deliveryReader.findAllByLawyerIdAndStatus(lawyerId, status, pageable)
+                : deliveryReader.findAllByLawyerId(lawyerId, pageable);
 
         List<UUID> briefIds = deliveries.getContent().stream()
                 .map(BriefDelivery::getBriefId).toList();
@@ -159,6 +162,14 @@ public class DeliveryService {
         });
 
         return PageResponse.from(responsePage);
+    }
+
+    public InboxStatsResponse getInboxStats(UUID lawyerId) {
+        long total = deliveryReader.countByLawyerId(lawyerId);
+        long pending = deliveryReader.countByLawyerIdAndStatus(lawyerId, DeliveryStatus.DELIVERED);
+        long confirmed = deliveryReader.countByLawyerIdAndStatus(lawyerId, DeliveryStatus.CONFIRMED);
+        long rejected = deliveryReader.countByLawyerIdAndStatus(lawyerId, DeliveryStatus.REJECTED);
+        return new InboxStatsResponse(total, pending, confirmed, rejected);
     }
 
     @Transactional

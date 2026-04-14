@@ -3,6 +3,7 @@ package org.example.shield.brief.infrastructure;
 import lombok.RequiredArgsConstructor;
 import org.example.shield.brief.domain.BriefDelivery;
 import org.example.shield.brief.domain.BriefDeliveryReader;
+import org.example.shield.common.enums.DeliveryStatus;
 import org.example.shield.common.exception.BusinessException;
 import org.example.shield.common.exception.ErrorCode;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,22 @@ public class BriefDeliveryReaderImpl implements BriefDeliveryReader {
     }
 
     @Override
+    public Page<BriefDelivery> findAllByLawyerIdAndStatus(UUID lawyerId, DeliveryStatus status, Pageable pageable) {
+        return briefDeliveryRepository.findAllByLawyerIdAndStatus(lawyerId, status, pageable);
+    }
+
+    @Override
     public boolean existsByBriefIdAndLawyerId(UUID briefId, UUID lawyerId) {
         return briefDeliveryRepository.existsByBriefIdAndLawyerId(briefId, lawyerId);
+    }
+
+    @Override
+    public long countByLawyerId(UUID lawyerId) {
+        return briefDeliveryRepository.countByLawyerId(lawyerId);
+    }
+
+    @Override
+    public long countByLawyerIdAndStatus(UUID lawyerId, DeliveryStatus status) {
+        return briefDeliveryRepository.countByLawyerIdAndStatus(lawyerId, status);
     }
 }

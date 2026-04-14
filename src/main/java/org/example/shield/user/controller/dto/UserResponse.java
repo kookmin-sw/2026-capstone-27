@@ -10,7 +10,8 @@ public record UserResponse(
         String name,
         String role,
         String provider,
-        String profileImageUrl
+        String profileImageUrl,
+        String phone
 ) {
     public static UserResponse from(User user) {
         return new UserResponse(
@@ -19,7 +20,8 @@ public record UserResponse(
                 user.getName(),
                 user.getRole().name(),
                 user.getProvider(),
-                user.getProfileImageUrl()
+                user.getProfileImageUrl(),
+                user.getPhone()
         );
     }
 }

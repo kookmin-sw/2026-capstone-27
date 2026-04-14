@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.user.application.UserService;
 import org.example.shield.user.controller.dto.UserResponse;
-import org.springframework.http.ResponseEntity;
+import org.example.shield.user.controller.dto.UserUpdateRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,25 +20,24 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-/**
- * TODO [Issue #16] PATCH /api/users/me — 내 정보 수정 추가
- *
- * - Request: UserUpdateRequest(record) { name (optional), phone (optional) }
- * - User 엔티티에 updateProfile(String name, String phone) 비즈니스 메서드 추가
- * - UserService에 updateMyInfo(UUID userId, UserUpdateRequest request) 추가
- * - UserWriter 주입 필요 (현재 UserService에 UserReader만 있음)
- * - Response: UserResponse (기존 from() 재활용)
- * - Notion PATCH /api/users/me 페이지에 Request/Response 양식 작성 필요
- */
 public class UserController {
 
     private final UserService userService;
 
     @Operation(summary = "내 정보 조회", description = "현재 로그인한 사용자 정보 조회")
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserResponse>> getMyInfo(
+    public ApiResponse<UserResponse> getMyInfo(
             @AuthenticationPrincipal UUID userId) {
         UserResponse response = userService.getMyInfo(userId);
-        return ResponseEntity.ok(ApiResponse.success("사용자 정보 조회 성공", response));
+        return ApiResponse.success("조회 성공", response);
+    }
+
+    @Operation(summary = "내 정보 수정", description = "이름, 전화번호를 선택적으로 수정합니다")
+    @PatchMapping("/me")
+    public ApiResponse<UserResponse> updateMyInfo(
+            @AuthenticationPrincipal UUID userId,
+            @RequestBody UserUpdateRequest request) {
+        UserResponse response = userService.updateMyInfo(userId, request);
+        return ApiResponse.success("수정 완료", response);
     }
 }

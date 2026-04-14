@@ -1,35 +1,57 @@
 package org.example.shield.common.notification;
 
-/**
- * TODO [Issue #16] Gmail SMTP 이메일 발송 구현
- *
- * 1. 클래스 설정
- *    - @Component + @RequiredArgsConstructor
- *    - JavaMailSender 주입
- *
- * 2. onDeliveryStatusChanged(DeliveryStatusEvent event)
- *    - @Async("emailExecutor")
- *    - @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
- *    - 수락: "{lawyerName} 변호사가 귀하의 의뢰서를 수락하였습니다."
- *    - 거절: "{lawyerName} 변호사가 귀하의 의뢰서를 거절하였습니다. 사유: {reason}"
- *    - 발송 실패 시 log.error만 남기고 예외 전파하지 않음
- *
- * 3. 의존성 추가 필요
- *    - build.gradle: spring-boot-starter-mail
- *    - application.yml: spring.mail.host/port/username/password
- *    - .env: GMAIL_USERNAME, GMAIL_APP_PASSWORD
- *
- * 4. AsyncConfig 신규 생성 (common/config/)
- *    - @Configuration + @EnableAsync
- *    - emailExecutor Bean: corePoolSize=2, maxPoolSize=5, queueCapacity=50
- *
- * 5. DeliveryStatusEvent 신규 생성 (brief/application/)
- *    - record: clientEmail, clientName, lawyerName, briefTitle, status, reason
- */
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.shield.brief.application.DeliveryStatusEvent;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
 public class EmailNotificationSender implements NotificationSender {
+
+    private final JavaMailSender mailSender;
 
     @Override
     public void send(String to, String subject, String content) {
-        // TODO: JavaMailSender를 이용한 이메일 발송 구현
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(content);
+            mailSender.send(message);
+            log.info("이메일 발송 완료. to={}, subject={}", to, subject);
+        } catch (Exception e) {
+            log.error("이메일 발송 실패. to={}, subject={}", to, subject, e);
+        }
+    }
+
+    @Async("emailExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onDeliveryStatusChanged(DeliveryStatusEvent event) {
+        log.info("의뢰서 상태 변경 이메일 발송. clientEmail={}, status={}", event.clientEmail(), event.status());
+
+        String subject;
+        String body;
+
+        if ("CONFIRMED".equals(event.status())) {
+            subject = "[SHIELD] " + event.lawyerName() + " 변호사가 의뢰서를 수락하였습니다";
+            body = event.clientName() + "님, 안녕하세요.\n\n"
+                    + event.lawyerName() + " 변호사가 \"" + event.briefTitle() + "\" 의뢰서를 수락하였습니다.\n\n"
+                    + "SHIELD에서 자세한 내용을 확인해 주세요.";
+        } else {
+            subject = "[SHIELD] " + event.lawyerName() + " 변호사가 의뢰서를 거절하였습니다";
+            body = event.clientName() + "님, 안녕하세요.\n\n"
+                    + event.lawyerName() + " 변호사가 \"" + event.briefTitle() + "\" 의뢰서를 거절하였습니다.\n"
+                    + "사유: " + event.rejectionReason() + "\n\n"
+                    + "다른 변호사에게 의뢰서를 전달해 보세요.";
+        }
+
+        send(event.clientEmail(), subject, body);
     }
 }

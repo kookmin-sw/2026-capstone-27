@@ -1,0 +1,83 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+@import 'tailwindcss';
+
+/* ===== CSS Custom Properties (Design Tokens) ===== */
+:root {
+  --color-brand: #3B82F6;
+  --color-kakao: #FEE500;
+  --color-naver: #03C75A;
+  --color-google-border: #DADCE0;
+  --color-surface: #F8FAFC;
+  --color-info-bg: #EFF6FF;
+  --color-error: #EF4444;
+  --color-text-primary: #1E293B;
+  --color-text-secondary: #64748B;
+  --radius-card: 12px;
+  --radius-pill: 9999px;
+}
+
+/* ===== Tailwind v4 Theme ===== */
+@theme {
+  --color-brand: #3B82F6;
+  --color-kakao: #FEE500;
+  --color-naver: #03C75A;
+  --color-surface: #F8FAFC;
+  --color-info-bg: #EFF6FF;
+  --font-family-sans: 'Pretendard Variable', Pretendard, system-ui, -apple-system, sans-serif;
+  --radius-card: 12px;
+  --radius-pill: 9999px;
+}
+
+/* ===== Global Resets ===== */
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: var(--font-family-sans);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+}
+
+/* ===== iOS Safe Area ===== */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* ===== Dynamic Viewport Height (mobile browser address bar) ===== */
+.min-h-dvh {
+  min-height: 100dvh;
+}
+.h-dvh {
+  height: 100dvh;
+}
+
+/* ===== Chat Viewport ===== */
+.chat-viewport {
+  height: calc(100dvh - 64px - 64px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ===== Scrollbar ===== */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

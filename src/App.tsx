@@ -27,6 +27,14 @@ import { NewConsultationPage } from '@/routes/client/NewConsultationPage';
 import { ChatPage } from '@/routes/client/ChatPage';
 import { AnalyzingPage } from '@/routes/client/AnalyzingPage';
 
+// Client Pages (Sprint 3)
+import { HomePage } from '@/routes/client/HomePage';
+import { BriefListPage } from '@/routes/client/BriefListPage';
+import { BriefDetailPage } from '@/routes/client/BriefDetailPage';
+import { BriefDeliveryPage } from '@/routes/client/BriefDeliveryPage';
+import { LawyerListPage } from '@/routes/client/LawyerListPage';
+import { LawyerProfilePage } from '@/routes/client/LawyerProfilePage';
+
 // Placeholder pages (Sprint 2+ 에서 구현)
 function PlaceholderPage({ title }: { title: string }) {
   return (
@@ -85,16 +93,16 @@ export default function App() {
           {/* ── 의뢰인 (USER) ── */}
           <Route element={<RoleRoute allowedRoles={['USER']} />}>
             <Route element={<ClientLayout />}>
-              <Route path="/home" element={<PlaceholderPage title="의뢰인 홈" />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/consultations" element={<ConsultationListPage />} />
               <Route path="/consultations/new" element={<NewConsultationPage />} />
               <Route path="/consultations/:id" element={<ChatPage />} />
               <Route path="/consultations/:id/analyzing" element={<AnalyzingPage />} />
-              <Route path="/briefs" element={<PlaceholderPage title="의뢰서 목록" />} />
-              <Route path="/briefs/:id" element={<PlaceholderPage title="의뢰서 상세" />} />
-              <Route path="/briefs/:id/delivery" element={<PlaceholderPage title="전달 현황" />} />
-              <Route path="/lawyers" element={<PlaceholderPage title="변호사 목록" />} />
-              <Route path="/lawyers/:id" element={<PlaceholderPage title="변호사 프로필" />} />
+              <Route path="/briefs" element={<BriefListPage />} />
+              <Route path="/briefs/:id" element={<BriefDetailPage />} />
+              <Route path="/briefs/:id/delivery" element={<BriefDeliveryPage />} />
+              <Route path="/lawyers" element={<LawyerListPage />} />
+              <Route path="/lawyers/:id" element={<LawyerProfilePage />} />
               <Route path="/profile" element={<PlaceholderPage title="내 프로필" />} />
             </Route>
           </Route>

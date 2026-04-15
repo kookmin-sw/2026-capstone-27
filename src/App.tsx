@@ -35,15 +35,25 @@ import { BriefDeliveryPage } from '@/routes/client/BriefDeliveryPage';
 import { LawyerListPage } from '@/routes/client/LawyerListPage';
 import { LawyerProfilePage } from '@/routes/client/LawyerProfilePage';
 
-// Placeholder pages (Sprint 2+ 에서 구현)
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-      <p className="text-lg font-medium">{title}</p>
-      <p className="text-sm mt-1">개발 예정</p>
-    </div>
-  );
-}
+// Client Pages (Sprint 3 cont.)
+import { ProfilePage } from '@/routes/client/ProfilePage';
+
+// Lawyer Pages (Sprint 4)
+import { DashboardPage as LawyerDashboardPage } from '@/routes/lawyer/DashboardPage';
+import { InboxPage } from '@/routes/lawyer/InboxPage';
+import { InboxDetailPage } from '@/routes/lawyer/InboxDetailPage';
+import { ProfileEditPage } from '@/routes/lawyer/ProfileEditPage';
+import { VerificationPage } from '@/routes/lawyer/VerificationPage';
+import { DocumentsPage } from '@/routes/lawyer/DocumentsPage';
+
+// Admin Pages (Sprint 4)
+import { AdminDashboardPage } from '@/routes/admin/AdminDashboardPage';
+import { LawyerPendingPage } from '@/routes/admin/LawyerPendingPage';
+import { LawyerReviewPage } from '@/routes/admin/LawyerReviewPage';
+import { LogsPage } from '@/routes/admin/LogsPage';
+
+// Lawyer Profile detail (reuse from client)
+import { LawyerProfilePage as LawyerMyProfilePage } from '@/routes/client/LawyerProfilePage';
 
 // ── Root Redirect ──
 function RootRedirect() {
@@ -103,30 +113,30 @@ export default function App() {
               <Route path="/briefs/:id/delivery" element={<BriefDeliveryPage />} />
               <Route path="/lawyers" element={<LawyerListPage />} />
               <Route path="/lawyers/:id" element={<LawyerProfilePage />} />
-              <Route path="/profile" element={<PlaceholderPage title="내 프로필" />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>
 
           {/* ── 변호사 (LAWYER) ── */}
           <Route element={<RoleRoute allowedRoles={['LAWYER']} />}>
             <Route element={<LawyerLayout />}>
-              <Route path="/lawyer" element={<PlaceholderPage title="변호사 대시보드" />} />
-              <Route path="/lawyer/inbox" element={<PlaceholderPage title="수신함" />} />
-              <Route path="/lawyer/inbox/:id" element={<PlaceholderPage title="의뢰서 상세" />} />
-              <Route path="/lawyer/profile" element={<PlaceholderPage title="내 프로필" />} />
-              <Route path="/lawyer/profile/edit" element={<PlaceholderPage title="프로필 수정" />} />
-              <Route path="/lawyer/verification" element={<PlaceholderPage title="인증 신청" />} />
-              <Route path="/lawyer/documents" element={<PlaceholderPage title="서류 관리" />} />
+              <Route path="/lawyer" element={<LawyerDashboardPage />} />
+              <Route path="/lawyer/inbox" element={<InboxPage />} />
+              <Route path="/lawyer/inbox/:id" element={<InboxDetailPage />} />
+              <Route path="/lawyer/profile" element={<LawyerMyProfilePage />} />
+              <Route path="/lawyer/profile/edit" element={<ProfileEditPage />} />
+              <Route path="/lawyer/verification" element={<VerificationPage />} />
+              <Route path="/lawyer/documents" element={<DocumentsPage />} />
             </Route>
           </Route>
 
           {/* ── 관리자 (ADMIN) ── */}
           <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
             <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<PlaceholderPage title="관리자 대시보드" />} />
-              <Route path="/admin/lawyers" element={<PlaceholderPage title="심사 목록" />} />
-              <Route path="/admin/lawyers/:id" element={<PlaceholderPage title="심사 상세" />} />
-              <Route path="/admin/logs" element={<PlaceholderPage title="처리 이력" />} />
+              <Route path="/admin" element={<AdminDashboardPage />} />
+              <Route path="/admin/lawyers" element={<LawyerPendingPage />} />
+              <Route path="/admin/lawyers/:id" element={<LawyerReviewPage />} />
+              <Route path="/admin/logs" element={<LogsPage />} />
             </Route>
           </Route>
         </Route>

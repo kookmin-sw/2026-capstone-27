@@ -8,3 +8,4 @@ export { BriefDetailPage } from './BriefDetailPage';
 export { BriefDeliveryPage } from './BriefDeliveryPage';
 export { LawyerListPage } from './LawyerListPage';
 export { LawyerProfilePage } from './LawyerProfilePage';
+export { ProfilePage } from './ProfilePage';

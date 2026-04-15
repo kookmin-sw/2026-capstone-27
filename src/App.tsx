@@ -21,6 +21,12 @@ import { RoleSelectPage } from '@/routes/auth/RoleSelectPage';
 import { ClientRegisterPage } from '@/routes/auth/ClientRegisterPage';
 import { LawyerRegisterPage } from '@/routes/auth/LawyerRegisterPage';
 
+// Client Pages (Sprint 2)
+import { ConsultationListPage } from '@/routes/client/ConsultationListPage';
+import { NewConsultationPage } from '@/routes/client/NewConsultationPage';
+import { ChatPage } from '@/routes/client/ChatPage';
+import { AnalyzingPage } from '@/routes/client/AnalyzingPage';
+
 // Placeholder pages (Sprint 2+ 에서 구현)
 function PlaceholderPage({ title }: { title: string }) {
   return (
@@ -80,10 +86,10 @@ export default function App() {
           <Route element={<RoleRoute allowedRoles={['USER']} />}>
             <Route element={<ClientLayout />}>
               <Route path="/home" element={<PlaceholderPage title="의뢰인 홈" />} />
-              <Route path="/consultations" element={<PlaceholderPage title="상담 목록" />} />
-              <Route path="/consultations/new" element={<PlaceholderPage title="새 상담" />} />
-              <Route path="/consultations/:id" element={<PlaceholderPage title="AI 채팅" />} />
-              <Route path="/consultations/:id/analyzing" element={<PlaceholderPage title="의뢰서 생성 중" />} />
+              <Route path="/consultations" element={<ConsultationListPage />} />
+              <Route path="/consultations/new" element={<NewConsultationPage />} />
+              <Route path="/consultations/:id" element={<ChatPage />} />
+              <Route path="/consultations/:id/analyzing" element={<AnalyzingPage />} />
               <Route path="/briefs" element={<PlaceholderPage title="의뢰서 목록" />} />
               <Route path="/briefs/:id" element={<PlaceholderPage title="의뢰서 상세" />} />
               <Route path="/briefs/:id/delivery" element={<PlaceholderPage title="전달 현황" />} />

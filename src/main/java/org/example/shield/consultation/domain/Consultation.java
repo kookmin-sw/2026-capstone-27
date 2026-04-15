@@ -49,6 +49,21 @@ public class Consultation extends BaseEntity {
 
     private LocalDateTime lastMessageAt;
 
+    /**
+     * xAI Responses API의 response.id.
+     * Stateful 대화 연결용: 다음 호출에서 previous_response_id로 사용.
+     * null이면 Stateless 모드 (전체 chatHistory 재전송).
+     */
+    @Column(columnDefinition = "text")
+    private String lastResponseId;
+
+    /**
+     * primary_field_locked 플래그 (P0-V).
+     * 사용자가 PATCH /classify로 분류를 수정하면 true → LLM override 방지.
+     */
+    @Column(nullable = false)
+    private boolean primaryFieldLocked = false;
+
     @Builder
     private Consultation(UUID userId, DomainType selectedDomain) {
         this.userId = userId;
@@ -65,6 +80,28 @@ public class Consultation extends BaseEntity {
 
     public void updateClassification(List<String> primaryField) {
         this.primaryField = primaryField;
+        this.primaryFieldLocked = true;  // P0-V: 사용자 수정 시 lock
+        this.lastResponseId = null;      // 컨텍스트 전환 → 세션 리셋
+    }
+
+    /**
+     * LLM 분류 결과 반영 (locked가 아닐 때만).
+     */
+    public boolean updateClassificationFromLlm(List<String> primaryField) {
+        if (this.primaryFieldLocked) {
+            return false;  // locked — 무시
+        }
+        this.primaryField = primaryField;
+        this.lastResponseId = null;  // 체크리스트/RAG 컨텍스트 변경 → 세션 리셋
+        return true;
+    }
+
+    public void updateTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public void updateLastResponseId(String responseId) {
+        this.lastResponseId = responseId;
     }
 
     public void updateStatus(ConsultationStatus status) {

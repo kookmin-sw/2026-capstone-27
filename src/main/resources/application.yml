@@ -69,5 +69,17 @@ springdoc:
   api-docs:
     path: /api-docs
 
+# xAI Grok API
+xai:
+  api-key: ${XAI_API_KEY}
+  base-url: https://api.x.ai
+  model:
+    chat: grok-4-1-fast-non-reasoning
+    brief: grok-4.20-0309-non-reasoning
+  timeout:
+    connect: 5000
+    read-chat: 30000
+    read-brief: 60000
+
 server:
   port: 8080

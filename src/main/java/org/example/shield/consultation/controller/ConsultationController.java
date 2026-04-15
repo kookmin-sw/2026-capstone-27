@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.shield.common.enums.ConsultationStatus;
 import org.example.shield.common.enums.DomainType;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.common.response.PageResponse;
+import org.example.shield.consultation.application.AnalysisService;
 import org.example.shield.consultation.application.ConsultationService;
 import org.example.shield.consultation.application.MessageService;
 import org.example.shield.consultation.controller.dto.ConsultationResponse;
@@ -17,9 +19,14 @@ import org.example.shield.consultation.controller.dto.CreateConsultationResponse
 import org.example.shield.consultation.controller.dto.MessageRequest;
 import org.example.shield.consultation.controller.dto.MessageResponse;
 import org.example.shield.consultation.controller.dto.SendMessageResponse;
+import org.example.shield.consultation.domain.Consultation;
+import org.example.shield.consultation.domain.ConsultationReader;
+import org.example.shield.consultation.domain.ConsultationWriter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +48,9 @@ public class ConsultationController {
 
     private final ConsultationService consultationService;
     private final MessageService messageService;
+    private final AnalysisService analysisService;
+    private final ConsultationReader consultationReader;
+    private final ConsultationWriter consultationWriter;
 
     @Operation(summary = "법률 분야 목록 조회", description = "분야 선택 UI에서 사용하는 법률 분야 목록")
     @GetMapping("/legal-fields")
@@ -96,5 +106,27 @@ public class ConsultationController {
         ClassifyResponse result = consultationService.updateClassification(
                 consultationId, request.primaryField());
         return ApiResponse.success("분류가 수정되었습니다", result);
+    }
+
+    @Operation(summary = "의뢰서 생성 요청", description = "AI가 대화 내용을 기반으로 의뢰서를 비동기 생성합니다")
+    @PostMapping("/{consultationId}/analyze")
+    public ResponseEntity<ApiResponse<Void>> analyze(
+            @PathVariable UUID consultationId) {
+
+        // P0-IV 멱등성 가드: 원자적 상태 전이 COLLECTING → ANALYZING
+        Consultation consultation = consultationReader.findById(consultationId);
+        if (consultation.getStatus() != ConsultationStatus.COLLECTING) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(ApiResponse.error("이미 분석이 진행 중이거나 완료된 상담입니다"));
+        }
+
+        consultation.updateStatus(ConsultationStatus.ANALYZING);
+        consultationWriter.save(consultation);
+
+        // 비동기 의뢰서 생성 시작
+        analysisService.analyzeAsync(consultationId);
+
+        return ResponseEntity.accepted()
+                .body(ApiResponse.success("의뢰서 생성이 시작되었습니다", null));
     }
 }

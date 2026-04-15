@@ -8,6 +8,8 @@ export interface LawyerResponse {
   experienceYears: number;
   introduction?: string;
   verificationStatus: VerificationStatus;
+  rating?: number;
+  reviewCount?: number;
 }
 
 export interface LawyerDetailResponse extends LawyerResponse {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, CheckCircle } from 'lucide-react';
+import { User, CheckCircle, Star } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerList } from '@/hooks/useLawyer';
 import { Badge, Spinner } from '@/components/ui';
@@ -27,6 +27,8 @@ interface LawyerCardProps {
 
 function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
   const isVerified = lawyer.verificationStatus === 'VERIFIED';
+  const rating = lawyer.rating ?? 0;
+  const reviewCount = lawyer.reviewCount ?? 0;
 
   return (
     <button
@@ -40,20 +42,20 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
     >
       {/* Profile image + info */}
       <div className="flex items-start gap-3">
-        {/* Avatar */}
-        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+        {/* Avatar — Figma: circular 48-60px */}
+        <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
           {lawyer.profileImageUrl ? (
             <img
               src={lawyer.profileImageUrl}
               alt={lawyer.name}
-              className="w-12 h-12 rounded-full object-cover"
+              className="w-14 h-14 rounded-full object-cover"
             />
           ) : (
-            <User size={24} className="text-gray-400" aria-hidden="true" />
+            <User size={26} className="text-gray-400" aria-hidden="true" />
           )}
         </div>
 
-        {/* Name + verification */}
+        {/* Name + verification + rating */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-base font-semibold text-gray-900 truncate">
@@ -75,8 +77,26 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
           <p className="mt-0.5 text-sm text-gray-500">
             {lawyer.experienceYears}년 경력
           </p>
+
+          {/* Rating + reviews — Figma: ★4.8 + review count */}
+          {rating > 0 && (
+            <div className="flex items-center gap-1.5 mt-1">
+              <Star size={13} className="text-yellow-400 fill-yellow-400" aria-hidden="true" />
+              <span className="text-sm font-semibold text-gray-800">{rating.toFixed(1)}</span>
+              {reviewCount > 0 && (
+                <span className="text-xs text-gray-400">({reviewCount}개 리뷰)</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Introduction excerpt — Figma: brief description 1-2 lines */}
+      {lawyer.introduction && (
+        <p className="mt-2.5 text-sm text-gray-500 leading-relaxed line-clamp-2">
+          {lawyer.introduction}
+        </p>
+      )}
 
       {/* Specialization badges */}
       {lawyer.specializations.length > 0 && (
@@ -88,6 +108,11 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
           ))}
         </div>
       )}
+
+      {/* View profile CTA */}
+      <div className="mt-3 pt-3 border-t border-gray-100">
+        <span className="text-sm font-medium text-brand">프로필 보기 →</span>
+      </div>
     </button>
   );
 }

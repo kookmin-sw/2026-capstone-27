@@ -9,3 +9,7 @@ export { BriefDeliveryPage } from './BriefDeliveryPage';
 export { LawyerListPage } from './LawyerListPage';
 export { LawyerProfilePage } from './LawyerProfilePage';
 export { ProfilePage } from './ProfilePage';
+export { PrivacySettingsPage } from './PrivacySettingsPage';
+export { FinalReviewPage } from './FinalReviewPage';
+export { RequestConfirmPage } from './RequestConfirmPage';
+export { RequestTrackingPage } from './RequestTrackingPage';

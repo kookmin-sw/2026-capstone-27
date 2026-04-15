@@ -38,6 +38,9 @@ const ClientRegisterPage = lazy(() =>
 const LawyerRegisterPage = lazy(() =>
   import('@/routes/auth/LawyerRegisterPage').then((m) => ({ default: m.LawyerRegisterPage })),
 );
+const SplashPage = lazy(() =>
+  import('@/routes/auth/SplashPage').then((m) => ({ default: m.SplashPage })),
+);
 
 // ── Client Pages (lazy) ──
 const HomePage = lazy(() =>
@@ -72,6 +75,18 @@ const LawyerProfilePage = lazy(() =>
 );
 const ProfilePage = lazy(() =>
   import('@/routes/client/ProfilePage').then((m) => ({ default: m.ProfilePage })),
+);
+const PrivacySettingsPage = lazy(() =>
+  import('@/routes/client/PrivacySettingsPage').then((m) => ({ default: m.PrivacySettingsPage })),
+);
+const FinalReviewPage = lazy(() =>
+  import('@/routes/client/FinalReviewPage').then((m) => ({ default: m.FinalReviewPage })),
+);
+const RequestConfirmPage = lazy(() =>
+  import('@/routes/client/RequestConfirmPage').then((m) => ({ default: m.RequestConfirmPage })),
+);
+const RequestTrackingPage = lazy(() =>
+  import('@/routes/client/RequestTrackingPage').then((m) => ({ default: m.RequestTrackingPage })),
 );
 
 // ── Lawyer Pages (lazy) ──
@@ -116,7 +131,7 @@ const LawyerMyProfilePage = lazy(() =>
 // ── Root Redirect ──
 function RootRedirect() {
   const { isAuthenticated, role } = useAuthStore();
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) return <Navigate to="/splash" replace />;
   if (role === 'LAWYER') return <Navigate to="/lawyer" replace />;
   if (role === 'ADMIN') return <Navigate to="/admin" replace />;
   return <Navigate to="/home" replace />;
@@ -150,6 +165,9 @@ export default function App() {
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            {/* ══════ 스플래시 (AuthLayout 외부) ══════ */}
+            <Route path="/splash" element={<SplashPage />} />
+
             {/* ══════ 공개 라우트 (비로그인) ══════ */}
             <Route element={<AuthLayout />}>
               <Route path="/login" element={<LoginPage />} />
@@ -174,6 +192,10 @@ export default function App() {
                   <Route path="/briefs" element={<BriefListPage />} />
                   <Route path="/briefs/:id" element={<BriefDetailPage />} />
                   <Route path="/briefs/:id/delivery" element={<BriefDeliveryPage />} />
+                  <Route path="/briefs/:id/privacy" element={<PrivacySettingsPage />} />
+                  <Route path="/briefs/:id/review" element={<FinalReviewPage />} />
+                  <Route path="/briefs/:id/confirm" element={<RequestConfirmPage />} />
+                  <Route path="/briefs/:id/tracking" element={<RequestTrackingPage />} />
                   <Route path="/lawyers" element={<LawyerListPage />} />
                   <Route path="/lawyers/:id" element={<LawyerProfilePage />} />
                   <Route path="/profile" element={<ProfilePage />} />

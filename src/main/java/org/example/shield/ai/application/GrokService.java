@@ -156,6 +156,9 @@ public class GrokService {
         if (messages.size() <= maxMessages + 1) {
             return messages;
         }
+        int dropped = messages.size() - maxMessages - 1;
+        log.warn("History truncation: 전체 {}건 중 {}건 삭제, 최근 {}건 유지",
+                messages.size() - 1, dropped, maxMessages);
         List<GroqRequest.Message> truncated = new ArrayList<>();
         truncated.add(messages.get(0)); // system prompt
         truncated.addAll(messages.subList(messages.size() - maxMessages, messages.size()));

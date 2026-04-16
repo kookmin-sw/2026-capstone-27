@@ -86,6 +86,9 @@ public class GroqClient implements AiClient {
             Integer tokensOut = groqResponse.getUsage() != null
                     ? groqResponse.getUsage().getCompletionTokens() : null;
 
+            log.info("Groq API 호출 성공: id={}, tokensIn={}, tokensOut={}, latency={}ms",
+                    groqResponse.getId(), tokensIn, tokensOut, latencyMs);
+
             return new GrokCallResult<>(
                     groqResponse.getId(),
                     parsed,

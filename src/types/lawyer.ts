@@ -24,27 +24,29 @@ export interface LawyerDetailResponse extends LawyerResponse {
 export interface LawyerMeResponse {
   lawyerId: string;
   name: string;
-  specializations: string[];
+  profileImageUrl?: string;
+  specializations: string;
   experienceYears: number;
-  certifications: string | null;
-  barAssociationNumber: string | null;
+  tags: string[];
+  certifications: string[];
+  caseCount: number;
+  bio: string;
+  region: string;
   verificationStatus: VerificationStatus;
-  verifiedAt: string | null;
 }
 
 export interface InboxItemResponse {
   deliveryId: string;
-  briefId: string;
-  title: string;
+  briefTitle: string;
   legalField: string;
   status: string;
-  createdAt: string;
+  sentAt: string;
 }
 
 export interface InboxStatsResponse {
   total: number;
   pending: number;
-  accepted: number;
+  confirmed: number;
   rejected: number;
 }
 
@@ -56,8 +58,8 @@ export interface InboxDetailResponse {
   content: string;
   keywords: string[];
   keyIssues: KeyIssue[];
-  clientId: string;
-  clientName: string;
-  sentAt: string;
   status: string;
+  clientName: string;
+  clientEmail: string;
+  sentAt: string;
 }

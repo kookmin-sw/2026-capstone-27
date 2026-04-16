@@ -12,7 +12,7 @@ interface DocumentItem {
   documentId: string;
   fileName: string;
   fileUrl?: string;
-  uploadedAt: string;
+  createdAt: string;
 }
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -237,7 +237,7 @@ export function DocumentsPage() {
                         {doc.fileName}
                       </p>
                       <p className="text-xs text-gray-400 mt-0.5">
-                        {fileTypeLabel(doc.fileName)} · {formatDate(doc.uploadedAt)}
+                        {fileTypeLabel(doc.fileName)} · {formatDate(doc.createdAt)}
                       </p>
                     </div>
                     {doc.fileUrl && (

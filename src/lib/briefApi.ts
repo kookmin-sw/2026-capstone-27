@@ -25,18 +25,19 @@ export const briefApi = {
 
   /** 의뢰서 수정 */
   update: (id: string, data: BriefUpdateRequest) =>
-    api.patch<ApiResponse<BriefResponse>>(`${BASE}/${id}`, data),
+    api.patch<ApiResponse<{ briefId: string; status: string; updatedAt: string }>>(`${BASE}/${id}`, data),
 
   /** 의뢰서 확정 */
   confirm: (id: string) =>
-    api.patch<ApiResponse<BriefResponse>>(`${BASE}/${id}`, {
+    api.patch<ApiResponse<{ briefId: string; status: string; updatedAt: string }>>(`${BASE}/${id}`, {
       status: 'CONFIRMED',
     }),
 
   /** 변호사 추천 (키워드 매칭) */
-  getRecommendations: (id: string) =>
-    api.get<ApiResponse<MatchingResponse[]>>(
+  getRecommendations: (id: string, page = 0, size = 20) =>
+    api.get<ApiResponse<PageResponse<MatchingResponse>>>(
       `${BASE}/${id}/lawyer-recommendations`,
+      { params: { page, size } },
     ),
 
   /** 의뢰서 전달 */

@@ -30,8 +30,10 @@ export const consultationApi = {
     } satisfies CreateConsultationRequest),
 
   /** 메시지 목록 */
-  getMessages: (id: string) =>
-    api.get<ApiResponse<MessageResponse[]>>(`${BASE}/${id}/messages`),
+  getMessages: (id: string, page = 0, size = 50) =>
+    api.get<ApiResponse<PageResponse<MessageResponse>>>(`${BASE}/${id}/messages`, {
+      params: { page, size },
+    }),
 
   /** 메시지 전송 */
   sendMessage: (id: string, content: string) =>

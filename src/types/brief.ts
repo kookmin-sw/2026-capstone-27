@@ -60,6 +60,7 @@ export interface DeliveryRequest {
 /** 명세: deliveries 응답 — sentAt 사용, viewedAt/respondedAt nullable */
 export interface DeliveryResponse {
   deliveryId: string;
+  lawyerId: string;
   lawyerName: string;
   status: string;
   sentAt: string;

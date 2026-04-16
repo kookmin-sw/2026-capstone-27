@@ -31,8 +31,8 @@ export function useChat(consultationId: string) {
     queryKey: KEYS.messages(consultationId),
     queryFn: async () => {
       const { data } = await consultationApi.getMessages(consultationId);
-      setMessages(data.data);
-      return data.data;
+      setMessages(data.data.content);
+      return data.data.content;
     },
     enabled: !!consultationId,
   });
@@ -59,7 +59,6 @@ export function useChat(consultationId: string) {
         role: 'USER',
         content,
         createdAt: new Date().toISOString(),
-        allCompleted: false,
       };
       addMessage(optimisticMsg);
       setIsSending(true);
@@ -78,8 +77,6 @@ export function useChat(consultationId: string) {
           role: (res.role ?? 'CHATBOT') as MessageRole,
           content: res.content,
           createdAt: res.createdAt,
-          allCompleted: res.allCompleted,
-          classification: res.classification,
         });
 
         // 4. 분류 업데이트
@@ -106,7 +103,6 @@ export function useChat(consultationId: string) {
           role: 'SYSTEM',
           content: errorMsg,
           createdAt: new Date().toISOString(),
-          allCompleted: false,
         });
       } finally {
         setIsSending(false);

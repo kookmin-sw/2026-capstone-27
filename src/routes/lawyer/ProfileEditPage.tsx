@@ -52,7 +52,7 @@ export function ProfileEditPage() {
     lawyerApi.getMe().then(({ data }) => {
       const profile = data.data;
       reset({
-        specializations: profile.specializations ?? [],
+        specializations: profile.specializations ? profile.specializations.split(',').map((s) => s.trim()).filter(Boolean) : [],
         experienceYears: profile.experienceYears ?? 0,
       });
     });
@@ -72,7 +72,7 @@ export function ProfileEditPage() {
 
   async function onSubmit(values: FormValues) {
     await lawyerApi.updateMe({
-      specializations: values.specializations,
+      specializations: values.specializations.join(','),
       experienceYears: values.experienceYears,
     });
     alert('프로필이 저장되었습니다.');

@@ -3,45 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { Scale, Shield, Briefcase, Users } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useCreateConsultation } from '@/hooks/useConsultation';
-import { Button, Card } from '@/components/ui';
+import { useLegalFields } from '@/hooks/useLegalFields';
+import { Button, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import type { DomainType } from '@/types/enums';
 
-// ─── domain options ──────────────────────────────────────────────────────────
+// ─── domain icon mapping ─────────────────────────────────────────────────────
 
-interface DomainOption {
-  value: DomainType;
-  label: string;
-  description: string;
-  Icon: React.ElementType;
-}
+const DOMAIN_ICONS: Record<string, React.ElementType> = {
+  CIVIL: Scale,
+  CRIMINAL: Shield,
+  LABOR: Briefcase,
+  SCHOOL_VIOLENCE: Users,
+};
 
-const DOMAIN_OPTIONS: DomainOption[] = [
-  {
-    value: 'CIVIL',
-    label: '민사',
-    description: '계약, 손해배상, 부동산 등',
-    Icon: Scale,
-  },
-  {
-    value: 'CRIMINAL',
-    label: '형사',
-    description: '고소, 고발, 형사 사건 등',
-    Icon: Shield,
-  },
-  {
-    value: 'LABOR',
-    label: '노동',
-    description: '해고, 임금, 근로조건 등',
-    Icon: Briefcase,
-  },
-  {
-    value: 'SCHOOL_VIOLENCE',
-    label: '학교폭력',
-    description: '학교폭력 사건 대응',
-    Icon: Users,
-  },
-];
+const DOMAIN_DESCRIPTIONS: Record<string, string> = {
+  CIVIL: '계약, 손해배상, 부동산 등',
+  CRIMINAL: '고소, 고발, 형사 사건 등',
+  LABOR: '해고, 임금, 근로조건 등',
+  SCHOOL_VIOLENCE: '학교폭력 사건 대응',
+};
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -49,6 +30,7 @@ export function NewConsultationPage() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<DomainType | null | 'UNKNOWN'>(null);
   const { mutate: createConsultation, isPending } = useCreateConsultation();
+  const { data: legalFields, isLoading: fieldsLoading } = useLegalFields();
 
   // "잘 모르겠어요" uses domain=null, but we track it as 'UNKNOWN' locally
   const isDomainChosen = selected !== null;
@@ -87,50 +69,58 @@ export function NewConsultationPage() {
         </Card>
 
         {/* Domain grid */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-          {DOMAIN_OPTIONS.map(({ value, label, description, Icon }) => {
-            const isSelected = selected === value;
-            return (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setSelected(value)}
-                className={cn(
-                  'text-left bg-white rounded-card border-2 p-4',
-                  'transition-all duration-150 cursor-pointer',
-                  'hover:border-brand hover:shadow-sm',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
-                  'active:scale-[0.98]',
-                  isSelected
-                    ? 'border-brand bg-blue-50 shadow-sm'
-                    : 'border-gray-200',
-                )}
-                aria-pressed={isSelected}
-              >
-                <div
+        {fieldsLoading ? (
+          <div className="flex items-center justify-center h-32">
+            <Spinner size="md" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+            {(legalFields ?? []).map(({ value, label }) => {
+              const isSelected = selected === value;
+              const Icon = DOMAIN_ICONS[value] ?? Scale;
+              const description = DOMAIN_DESCRIPTIONS[value] ?? label;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setSelected(value as DomainType)}
                   className={cn(
-                    'mb-3 w-10 h-10 rounded-xl flex items-center justify-center',
-                    isSelected ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500',
-                    'transition-colors duration-150',
+                    'text-left bg-white rounded-card border-2 p-4',
+                    'transition-all duration-150 cursor-pointer',
+                    'hover:border-brand hover:shadow-sm',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
+                    'active:scale-[0.98]',
+                    isSelected
+                      ? 'border-brand bg-blue-50 shadow-sm'
+                      : 'border-gray-200',
                   )}
+                  aria-pressed={isSelected}
                 >
-                  <Icon size={20} />
-                </div>
-                <p
-                  className={cn(
-                    'text-sm font-semibold mb-0.5',
-                    isSelected ? 'text-brand' : 'text-gray-900',
-                  )}
-                >
-                  {label}
-                </p>
-                <p className="text-xs text-gray-500 leading-snug">
-                  {description}
-                </p>
-              </button>
-            );
-          })}
-        </div>
+                  <div
+                    className={cn(
+                      'mb-3 w-10 h-10 rounded-xl flex items-center justify-center',
+                      isSelected ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500',
+                      'transition-colors duration-150',
+                    )}
+                  >
+                    <Icon size={20} />
+                  </div>
+                  <p
+                    className={cn(
+                      'text-sm font-semibold mb-0.5',
+                      isSelected ? 'text-brand' : 'text-gray-900',
+                    )}
+                  >
+                    {label}
+                  </p>
+                  <p className="text-xs text-gray-500 leading-snug">
+                    {description}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* "잘 모르겠어요" option */}
         <div className="flex justify-center">

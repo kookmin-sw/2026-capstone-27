@@ -3,20 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { User, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerList } from '@/hooks/useLawyer';
+import { useLegalFields } from '@/hooks/useLegalFields';
 import { Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { DOMAIN_LABELS } from '@/lib/constants';
 import type { LawyerResponse } from '@/types';
-
-// ─── filter chips ────────────────────────────────────────────────────────────
-
-const SPECIALIZATION_FILTERS: { label: string; value: string | undefined }[] = [
-  { label: '전체', value: undefined },
-  { label: '민사', value: 'CIVIL' },
-  { label: '형사', value: 'CRIMINAL' },
-  { label: '노동', value: 'LABOR' },
-  { label: '학교폭력', value: 'SCHOOL_VIOLENCE' },
-];
 
 // ─── lawyer card ─────────────────────────────────────────────────────────────
 
@@ -110,6 +101,12 @@ export function LawyerListPage() {
     string | undefined
   >(undefined);
 
+  const { data: legalFields } = useLegalFields();
+  const filters: { label: string; value: string | undefined }[] = [
+    { label: '전체', value: undefined },
+    ...(legalFields ?? []).map((f) => ({ label: f.label, value: f.value })),
+  ];
+
   const { data, isLoading } = useLawyerList(0, 20, selectedSpecialization);
   const lawyers = data?.content ?? (Array.isArray(data) ? data : []);
 
@@ -120,7 +117,7 @@ export function LawyerListPage() {
       {/* Filter chips */}
       <div className="sticky top-14 z-20 bg-surface border-b border-gray-100">
         <div className="flex gap-2 overflow-x-auto px-4 py-3 scrollbar-none">
-          {SPECIALIZATION_FILTERS.map((filter) => {
+          {filters.map((filter) => {
             const isActive = selectedSpecialization === filter.value;
             return (
               <button

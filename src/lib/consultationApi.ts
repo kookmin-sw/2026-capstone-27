@@ -50,4 +50,8 @@ export const consultationApi = {
   /** 의뢰서 생성 요청 (비동기) */
   requestAnalyze: (id: string) =>
     api.post<ApiResponse<void>>(`${BASE}/${id}/analyze`),
+
+  /** 법률 분야 목록 (BE에서 동적 조회) */
+  getLegalFields: () =>
+    api.get<ApiResponse<string[]>>(`${BASE}/legal-fields`),
 };

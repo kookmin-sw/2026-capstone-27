@@ -11,7 +11,7 @@ export function LawyerPendingPage() {
   const { data, isLoading } = usePendingLawyers(page, 20);
 
   const filtered = data?.content?.filter((l: LawyerDetailResponse) =>
-    l.name.includes(search) || l.email.includes(search),
+    l.name.includes(search) || l.bio.includes(search),
   );
 
   if (isLoading) return <Spinner size="lg" text="변호사 목록 불러오는 중..." />;
@@ -24,7 +24,7 @@ export function LawyerPendingPage() {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
         <Input
-          placeholder="이름 또는 이메일 검색"
+          placeholder="이름 검색"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-10"
@@ -38,7 +38,7 @@ export function LawyerPendingPage() {
             <thead>
               <tr className="border-b border-gray-100 text-left text-gray-500">
                 <th className="px-4 py-3 font-medium">이름</th>
-                <th className="px-4 py-3 font-medium">이메일</th>
+                <th className="px-4 py-3 font-medium">지역</th>
                 <th className="px-4 py-3 font-medium">전문 분야</th>
                 <th className="px-4 py-3 font-medium">상태</th>
                 <th className="px-4 py-3 font-medium" />
@@ -53,20 +53,13 @@ export function LawyerPendingPage() {
                   <td className="px-4 py-3 font-medium text-gray-900">
                     {lawyer.name}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{lawyer.email}</td>
+                  <td className="px-4 py-3 text-gray-500">{lawyer.region}</td>
                   <td className="px-4 py-3">
-                    <div className="flex flex-wrap gap-1">
-                      {lawyer.specializations.slice(0, 2).map((s) => (
-                        <Badge key={s} variant="default" size="sm">
-                          {s}
-                        </Badge>
-                      ))}
-                      {lawyer.specializations.length > 2 && (
-                        <Badge variant="default" size="sm">
-                          +{lawyer.specializations.length - 2}
-                        </Badge>
-                      )}
-                    </div>
+                    {lawyer.specializations && (
+                      <Badge variant="default" size="sm">
+                        {lawyer.specializations}
+                      </Badge>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant="warning" size="sm">
@@ -115,15 +108,15 @@ export function LawyerPendingPage() {
                       {lawyer.name}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5 truncate">
-                      {lawyer.email}
+                      {lawyer.region}
                     </p>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {lawyer.specializations.slice(0, 2).map((s) => (
-                        <Badge key={s} variant="default" size="sm">
-                          {s}
+                    {lawyer.specializations && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        <Badge variant="default" size="sm">
+                          {lawyer.specializations}
                         </Badge>
-                      ))}
-                    </div>
+                      </div>
+                    )}
                   </div>
                   <ChevronRight className="h-5 w-5 text-gray-400 shrink-0 ml-2" />
                 </div>

@@ -7,15 +7,16 @@ import type {
   MatchingResponse,
   DeliveryRequest,
   DeliveryResponse,
+  DeliveriesWrapper,
 } from '@/types/brief';
 
 const BASE = '/briefs';
 
 export const briefApi = {
   /** 내 의뢰서 목록 */
-  getList: (page = 0, size = 20) =>
+  getList: (page = 0, size = 20, status?: string) =>
     api.get<ApiResponse<PageResponse<BriefSummaryResponse>>>(BASE, {
-      params: { page, size },
+      params: { page, size, status },
     }),
 
   /** 의뢰서 상세 */
@@ -46,5 +47,5 @@ export const briefApi = {
 
   /** 전달 현황 */
   getDeliveries: (id: string) =>
-    api.get<ApiResponse<DeliveryResponse[]>>(`${BASE}/${id}/deliveries`),
+    api.get<ApiResponse<DeliveriesWrapper>>(`${BASE}/${id}/deliveries`),
 };

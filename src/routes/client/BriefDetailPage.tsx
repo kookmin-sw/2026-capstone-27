@@ -76,7 +76,7 @@ export function BriefDetailPage() {
     reset({
       title: brief.title,
       content: brief.content,
-      keyIssues: brief.keyIssues.join(', '),
+      keyIssues: brief.keyIssues.map(ki => ki.title).join(', '),
       keywords: brief.keywords.join(', '),
       strategy: brief.strategy,
     });
@@ -94,7 +94,8 @@ export function BriefDetailPage() {
       keyIssues: values.keyIssues
         .split(',')
         .map((s) => s.trim())
-        .filter(Boolean),
+        .filter(Boolean)
+        .map((title) => ({ title, description: '' })),
       keywords: values.keywords
         .split(',')
         .map((s) => s.trim())
@@ -276,7 +277,7 @@ export function BriefDetailPage() {
                     {brief.keyIssues.map((issue, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-gray-800">
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand flex-shrink-0" />
-                        {issue}
+                        {issue.title}
                       </li>
                     ))}
                   </ul>

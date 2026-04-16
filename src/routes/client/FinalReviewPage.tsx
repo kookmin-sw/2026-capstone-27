@@ -122,7 +122,7 @@ export function FinalReviewPage() {
                   {brief.keyIssues.map((issue, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
                       <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand flex-shrink-0" />
-                      {issue}
+                      {issue.title}
                     </li>
                   ))}
                 </ul>

@@ -37,19 +37,18 @@ export function InboxDetailPage() {
   const [rejectReason, setRejectReason] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // The inbox detail returns BriefResponse but delivery uses 'DELIVERED' | 'CONFIRMED' | 'REJECTED' at runtime
   const briefStatus = brief?.status as string | undefined;
   const isPending = briefStatus === 'DELIVERED';
 
   async function handleAccept() {
-    await updateStatus.mutateAsync('CONFIRMED');
+    await updateStatus.mutateAsync({ status: 'CONFIRMED' });
     setConfirmModalOpen(false);
     setSuccessMessage('의뢰를 수락했습니다.');
     setTimeout(() => navigate('/lawyer/inbox'), 1500);
   }
 
   async function handleReject() {
-    await updateStatus.mutateAsync('REJECTED');
+    await updateStatus.mutateAsync({ status: 'REJECTED', rejectionReason: rejectReason || undefined });
     setRejectModalOpen(false);
     setSuccessMessage('의뢰를 거절했습니다.');
     setTimeout(() => navigate('/lawyer/inbox'), 1500);
@@ -122,7 +121,7 @@ export function InboxDetailPage() {
             <Badge variant="default" size="sm">
               {DOMAIN_LABELS[brief.legalField] ?? brief.legalField}
             </Badge>
-            <span className="text-xs text-gray-400">{formatDate(brief.createdAt)}</span>
+            <span className="text-xs text-gray-400">{formatDate(brief.sentAt)}</span>
           </div>
 
           {/* Content */}
@@ -147,7 +146,7 @@ export function InboxDetailPage() {
                 {brief.keyIssues.map((issue, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-gray-800">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand flex-shrink-0" />
-                    {issue}
+                    {issue.title}
                   </li>
                 ))}
               </ul>
@@ -173,15 +172,13 @@ export function InboxDetailPage() {
             </div>
           )}
 
-          {/* Strategy */}
-          {brief.strategy && (
+          {/* Client info */}
+          {brief.clientName && (
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-                전략
+                의뢰인
               </p>
-              <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
-                {brief.strategy}
-              </p>
+              <p className="text-sm text-gray-800">{brief.clientName}</p>
             </div>
           )}
         </Card>

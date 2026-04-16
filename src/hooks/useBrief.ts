@@ -85,7 +85,7 @@ export function useDeliveries(briefId: string) {
     queryKey: KEYS.deliveries(briefId),
     queryFn: async () => {
       const { data } = await briefApi.getDeliveries(briefId);
-      return data.data;
+      return data.data.deliveries;
     },
     enabled: !!briefId,
   });

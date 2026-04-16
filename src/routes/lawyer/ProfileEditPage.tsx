@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { cn } from '@/lib/cn';
 import { lawyerApi } from '@/lib/lawyerApi';
-import { Button, Input, Card, Spinner } from '@/components/ui';
+import { Button, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 
 // ─── constants ───────────────────────────────────────────────────────────────
@@ -15,14 +15,12 @@ const SPECIALIZATIONS = ['민사', '형사', '노동', '학교폭력', '가사',
 // ─── schema ──────────────────────────────────────────────────────────────────
 
 const schema = z.object({
-  introduction: z.string().optional(),
   specializations: z
     .array(z.string())
     .min(1, '전문분야를 1개 이상 선택해주세요'),
   experienceYears: z
     .number()
     .min(0, '경력은 0년 이상이어야 합니다'),
-  officeAddress: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -42,10 +40,8 @@ export function ProfileEditPage() {
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      introduction: '',
       specializations: [],
       experienceYears: 0,
-      officeAddress: '',
     },
   });
 
@@ -56,10 +52,8 @@ export function ProfileEditPage() {
     lawyerApi.getMe().then(({ data }) => {
       const profile = data.data;
       reset({
-        introduction: profile.introduction ?? '',
         specializations: profile.specializations ?? [],
         experienceYears: profile.experienceYears ?? 0,
-        officeAddress: profile.officeAddress ?? '',
       });
     });
   }, [reset]);
@@ -78,10 +72,8 @@ export function ProfileEditPage() {
 
   async function onSubmit(values: FormValues) {
     await lawyerApi.updateMe({
-      introduction: values.introduction,
       specializations: values.specializations,
       experienceYears: values.experienceYears,
-      officeAddress: values.officeAddress,
     });
     alert('프로필이 저장되었습니다.');
     navigate('/lawyer/profile');
@@ -105,24 +97,6 @@ export function ProfileEditPage() {
       <main className="flex-1 px-4 py-4 pb-10">
         <Card padding="md">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
-            {/* Introduction */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-[#1E293B] leading-none">
-                소개
-              </label>
-              <textarea
-                rows={4}
-                placeholder="변호사 소개를 입력해주세요"
-                className={cn(
-                  'w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#1E293B]',
-                  'placeholder:text-[#64748B] resize-none',
-                  'outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand',
-                  'transition-colors duration-150',
-                )}
-                {...register('introduction')}
-              />
-            </div>
-
             {/* Specializations */}
             <div className="flex flex-col gap-1.5">
               <span className="text-sm font-medium text-[#1E293B] leading-none">
@@ -187,13 +161,6 @@ export function ProfileEditPage() {
                 </p>
               )}
             </div>
-
-            {/* Office address */}
-            <Input
-              label="사무실 주소 (선택)"
-              placeholder="예: 서울시 강남구 테헤란로 123"
-              {...register('officeAddress')}
-            />
 
             <div className="pt-2">
               <Button

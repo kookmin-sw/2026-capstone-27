@@ -7,7 +7,7 @@ import api from '@/lib/api';
 import { Button, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import type { VerificationStatus } from '@/types';
-import type { LawyerDetailResponse } from '@/types';
+import type { LawyerMeResponse } from '@/types';
 
 // ─── status config ────────────────────────────────────────────────────────────
 
@@ -67,7 +67,7 @@ const STATUS_CONFIG: Record<VerificationStatus, StatusConfig> = {
 
 export function VerificationPage() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<LawyerDetailResponse | null>(null);
+  const [profile, setProfile] = useState<LawyerMeResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isApplying, setIsApplying] = useState(false);
   const [applied, setApplied] = useState(false);

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Users, Briefcase, Clock, MessageSquare, ArrowRight } from 'lucide-react';
+import { Clock, Eye, FileQuestion, CheckSquare, AlertTriangle, ArrowRight } from 'lucide-react';
 import { useAdminStats, useAdminAlerts } from '@/hooks/useAdmin';
-import { Card, Badge, Spinner } from '@/components/ui';
+import { Card, Spinner } from '@/components/ui';
 
 export function AdminDashboardPage() {
   const { data: stats, isLoading: statsLoading } = useAdminStats();
@@ -12,10 +12,10 @@ export function AdminDashboardPage() {
   }
 
   const statCards = [
-    { label: '전체 사용자', value: stats?.totalUsers ?? 0, icon: Users, bg: 'bg-blue-50', color: 'text-blue-600' },
-    { label: '전체 변호사', value: stats?.totalLawyers ?? 0, icon: Briefcase, bg: 'bg-purple-50', color: 'text-purple-600' },
-    { label: '심사 대기', value: stats?.pendingVerifications ?? 0, icon: Clock, bg: 'bg-yellow-50', color: 'text-yellow-600', to: '/admin/lawyers' },
-    { label: '전체 상담', value: stats?.totalConsultations ?? 0, icon: MessageSquare, bg: 'bg-green-50', color: 'text-green-600' },
+    { label: '심사 대기', value: stats?.pendingCount ?? 0, icon: Clock, bg: 'bg-yellow-50', color: 'text-yellow-600', to: '/admin/lawyers' },
+    { label: '심사 중', value: stats?.reviewingCount ?? 0, icon: Eye, bg: 'bg-blue-50', color: 'text-blue-600' },
+    { label: '보충 요청', value: stats?.supplementRequestedCount ?? 0, icon: FileQuestion, bg: 'bg-orange-50', color: 'text-orange-600' },
+    { label: '오늘 처리', value: stats?.todayProcessedCount ?? 0, icon: CheckSquare, bg: 'bg-green-50', color: 'text-green-600' },
   ];
 
   return (
@@ -45,26 +45,36 @@ export function AdminDashboardPage() {
         <h2 className="text-lg font-semibold text-gray-900 mb-3">긴급 알림</h2>
         {alertsLoading ? (
           <Spinner size="md" />
-        ) : !alerts?.length ? (
+        ) : !alerts ? (
           <Card padding="md">
             <p className="text-center text-sm text-gray-400">현재 알림이 없습니다</p>
           </Card>
         ) : (
-          <div className="space-y-2">
-            {alerts.map((alert) => (
-              <Card key={alert.id} padding="sm">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <Badge variant="warning" size="sm">{alert.type}</Badge>
-                    <p className="text-sm text-gray-700 mt-1">{alert.message}</p>
-                  </div>
-                  <span className="text-xs text-gray-400 shrink-0 ml-2">
-                    {new Date(alert.createdAt).toLocaleDateString('ko-KR')}
-                  </span>
+          <Card padding="md">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-red-500" />
+                  <span className="text-sm text-gray-700">기한 초과</span>
                 </div>
-              </Card>
-            ))}
-          </div>
+                <span className="text-sm font-semibold text-gray-900">{alerts.overdueCount}건</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                  <span className="text-sm text-gray-700">서류 미비</span>
+                </div>
+                <span className="text-sm font-semibold text-gray-900">{alerts.missingDocumentCount}건</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                  <span className="text-sm text-gray-700">중복 의심</span>
+                </div>
+                <span className="text-sm font-semibold text-gray-900">{alerts.duplicateSuspectCount}건</span>
+              </div>
+            </div>
+          </Card>
         )}
       </div>
 

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { User, Shield, Mail, Phone, MapPin } from 'lucide-react';
+import { User, Shield, MapPin, Award, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerDetail } from '@/hooks/useLawyer';
 import { Button, Card, Badge, Spinner } from '@/components/ui';
@@ -82,63 +82,80 @@ export function LawyerProfilePage() {
                   </div>
                 )}
 
-                {/* Specializations */}
-                {lawyer.specializations.length > 0 && (
+                {/* Specialization */}
+                {lawyer.specializations && (
                   <div className="flex flex-wrap justify-center gap-1.5">
-                    {lawyer.specializations.map((spec) => (
-                      <Badge key={spec} variant="primary" size="sm">
-                        {DOMAIN_LABELS[spec] ?? spec}
-                      </Badge>
-                    ))}
+                    <Badge variant="primary" size="sm">
+                      {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
+                    </Badge>
                   </div>
                 )}
 
-                {/* Experience */}
-                <p className="text-sm text-gray-500">{lawyer.experienceYears}년 경력</p>
+                {/* Experience + Region */}
+                <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <span>{lawyer.experienceYears}년 경력</span>
+                  {lawyer.region && (
+                    <>
+                      <span className="text-gray-300">|</span>
+                      <span className="flex items-center gap-1">
+                        <MapPin size={13} aria-hidden="true" />
+                        {lawyer.region}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Case count */}
+                {lawyer.caseCount > 0 && (
+                  <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                    <Briefcase size={13} aria-hidden="true" />
+                    <span>처리 사건 {lawyer.caseCount}건</span>
+                  </div>
+                )}
               </div>
             </Card>
 
-            {/* ── Introduction card ── */}
-            {lawyer.introduction && (
+            {/* ── Bio card ── */}
+            {lawyer.bio && (
               <Card padding="md">
                 <h3 className="text-sm font-semibold text-gray-900 mb-2">소개</h3>
                 <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {lawyer.introduction}
+                  {lawyer.bio}
                 </p>
               </Card>
             )}
 
-            {/* ── Contact info card ── */}
-            <Card padding="md">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">연락처</h3>
-              <ul className="space-y-3">
-                {/* Email — always present */}
-                <li className="flex items-center gap-3 text-sm text-gray-700">
-                  <Mail size={16} className="flex-shrink-0 text-gray-400" aria-hidden="true" />
-                  <span className="break-all">{lawyer.email}</span>
-                </li>
+            {/* ── Tags card ── */}
+            {lawyer.tags && lawyer.tags.length > 0 && (
+              <Card padding="md">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">태그</h3>
+                <div className="flex flex-wrap gap-1.5">
+                  {lawyer.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </Card>
+            )}
 
-                {/* Phone — optional */}
-                {lawyer.phone && (
-                  <li className="flex items-center gap-3 text-sm text-gray-700">
-                    <Phone size={16} className="flex-shrink-0 text-gray-400" aria-hidden="true" />
-                    <span>{lawyer.phone}</span>
-                  </li>
-                )}
-
-                {/* Office address — optional */}
-                {lawyer.officeAddress && (
-                  <li className="flex items-start gap-3 text-sm text-gray-700">
-                    <MapPin
-                      size={16}
-                      className="flex-shrink-0 text-gray-400 mt-0.5"
-                      aria-hidden="true"
-                    />
-                    <span>{lawyer.officeAddress}</span>
-                  </li>
-                )}
-              </ul>
-            </Card>
+            {/* ── Certifications card ── */}
+            {lawyer.certifications && lawyer.certifications.length > 0 && (
+              <Card padding="md">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">자격/인증</h3>
+                <ul className="space-y-1.5">
+                  {lawyer.certifications.map((cert) => (
+                    <li key={cert} className="flex items-center gap-2 text-sm text-gray-700">
+                      <Award size={14} className="text-gray-400 flex-shrink-0" aria-hidden="true" />
+                      {cert}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
           </>
         )}
       </main>

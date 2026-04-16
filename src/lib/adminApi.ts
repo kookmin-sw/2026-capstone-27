@@ -5,23 +5,24 @@ import type { LawyerDetailResponse } from '@/types/lawyer';
 const BASE = '/admin';
 
 export interface AdminStats {
-  totalUsers: number;
-  totalLawyers: number;
-  pendingVerifications: number;
-  totalConsultations: number;
+  pendingCount: number;
+  reviewingCount: number;
+  supplementRequestedCount: number;
+  todayProcessedCount: number;
 }
 
-export interface AdminAlert {
-  id: string;
-  type: string;
-  message: string;
-  createdAt: string;
+export interface AdminAlerts {
+  overdueCount: number;
+  missingDocumentCount: number;
+  duplicateSuspectCount: number;
 }
 
-export interface VerificationCheck {
-  checkType: string;
-  result: string;
-  detail: string;
+export interface VerificationChecks {
+  lawyerId: string;
+  emailDuplicate: boolean;
+  phoneDuplicate: boolean;
+  nameDuplicate: boolean;
+  requiredFields: boolean;
 }
 
 export const adminApi = {
@@ -31,13 +32,13 @@ export const adminApi = {
 
   /** 긴급 알림 */
   getAlerts: () =>
-    api.get<ApiResponse<AdminAlert[]>>(`${BASE}/dashboard/alerts`),
+    api.get<ApiResponse<AdminAlerts>>(`${BASE}/dashboard/alerts`),
 
   /** 심사 대기 변호사 목록 */
-  getPendingLawyers: (page = 0, size = 20) =>
+  getPendingLawyers: (page = 0, size = 20, keyword?: string, status?: string) =>
     api.get<ApiResponse<PageResponse<LawyerDetailResponse>>>(
       `${BASE}/lawyers/pending`,
-      { params: { page, size } },
+      { params: { page, size, keyword, status } },
     ),
 
   /** 변호사 상세 */
@@ -53,13 +54,13 @@ export const adminApi = {
 
   /** 자동 검증 결과 */
   getVerificationChecks: (id: string) =>
-    api.get<ApiResponse<VerificationCheck[]>>(
+    api.get<ApiResponse<VerificationChecks>>(
       `${BASE}/lawyers/${id}/verification-checks`,
     ),
 
   /** 서류 조회 */
   getDocuments: (id: string) =>
-    api.get<ApiResponse<Array<{ id: string; fileName: string; fileUrl: string; uploadedAt: string }>>>(
+    api.get<ApiResponse<Array<{ documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; uploadedAt: string }>>>(
       `${BASE}/lawyers/${id}/documents`,
     ),
 };

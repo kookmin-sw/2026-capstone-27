@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, CheckCircle, Star } from 'lucide-react';
+import { User, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerList } from '@/hooks/useLawyer';
 import { Badge, Spinner } from '@/components/ui';
@@ -27,8 +27,6 @@ interface LawyerCardProps {
 
 function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
   const isVerified = lawyer.verificationStatus === 'VERIFIED';
-  const rating = lawyer.rating ?? 0;
-  const reviewCount = lawyer.reviewCount ?? 0;
 
   return (
     <button
@@ -42,7 +40,7 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
     >
       {/* Profile image + info */}
       <div className="flex items-start gap-3">
-        {/* Avatar — Figma: circular 48-60px */}
+        {/* Avatar */}
         <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
           {lawyer.profileImageUrl ? (
             <img
@@ -55,7 +53,7 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
           )}
         </div>
 
-        {/* Name + verification + rating */}
+        {/* Name + verification */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-base font-semibold text-gray-900 truncate">
@@ -77,35 +75,22 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
           <p className="mt-0.5 text-sm text-gray-500">
             {lawyer.experienceYears}년 경력
           </p>
-
-          {/* Rating + reviews — Figma: ★4.8 + review count */}
-          {rating > 0 && (
-            <div className="flex items-center gap-1.5 mt-1">
-              <Star size={13} className="text-yellow-400 fill-yellow-400" aria-hidden="true" />
-              <span className="text-sm font-semibold text-gray-800">{rating.toFixed(1)}</span>
-              {reviewCount > 0 && (
-                <span className="text-xs text-gray-400">({reviewCount}개 리뷰)</span>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Introduction excerpt — Figma: brief description 1-2 lines */}
-      {lawyer.introduction && (
+      {/* Bio excerpt */}
+      {lawyer.bio && (
         <p className="mt-2.5 text-sm text-gray-500 leading-relaxed line-clamp-2">
-          {lawyer.introduction}
+          {lawyer.bio}
         </p>
       )}
 
-      {/* Specialization badges */}
-      {lawyer.specializations.length > 0 && (
+      {/* Specialization badge */}
+      {lawyer.specializations && (
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {lawyer.specializations.map((spec) => (
-            <Badge key={spec} variant="primary" size="sm">
-              {DOMAIN_LABELS[spec] ?? spec}
-            </Badge>
-          ))}
+          <Badge variant="primary" size="sm">
+            {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
+          </Badge>
         </div>
       )}
 

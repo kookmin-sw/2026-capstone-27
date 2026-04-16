@@ -3,14 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   User,
-  Mail,
-  Phone,
   MapPin,
-  FileText,
   CheckCircle,
   XCircle,
-  AlertTriangle,
   ExternalLink,
+  Briefcase,
+  Award,
 } from 'lucide-react';
 import {
   useAdminLawyerDetail,
@@ -19,15 +17,15 @@ import {
   useProcessVerification,
 } from '@/hooks/useAdmin';
 import { Card, Badge, Button, Spinner, Modal, Input } from '@/components/ui';
-import type { VerificationCheck } from '@/lib/adminApi';
+import type { VerificationChecks as VerificationChecksType } from '@/lib/adminApi';
 
 type ActionType = 'APPROVED' | 'REJECTED' | 'SUPPLEMENT_REQUESTED';
 
-const resultIcon: Record<string, React.ReactNode> = {
-  PASS: <CheckCircle className="h-4 w-4 text-green-500" />,
-  FAIL: <XCircle className="h-4 w-4 text-red-500" />,
-  WARN: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-};
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 export function LawyerReviewPage() {
   const { id } = useParams<{ id: string }>();
@@ -73,6 +71,13 @@ export function LawyerReviewPage() {
     SUPPLEMENT_REQUESTED: { label: '보충 요청', variant: 'secondary', desc: '보충이 필요한 내용을 입력해 주세요.' },
   };
 
+  const checkItems: { label: string; key: keyof Omit<VerificationChecksType, 'lawyerId'>; desc: string }[] = [
+    { label: '이메일 중복', key: 'emailDuplicate', desc: '이메일 중복 여부' },
+    { label: '전화번호 중복', key: 'phoneDuplicate', desc: '전화번호 중복 여부' },
+    { label: '이름 중복', key: 'nameDuplicate', desc: '이름 중복 여부' },
+    { label: '필수 항목', key: 'requiredFields', desc: '필수 입력 항목 충족 여부' },
+  ];
+
   return (
     <div className="space-y-5">
       {/* 헤더 */}
@@ -92,32 +97,51 @@ export function LawyerReviewPage() {
             <User className="h-4 w-4 text-gray-400" />
             <span className="text-gray-700">{lawyer.name}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Mail className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-700">{lawyer.email}</span>
-          </div>
-          {lawyer.phone && (
-            <div className="flex items-center gap-2 text-sm">
-              <Phone className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-700">{lawyer.phone}</span>
-            </div>
-          )}
-          {lawyer.officeAddress && (
+          {lawyer.region && (
             <div className="flex items-center gap-2 text-sm">
               <MapPin className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-700">{lawyer.officeAddress}</span>
+              <span className="text-gray-700">{lawyer.region}</span>
             </div>
           )}
           <div className="flex items-center gap-2 text-sm">
-            <FileText className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-700">자격번호: {lawyer.licenseNumber}</span>
+            <Briefcase className="h-4 w-4 text-gray-400" />
+            <span className="text-gray-700">경력 {lawyer.experienceYears}년 · 사건 {lawyer.caseCount}건</span>
           </div>
         </div>
-        <div className="flex flex-wrap gap-1.5 mt-3">
-          {lawyer.specializations.map((s) => (
-            <Badge key={s} variant="default" size="sm">{s}</Badge>
-          ))}
-        </div>
+        {/* Specialization */}
+        {lawyer.specializations && (
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            <Badge variant="default" size="sm">{lawyer.specializations}</Badge>
+          </div>
+        )}
+        {/* Bio */}
+        {lawyer.bio && (
+          <p className="text-sm text-gray-600 mt-3 leading-relaxed">{lawyer.bio}</p>
+        )}
+        {/* Tags */}
+        {lawyer.tags && lawyer.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {lawyer.tags.map((tag) => (
+              <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-medium">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        {/* Certifications */}
+        {lawyer.certifications && lawyer.certifications.length > 0 && (
+          <div className="mt-3">
+            <p className="text-xs font-semibold text-gray-500 mb-1">자격/인증</p>
+            <div className="flex flex-wrap gap-1.5">
+              {lawyer.certifications.map((cert) => (
+                <span key={cert} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-xs font-medium">
+                  <Award className="h-3 w-3" />
+                  {cert}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* 자동 검증 결과 */}
@@ -125,22 +149,35 @@ export function LawyerReviewPage() {
         <h2 className="font-bold text-gray-900 mb-3">자동 검증 결과</h2>
         {checksLoading ? (
           <Spinner size="sm" />
-        ) : !checks?.length ? (
+        ) : !checks ? (
           <p className="text-sm text-gray-400">검증 데이터가 없습니다</p>
         ) : (
           <div className="space-y-2">
-            {checks.map((c: VerificationCheck, idx: number) => (
-              <div
-                key={idx}
-                className="flex items-start gap-3 rounded-lg border border-gray-100 p-3"
-              >
-                {resultIcon[c.result] ?? resultIcon.WARN}
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900">{c.checkType}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{c.detail}</p>
+            {checkItems.map((item) => {
+              const value = checks[item.key];
+              const isPass = item.key === 'requiredFields' ? value : !value;
+              return (
+                <div
+                  key={item.key}
+                  className="flex items-start gap-3 rounded-lg border border-gray-100 p-3"
+                >
+                  {isPass ? (
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <XCircle className="h-4 w-4 text-red-500" />
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900">{item.label}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {item.key === 'requiredFields'
+                        ? (value ? '모든 필수 항목 충족' : '필수 항목 미충족')
+                        : (value ? '중복 발견' : '중복 없음')
+                      }
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </Card>
@@ -154,8 +191,8 @@ export function LawyerReviewPage() {
           <p className="text-sm text-gray-400">제출된 서류가 없습니다</p>
         ) : (
           <ul className="space-y-2">
-            {docs.map((d: { id: string; fileName: string; fileUrl: string; uploadedAt: string }) => (
-              <li key={d.id}>
+            {docs.map((d: { documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; uploadedAt: string }) => (
+              <li key={d.documentId}>
                 <a
                   href={d.fileUrl}
                   target="_blank"
@@ -167,7 +204,7 @@ export function LawyerReviewPage() {
                       {d.fileName}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {new Date(d.uploadedAt).toLocaleDateString('ko-KR')}
+                      {d.fileType} · {formatFileSize(d.fileSize)} · {new Date(d.uploadedAt).toLocaleDateString('ko-KR')}
                     </p>
                   </div>
                   <ExternalLink className="h-4 w-4 text-gray-400 shrink-0 ml-2" />

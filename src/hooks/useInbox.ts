@@ -42,8 +42,8 @@ export function useInboxDetail(id: string) {
 export function useUpdateInboxStatus(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (status: 'CONFIRMED' | 'REJECTED') =>
-      inboxApi.updateStatus(id, status),
+    mutationFn: ({ status, rejectionReason }: { status: 'CONFIRMED' | 'REJECTED'; rejectionReason?: string }) =>
+      inboxApi.updateStatus(id, status, rejectionReason),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: KEYS.list() });
       queryClient.invalidateQueries({ queryKey: KEYS.stats() });

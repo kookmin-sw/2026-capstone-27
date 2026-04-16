@@ -1,11 +1,16 @@
 import type { BriefStatus, PrivacySetting } from './enums';
 
+export interface KeyIssue {
+  title: string;
+  description: string;
+}
+
 export interface BriefResponse {
   briefId: string;
   title: string;
   legalField: string;
   content: string;
-  keyIssues: string[];
+  keyIssues: KeyIssue[];
   keywords: string[];
   strategy: string;
   privacySetting: PrivacySetting;
@@ -23,7 +28,7 @@ export interface BriefSummaryResponse {
 export interface BriefUpdateRequest {
   title?: string;
   content?: string;
-  keyIssues?: string[];
+  keyIssues?: KeyIssue[];
   keywords?: string[];
   strategy?: string;
   privacySetting?: PrivacySetting;
@@ -48,5 +53,9 @@ export interface DeliveryResponse {
   lawyerId: string;
   lawyerName: string;
   status: string;
-  createdAt: string;
+  sentAt: string;
+}
+
+export interface DeliveriesWrapper {
+  deliveries: DeliveryResponse[];
 }

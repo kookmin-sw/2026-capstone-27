@@ -1,7 +1,6 @@
 import api from './api';
 import type { ApiResponse, PageResponse } from '@/types/api';
-import type { InboxItemResponse, InboxStatsResponse } from '@/types/lawyer';
-import type { BriefResponse } from '@/types/brief';
+import type { InboxItemResponse, InboxStatsResponse, InboxDetailResponse } from '@/types/lawyer';
 
 const BASE = '/lawyer/inbox';
 
@@ -18,9 +17,9 @@ export const inboxApi = {
 
   /** 수신 의뢰서 상세 */
   getById: (id: string) =>
-    api.get<ApiResponse<BriefResponse>>(`${BASE}/${id}`),
+    api.get<ApiResponse<InboxDetailResponse>>(`${BASE}/${id}`),
 
   /** 수락/거절 */
-  updateStatus: (id: string, status: 'CONFIRMED' | 'REJECTED') =>
-    api.patch<ApiResponse<void>>(`${BASE}/${id}/status`, { status }),
+  updateStatus: (id: string, status: 'CONFIRMED' | 'REJECTED', rejectionReason?: string) =>
+    api.patch<ApiResponse<void>>(`${BASE}/${id}/status`, { status, rejectionReason }),
 };

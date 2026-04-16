@@ -78,7 +78,7 @@ export function BriefDeliveryPage() {
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-900">{d.lawyerName}</p>
-                        <p className="text-xs text-gray-400 mt-0.5">{formatDateTime(d.createdAt)}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">{formatDateTime(d.sentAt)}</p>
                       </div>
                       <Badge
                         variant={DELIVERY_BADGE[status] ?? 'default'}

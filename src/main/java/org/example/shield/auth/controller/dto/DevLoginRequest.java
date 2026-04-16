@@ -1,7 +1,9 @@
 package org.example.shield.auth.controller.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record DevLoginRequest(
-        String email,
-        String name,
-        String role
+        @NotBlank String email,
+        @NotBlank String name,
+        @NotBlank String role
 ) {}

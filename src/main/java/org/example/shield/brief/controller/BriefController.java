@@ -42,14 +42,15 @@ public class BriefController {
     private final DeliveryService deliveryService;
     private final LawyerMatchingService lawyerMatchingService;
 
-    @Operation(summary = "내 의뢰서 목록", description = "로그인한 사용자의 의뢰서 목록을 조회합니다")
+    @Operation(summary = "내 의뢰서 목록", description = "로그인한 사용자의 의뢰서 목록을 조회합니다. status 파라미터로 필터링 가능")
     @GetMapping
     public ApiResponse<PageResponse<BriefSummaryResponse>> getMyBriefs(
             @AuthenticationPrincipal UUID userId,
+            @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        PageResponse<BriefSummaryResponse> result = briefService.getMyBriefs(userId, pageable);
+        Pageable pageable = PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.DESC, "createdAt"));
+        PageResponse<BriefSummaryResponse> result = briefService.getMyBriefs(userId, status, pageable);
         return ApiResponse.success("조회 성공", result);
     }
 
@@ -67,7 +68,7 @@ public class BriefController {
     public ApiResponse<BriefUpdateResponse> updateBrief(
             @PathVariable UUID briefId,
             @AuthenticationPrincipal UUID userId,
-            @RequestBody BriefUpdateRequest request) {
+            @Valid @RequestBody BriefUpdateRequest request) {
         BriefUpdateResponse result = briefService.updateBrief(briefId, userId, request);
         return ApiResponse.success("의뢰서가 수정되었습니다", result);
     }
@@ -98,7 +99,7 @@ public class BriefController {
             @AuthenticationPrincipal UUID userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "experienceYears"));
+        Pageable pageable = PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.DESC, "experienceYears"));
         PageResponse<MatchingResponse> result = lawyerMatchingService.findMatching(briefId, userId, pageable);
         return ApiResponse.success("매칭 완료", result);
     }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.shield.brief.domain.Brief;
 import org.example.shield.brief.domain.BriefReader;
 import org.example.shield.brief.exception.BriefNotFoundException;
+import org.example.shield.common.enums.BriefStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,11 @@ public class BriefReaderImpl implements BriefReader {
     @Override
     public Page<Brief> findAllByUserId(UUID userId, Pageable pageable) {
         return briefRepository.findAllByUserId(userId, pageable);
+    }
+
+    @Override
+    public Page<Brief> findAllByUserIdAndStatus(UUID userId, BriefStatus status, Pageable pageable) {
+        return briefRepository.findAllByUserIdAndStatus(userId, status, pageable);
     }
 
     @Override

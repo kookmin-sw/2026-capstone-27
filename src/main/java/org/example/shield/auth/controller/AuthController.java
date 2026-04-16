@@ -11,6 +11,7 @@ import org.example.shield.auth.controller.dto.DevLoginRequest;
 import org.example.shield.auth.domain.JwtToken;
 import org.example.shield.auth.controller.dto.GoogleLoginRequest;
 import org.example.shield.auth.controller.dto.LoginResponse;
+import org.example.shield.auth.controller.dto.TokenRefreshResponse;
 import org.example.shield.auth.exception.InvalidTokenException;
 import org.example.shield.common.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class AuthController {
     @Operation(summary = "개발용 로그인", description = "Google OAuth 없이 테스트용 JWT 발급")
     @PostMapping("/dev/login")
     public ResponseEntity<ApiResponse<LoginResponse>> devLogin(
-            @RequestBody DevLoginRequest request,
+            @Valid @RequestBody DevLoginRequest request,
             HttpServletResponse response) {
         AuthService.LoginResult result = authService.devLogin(
                 request.email(), request.name(), request.role());
@@ -67,7 +68,7 @@ public class AuthController {
 
     @Operation(summary = "토큰 갱신", description = "Refresh Token으로 새 Access Token + Refresh Token 재발급")
     @PostMapping("/token/refresh")
-    public ResponseEntity<ApiResponse<String>> refreshToken(
+    public ResponseEntity<ApiResponse<TokenRefreshResponse>> refreshToken(
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response) {
         if (refreshToken == null) {
@@ -75,7 +76,8 @@ public class AuthController {
         }
         JwtToken tokenPair = authService.refreshToken(refreshToken);
         addRefreshTokenCookie(response, tokenPair.refreshToken());
-        return ResponseEntity.ok(ApiResponse.success("토큰 갱신 성공", tokenPair.accessToken()));
+        return ResponseEntity.ok(ApiResponse.success("토큰 갱신 성공",
+                new TokenRefreshResponse(tokenPair.accessToken())));
     }
 
     private void addRefreshTokenCookie(HttpServletResponse response, String token) {

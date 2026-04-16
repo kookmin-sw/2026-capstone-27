@@ -55,6 +55,9 @@ public class LawyerMatchingService {
         Page<MatchingResponse> responsePage = lawyers.map(lawyer -> {
             User user = userMap.get(lawyer.getUserId());
             List<String> matched = findMatchedKeywords(briefKeywords, lawyer.getTags());
+            // TODO: AI 매칭 점수로 교체 — 현재는 키워드 일치 비율 기반 간이 스코어
+            double score = briefKeywords.isEmpty() ? 0.0
+                    : (double) matched.size() / briefKeywords.size();
 
             return new MatchingResponse(
                     lawyer.getUserId(),
@@ -63,7 +66,10 @@ public class LawyerMatchingService {
                     lawyer.getSpecializations(),
                     lawyer.getExperienceYears(),
                     lawyer.getTags(),
-                    matched
+                    matched,
+                    lawyer.getBio(),
+                    lawyer.getRegion(),
+                    score
             );
         });
 

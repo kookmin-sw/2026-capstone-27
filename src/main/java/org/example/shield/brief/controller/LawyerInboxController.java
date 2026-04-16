@@ -31,6 +31,7 @@ import java.util.UUID;
 @Tag(name = "Lawyer Inbox", description = "변호사 수신함 API")
 @RestController
 @RequestMapping("/api/lawyer/inbox")
+@PreAuthorize("hasRole('LAWYER')")
 @RequiredArgsConstructor
 public class LawyerInboxController {
 
@@ -43,7 +44,7 @@ public class LawyerInboxController {
             @RequestParam(required = false) DeliveryStatus status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "sentAt"));
+        Pageable pageable = PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.DESC, "sentAt"));
         PageResponse<InboxResponse> result = deliveryService.getInbox(lawyerId, status, pageable);
         return ApiResponse.success("조회 성공", result);
     }
@@ -66,7 +67,6 @@ public class LawyerInboxController {
     }
 
     @Operation(summary = "수신 의뢰서 수락/거절", description = "전달받은 의뢰서를 수락하거나 거절합니다")
-    @PreAuthorize("hasRole('LAWYER')")
     @PatchMapping("/{deliveryId}/status")
     public ApiResponse<DeliveryStatusResponse> updateDeliveryStatus(
             @PathVariable UUID deliveryId,

@@ -36,6 +36,11 @@ public class LawyerReaderImpl implements LawyerReader {
     }
 
     @Override
+    public Page<LawyerProfile> findVerifiedLawyers(String specialization, Integer minExperience, Pageable pageable) {
+        return lawyerProfileRepository.findVerifiedLawyers(specialization, minExperience, pageable);
+    }
+
+    @Override
     public Page<LawyerProfile> searchByStatusAndKeyword(String status, String keyword, Pageable pageable) {
         return lawyerProfileRepository.searchByStatusAndKeyword(status, keyword, pageable);
     }

@@ -7,6 +7,7 @@ import org.example.shield.ai.dto.BriefParsedResponse;
 import org.example.shield.ai.dto.GrokCallResult;
 import org.example.shield.brief.domain.Brief;
 import org.example.shield.brief.domain.BriefWriter;
+import org.example.shield.brief.domain.KeyIssue;
 import org.example.shield.common.enums.ConsultationStatus;
 import org.example.shield.common.notification.NotificationSender;
 import org.example.shield.consultation.domain.Consultation;
@@ -59,9 +60,9 @@ public class AnalysisService {
                     && !consultation.getPrimaryField().isEmpty())
                     ? consultation.getPrimaryField().get(0) : "UNKNOWN";
 
-            List<String> keyIssueStrings = parsed.getKeyIssues() != null
+            List<KeyIssue> keyIssueList = parsed.getKeyIssues() != null
                     ? parsed.getKeyIssues().stream()
-                        .map(ki -> ki.getTitle() + ": " + ki.getDescription())
+                        .map(ki -> new KeyIssue(ki.getTitle(), ki.getDescription()))
                         .toList()
                     : List.of();
 
@@ -72,7 +73,7 @@ public class AnalysisService {
                     legalField,
                     parsed.getContent(),
                     parsed.getKeywords(),
-                    keyIssueStrings,
+                    keyIssueList,
                     parsed.getStrategy()
             );
             briefWriter.save(brief);

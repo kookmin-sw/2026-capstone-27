@@ -1,6 +1,7 @@
 package org.example.shield.brief.controller.dto;
 
 import org.example.shield.brief.domain.Brief;
+import org.example.shield.brief.domain.KeyIssue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +12,7 @@ public record BriefResponse(
         String title,
         String legalField,
         String content,
-        List<String> keyIssues,
+        List<KeyIssue> keyIssues,
         List<String> keywords,
         String strategy,
         String privacySetting,

@@ -10,5 +10,8 @@ public record MatchingResponse(
         String specializations,
         Integer experienceYears,
         List<String> tags,
-        List<String> matchedKeywords
+        List<String> matchedKeywords,
+        String bio,
+        String region,
+        Double score
 ) {}

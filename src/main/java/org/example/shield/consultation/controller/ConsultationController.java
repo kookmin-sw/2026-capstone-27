@@ -73,18 +73,19 @@ public class ConsultationController {
             @AuthenticationPrincipal UUID userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        Pageable pageable = PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.DESC, "updatedAt"));
         PageResponse<ConsultationResponse> result = consultationService.getMyConsultations(userId, pageable);
         return ApiResponse.success("조회 성공", result);
     }
 
     @Operation(summary = "메시지 전송", description = "상담에 메시지를 전송합니다")
     @PostMapping("/{consultationId}/messages")
-    public ApiResponse<SendMessageResponse> sendMessage(
+    public ResponseEntity<ApiResponse<SendMessageResponse>> sendMessage(
             @PathVariable UUID consultationId,
             @Valid @RequestBody MessageRequest request) {
         SendMessageResponse result = messageService.sendMessage(consultationId, request.content());
-        return ApiResponse.success("전송 완료", result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(ApiResponse.success("전송 완료", result));
     }
 
     @Operation(summary = "메시지 목록 조회", description = "상담의 대화 내역을 조회합니다")
@@ -93,7 +94,7 @@ public class ConsultationController {
             @PathVariable UUID consultationId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "sequence"));
+        Pageable pageable = PageRequest.of(page, Math.min(size, 100), Sort.by(Sort.Direction.ASC, "sequence"));
         PageResponse<MessageResponse> result = messageService.getMessages(consultationId, pageable);
         return ApiResponse.success("조회 성공", result);
     }

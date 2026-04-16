@@ -56,14 +56,14 @@ public class Brief extends BaseEntity {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private List<String> keyIssues;
+    private List<KeyIssue> keyIssues;
 
     @Column(columnDefinition = "text")
     private String strategy;
 
     @Builder
     private Brief(UUID consultationId, UUID userId, String title, String legalField,
-                  String content, List<String> keywords, List<String> keyIssues, String strategy) {
+                  String content, List<String> keywords, List<KeyIssue> keyIssues, String strategy) {
         this.consultationId = consultationId;
         this.userId = userId;
         this.title = title;
@@ -77,7 +77,7 @@ public class Brief extends BaseEntity {
     }
 
     public static Brief create(UUID consultationId, UUID userId, String title, String legalField,
-                               String content, List<String> keywords, List<String> keyIssues, String strategy) {
+                               String content, List<String> keywords, List<KeyIssue> keyIssues, String strategy) {
         return Brief.builder()
                 .consultationId(consultationId)
                 .userId(userId)
@@ -91,7 +91,7 @@ public class Brief extends BaseEntity {
     }
 
     public void updateContent(String title, String content, List<String> keywords,
-                              List<String> keyIssues, String strategy) {
+                              List<KeyIssue> keyIssues, String strategy) {
         this.title = title;
         this.content = content;
         this.keywords = keywords;

@@ -29,9 +29,9 @@ public class LawyerService {
     private final LawyerWriter lawyerWriter;
     private final UserReader userReader;
 
-    public PageResponse<LawyerResponse> getLawyers(Pageable pageable) {
-        Page<LawyerProfile> profiles = lawyerReader.findAllByVerificationStatus(
-                VerificationStatus.VERIFIED, pageable);
+    public PageResponse<LawyerResponse> getLawyers(Pageable pageable, String specialization, Integer minExperience) {
+        Page<LawyerProfile> profiles = lawyerReader.findVerifiedLawyers(
+                specialization, minExperience, pageable);
 
         List<UUID> userIds = profiles.getContent().stream()
                 .map(LawyerProfile::getUserId)

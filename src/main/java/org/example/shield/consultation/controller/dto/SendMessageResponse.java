@@ -5,16 +5,21 @@ import org.example.shield.consultation.domain.Message;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SendMessageResponse(
+        UUID messageId,
+        String role,
         String content,
-        LocalDateTime timestamp,
+        LocalDateTime createdAt,
         boolean allCompleted,
         Classification classification
 ) {
     public static SendMessageResponse from(Message message, boolean allCompleted) {
         return new SendMessageResponse(
+                message.getId(),
+                message.getRole().name(),
                 message.getContent(),
                 message.getCreatedAt(),
                 allCompleted,
@@ -28,6 +33,8 @@ public record SendMessageResponse(
                 ? new Classification(primaryField, tags)
                 : null;
         return new SendMessageResponse(
+                message.getId(),
+                message.getRole().name(),
                 message.getContent(),
                 message.getCreatedAt(),
                 allCompleted,

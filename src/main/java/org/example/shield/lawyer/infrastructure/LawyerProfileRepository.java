@@ -18,6 +18,24 @@ public interface LawyerProfileRepository extends JpaRepository<LawyerProfile, UU
 
     @Query(value = """
             SELECT lp.* FROM lawyers lp
+            WHERE CAST(lp.verification_status AS TEXT) = 'VERIFIED'
+            AND (CAST(:specialization AS TEXT) IS NULL OR LOWER(lp.specializations) LIKE LOWER('%' || CAST(:specialization AS TEXT) || '%'))
+            AND (CAST(:minExperience AS INTEGER) IS NULL OR lp.experience_years >= CAST(:minExperience AS INTEGER))
+            """,
+            countQuery = """
+            SELECT COUNT(*) FROM lawyers lp
+            WHERE CAST(lp.verification_status AS TEXT) = 'VERIFIED'
+            AND (CAST(:specialization AS TEXT) IS NULL OR LOWER(lp.specializations) LIKE LOWER('%' || CAST(:specialization AS TEXT) || '%'))
+            AND (CAST(:minExperience AS INTEGER) IS NULL OR lp.experience_years >= CAST(:minExperience AS INTEGER))
+            """,
+            nativeQuery = true)
+    Page<LawyerProfile> findVerifiedLawyers(
+            @Param("specialization") String specialization,
+            @Param("minExperience") Integer minExperience,
+            Pageable pageable);
+
+    @Query(value = """
+            SELECT lp.* FROM lawyers lp
             JOIN users u ON u.id = lp.user_id
             WHERE (CAST(:status AS TEXT) IS NULL OR CAST(lp.verification_status AS TEXT) = :status)
             AND (CAST(:keyword AS TEXT) IS NULL

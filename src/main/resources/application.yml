@@ -81,5 +81,10 @@ xai:
     read-chat: 30000
     read-brief: 60000
 
+# CORS
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173
+
 server:
   port: 8080

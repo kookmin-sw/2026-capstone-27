@@ -2,6 +2,7 @@ package org.example.shield.brief.controller.dto;
 
 import org.example.shield.brief.domain.Brief;
 import org.example.shield.brief.domain.BriefDelivery;
+import org.example.shield.brief.domain.KeyIssue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +15,7 @@ public record InboxDetailResponse(
         String legalField,
         String content,
         List<String> keywords,
-        List<String> keyIssues,
+        List<KeyIssue> keyIssues,
         String status,
         String clientName,
         String clientEmail,

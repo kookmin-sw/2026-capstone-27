@@ -42,13 +42,20 @@ public class LawyerController {
     private final VerificationService verificationService;
     private final LawyerDocumentService lawyerDocumentService;
 
-    @Operation(summary = "변호사 목록 조회", description = "인증된 변호사 목록을 경력순으로 조회합니다")
+    @Operation(summary = "변호사 목록 조회", description = "인증된 변호사 목록을 조회합니다. 전문분야, 최소경력, 정렬 기준으로 필터링 가능")
     @GetMapping
     public ApiResponse<PageResponse<LawyerResponse>> getLawyers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "experienceYears"));
-        PageResponse<LawyerResponse> result = lawyerService.getLawyers(pageable);
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String specialization,
+            @RequestParam(required = false) Integer minExperience,
+            @RequestParam(defaultValue = "experience") String sort) {
+        Sort sortOrder = switch (sort) {
+            case "name" -> Sort.by(Sort.Direction.ASC, "userId");
+            default -> Sort.by(Sort.Direction.DESC, "experienceYears");
+        };
+        Pageable pageable = PageRequest.of(page, Math.min(size, 100), sortOrder);
+        PageResponse<LawyerResponse> result = lawyerService.getLawyers(pageable, specialization, minExperience);
         return ApiResponse.success("조회 성공", result);
     }
 
@@ -73,7 +80,7 @@ public class LawyerController {
     @PatchMapping("/me")
     public ApiResponse<LawyerResponse> updateMyProfile(
             @AuthenticationPrincipal UUID userId,
-            @RequestBody ProfileUpdateRequest request) {
+            @Valid @RequestBody ProfileUpdateRequest request) {
         LawyerResponse result = lawyerService.updateMyProfile(userId, request);
         return ApiResponse.success("프로필이 수정되었습니다", result);
     }

@@ -11,8 +11,8 @@ interface AuthState {
   role: UserRole | null;
 
   // Actions
-  login: (accessToken: string, refreshToken: string) => Promise<void>;
-  logout: () => void;
+  login: (accessToken: string) => Promise<void>;
+  logout: () => Promise<void>;
   setUser: (user: UserInfo) => void;
   initialize: () => Promise<void>;
 }
@@ -24,8 +24,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   role: null,
 
-  login: async (accessToken, refreshToken) => {
-    setTokens(accessToken, refreshToken);
+  login: async (accessToken) => {
+    setTokens(accessToken);
     set({ accessToken, isAuthenticated: true });
 
     try {
@@ -37,7 +37,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  logout: () => {
+  logout: async () => {
+    // 명세: POST /api/auth/logout — 서버 세션/RefreshToken 무효화
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // 네트워크 에러 등은 무시하고 로컬 정리 진행
+    }
     clearTokens();
     set({
       user: null,
@@ -70,7 +76,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         isLoading: false,
       });
     } catch {
-      // Token invalid or expired — refresh interceptor will handle or clear
       if (!get().isAuthenticated) {
         clearTokens();
         set({ isLoading: false });

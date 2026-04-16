@@ -108,9 +108,9 @@ export function ChatPage() {
         {messages.map((msg, idx) => (
           <ChatBubble
             key={idx}
-            sender={msg.sender}
+            sender={msg.role}
             content={msg.content}
-            timestamp={msg.timestamp}
+            timestamp={msg.createdAt}
           />
         ))}
 

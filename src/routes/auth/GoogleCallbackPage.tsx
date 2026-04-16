@@ -36,23 +36,20 @@ export function GoogleCallbackPage() {
 
     (async () => {
       try {
+        // 명세: POST /api/auth/google { authorizationCode, role }
+        // role은 첫 로그인 시에만 필요 — 기존 사용자는 서버가 무시
         const { data } = await api.post<{
           data: {
             accessToken: string;
-            refreshToken: string;
-            isNewUser: boolean;
+            userId: string;
+            name: string;
             role: string;
           };
-        }>('/auth/google', { authorizationCode: code });
+        }>('/auth/google', { authorizationCode: code }, { withCredentials: true });
 
-        const { accessToken, refreshToken, isNewUser, role } = data.data;
+        const { accessToken, role } = data.data;
 
-        if (isNewUser) {
-          navigate('/role-select', { replace: true });
-          return;
-        }
-
-        await login(accessToken, refreshToken);
+        await login(accessToken);
         navigate(getRoleHome(role), { replace: true });
       } catch (err) {
         console.error('[GoogleCallback] Error:', err);

@@ -1,4 +1,4 @@
-import { TOKEN_KEY, REFRESH_TOKEN_KEY } from './constants';
+import { TOKEN_KEY } from './constants';
 
 export function getAccessToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
@@ -8,22 +8,16 @@ export function setAccessToken(token: string): void {
   localStorage.setItem(TOKEN_KEY, token);
 }
 
-export function getRefreshToken(): string | null {
-  return localStorage.getItem(REFRESH_TOKEN_KEY);
-}
-
-export function setRefreshToken(token: string): void {
-  localStorage.setItem(REFRESH_TOKEN_KEY, token);
-}
-
-export function setTokens(access: string, refresh: string): void {
-  setAccessToken(access);
-  setRefreshToken(refresh);
+/**
+ * 로그인 시 accessToken만 localStorage에 저장.
+ * refreshToken은 서버가 HttpOnly Cookie로 설정하므로 JS에서 관리하지 않음.
+ */
+export function setTokens(accessToken: string): void {
+  setAccessToken(accessToken);
 }
 
 export function clearTokens(): void {
   localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_KEY);
 }
 
 export function hasTokens(): boolean {

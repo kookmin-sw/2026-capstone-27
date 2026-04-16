@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { API_URL } from './constants';
-import { getAccessToken, getRefreshToken, setTokens, clearTokens } from './auth';
+import { getAccessToken, setAccessToken, clearTokens } from './auth';
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
@@ -58,16 +58,15 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const refreshToken = getRefreshToken();
-      if (!refreshToken) throw new Error('No refresh token');
+      // 명세: Body 없이 호출, Refresh Token은 HttpOnly Cookie로 자동 전송
+      const { data } = await axios.post(
+        `${API_URL}/api/auth/token/refresh`,
+        null,
+        { withCredentials: true },
+      );
 
-      const { data } = await axios.post(`${API_URL}/api/auth/token/refresh`, {
-        refreshToken,
-      });
-
-      const newAccess = data.data.accessToken;
-      const newRefresh = data.data.refreshToken;
-      setTokens(newAccess, newRefresh);
+      const newAccess = data.data.accessToken as string;
+      setAccessToken(newAccess);
       processQueue(null, newAccess);
 
       if (originalRequest.headers) {

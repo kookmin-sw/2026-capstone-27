@@ -133,7 +133,7 @@ export function LawyerPendingPage() {
             variant="secondary"
             size="sm"
             onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={data.first}
+            disabled={data.page === 0}
           >
             이전
           </Button>
@@ -144,7 +144,7 @@ export function LawyerPendingPage() {
             variant="secondary"
             size="sm"
             onClick={() => setPage((p) => p + 1)}
-            disabled={data.last}
+            disabled={!data.hasNext}
           >
             다음
           </Button>

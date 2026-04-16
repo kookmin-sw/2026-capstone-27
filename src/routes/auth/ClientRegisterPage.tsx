@@ -42,7 +42,7 @@ export function ClientRegisterPage() {
       | undefined;
 
     if (state?.accessToken && state?.refreshToken) {
-      await login(state.accessToken, state.refreshToken);
+      await login(state.accessToken);
     }
 
     navigate('/home', { replace: true });

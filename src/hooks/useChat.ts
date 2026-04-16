@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { consultationApi } from '@/lib/consultationApi';
 import { useChatStore } from '@/stores/chatStore';
 import type { MessageResponse } from '@/types/consultation';
+import type { MessageRole } from '@/types/enums';
 
 const KEYS = {
   messages: (id: string) => ['messages', id] as const,
@@ -54,9 +55,11 @@ export function useChat(consultationId: string) {
 
       // 1. 낙관적 UI — 사용자 메시지 즉시 표시
       const optimisticMsg: MessageResponse = {
-        sender: 'USER',
+        messageId: crypto.randomUUID(),
+        role: 'USER',
         content,
-        timestamp: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        allCompleted: false,
       };
       addMessage(optimisticMsg);
       setIsSending(true);
@@ -71,9 +74,12 @@ export function useChat(consultationId: string) {
 
         // 3. AI 응답 추가
         addMessage({
-          sender: 'CHATBOT',
+          messageId: res.messageId,
+          role: (res.role ?? 'CHATBOT') as MessageRole,
           content: res.content,
-          timestamp: res.timestamp,
+          createdAt: res.createdAt,
+          allCompleted: res.allCompleted,
+          classification: res.classification,
         });
 
         // 4. 분류 업데이트
@@ -96,9 +102,11 @@ export function useChat(consultationId: string) {
           error instanceof Error ? error.message : '메시지 전송에 실패했습니다';
 
         addMessage({
-          sender: 'SYSTEM',
+          messageId: crypto.randomUUID(),
+          role: 'SYSTEM',
           content: errorMsg,
-          timestamp: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          allCompleted: false,
         });
       } finally {
         setIsSending(false);

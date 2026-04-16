@@ -39,20 +39,15 @@ export function KakaoCallbackPage() {
         const { data } = await api.post<{
           data: {
             accessToken: string;
-            refreshToken: string;
-            isNewUser: boolean;
+            userId: string;
+            name: string;
             role: string;
           };
-        }>('/auth/kakao', { authorizationCode: code });
+        }>('/auth/kakao', { authorizationCode: code }, { withCredentials: true });
 
-        const { accessToken, refreshToken, isNewUser, role } = data.data;
+        const { accessToken, role } = data.data;
 
-        if (isNewUser) {
-          navigate('/role-select', { replace: true });
-          return;
-        }
-
-        await login(accessToken, refreshToken);
+        await login(accessToken);
         navigate(getRoleHome(role), { replace: true });
       } catch (err) {
         console.error('[KakaoCallback] Error:', err);

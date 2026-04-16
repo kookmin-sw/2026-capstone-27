@@ -40,8 +40,8 @@ export function LoginPage() {
         name: `Dev ${devRole}`,
         role: devRole,
       });
-      const { accessToken, refreshToken } = data.data;
-      await login(accessToken, refreshToken);
+      const { accessToken } = data.data;
+      await login(accessToken);
     } catch (err) {
       console.error('Dev login failed:', err);
     } finally {

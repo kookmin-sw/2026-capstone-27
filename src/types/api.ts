@@ -1,5 +1,5 @@
 export interface ApiResponse<T> {
-  status: string;
+  result: boolean;
   message: string;
   data: T;
 }
@@ -10,6 +10,5 @@ export interface PageResponse<T> {
   size: number;
   totalElements: number;
   totalPages: number;
-  first: boolean;
-  last: boolean;
+  hasNext: boolean;
 }

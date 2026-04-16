@@ -50,9 +50,8 @@ public class Consultation extends BaseEntity {
     private LocalDateTime lastMessageAt;
 
     /**
-     * xAI Responses API의 response.id.
-     * Stateful 대화 연결용: 다음 호출에서 previous_response_id로 사용.
-     * null이면 Stateless 모드 (전체 chatHistory 재전송).
+     * LLM 응답 completion ID (감사 로깅용).
+     * Groq 전환 후 Stateful 연결 용도 없음 — 항상 full history 전송.
      */
     @Column(columnDefinition = "text")
     private String lastResponseId;
@@ -81,7 +80,7 @@ public class Consultation extends BaseEntity {
     public void updateClassification(List<String> primaryField) {
         this.primaryField = primaryField;
         this.primaryFieldLocked = true;  // P0-V: 사용자 수정 시 lock
-        this.lastResponseId = null;      // 컨텍스트 전환 → 세션 리셋
+        this.lastResponseId = null;      // no-op post-Groq migration (full history 모드)
     }
 
     /**
@@ -92,7 +91,7 @@ public class Consultation extends BaseEntity {
             return false;  // locked — 무시
         }
         this.primaryField = primaryField;
-        this.lastResponseId = null;  // 체크리스트/RAG 컨텍스트 변경 → 세션 리셋
+        this.lastResponseId = null;  // no-op post-Groq migration (full history 모드)
         return true;
     }
 

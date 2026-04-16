@@ -2,9 +2,9 @@ package org.example.shield.consultation.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.shield.ai.application.GrokService;
+import org.example.shield.ai.application.GroqService;
 import org.example.shield.ai.dto.BriefParsedResponse;
-import org.example.shield.ai.dto.GrokCallResult;
+import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.brief.domain.Brief;
 import org.example.shield.brief.domain.BriefWriter;
 import org.example.shield.brief.domain.KeyIssue;
@@ -25,14 +25,14 @@ import java.util.concurrent.CompletableFuture;
  * 분석 서비스 — 의뢰서 생성 (비동기).
  *
  * Called by: ConsultationController.analyze()
- * Flow: 전체 chatHistory → Grok Phase 2 → Brief 저장 → 상태 갱신 → 알림
+ * Flow: 전체 chatHistory → Groq Phase 2 → Brief 저장 → 상태 갱신 → 알림
  */
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AnalysisService {
 
-    private final GrokService grokService;
+    private final GroqService groqService;
     private final ConsultationReader consultationReader;
     private final ConsultationWriter consultationWriter;
     private final BriefWriter briefWriter;
@@ -51,8 +51,8 @@ public class AnalysisService {
             // 1. 상담 조회 (이미 ANALYZING 상태)
             Consultation consultation = consultationReader.findById(consultationId);
 
-            // 2. Grok Phase 2 호출 — 의뢰서 생성
-            GrokCallResult<BriefParsedResponse> result = grokService.generateBrief(consultation);
+            // 2. Groq Phase 2 호출 — 의뢰서 생성
+            AiCallResult<BriefParsedResponse> result = groqService.generateBrief(consultation);
             BriefParsedResponse parsed = result.data();
 
             // 3. Brief 엔티티 생성 + 저장

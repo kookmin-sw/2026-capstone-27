@@ -3,9 +3,10 @@ package org.example.shield.consultation.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.ChecklistCoverageService;
-import org.example.shield.ai.application.GrokService;
+import org.example.shield.ai.application.GroqService;
+import org.example.shield.ai.config.GroqApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
-import org.example.shield.ai.dto.GrokCallResult;
+import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.ai.infrastructure.SanitizeService;
 import org.example.shield.common.response.PageResponse;
 import org.example.shield.consultation.controller.dto.MessageResponse;
@@ -34,7 +35,8 @@ public class MessageService {
     private final MessageWriter messageWriter;
     private final ConsultationReader consultationReader;
     private final ConsultationWriter consultationWriter;
-    private final GrokService grokService;
+    private final GroqService groqService;
+    private final GroqApiConfig groqApiConfig;
     private final SanitizeService sanitizeService;
     private final ChecklistCoverageService checklistCoverageService;
 
@@ -58,11 +60,11 @@ public class MessageService {
         Message userMessage = Message.createUserMessage(consultationId, content);
         messageWriter.save(userMessage);
 
-        // 2. Grok API 호출 (Phase 1 대화)
-        GrokCallResult<ChatParsedResponse> result = grokService.chat(consultation, sanitizedText);
+        // 2. Groq API 호출 (Phase 1 대화)
+        AiCallResult<ChatParsedResponse> result = groqService.chat(consultation, sanitizedText);
         ChatParsedResponse parsed = result.data();
 
-        // 3. 응답 ID 저장 (다음 턴의 Stateful 연결용)
+        // 3. 응답 ID 저장 (감사 로깅용)
         consultation.updateLastResponseId(result.responseId());
 
         // 4. 분류 결과 처리 (P0-V: primary_field_locked 가드)
@@ -83,7 +85,7 @@ public class MessageService {
         Message aiMessage = Message.createAiMessage(
                 consultationId,
                 parsed.getNextQuestion(),
-                "grok-4-1-fast",  // model shortname for audit
+                groqApiConfig.getChatModel(),  // model name from config
                 result.tokensInput(),
                 result.tokensOutput(),
                 result.latencyMs()

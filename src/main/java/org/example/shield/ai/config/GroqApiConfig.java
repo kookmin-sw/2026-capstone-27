@@ -1,10 +1,8 @@
 package org.example.shield.ai.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelOption;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -15,37 +13,34 @@ import reactor.netty.http.client.HttpClient;
 
 @Configuration
 @Getter
-public class GrokApiConfig {
+public class GroqApiConfig {
 
-    @Value("${xai.api-key}")
+    @Value("${groq.api-key}")
     private String apiKey;
 
-    @Value("${xai.base-url:https://api.x.ai}")
+    @Value("${groq.base-url:https://api.groq.com/openai}")
     private String baseUrl;
 
-    @Value("${xai.model.chat:grok-4-1-fast-non-reasoning}")
+    @Value("${groq.model.chat:llama-3.3-70b-versatile}")
     private String chatModel;
 
-    @Value("${xai.model.brief:grok-4.20-0309-non-reasoning}")
+    @Value("${groq.model.brief:llama-3.3-70b-versatile}")
     private String briefModel;
 
-    @Value("${xai.timeout.connect:5000}")
+    @Value("${groq.timeout.connect:5000}")
     private int connectTimeout;
 
-    @Value("${xai.timeout.read-chat:30000}")
+    @Value("${groq.timeout.read-chat:30000}")
     private int chatReadTimeout;
 
-    @Value("${xai.timeout.read-brief:60000}")
+    @Value("${groq.timeout.read-brief:60000}")
     private int briefReadTimeout;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
+    @Value("${groq.chat.max-history-messages:20}")
+    private int maxHistoryMessages;
 
     @Bean
-    public WebClient grokWebClient() {
+    public WebClient groqWebClient() {
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout);
 

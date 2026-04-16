@@ -1,10 +1,10 @@
 package org.example.shield.ai.dto;
 
 /**
- * Grok API 호출 결과 래퍼.
- * responseId (Stateful 연결용) + 파싱 결과를 함께 전달.
+ * AI API 호출 결과 래퍼.
+ * responseId: Groq completion ID (감사 로깅용).
  */
-public record GrokCallResult<T>(
+public record AiCallResult<T>(
         String responseId,
         T data,
         Integer tokensInput,

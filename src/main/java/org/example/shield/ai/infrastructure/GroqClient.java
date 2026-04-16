@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.AiClient;
-import org.example.shield.ai.config.GrokApiConfig;
+import org.example.shield.ai.config.GroqApiConfig;
 import org.example.shield.ai.dto.BriefParsedResponse;
 import org.example.shield.ai.dto.ChatParsedResponse;
-import org.example.shield.ai.dto.GrokCallResult;
-import org.example.shield.ai.dto.GrokRequest;
-import org.example.shield.ai.dto.GrokResponse;
+import org.example.shield.ai.dto.AiCallResult;
+import org.example.shield.ai.dto.GroqRequest;
+import org.example.shield.ai.dto.GroqResponse;
 import org.example.shield.consultation.exception.AnalysisFailedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,85 +20,77 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Grok Responses API HTTP 클라이언트.
- * POST https://api.x.ai/v1/responses
+ * Groq Chat Completions API HTTP 클라이언트.
+ * POST https://api.groq.com/openai/v1/chat/completions
  */
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GrokClient implements AiClient {
+public class GroqClient implements AiClient {
 
-    private final WebClient grokWebClient;
+    private final WebClient groqWebClient;
     private final ObjectMapper objectMapper;
-    private final GrokApiConfig config;
+    private final GroqApiConfig config;
 
     @Override
-    public GrokCallResult<ChatParsedResponse> callChatInitial(
-            String model, List<GrokRequest.InputItem> inputArray, String consultationId) {
+    public AiCallResult<ChatParsedResponse> callChat(
+            String model, List<GroqRequest.Message> messages) {
 
-        GrokRequest request = GrokRequest.forChatInitial(model, inputArray, consultationId);
+        GroqRequest request = GroqRequest.forChat(model, messages);
         return callAndParse(request, ChatParsedResponse.class,
                 Duration.ofMillis(config.getChatReadTimeout()));
     }
 
     @Override
-    public GrokCallResult<ChatParsedResponse> callChatFollowUp(
-            String model, String userMessage, String previousResponseId, String consultationId) {
+    public AiCallResult<BriefParsedResponse> callBrief(
+            String model, List<GroqRequest.Message> messages) {
 
-        GrokRequest request = GrokRequest.forChatFollowUp(model, userMessage,
-                previousResponseId, consultationId);
-        return callAndParse(request, ChatParsedResponse.class,
-                Duration.ofMillis(config.getChatReadTimeout()));
-    }
-
-    @Override
-    public GrokCallResult<BriefParsedResponse> callBrief(
-            String model, List<GrokRequest.InputItem> inputArray) {
-
-        GrokRequest request = GrokRequest.forBrief(model, inputArray);
+        GroqRequest request = GroqRequest.forBrief(model, messages);
         return callAndParse(request, BriefParsedResponse.class,
                 Duration.ofMillis(config.getBriefReadTimeout()));
     }
 
     /**
-     * Grok API 호출 + 응답 파싱.
-     * 429/5xx 재시도 3회, JSON 파싱 실패 시 1회 재시도.
+     * Groq API 호출 + 응답 파싱.
+     * 429/5xx 재시도 3회, JSON 파싱 실패 시 markdown extraction fallback.
      */
-    private <T> GrokCallResult<T> callAndParse(GrokRequest request, Class<T> type, Duration timeout) {
-        long startTime = System.currentTimeMillis();
+    private <T> AiCallResult<T> callAndParse(GroqRequest request, Class<T> type, Duration timeout) {
+        long startNanos = System.nanoTime();
 
         try {
-            GrokResponse grokResponse = grokWebClient.post()
-                    .uri("/v1/responses")
+            GroqResponse groqResponse = groqWebClient.post()
+                    .uri("/v1/chat/completions")
                     .bodyValue(request)
                     .retrieve()
-                    .bodyToMono(GrokResponse.class)
+                    .bodyToMono(GroqResponse.class)
                     .timeout(timeout)
                     .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
                             .filter(this::isRetryable))
                     .block();
 
-            if (grokResponse == null) {
-                throw new AnalysisFailedException("Grok API 응답이 null입니다");
+            if (groqResponse == null) {
+                throw new AnalysisFailedException("Groq API 응답이 null입니다");
             }
 
-            int latencyMs = (int) (System.currentTimeMillis() - startTime);
-            String contentJson = grokResponse.extractContent();
+            int latencyMs = (int) ((System.nanoTime() - startNanos) / 1_000_000);
+            String contentJson = groqResponse.extractContent();
 
             if (contentJson == null || contentJson.isBlank()) {
-                throw new AnalysisFailedException("Grok API 응답 content가 비어있습니다");
+                throw new AnalysisFailedException("Groq API 응답 content가 비어있습니다");
             }
 
-            // JSON 파싱
             T parsed = parseResponse(contentJson, type);
 
-            Integer tokensIn = grokResponse.getUsage() != null
-                    ? grokResponse.getUsage().getInputTokens() : null;
-            Integer tokensOut = grokResponse.getUsage() != null
-                    ? grokResponse.getUsage().getOutputTokens() : null;
+            Integer tokensIn = groqResponse.getUsage() != null
+                    ? groqResponse.getUsage().getPromptTokens() : null;
+            Integer tokensOut = groqResponse.getUsage() != null
+                    ? groqResponse.getUsage().getCompletionTokens() : null;
 
-            return new GrokCallResult<>(
-                    grokResponse.getId(),
+            log.info("Groq API 호출 성공: id={}, tokensIn={}, tokensOut={}, latency={}ms",
+                    groqResponse.getId(), tokensIn, tokensOut, latencyMs);
+
+            return new AiCallResult<>(
+                    groqResponse.getId(),
                     parsed,
                     tokensIn,
                     tokensOut,
@@ -108,9 +100,9 @@ public class GrokClient implements AiClient {
         } catch (AnalysisFailedException e) {
             throw e;
         } catch (Exception e) {
-            int latencyMs = (int) (System.currentTimeMillis() - startTime);
-            log.error("Grok API 호출 실패: latency={}ms, error={}", latencyMs, e.getMessage(), e);
-            throw new AnalysisFailedException("Grok API 호출 실패: " + e.getMessage());
+            int latencyMs = (int) ((System.nanoTime() - startNanos) / 1_000_000);
+            log.error("Groq API 호출 실패: latency={}ms, error={}", latencyMs, e.getMessage(), e);
+            throw new AnalysisFailedException("Groq API 호출 실패: " + e.getMessage(), e);
         }
     }
 
@@ -120,7 +112,6 @@ public class GrokClient implements AiClient {
         } catch (Exception e) {
             log.warn("JSON 파싱 실패, 원문: {}", contentJson.substring(0, Math.min(500, contentJson.length())));
 
-            // JSON이 ```json ... ``` 블록에 감싸인 경우 추출 시도
             String cleaned = extractJsonFromMarkdown(contentJson);
             if (!cleaned.equals(contentJson)) {
                 try {
@@ -130,7 +121,7 @@ public class GrokClient implements AiClient {
                 }
             }
 
-            throw new AnalysisFailedException("Grok 응답 JSON 파싱 실패: " + e.getMessage());
+            throw new AnalysisFailedException("Groq 응답 JSON 파싱 실패: " + e.getMessage(), e);
         }
     }
 

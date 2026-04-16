@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.config.GroqApiConfig;
 import org.example.shield.ai.dto.BriefParsedResponse;
 import org.example.shield.ai.dto.ChatParsedResponse;
-import org.example.shield.ai.dto.GrokCallResult;
+import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.ai.dto.GroqRequest;
 import org.example.shield.ai.infrastructure.GuardrailFilter;
 import org.example.shield.ai.infrastructure.SanitizeService;
@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GrokService {
+public class GroqService {
 
     private final AiClient aiClient;
     private final GroqApiConfig config;
@@ -43,16 +43,16 @@ public class GrokService {
      *
      * @param consultation 상담 엔티티
      * @param sanitizedUserText 사용자 입력 (sanitize 완료)
-     * @return GrokCallResult<ChatParsedResponse>
+     * @return AiCallResult<ChatParsedResponse>
      */
-    public GrokCallResult<ChatParsedResponse> chat(Consultation consultation, String sanitizedUserText) {
+    public AiCallResult<ChatParsedResponse> chat(Consultation consultation, String sanitizedUserText) {
         List<GroqRequest.Message> messages = buildChatMessages(consultation, sanitizedUserText);
-        GrokCallResult<ChatParsedResponse> result = aiClient.callChat(
+        AiCallResult<ChatParsedResponse> result = aiClient.callChat(
                 config.getChatModel(), messages);
 
         // Layer 2 가드레일: 금칙어 필터
         ChatParsedResponse filtered = guardrailFilter.filterChatResponse(result.data());
-        return new GrokCallResult<>(
+        return new AiCallResult<>(
                 result.responseId(),
                 filtered,
                 result.tokensInput(),
@@ -65,16 +65,16 @@ public class GrokService {
      * Phase 2 의뢰서 생성 — 전체 대화를 기반으로 구조화된 의뢰서 생성.
      *
      * @param consultation 상담 엔티티
-     * @return GrokCallResult<BriefParsedResponse>
+     * @return AiCallResult<BriefParsedResponse>
      */
-    public GrokCallResult<BriefParsedResponse> generateBrief(Consultation consultation) {
+    public AiCallResult<BriefParsedResponse> generateBrief(Consultation consultation) {
         List<GroqRequest.Message> messages = buildBriefMessages(consultation);
-        GrokCallResult<BriefParsedResponse> result = aiClient.callBrief(
+        AiCallResult<BriefParsedResponse> result = aiClient.callBrief(
                 config.getBriefModel(), messages);
 
         // Layer 2 가드레일: 의뢰서 금칙어 필터
         BriefParsedResponse filtered = guardrailFilter.filterBriefResponse(result.data());
-        return new GrokCallResult<>(
+        return new AiCallResult<>(
                 result.responseId(),
                 filtered,
                 result.tokensInput(),
@@ -108,9 +108,12 @@ public class GrokService {
         msgs.add(GroqRequest.Message.system(systemPrompt));
 
         // 2. 기존 대화 내역 (시간순)
+        // TODO: 성능 최적화 — findAllByConsultationId는 전체 메시지를 로드함.
+        //  DB에서 최근 N건만 조회하는 쿼리로 개선 고려 (OrderByCreatedAtDesc + Limit)
         List<Message> history = messageReader.findAllByConsultationId(consultation.getId());
         for (Message msg : history) {
             if (msg.getRole() == MessageRole.USER) {
+                // TODO: 저장 시점에 sanitize된 텍스트를 별도 필드에 보관하면 중복 sanitize 제거 가능
                 msgs.add(GroqRequest.Message.user(
                         sanitizeService.sanitizeUserText(msg.getContent())));
             } else if (msg.getRole() == MessageRole.CHATBOT) {

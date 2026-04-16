@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GrokServiceTruncationTest {
+class GroqServiceTruncationTest {
 
     @Test
     @DisplayName("truncateMessages — 메시지가 maxMessages+1 이하면 그대로 반환")
@@ -63,19 +63,19 @@ class GrokServiceTruncationTest {
      */
     private List<GroqRequest.Message> invokeTruncate(List<GroqRequest.Message> messages, int max)
             throws Exception {
-        Method method = GrokService.class.getDeclaredMethod(
+        Method method = GroqService.class.getDeclaredMethod(
                 "truncateMessages", List.class, int.class);
         method.setAccessible(true);
-        GrokService service = createMinimalService();
+        GroqService service = createMinimalService();
         @SuppressWarnings("unchecked")
         List<GroqRequest.Message> result = (List<GroqRequest.Message>) method.invoke(service, messages, max);
         return result;
     }
 
-    private GrokService createMinimalService() throws Exception {
-        var constructor = GrokService.class.getDeclaredConstructors()[0];
+    private GroqService createMinimalService() throws Exception {
+        var constructor = GroqService.class.getDeclaredConstructors()[0];
         constructor.setAccessible(true);
-        // GrokService has 6 constructor params — pass null for all (we only test truncateMessages)
-        return (GrokService) constructor.newInstance(null, null, null, null, null, null);
+        // GroqService has 6 constructor params — pass null for all (we only test truncateMessages)
+        return (GroqService) constructor.newInstance(null, null, null, null, null, null);
     }
 }

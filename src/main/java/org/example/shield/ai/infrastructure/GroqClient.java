@@ -7,7 +7,7 @@ import org.example.shield.ai.application.AiClient;
 import org.example.shield.ai.config.GroqApiConfig;
 import org.example.shield.ai.dto.BriefParsedResponse;
 import org.example.shield.ai.dto.ChatParsedResponse;
-import org.example.shield.ai.dto.GrokCallResult;
+import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.ai.dto.GroqRequest;
 import org.example.shield.ai.dto.GroqResponse;
 import org.example.shield.consultation.exception.AnalysisFailedException;
@@ -33,7 +33,7 @@ public class GroqClient implements AiClient {
     private final GroqApiConfig config;
 
     @Override
-    public GrokCallResult<ChatParsedResponse> callChat(
+    public AiCallResult<ChatParsedResponse> callChat(
             String model, List<GroqRequest.Message> messages) {
 
         GroqRequest request = GroqRequest.forChat(model, messages);
@@ -42,7 +42,7 @@ public class GroqClient implements AiClient {
     }
 
     @Override
-    public GrokCallResult<BriefParsedResponse> callBrief(
+    public AiCallResult<BriefParsedResponse> callBrief(
             String model, List<GroqRequest.Message> messages) {
 
         GroqRequest request = GroqRequest.forBrief(model, messages);
@@ -54,8 +54,8 @@ public class GroqClient implements AiClient {
      * Groq API 호출 + 응답 파싱.
      * 429/5xx 재시도 3회, JSON 파싱 실패 시 markdown extraction fallback.
      */
-    private <T> GrokCallResult<T> callAndParse(GroqRequest request, Class<T> type, Duration timeout) {
-        long startTime = System.currentTimeMillis();
+    private <T> AiCallResult<T> callAndParse(GroqRequest request, Class<T> type, Duration timeout) {
+        long startNanos = System.nanoTime();
 
         try {
             GroqResponse groqResponse = groqWebClient.post()
@@ -72,7 +72,7 @@ public class GroqClient implements AiClient {
                 throw new AnalysisFailedException("Groq API 응답이 null입니다");
             }
 
-            int latencyMs = (int) (System.currentTimeMillis() - startTime);
+            int latencyMs = (int) ((System.nanoTime() - startNanos) / 1_000_000);
             String contentJson = groqResponse.extractContent();
 
             if (contentJson == null || contentJson.isBlank()) {
@@ -89,7 +89,7 @@ public class GroqClient implements AiClient {
             log.info("Groq API 호출 성공: id={}, tokensIn={}, tokensOut={}, latency={}ms",
                     groqResponse.getId(), tokensIn, tokensOut, latencyMs);
 
-            return new GrokCallResult<>(
+            return new AiCallResult<>(
                     groqResponse.getId(),
                     parsed,
                     tokensIn,
@@ -100,9 +100,9 @@ public class GroqClient implements AiClient {
         } catch (AnalysisFailedException e) {
             throw e;
         } catch (Exception e) {
-            int latencyMs = (int) (System.currentTimeMillis() - startTime);
+            int latencyMs = (int) ((System.nanoTime() - startNanos) / 1_000_000);
             log.error("Groq API 호출 실패: latency={}ms, error={}", latencyMs, e.getMessage(), e);
-            throw new AnalysisFailedException("Groq API 호출 실패: " + e.getMessage());
+            throw new AnalysisFailedException("Groq API 호출 실패: " + e.getMessage(), e);
         }
     }
 
@@ -121,7 +121,7 @@ public class GroqClient implements AiClient {
                 }
             }
 
-            throw new AnalysisFailedException("Groq 응답 JSON 파싱 실패: " + e.getMessage());
+            throw new AnalysisFailedException("Groq 응답 JSON 파싱 실패: " + e.getMessage(), e);
         }
     }
 

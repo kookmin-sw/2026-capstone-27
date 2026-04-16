@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Shield, MessageCircle, Globe, Lock } from 'lucide-react';
+import { Shield, MessageCircle, Globe, Lock, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { loginWithKakao } from '@/lib/kakao';
 import { loginWithNaver } from '@/lib/naver';
 import { loginWithGoogle } from '@/lib/google';
 import { useAuthStore } from '@/stores/authStore';
+import api from '@/lib/api';
+import type { UserRole } from '@/types';
 
 function getRoleHome(role: string | null): string {
   switch (role) {
@@ -18,8 +21,33 @@ function getRoleHome(role: string | null): string {
   }
 }
 
+const DEV_ROLES: { role: UserRole; label: string; color: string }[] = [
+  { role: 'USER', label: '의뢰인', color: 'bg-emerald-500 hover:bg-emerald-600' },
+  { role: 'LAWYER', label: '변호사', color: 'bg-violet-500 hover:bg-violet-600' },
+  { role: 'ADMIN', label: '관리자', color: 'bg-rose-500 hover:bg-rose-600' },
+];
+
 export function LoginPage() {
-  const { isAuthenticated, role } = useAuthStore();
+  const { isAuthenticated, role, login } = useAuthStore();
+  const [devOpen, setDevOpen] = useState(false);
+  const [devLoading, setDevLoading] = useState<UserRole | null>(null);
+
+  async function handleDevLogin(devRole: UserRole) {
+    setDevLoading(devRole);
+    try {
+      const { data } = await api.post('/auth/dev/login', {
+        email: `dev-${devRole.toLowerCase()}@shield.dev`,
+        name: `Dev ${devRole}`,
+        role: devRole,
+      });
+      const { accessToken, refreshToken } = data.data;
+      await login(accessToken, refreshToken);
+    } catch (err) {
+      console.error('Dev login failed:', err);
+    } finally {
+      setDevLoading(null);
+    }
+  }
 
   if (isAuthenticated) {
     return <Navigate to={getRoleHome(role)} replace />;
@@ -124,6 +152,43 @@ export function LoginPage() {
           <span className="text-[#64748B] font-medium">개인정보 처리방침</span>에
           동의하는 것으로 간주합니다.
         </p>
+
+        {/* ── Dev Login Section ── */}
+        <div className="mt-4 border-t border-dashed border-gray-200 pt-4">
+          <button
+            type="button"
+            onClick={() => setDevOpen(!devOpen)}
+            className={cn(
+              'flex items-center justify-center gap-1.5 w-full',
+              'text-xs text-gray-400 hover:text-gray-600 transition-colors',
+            )}
+          >
+            <Terminal size={12} />
+            <span>Dev Login</span>
+            {devOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          </button>
+
+          {devOpen && (
+            <div className="mt-3 flex gap-2">
+              {DEV_ROLES.map(({ role: devRole, label, color }) => (
+                <button
+                  key={devRole}
+                  type="button"
+                  disabled={devLoading !== null}
+                  onClick={() => handleDevLogin(devRole)}
+                  className={cn(
+                    'flex-1 py-2 rounded-lg text-xs font-semibold text-white transition-all',
+                    color,
+                    devLoading === devRole && 'opacity-60 animate-pulse',
+                    devLoading !== null && devLoading !== devRole && 'opacity-40',
+                  )}
+                >
+                  {devLoading === devRole ? '...' : label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

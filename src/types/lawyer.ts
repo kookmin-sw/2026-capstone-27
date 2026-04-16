@@ -37,6 +37,7 @@ export interface LawyerMeResponse {
 
 export interface InboxItemResponse {
   deliveryId: string;
+  briefId: string;
   briefTitle: string;
   legalField: string;
   status: string;

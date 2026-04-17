@@ -1,0 +1,322 @@
+{
+  "results": [
+    {
+      "idx": 0,
+      "domain": "부동산",
+      "scenario": "매매계약 해제",
+      "expected_l1": "law-001",
+      "expected_l2": "law-001-01",
+      "actual_id": "law-001-01-03",
+      "confidence": 0.8,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "부동산 매매계약 해제",
+      "all_nodes": [
+        [
+          "law-001-01-03",
+          0.8
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 1,
+      "domain": "부동산",
+      "scenario": "전세 보증금 미반환",
+      "expected_l1": "law-001",
+      "expected_l2": "law-001-02",
+      "actual_id": "law-001-02-03",
+      "confidence": 0.8,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "전세 계약 종료 후 집주인의 보증금 미반환",
+      "all_nodes": [
+        [
+          "law-001-02-03",
+          0.8
+        ],
+        [
+          "law-007-01-05",
+          0.7
+        ],
+        [
+          "law-006-01-01",
+          0.5
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 10,
+      "domain": "이혼",
+      "scenario": "협의이혼 절차",
+      "expected_l1": "law-002",
+      "expected_l2": "law-002-01",
+      "actual_id": "law-002-01-01",
+      "confidence": 1.0,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "협의이혼 절차 문의",
+      "all_nodes": [
+        [
+          "law-002-01-01",
+          1.0
+        ],
+        [
+          "law-002-01",
+          0.8
+        ],
+        [
+          "law-002",
+          0.5
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 14,
+      "domain": "이혼",
+      "scenario": "양육권 결정",
+      "expected_l1": "law-002",
+      "expected_l2": "law-002-04",
+      "actual_id": "law-002-04-01",
+      "confidence": 0.9,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "이혼 후 자녀 양육권 문의",
+      "all_nodes": [
+        [
+          "law-002-04-01",
+          0.9
+        ],
+        [
+          "law-002-04",
+          0.8
+        ],
+        [
+          "law-002",
+          0.7
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 20,
+      "domain": "상속",
+      "scenario": "상속순위",
+      "expected_l1": "law-003",
+      "expected_l2": "law-003-01",
+      "actual_id": "law-003-01-01",
+      "confidence": 0.9,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "아버지의 사망으로 인한 상속인에 대한 문의",
+      "all_nodes": [
+        [
+          "law-003-01-01",
+          0.9
+        ],
+        [
+          "law-003-01",
+          0.8
+        ],
+        [
+          "law-003",
+          0.7
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 30,
+      "domain": "손해배상",
+      "scenario": "교통사고 배상",
+      "expected_l1": "law-005",
+      "expected_l2": "law-005-02",
+      "actual_id": "law-005-02",
+      "confidence": 0.9,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "교통사고 후 보험사와의 합의금 분쟁",
+      "all_nodes": [
+        [
+          "law-005-02",
+          0.9
+        ],
+        [
+          "law-005-02-02",
+          0.8
+        ],
+        [
+          "law-005-01",
+          0.7
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 23,
+      "domain": "상속",
+      "scenario": "유류분 청구",
+      "expected_l1": "law-003",
+      "expected_l2": "law-003-04",
+      "actual_id": "law-003",
+      "confidence": 0.8,
+      "l1_match": true,
+      "l2_match": false,
+      "intent_summary": "유언 상속 관련 문의",
+      "all_nodes": [
+        [
+          "law-003",
+          0.8
+        ],
+        [
+          "law-003-01",
+          0.7
+        ],
+        [
+          "law-003-03",
+          0.9
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 21,
+      "domain": "상속",
+      "scenario": "상속포기",
+      "expected_l1": "law-003",
+      "expected_l2": "law-003-02",
+      "actual_id": "law-003-02-03",
+      "confidence": 1.0,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "상속 포기 문의",
+      "all_nodes": [
+        [
+          "law-003-02-03",
+          1.0
+        ],
+        [
+          "law-003-01-02",
+          0.5
+        ],
+        [
+          "law-003-02-01",
+          0.3
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 31,
+      "domain": "손해배상",
+      "scenario": "의료사고",
+      "expected_l1": "law-005",
+      "expected_l2": "law-005-03",
+      "actual_id": "law-005-03",
+      "confidence": 0.9,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "사용자는 수술 후 후유증이 심한데 의사 과실이 의심되어 의료사고에 대한 법률 상담을 원하고 있습니다.",
+      "all_nodes": [
+        [
+          "law-005-03",
+          0.9
+        ],
+        [
+          "law-005-03-01",
+          0.8
+        ],
+        [
+          "law-005-01",
+          0.7
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 34,
+      "domain": "손해배상",
+      "scenario": "사용자 책임",
+      "expected_l1": "law-005",
+      "expected_l2": "law-005-05",
+      "actual_id": "law-005",
+      "confidence": 0.8,
+      "l1_match": true,
+      "l2_match": false,
+      "intent_summary": "사용자의 개가 행인을 물어 치료비를 배상해야 하는지 문의",
+      "all_nodes": [
+        [
+          "law-005",
+          0.8
+        ],
+        [
+          "law-005-01",
+          0.6
+        ],
+        [
+          "law-005-05",
+          0.4
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 3,
+      "domain": "부동산",
+      "scenario": "공유 지분 분쟁",
+      "expected_l1": "law-001",
+      "expected_l2": "law-001-04",
+      "actual_id": "law-003-01-04",
+      "confidence": 0.8,
+      "l1_match": false,
+      "l2_match": false,
+      "intent_summary": "형제 3명이 부모님 땅을 공동 상속받은 후, 한 명이 지분을 매각하려고 할 때 필요한 법률 정보",
+      "all_nodes": [
+        [
+          "law-003-01-04",
+          0.8
+        ],
+        [
+          "law-003-02-01",
+          0.7
+        ],
+        [
+          "law-001-04-01",
+          0.6
+        ]
+      ],
+      "model": "llama-4-scout"
+    },
+    {
+      "idx": 16,
+      "domain": "이혼",
+      "scenario": "제3자 위자료",
+      "expected_l1": "law-002",
+      "expected_l2": "law-002-02",
+      "actual_id": "law-002-02",
+      "confidence": 0.9,
+      "l1_match": true,
+      "l2_match": true,
+      "intent_summary": "남편의 불륜 상대에게 위자료 청구 가능성 문의",
+      "all_nodes": [
+        [
+          "law-002-02",
+          0.9
+        ],
+        [
+          "law-002-02-01",
+          0.8
+        ],
+        [
+          "law-005-01-03",
+          0.7
+        ]
+      ],
+      "model": "llama-4-scout"
+    }
+  ],
+  "completed": 12,
+  "total": 40
+}

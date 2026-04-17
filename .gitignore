@@ -64,9 +64,10 @@ skills-lock.json
 schema.sql
 CLAUDE.md
 
-### Python 스크립트 (임시) ###
-*.py
+### Python ###
 __pycache__/
+# scripts/ 디렉터리의 Python 스크립트는 추적
+!scripts/*.py
 
 ### 기타 ###
 *.swp

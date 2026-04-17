@@ -23,6 +23,15 @@ export interface VerificationChecks {
   phoneDuplicate: boolean;
   nameDuplicate: boolean;
   requiredFields: boolean;
+  licenseVerified: boolean;
+  documentMatched: boolean;
+  specializationValid: boolean;
+  experienceVerified: boolean;
+  duplicateSignup: boolean;
+  documentComplete: boolean;
+  completedCount: number;
+  totalCount: number;
+  updatedAt: string | null;
 }
 
 export interface VerificationLog {
@@ -70,7 +79,7 @@ export const adminApi = {
 
   /** 서류 조회 */
   getDocuments: (id: string) =>
-    api.get<ApiResponse<Array<{ documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; uploadedAt: string }>>>(
+    api.get<ApiResponse<Array<{ documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; createdAt: string }>>>(
       `${BASE}/lawyers/${id}/documents`,
     ),
 

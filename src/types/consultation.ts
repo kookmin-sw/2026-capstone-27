@@ -40,11 +40,6 @@ export interface MessageResponse {
   role: MessageRole;
   content: string;
   createdAt: string;
-  allCompleted: boolean;
-  classification?: {
-    primaryField: string[];
-    tags: string[];
-  };
 }
 
 /** 명세: POST /api/consultations/{id}/messages 전송 응답 (202) */

@@ -62,7 +62,7 @@ export function useLawyerRecommendations(briefId: string, enabled = true) {
     queryKey: KEYS.recommendations(briefId),
     queryFn: async () => {
       const { data } = await briefApi.getRecommendations(briefId);
-      return data.data;
+      return data.data.content;
     },
     enabled: !!briefId && enabled,
   });

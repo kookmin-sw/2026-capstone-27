@@ -1,12 +1,33 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Upload, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { formatDate } from '@/lib/dateUtils';
-import { useMyDocuments, useUploadDocument } from '@/hooks/useLawyer';
-import { MAX_FILE_SIZE, ACCEPTED_FILE_TYPES, ACCEPTED_FILE_EXTS } from '@/lib/constants';
+import api from '@/lib/api';
 import { Button, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
+
+// ─── types ───────────────────────────────────────────────────────────────────
+
+interface DocumentItem {
+  documentId: string;
+  fileName: string;
+  fileUrl?: string;
+  createdAt: string;
+}
+
+// ─── helpers ─────────────────────────────────────────────────────────────────
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+const ACCEPTED_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
+const ACCEPTED_EXTS = '.pdf,.jpg,.jpeg,.png';
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+}
 
 function fileTypeLabel(name: string): string {
   const ext = name.split('.').pop()?.toUpperCase() ?? '';
@@ -19,15 +40,30 @@ export function DocumentsPage() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: documents = [], isLoading } = useMyDocuments();
-  const uploadDocument = useUploadDocument();
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  async function fetchDocuments() {
+    setIsLoading(true);
+    try {
+      const { data } = await api.get<{ data: DocumentItem[] }>('/lawyers/me/documents');
+      setDocuments(data.data ?? []);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   function validateFile(file: File): string | null {
-    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+    if (!ACCEPTED_TYPES.includes(file.type)) {
       return 'PDF, JPG, PNG 파일만 업로드 가능합니다.';
     }
     if (file.size > MAX_FILE_SIZE) {
@@ -73,15 +109,21 @@ export function DocumentsPage() {
 
   async function handleUpload() {
     if (!selectedFile) return;
+    setIsUploading(true);
     setUploadError('');
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
-      await uploadDocument.mutateAsync(formData);
+      await api.post('/lawyers/me/documents', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       setUploadSuccess(`"${selectedFile.name}" 업로드가 완료되었습니다.`);
       setSelectedFile(null);
+      await fetchDocuments();
     } catch {
       setUploadError('업로드에 실패했습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsUploading(false);
     }
   }
 
@@ -134,7 +176,7 @@ export function DocumentsPage() {
           <input
             ref={fileInputRef}
             type="file"
-            accept={ACCEPTED_FILE_EXTS.join(',')}
+            accept={ACCEPTED_EXTS}
             onChange={handleInputChange}
             className="hidden"
             aria-label="파일 선택"
@@ -159,7 +201,7 @@ export function DocumentsPage() {
               <Button
                 variant="primary"
                 fullWidth
-                isLoading={uploadDocument.isPending}
+                isLoading={isUploading}
                 onClick={handleUpload}
                 leftIcon={<Upload size={15} />}
               >
@@ -195,7 +237,7 @@ export function DocumentsPage() {
                         {doc.fileName}
                       </p>
                       <p className="text-xs text-gray-400 mt-0.5">
-                        {fileTypeLabel(doc.fileName)} · {formatDate(doc.uploadedAt)}
+                        {fileTypeLabel(doc.fileName)} · {formatDate(doc.createdAt)}
                       </p>
                     </div>
                     {doc.fileUrl && (

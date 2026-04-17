@@ -1,22 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, ChevronRight } from 'lucide-react';
+import { User, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerList } from '@/hooks/useLawyer';
-import { Spinner } from '@/components/ui';
+import { useLegalFields } from '@/hooks/useLegalFields';
+import { Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { DOMAIN_LABELS } from '@/lib/constants';
 import type { LawyerResponse } from '@/types';
-
-// ─── filter chips ────────────────────────────────────────────────────────────
-
-const SPECIALIZATION_FILTERS: { label: string; value: string | undefined }[] = [
-  { label: '전체', value: undefined },
-  { label: '민사', value: 'CIVIL' },
-  { label: '형사', value: 'CRIMINAL' },
-  { label: '노동', value: 'LABOR' },
-  { label: '학교폭력', value: 'SCHOOL_VIOLENCE' },
-];
 
 // ─── lawyer card ─────────────────────────────────────────────────────────────
 
@@ -26,53 +17,78 @@ interface LawyerCardProps {
 }
 
 function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
+  const isVerified = lawyer.verificationStatus === 'VERIFIED';
+
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full text-left bg-white rounded-card border border-[#e9edef] p-4',
+        'w-full text-left bg-white rounded-card shadow-sm p-4',
         'hover:shadow-md active:scale-[0.99] transition-all duration-150',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
       )}
     >
-      <div className="flex items-center gap-3">
+      {/* Profile image + info */}
+      <div className="flex items-start gap-3">
         {/* Avatar */}
-        <div className="shrink-0 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+        <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
           {lawyer.profileImageUrl ? (
-            <img src={lawyer.profileImageUrl} alt={lawyer.name} className="w-full h-full object-cover" />
+            <img
+              src={lawyer.profileImageUrl}
+              alt={lawyer.name}
+              className="w-14 h-14 rounded-full object-cover"
+            />
           ) : (
-            <User size={22} className="text-gray-400" aria-hidden="true" />
+            <User size={26} className="text-gray-400" aria-hidden="true" />
           )}
         </div>
 
-        {/* Info */}
+        {/* Name + verification */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1">
-            <span className="text-base font-medium text-[#1a1a1a]">{lawyer.name}</span>
-            <ChevronRight size={16} className="text-gray-400" />
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-base font-semibold text-gray-900 truncate">
+              {lawyer.name}
+            </span>
+            {isVerified ? (
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                <CheckCircle size={11} aria-hidden="true" />
+                인증됨
+              </span>
+            ) : (
+              <span className="inline-flex items-center text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                심사 중
+              </span>
+            )}
           </div>
-          <p className="text-[11px] text-[#6b7280] mt-0.5">
-            경력 {lawyer.experienceYears}년
+
+          {/* Experience */}
+          <p className="mt-0.5 text-sm text-gray-500">
+            {lawyer.experienceYears}년 경력
           </p>
         </div>
       </div>
 
-      {/* Specializations */}
-      {lawyer.specializations && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          <span className="text-[10px] text-[#0c447c] bg-[#e8f0fc] rounded-full px-2.5 py-0.5">
-            {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
-          </span>
-        </div>
-      )}
-
-      {/* Bio */}
+      {/* Bio excerpt */}
       {lawyer.bio && (
-        <p className="mt-2 text-xs text-[#6b7280] leading-relaxed line-clamp-2">
+        <p className="mt-2.5 text-sm text-gray-500 leading-relaxed line-clamp-2">
           {lawyer.bio}
         </p>
       )}
+
+      {/* Specialization badge */}
+      {lawyer.specializations && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <Badge variant="primary" size="sm">
+            {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
+          </Badge>
+        </div>
+      )}
+
+      {/* View profile CTA */}
+      <div className="mt-3 pt-3 border-t border-gray-100">
+        <span className="text-sm font-medium text-brand">프로필 보기 →</span>
+      </div>
     </button>
   );
 }
@@ -85,6 +101,12 @@ export function LawyerListPage() {
     string | undefined
   >(undefined);
 
+  const { data: legalFields } = useLegalFields();
+  const filters: { label: string; value: string | undefined }[] = [
+    { label: '전체', value: undefined },
+    ...(legalFields ?? []).map((f) => ({ label: f.label, value: f.value })),
+  ];
+
   const { data, isLoading } = useLawyerList(0, 20, selectedSpecialization);
   const lawyers = data?.content ?? (Array.isArray(data) ? data : []);
 
@@ -95,7 +117,7 @@ export function LawyerListPage() {
       {/* Filter chips */}
       <div className="sticky top-14 z-20 bg-surface border-b border-gray-100">
         <div className="flex gap-2 overflow-x-auto px-4 py-3 scrollbar-none">
-          {SPECIALIZATION_FILTERS.map((filter) => {
+          {filters.map((filter) => {
             const isActive = selectedSpecialization === filter.value;
             return (
               <button

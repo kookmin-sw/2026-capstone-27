@@ -30,8 +30,10 @@ export const consultationApi = {
     } satisfies CreateConsultationRequest),
 
   /** 메시지 목록 */
-  getMessages: (id: string) =>
-    api.get<ApiResponse<MessageResponse[]>>(`${BASE}/${id}/messages`),
+  getMessages: (id: string, page = 0, size = 50) =>
+    api.get<ApiResponse<PageResponse<MessageResponse>>>(`${BASE}/${id}/messages`, {
+      params: { page, size },
+    }),
 
   /** 메시지 전송 */
   sendMessage: (id: string, content: string) =>
@@ -48,4 +50,8 @@ export const consultationApi = {
   /** 의뢰서 생성 요청 (비동기) */
   requestAnalyze: (id: string) =>
     api.post<ApiResponse<void>>(`${BASE}/${id}/analyze`),
+
+  /** 법률 분야 목록 (BE에서 동적 조회) */
+  getLegalFields: () =>
+    api.get<ApiResponse<string[]>>(`${BASE}/legal-fields`),
 };

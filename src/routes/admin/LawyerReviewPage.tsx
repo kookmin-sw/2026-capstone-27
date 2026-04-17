@@ -191,7 +191,7 @@ export function LawyerReviewPage() {
           <p className="text-sm text-gray-400">제출된 서류가 없습니다</p>
         ) : (
           <ul className="space-y-2">
-            {docs.map((d: { documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; uploadedAt: string }) => (
+            {docs.map((d: { documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; createdAt: string }) => (
               <li key={d.documentId}>
                 <a
                   href={d.fileUrl}
@@ -204,7 +204,7 @@ export function LawyerReviewPage() {
                       {d.fileName}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {d.fileType} · {formatFileSize(d.fileSize)} · {new Date(d.uploadedAt).toLocaleDateString('ko-KR')}
+                      {d.fileType} · {formatFileSize(d.fileSize)} · {new Date(d.createdAt).toLocaleDateString('ko-KR')}
                     </p>
                   </div>
                   <ExternalLink className="h-4 w-4 text-gray-400 shrink-0 ml-2" />

@@ -35,7 +35,7 @@ function InboxItemCard({ item }: { item: InboxItemResponse }) {
       >
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-gray-900 truncate">{item.title}</p>
+            <p className="text-sm font-semibold text-gray-900 truncate">{item.briefTitle}</p>
             <div className="flex items-center gap-2 mt-1.5">
               <Badge variant="default" size="sm">
                 {DOMAIN_LABELS[item.legalField] ?? item.legalField}
@@ -46,7 +46,7 @@ function InboxItemCard({ item }: { item: InboxItemResponse }) {
             </div>
           </div>
           <span className="text-xs text-gray-400 flex-shrink-0 mt-0.5">
-            {formatDate(item.createdAt)}
+            {formatDate(item.sentAt)}
           </span>
         </div>
       </Card>

@@ -21,7 +21,7 @@ export const consultationApi = {
 
   /** 상담 상세 */
   getById: (id: string) =>
-    api.get<ApiResponse<ConsultationResponse>>(`${BASE}/${id}`),
+    api.post<ApiResponse<ConsultationResponse>>(`${BASE}/${id}`),
 
   /** 새 상담 생성 */
   create: (domain: DomainType | null) =>

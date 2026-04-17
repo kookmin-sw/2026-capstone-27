@@ -5,12 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { cn } from '@/lib/cn';
 import { lawyerApi } from '@/lib/lawyerApi';
-import { Button, Card, Spinner } from '@/components/ui';
+import { Button, Card, Spinner, SpecializationPicker } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-
-// ─── constants ───────────────────────────────────────────────────────────────
-
-const SPECIALIZATIONS = ['민사', '형사', '노동', '학교폭력', '가사', '행정', '헌법'] as const;
 
 // ─── schema ──────────────────────────────────────────────────────────────────
 
@@ -58,18 +54,6 @@ export function ProfileEditPage() {
     });
   }, [reset]);
 
-  function toggleSpecialization(spec: string) {
-    if (selectedSpecs.includes(spec)) {
-      setValue('specializations', selectedSpecs.filter((s) => s !== spec), {
-        shouldValidate: true,
-      });
-    } else {
-      setValue('specializations', [...selectedSpecs, spec], {
-        shouldValidate: true,
-      });
-    }
-  }
-
   async function onSubmit(values: FormValues) {
     await lawyerApi.updateMe({
       specializations: values.specializations,
@@ -102,33 +86,11 @@ export function ProfileEditPage() {
               <span className="text-sm font-medium text-[#1E293B] leading-none">
                 전문분야
               </span>
-              <div className="flex flex-wrap gap-2 pt-0.5">
-                {SPECIALIZATIONS.map((spec) => {
-                  const isActive = selectedSpecs.includes(spec);
-                  return (
-                    <button
-                      key={spec}
-                      type="button"
-                      onClick={() => toggleSpecialization(spec)}
-                      className={cn(
-                        'px-3 py-1.5 rounded-full text-sm font-medium',
-                        'transition-colors duration-150',
-                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
-                        isActive
-                          ? 'bg-brand text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                      )}
-                    >
-                      {spec}
-                    </button>
-                  );
-                })}
-              </div>
-              {errors.specializations && (
-                <p className="text-xs text-red-500 leading-snug" role="alert">
-                  {errors.specializations.message}
-                </p>
-              )}
+              <SpecializationPicker
+                value={selectedSpecs}
+                onChange={(v) => setValue('specializations', v, { shouldValidate: true })}
+                error={errors.specializations?.message}
+              />
             </div>
 
             {/* Experience years */}

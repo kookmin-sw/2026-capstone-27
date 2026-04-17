@@ -12,20 +12,10 @@ import {
 } from '@/hooks/useBrief';
 import { Button, Card, Badge, Spinner, Modal, Input } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-import { DOMAIN_LABELS, BRIEF_STATUS_LABELS } from '@/lib/constants';
-import type { BriefStatus } from '@/types/enums';
+import { DOMAIN_LABELS, BRIEF_STATUS_LABELS, BRIEF_STATUS_BADGE } from '@/lib/constants';
 import type { BriefUpdateRequest } from '@/types/brief';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
-
-type BadgeVariant = 'primary' | 'warning' | 'success' | 'danger' | 'default';
-
-const BRIEF_BADGE: Record<BriefStatus, BadgeVariant> = {
-  DRAFT: 'warning',
-  CONFIRMED: 'primary',
-  DELIVERED: 'success',
-  DISCARDED: 'danger',
-};
 
 interface EditFormValues {
   title: string;
@@ -245,7 +235,7 @@ export function BriefDetailPage() {
                 <h2 className="text-base font-semibold text-gray-900 leading-snug flex-1">
                   {brief.title}
                 </h2>
-                <Badge variant={BRIEF_BADGE[brief.status]} size="sm">
+                <Badge variant={BRIEF_STATUS_BADGE[brief.status]} size="sm">
                   {BRIEF_STATUS_LABELS[brief.status] ?? brief.status}
                 </Badge>
               </div>

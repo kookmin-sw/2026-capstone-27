@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Clock, Search, AlertCircle, PlusCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { lawyerApi } from '@/lib/lawyerApi';
-import api from '@/lib/api';
+import { useVerificationStatus, useRequestVerification } from '@/hooks/useLawyer';
 import { Button, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import type { VerificationStatus } from '@/types';
-import type { LawyerMeResponse } from '@/types';
 
 // ─── status config ────────────────────────────────────────────────────────────
 
@@ -67,32 +65,20 @@ const STATUS_CONFIG: Record<VerificationStatus, StatusConfig> = {
 
 export function VerificationPage() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<LawyerMeResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isApplying, setIsApplying] = useState(false);
+  const { data: verification, isLoading } = useVerificationStatus();
+  const requestVerification = useRequestVerification();
   const [applied, setApplied] = useState(false);
 
-  useEffect(() => {
-    lawyerApi
-      .getMe()
-      .then(({ data }) => setProfile(data.data))
-      .finally(() => setIsLoading(false));
-  }, []);
-
   async function handleApply() {
-    setIsApplying(true);
     try {
-      await api.post('/lawyers/me/verification-request');
+      await requestVerification.mutateAsync({ barAssociationNumber: '' });
       setApplied(true);
-      // Refresh profile to reflect new status
-      const { data } = await lawyerApi.getMe();
-      setProfile(data.data);
-    } finally {
-      setIsApplying(false);
+    } catch {
+      // 에러는 mutation에서 처리
     }
   }
 
-  const verificationStatus = profile?.verificationStatus;
+  const verificationStatus = verification?.status;
   const config = verificationStatus ? STATUS_CONFIG[verificationStatus] : null;
 
   // Statuses that already have an active application
@@ -150,7 +136,7 @@ export function VerificationPage() {
                 <Button
                   variant="primary"
                   fullWidth
-                  isLoading={isApplying}
+                  isLoading={requestVerification.isPending}
                   onClick={handleApply}
                   leftIcon={<ShieldCheck size={16} />}
                 >

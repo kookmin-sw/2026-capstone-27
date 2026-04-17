@@ -1,35 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import { formatDateTime } from '@/lib/dateUtils';
 import { useDeliveries } from '@/hooks/useBrief';
 import { Button, Card, Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
+import { DELIVERY_STATUS_BADGE, DELIVERY_STATUS_LABEL } from '@/lib/constants';
 import type { DeliveryStatus } from '@/types/enums';
-
-// ─── helpers ────────────────────────────────────────────────────────────────
-
-function formatDateTime(iso: string): string {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  const h = String(d.getHours()).padStart(2, '0');
-  const min = String(d.getMinutes()).padStart(2, '0');
-  return `${y}.${m}.${day} ${h}:${min}`;
-}
-
-type BadgeVariant = 'primary' | 'success' | 'danger' | 'default';
-
-const DELIVERY_BADGE: Record<DeliveryStatus, BadgeVariant> = {
-  DELIVERED: 'primary',
-  CONFIRMED: 'success',
-  REJECTED: 'danger',
-};
-
-const DELIVERY_LABELS: Record<DeliveryStatus, string> = {
-  DELIVERED: '전달됨',
-  CONFIRMED: '수락',
-  REJECTED: '거절',
-};
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -81,10 +57,10 @@ export function BriefDeliveryPage() {
                         <p className="text-xs text-gray-400 mt-0.5">{formatDateTime(d.sentAt)}</p>
                       </div>
                       <Badge
-                        variant={DELIVERY_BADGE[status] ?? 'default'}
+                        variant={DELIVERY_STATUS_BADGE[status] ?? 'default'}
                         size="sm"
                       >
-                        {DELIVERY_LABELS[status] ?? status}
+                        {DELIVERY_STATUS_LABEL[status] ?? status}
                       </Badge>
                     </div>
                   </Card>

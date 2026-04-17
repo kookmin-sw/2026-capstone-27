@@ -1,29 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { FileText } from 'lucide-react';
+import { formatDate } from '@/lib/dateUtils';
 import { useBriefList } from '@/hooks/useBrief';
 import { Button, Card, Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-import { BRIEF_STATUS_LABELS } from '@/lib/constants';
-import type { BriefStatus } from '@/types/enums';
-
-// ─── helpers ────────────────────────────────────────────────────────────────
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
-}
-
-type BadgeVariant = 'primary' | 'warning' | 'success' | 'danger' | 'default';
-
-const BRIEF_BADGE: Record<BriefStatus, BadgeVariant> = {
-  DRAFT: 'warning',
-  CONFIRMED: 'primary',
-  DELIVERED: 'success',
-  DISCARDED: 'danger',
-};
+import { BRIEF_STATUS_LABELS, BRIEF_STATUS_BADGE } from '@/lib/constants';
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -82,7 +63,7 @@ export function BriefListPage() {
                   }}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <Badge variant={BRIEF_BADGE[b.status]} size="sm">
+                    <Badge variant={BRIEF_STATUS_BADGE[b.status]} size="sm">
                       {BRIEF_STATUS_LABELS[b.status] ?? b.status}
                     </Badge>
                     <p className="flex-1 text-sm font-medium text-gray-800 truncate">

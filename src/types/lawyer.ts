@@ -61,3 +61,25 @@ export interface InboxDetailResponse {
   sentAt: string;
   status: string;
 }
+
+/** GET /api/lawyers/me/verification-status 응답 */
+export interface VerificationStatusResponse {
+  status: VerificationStatus;
+  requestedAt?: string;
+  reviewedAt?: string;
+  rejectionReason?: string;
+}
+
+/** POST /api/lawyers/me/verification-request 요청 */
+export interface VerificationRequestData {
+  barAssociationNumber: string;
+}
+
+/** GET /api/lawyers/me/documents 아이템 */
+export interface DocumentResponse {
+  documentId: string;
+  fileName: string;
+  fileType: string;
+  fileUrl: string;
+  uploadedAt: string;
+}

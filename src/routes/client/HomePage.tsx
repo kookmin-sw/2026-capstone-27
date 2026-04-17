@@ -1,55 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronRight, FileText, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { formatDate, relativeTime } from '@/lib/dateUtils';
 import { useAuthStore } from '@/stores/authStore';
 import { useConsultationList } from '@/hooks/useConsultation';
 import { useBriefList } from '@/hooks/useBrief';
 import { Card, Badge } from '@/components/ui';
-import { DOMAIN_LABELS, CONSULTATION_STATUS_LABELS, BRIEF_STATUS_LABELS } from '@/lib/constants';
-import type { ConsultationStatus, BriefStatus } from '@/types/enums';
-
-// ─── helpers ────────────────────────────────────────────────────────────────
-
-function relativeTime(iso: string | null | undefined): string {
-  if (!iso) return '';
-  const diff = Date.now() - new Date(iso).getTime();
-  const secs = Math.floor(diff / 1000);
-  if (secs < 60) return '방금 전';
-  const mins = Math.floor(secs / 60);
-  if (mins < 60) return `${mins}분 전`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}시간 전`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}일 전`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months}개월 전`;
-  return `${Math.floor(months / 12)}년 전`;
-}
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
-}
-
-type BadgeVariant = 'primary' | 'warning' | 'success' | 'danger' | 'default';
-
-const CONSULT_BADGE: Record<ConsultationStatus, BadgeVariant> = {
-  COLLECTING: 'primary',
-  ANALYZING: 'warning',
-  AWAITING_CONFIRM: 'success',
-  CONFIRMED: 'success',
-  REJECTED: 'danger',
-};
-
-const BRIEF_BADGE: Record<BriefStatus, BadgeVariant> = {
-  DRAFT: 'warning',
-  CONFIRMED: 'primary',
-  DELIVERED: 'success',
-  DISCARDED: 'danger',
-};
+import { DOMAIN_LABELS, CONSULTATION_STATUS_LABELS, BRIEF_STATUS_LABELS, CONSULT_STATUS_BADGE, BRIEF_STATUS_BADGE } from '@/lib/constants';
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -146,7 +103,7 @@ export function HomePage() {
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-1.5">
-                        <Badge variant={CONSULT_BADGE[c.status]} size="sm">
+                        <Badge variant={CONSULT_STATUS_BADGE[c.status]} size="sm">
                           {CONSULTATION_STATUS_LABELS[c.status] ?? c.status}
                         </Badge>
                         {c.primaryField && c.primaryField.length > 0 && (
@@ -216,7 +173,7 @@ export function HomePage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 min-w-0">
-                        <Badge variant={BRIEF_BADGE[b.status]} size="sm">
+                        <Badge variant={BRIEF_STATUS_BADGE[b.status]} size="sm">
                           {BRIEF_STATUS_LABELS[b.status] ?? b.status}
                         </Badge>
                         <p className="text-sm font-medium text-gray-800 truncate">{b.title}</p>

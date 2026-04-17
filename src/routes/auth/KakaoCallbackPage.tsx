@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
-import api from '@/lib/api';
+import { authApi } from '@/lib/authApi';
 
 function getRoleHome(role: string): string {
   switch (role) {
@@ -36,19 +36,12 @@ export function KakaoCallbackPage() {
 
     (async () => {
       try {
-        const { data } = await api.post<{
-          data: {
-            accessToken: string;
-            userId: string;
-            name: string;
-            role: string;
-          };
-        }>('/auth/kakao', { authorizationCode: code }, { withCredentials: true });
+        const { data } = await authApi.kakaoLogin({ authorizationCode: code });
 
         const { accessToken, role } = data.data;
 
         await login(accessToken);
-        navigate(getRoleHome(role), { replace: true });
+        navigate(getRoleHome(role ?? ''), { replace: true });
       } catch (err) {
         console.error('[KakaoCallback] Error:', err);
         setErrorMsg('카카오 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');

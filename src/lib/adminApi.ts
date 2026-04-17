@@ -25,6 +25,16 @@ export interface VerificationChecks {
   requiredFields: boolean;
 }
 
+export interface VerificationLog {
+  logId: string;
+  lawyerId: string;
+  lawyerName: string;
+  action: string;
+  reason?: string;
+  processedBy: string;
+  processedAt: string;
+}
+
 export const adminApi = {
   /** 대시보드 통계 */
   getStats: () =>
@@ -62,5 +72,12 @@ export const adminApi = {
   getDocuments: (id: string) =>
     api.get<ApiResponse<Array<{ documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; uploadedAt: string }>>>(
       `${BASE}/lawyers/${id}/documents`,
+    ),
+
+  /** 처리 이력 조회 */
+  getVerificationLogs: (page = 0, size = 20, params?: { status?: string; startDate?: string; endDate?: string }) =>
+    api.get<ApiResponse<PageResponse<VerificationLog>>>(
+      `${BASE}/verification-logs`,
+      { params: { page, size, ...params } },
     ),
 };

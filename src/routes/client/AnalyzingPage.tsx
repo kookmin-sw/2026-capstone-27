@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { RefreshCw, Shield, Info } from 'lucide-react';
 import { usePolling } from '@/hooks/usePolling';
 import { consultationApi } from '@/lib/consultationApi';
 import { Button, Spinner } from '@/components/ui';
-import { Header } from '@/components/layout/Header';
 import type { ConsultationResponse } from '@/types/consultation';
 
 // ─── page ────────────────────────────────────────────────────────────────────
@@ -42,7 +40,7 @@ export function AnalyzingPage() {
   }, []);
 
   // ── polling ─────────────────────────────────────────────────────────────
-  const { isPolling } = usePolling<ConsultationResponse>({
+  usePolling<ConsultationResponse>({
     fn: () => consultationApi.getById(id).then((r) => r.data.data),
     interval: 5000,
     maxDuration: 60000,
@@ -59,21 +57,15 @@ export function AnalyzingPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
-      <Header
-        title="의뢰서 생성 중"
-        showBack
-        onBack={() => navigate('/consultations')}
-      />
-
-      <main className="flex-1 flex flex-col items-center justify-center px-6 gap-6 text-center">
+    <div className="flex flex-col min-h-dvh bg-white">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 text-center">
         {timedOut ? (
           /* ── timeout state ──────────────────────────────────────────── */
           <>
             <div className="w-20 h-20 rounded-full bg-red-50 flex items-center justify-center">
               <RefreshCw size={36} className="text-red-400" />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 mt-6">
               <p className="text-base font-semibold text-gray-800">
                 시간이 초과되었습니다
               </p>
@@ -86,6 +78,7 @@ export function AnalyzingPage() {
               size="md"
               leftIcon={<RefreshCw size={16} />}
               onClick={handleRetry}
+              className="mt-6"
             >
               다시 시도
             </Button>
@@ -93,48 +86,55 @@ export function AnalyzingPage() {
         ) : (
           /* ── polling (loading) state ────────────────────────────────── */
           <>
-            {/* Large animated spinner */}
-            <div
-              className={cn(
-                'w-24 h-24 rounded-full bg-blue-50',
-                'flex items-center justify-center',
-              )}
-            >
-              <Spinner size="lg" className="text-brand" />
+            {/* SHIELD branding */}
+            <div className="w-14 h-14 rounded-[28px] bg-[#161a1d] flex items-center justify-center">
+              <Shield size={32} className="text-white" strokeWidth={1.5} />
+            </div>
+            <p className="text-[22px] font-bold text-[#161a1d] mt-2">SHIELD</p>
+            <p className="text-xs font-medium text-[#31383f] tracking-widest uppercase">
+              Legal Intelligence System
+            </p>
+
+            {/* Loading animation */}
+            <div className="mt-10 mb-6 relative">
+              <div className="w-24 h-24 rounded-full border-4 border-brand/10 flex items-center justify-center">
+                <Spinner size="lg" className="text-brand" />
+              </div>
             </div>
 
             {/* Main copy */}
-            <div className="space-y-2">
-              <p className="text-base font-semibold text-gray-900">
-                AI가 의뢰서를 작성하고 있습니다...
-              </p>
-              <p className="text-sm text-gray-500">
-                잠시만 기다려주세요
-              </p>
-            </div>
-
-            {/* Progress hint */}
-            <p className="text-xs text-gray-400 bg-gray-100 px-4 py-2 rounded-pill">
-              보통 30초~1분 정도 소요됩니다
+            <p className="text-xl font-bold text-[#161a1d] tracking-tight">
+              사건을 분석하고 있습니다...
+            </p>
+            <p className="text-xs text-[#31383f] mt-2 leading-relaxed max-w-68.5">
+              입력하신 내용을 바탕으로 최적의 법률 프레임워크를 구성 중입니다.
             </p>
 
-            {/* Elapsed time */}
-            <div className="mt-2">
-              <p className="text-xs text-gray-400">
-                경과 시간:{' '}
-                <span className="font-medium tabular-nums">
-                  {elapsedSecs}초
-                </span>
-              </p>
-              {!isPolling && (
-                <p className="text-xs text-gray-300 mt-0.5">
-                  마지막 확인 중...
-                </p>
-              )}
+            {/* Duration badge */}
+            <div className="mt-6 flex items-center gap-2 bg-[#f3f5f6] border border-[#dde0e4] rounded-pill px-4 py-2 shadow-sm">
+              <Info size={16} className="text-[#31383f]" />
+              <span className="text-sm font-medium text-[#1d2125]">약 10~30초 소요</span>
             </div>
+
+            {/* Elapsed */}
+            <p className="text-xs text-gray-400 mt-4 tabular-nums">
+              {elapsedSecs}초 경과
+            </p>
           </>
         )}
       </main>
+
+      {/* Bottom security notice */}
+      {!timedOut && (
+        <div className="pb-8 pt-4 text-center">
+          <p className="text-[10px] font-bold text-[#31383f]/60 uppercase tracking-tight">
+            Secure Data Processing
+          </p>
+          <p className="text-[11px] text-[#31383f]/40 mt-1 px-12 leading-relaxed">
+            SHIELD는 모든 데이터를 암호화하여 처리하며, 분석 완료 후 안전하게 결과를 전달합니다.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

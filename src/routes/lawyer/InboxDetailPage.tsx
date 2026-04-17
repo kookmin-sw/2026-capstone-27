@@ -1,20 +1,13 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { cn } from '@/lib/cn';
+import { formatDate } from '@/lib/dateUtils';
 import { useInboxDetail, useUpdateInboxStatus } from '@/hooks/useInbox';
 import { Button, Badge, Card, Spinner, Modal } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { DOMAIN_LABELS } from '@/lib/constants';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-}
 
 const textareaClass = cn(
   'w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#1E293B]',
@@ -87,6 +80,15 @@ export function InboxDetailPage() {
         {successMessage && (
           <div className="mb-4 px-4 py-3 bg-green-50 border border-green-200 rounded-xl">
             <p className="text-sm text-green-700 font-medium">{successMessage}</p>
+          </div>
+        )}
+
+        {/* 24-hour warning bar */}
+        {isPending && (
+          <div className="mb-4 bg-red-50 rounded-[10px] px-3 py-2.5 flex items-center gap-2">
+            <span className="text-xs text-red-700">
+              24시간 이내 응답 없으면 자동 거절됩니다. <strong>12시간 남음</strong>
+            </span>
           </div>
         )}
 
@@ -186,24 +188,25 @@ export function InboxDetailPage() {
 
       {/* Bottom action bar */}
       {isPending && !successMessage && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 safe-area-bottom">
-          <div className="flex gap-3">
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={() => setConfirmModalOpen(true)}
-            >
-              수락
-            </Button>
-            <Button
-              variant="secondary"
-              fullWidth
-              className="border-red-300 text-red-500 hover:bg-red-50"
-              onClick={() => setRejectModalOpen(true)}
-            >
-              거절
-            </Button>
-          </div>
+        <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-4 safe-area-bottom space-y-2.5">
+          <Button
+            variant="primary"
+            fullWidth
+            size="lg"
+            className="rounded-pill"
+            onClick={() => setConfirmModalOpen(true)}
+          >
+            수락하기
+          </Button>
+          <Button
+            variant="secondary"
+            fullWidth
+            size="lg"
+            className="rounded-pill border-red-200 text-red-600 hover:bg-red-50"
+            onClick={() => setRejectModalOpen(true)}
+          >
+            거절하기
+          </Button>
         </div>
       )}
 

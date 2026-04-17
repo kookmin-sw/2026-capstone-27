@@ -1,10 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { lawyerApi } from '@/lib/lawyerApi';
+import type { VerificationRequestData } from '@/types/lawyer';
 
 const KEYS = {
   all: ['lawyers'] as const,
   list: () => [...KEYS.all, 'list'] as const,
   detail: (id: string) => [...KEYS.all, 'detail', id] as const,
+  verification: () => [...KEYS.all, 'verification'] as const,
+  myDocuments: () => [...KEYS.all, 'my-documents'] as const,
 };
 
 /** 변호사 목록 (의뢰인용) */
@@ -31,5 +34,50 @@ export function useLawyerDetail(id: string) {
       return data.data;
     },
     enabled: !!id,
+  });
+}
+
+/** 검증 상태 확인 */
+export function useVerificationStatus() {
+  return useQuery({
+    queryKey: KEYS.verification(),
+    queryFn: async () => {
+      const { data } = await lawyerApi.getVerificationStatus();
+      return data.data;
+    },
+  });
+}
+
+/** 검증 신청 */
+export function useRequestVerification() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: VerificationRequestData) =>
+      lawyerApi.requestVerification(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: KEYS.verification() });
+    },
+  });
+}
+
+/** 본인 서류 목록 */
+export function useMyDocuments() {
+  return useQuery({
+    queryKey: KEYS.myDocuments(),
+    queryFn: async () => {
+      const { data } = await lawyerApi.getMyDocuments();
+      return data.data;
+    },
+  });
+}
+
+/** 서류 업로드 */
+export function useUploadDocument() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (formData: FormData) => lawyerApi.uploadDocument(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: KEYS.myDocuments() });
+    },
   });
 }

@@ -96,6 +96,14 @@ export function ChatPage() {
         onBack={() => navigate('/consultations')}
       />
 
+      {/* ── AI notice bar ─────────────────────────────────────────────── */}
+      <div className="bg-gray-50/50 border-b border-[#e0e2e6] flex items-center gap-2 px-4 py-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-brand/50" />
+        <p className="text-[11px] font-medium text-[#555d6d]">
+          AI는 법률 상담이 아닌 정보 정리를 도와드립니다
+        </p>
+      </div>
+
       {/* ── scrollable message area ─────────────────────────────────────── */}
       <div
         ref={scrollRef}

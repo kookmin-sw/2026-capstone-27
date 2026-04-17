@@ -1,39 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { PlusCircle, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { relativeTime } from '@/lib/dateUtils';
 import { useConsultationList } from '@/hooks/useConsultation';
 import { Button, Card, Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-import { DOMAIN_LABELS, CONSULTATION_STATUS_LABELS } from '@/lib/constants';
-import type { ConsultationStatus } from '@/types/enums';
-
-// ─── helpers ────────────────────────────────────────────────────────────────
-
-function relativeTime(iso: string | null): string {
-  if (!iso) return '';
-  const diff = Date.now() - new Date(iso).getTime();
-  const secs = Math.floor(diff / 1000);
-  if (secs < 60) return '방금 전';
-  const mins = Math.floor(secs / 60);
-  if (mins < 60) return `${mins}분 전`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}시간 전`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}일 전`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months}개월 전`;
-  return `${Math.floor(months / 12)}년 전`;
-}
-
-type BadgeVariant = 'primary' | 'warning' | 'success' | 'danger' | 'default';
-
-const STATUS_BADGE_VARIANT: Record<ConsultationStatus, BadgeVariant> = {
-  COLLECTING: 'primary',
-  ANALYZING: 'warning',
-  AWAITING_CONFIRM: 'success',
-  CONFIRMED: 'success',
-  REJECTED: 'danger',
-};
+import { DOMAIN_LABELS, CONSULTATION_STATUS_LABELS, CONSULT_STATUS_BADGE } from '@/lib/constants';
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -116,7 +88,7 @@ export function ConsultationListPage() {
                   {/* Row 1: status badge + time */}
                   <div className="flex items-center justify-between mb-2">
                     <Badge
-                      variant={STATUS_BADGE_VARIANT[c.status]}
+                      variant={CONSULT_STATUS_BADGE[c.status]}
                       size="sm"
                     >
                       {CONSULTATION_STATUS_LABELS[c.status] ?? c.status}

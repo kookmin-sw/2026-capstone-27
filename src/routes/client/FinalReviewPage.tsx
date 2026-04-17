@@ -1,5 +1,5 @@
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { FileText, Shield, Scale, Pencil } from 'lucide-react';
+import { FileText, Shield, Scale, Pencil, TriangleAlert } from 'lucide-react';
 import { useBriefDetail } from '@/hooks/useBrief';
 import { Button, Card, Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
@@ -77,12 +77,16 @@ export function FinalReviewPage() {
     <div className="flex flex-col min-h-dvh bg-surface">
       <Header title="최종 검토" showBack onBack={() => navigate(-1)} />
 
-      <main className="flex-1 px-4 py-6 space-y-4 pb-32">
+      <main className="flex-1 px-6 py-6 space-y-5 pb-36">
         {/* Intro */}
-        <div className="space-y-1">
-          <h2 className="text-base font-bold text-gray-900">요청 내용을 확인해 주세요</h2>
-          <p className="text-sm text-gray-500 leading-relaxed">
-            아래 내용을 검토한 후 변호사에게 요청을 보내세요. 각 항목을 수정할 수 있습니다.
+        <div>
+          <h2 className="text-xl font-bold text-[#161a1d] tracking-tight leading-8">
+            마지막으로
+            <br />
+            내용을 확인해주세요.
+          </h2>
+          <p className="text-sm text-[#31383f] mt-2">
+            작성하신 의뢰서가 변호사님께 전달됩니다.
           </p>
         </div>
 
@@ -184,17 +188,37 @@ export function FinalReviewPage() {
           </div>
         </Card>
 
-        {/* Terms reminder */}
-        <p className="text-xs text-gray-400 text-center leading-relaxed px-2">
-          요청을 보내면 SHIELD 서비스 이용약관 및 개인정보 처리방침에 동의한 것으로 간주합니다.
-        </p>
+        {/* Warning box */}
+        <div className="bg-red-500/5 border border-red-500/20 rounded-card p-4 flex gap-3">
+          <div className="shrink-0 w-9 h-9 rounded-[18px] bg-red-500/10 flex items-center justify-center mt-1">
+            <TriangleAlert size={20} className="text-red-500" />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-red-500 mb-1">제출 전 확인 필수</p>
+            <p className="text-[10px] text-red-500/80 leading-4.5">
+              의뢰서 제출 버튼을 누른 후에는{' '}
+              <span className="underline">내용을 수정할 수 없습니다.</span>
+              <br />
+              모든 항목이 정확한지 다시 한번 확인해 주세요.
+            </p>
+          </div>
+        </div>
       </main>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-4 safe-area-bottom">
-        <Button variant="primary" fullWidth size="lg" onClick={handleSendRequest}>
-          변호사에게 요청 보내기
+      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-[0px_-10px_20px_0px_rgba(0,0,0,0.02)] px-6 py-6 safe-area-bottom">
+        <Button
+          variant="primary"
+          fullWidth
+          size="lg"
+          onClick={handleSendRequest}
+          className="rounded-card h-14 shadow-lg shadow-brand/20"
+        >
+          변호사 선택
         </Button>
+        <p className="text-[10px] text-[#31383f] text-center mt-3">
+          제출 시 SHIELD 서비스 이용 약관 및 개인정보 처리방침에 동의하게 됩니다.
+        </p>
       </div>
     </div>
   );

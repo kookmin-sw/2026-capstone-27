@@ -8,6 +8,7 @@ const KEYS = {
   lawyer: (id: string) => ['admin', 'lawyer', id] as const,
   checks: (id: string) => ['admin', 'checks', id] as const,
   docs: (id: string) => ['admin', 'docs', id] as const,
+  logs: ['admin', 'logs'] as const,
 };
 
 export function useAdminStats() {
@@ -81,6 +82,22 @@ export function useProcessVerification(id: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: KEYS.pending });
       queryClient.invalidateQueries({ queryKey: KEYS.lawyer(id) });
+      queryClient.invalidateQueries({ queryKey: KEYS.logs });
+    },
+  });
+}
+
+/** 처리 이력 조회 */
+export function useVerificationLogs(
+  page = 0,
+  size = 20,
+  filters?: { status?: string; startDate?: string; endDate?: string },
+) {
+  return useQuery({
+    queryKey: [...KEYS.logs, page, size, filters],
+    queryFn: async () => {
+      const { data } = await adminApi.getVerificationLogs(page, size, filters);
+      return data.data;
     },
   });
 }

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, CheckCircle } from 'lucide-react';
+import { User, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerList } from '@/hooks/useLawyer';
-import { Badge, Spinner } from '@/components/ui';
+import { Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { DOMAIN_LABELS } from '@/lib/constants';
 import type { LawyerResponse } from '@/types';
@@ -26,78 +26,53 @@ interface LawyerCardProps {
 }
 
 function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
-  const isVerified = lawyer.verificationStatus === 'VERIFIED';
-
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full text-left bg-white rounded-card shadow-sm p-4',
+        'w-full text-left bg-white rounded-card border border-[#e9edef] p-4',
         'hover:shadow-md active:scale-[0.99] transition-all duration-150',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
       )}
     >
-      {/* Profile image + info */}
-      <div className="flex items-start gap-3">
+      <div className="flex items-center gap-3">
         {/* Avatar */}
-        <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+        <div className="shrink-0 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
           {lawyer.profileImageUrl ? (
-            <img
-              src={lawyer.profileImageUrl}
-              alt={lawyer.name}
-              className="w-14 h-14 rounded-full object-cover"
-            />
+            <img src={lawyer.profileImageUrl} alt={lawyer.name} className="w-full h-full object-cover" />
           ) : (
-            <User size={26} className="text-gray-400" aria-hidden="true" />
+            <User size={22} className="text-gray-400" aria-hidden="true" />
           )}
         </div>
 
-        {/* Name + verification */}
+        {/* Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-base font-semibold text-gray-900 truncate">
-              {lawyer.name}
-            </span>
-            {isVerified ? (
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                <CheckCircle size={11} aria-hidden="true" />
-                인증됨
-              </span>
-            ) : (
-              <span className="inline-flex items-center text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                심사 중
-              </span>
-            )}
+          <div className="flex items-center gap-1">
+            <span className="text-base font-medium text-[#1a1a1a]">{lawyer.name}</span>
+            <ChevronRight size={16} className="text-gray-400" />
           </div>
-
-          {/* Experience */}
-          <p className="mt-0.5 text-sm text-gray-500">
-            {lawyer.experienceYears}년 경력
+          <p className="text-[11px] text-[#6b7280] mt-0.5">
+            경력 {lawyer.experienceYears}년
           </p>
         </div>
       </div>
 
-      {/* Bio excerpt */}
-      {lawyer.bio && (
-        <p className="mt-2.5 text-sm text-gray-500 leading-relaxed line-clamp-2">
-          {lawyer.bio}
-        </p>
-      )}
-
-      {/* Specialization badge */}
+      {/* Specializations */}
       {lawyer.specializations && (
         <div className="mt-3 flex flex-wrap gap-1.5">
-          <Badge variant="primary" size="sm">
+          <span className="text-[10px] text-[#0c447c] bg-[#e8f0fc] rounded-full px-2.5 py-0.5">
             {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
-          </Badge>
+          </span>
         </div>
       )}
 
-      {/* View profile CTA */}
-      <div className="mt-3 pt-3 border-t border-gray-100">
-        <span className="text-sm font-medium text-brand">프로필 보기 →</span>
-      </div>
+      {/* Bio */}
+      {lawyer.bio && (
+        <p className="mt-2 text-xs text-[#6b7280] leading-relaxed line-clamp-2">
+          {lawyer.bio}
+        </p>
+      )}
     </button>
   );
 }

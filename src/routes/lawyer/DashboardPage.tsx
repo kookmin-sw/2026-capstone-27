@@ -1,43 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Inbox, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { formatDate } from '@/lib/dateUtils';
 import { useInboxList, useInboxStats } from '@/hooks/useInbox';
 import { Badge, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-import { DOMAIN_LABELS } from '@/lib/constants';
+import { DOMAIN_LABELS, DELIVERY_STATUS_BADGE, DELIVERY_STATUS_LABEL } from '@/lib/constants';
+import type { BadgeVariant } from '@/components/ui/Badge';
 import type { InboxItemResponse } from '@/types';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
-type DeliveryStatus = 'DELIVERED' | 'CONFIRMED' | 'REJECTED';
-type BadgeVariant = 'primary' | 'success' | 'danger' | 'default';
-
-const STATUS_BADGE: Record<DeliveryStatus, BadgeVariant> = {
-  DELIVERED: 'primary',
-  CONFIRMED: 'success',
-  REJECTED: 'danger',
-};
-
-const STATUS_LABEL: Record<DeliveryStatus, string> = {
-  DELIVERED: '대기 중',
-  CONFIRMED: '수락',
-  REJECTED: '거절',
-};
-
 function statusBadgeVariant(status: string): BadgeVariant {
-  return STATUS_BADGE[status as DeliveryStatus] ?? 'default';
+  return DELIVERY_STATUS_BADGE[status] ?? 'default';
 }
 
 function statusLabel(status: string): string {
-  return STATUS_LABEL[status as DeliveryStatus] ?? status;
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
+  return DELIVERY_STATUS_LABEL[status] ?? status;
 }
 
 // ─── stat card ───────────────────────────────────────────────────────────────
@@ -49,19 +28,25 @@ interface StatCardProps {
   bg: string;
 }
 
-function StatCard({ label, value, icon, bg }: StatCardProps) {
+function StatCard({ label, value, bg }: StatCardProps) {
+  const isAccent = bg === 'bg-blue-50';
   return (
-    <Card padding="md" className={cn('flex items-center gap-3', bg)}>
-      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/70 flex-shrink-0">
-        {icon}
-      </div>
-      <div className="min-w-0">
-        <p className="text-xs text-gray-500 font-medium">{label}</p>
-        <p className="text-2xl font-bold text-gray-900 leading-none mt-0.5">
-          {value ?? '—'}
-        </p>
-      </div>
-    </Card>
+    <div className={cn(
+      'rounded-[14px] p-4 h-19.75',
+      isAccent
+        ? 'bg-[#1a6de0] text-white'
+        : 'bg-white border border-[#e9ecef]',
+    )}>
+      <p className={cn(
+        'text-[28px] font-bold leading-7',
+        isAccent ? 'text-white' : (bg === 'bg-green-50' ? 'text-[#3b6d11]' : bg === 'bg-yellow-50' ? 'text-[#1a6de0]' : bg === 'bg-red-50' ? 'text-[#854f0b]' : 'text-[#1a1a1a]'),
+      )}>
+        {value ?? '—'}
+      </p>
+      <p className={cn('text-[11px] mt-1', isAccent ? 'text-white/75' : 'text-[#6b7280]')}>
+        {label}
+      </p>
+    </div>
   );
 }
 

@@ -7,7 +7,7 @@ import { loginWithKakao } from '@/lib/kakao';
 import { loginWithNaver } from '@/lib/naver';
 import { loginWithGoogle } from '@/lib/google';
 import { useAuthStore } from '@/stores/authStore';
-import api from '@/lib/api';
+import { authApi } from '@/lib/authApi';
 import type { UserRole } from '@/types';
 
 function getRoleHome(role: string | null): string {
@@ -35,7 +35,7 @@ export function LoginPage() {
   async function handleDevLogin(devRole: UserRole) {
     setDevLoading(devRole);
     try {
-      const { data } = await api.post('/auth/dev/login', {
+      const { data } = await authApi.devLogin({
         email: `dev-${devRole.toLowerCase()}@shield.dev`,
         name: `Dev ${devRole}`,
         role: devRole,
@@ -54,27 +54,23 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col">
-      {/* ── Hero gradient area (≈55% of viewport) ── */}
-      <div
-        className={cn(
-          'flex flex-col items-center justify-center gap-4',
-          'bg-gradient-to-b from-blue-500 to-blue-600',
-          'px-6 pt-16 pb-12',
-        )}
-        style={{ minHeight: '46vh' }}
-      >
-        {/* Shield logo */}
-        <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-white shadow-lg">
-          <Shield size={44} className="text-brand" strokeWidth={1.8} />
+    <div className="min-h-dvh flex flex-col bg-white relative overflow-hidden">
+      {/* Decorative blur */}
+      <div className="absolute -top-20 right-0 w-64 h-64 rounded-full bg-brand/5 blur-[64px]" />
+
+      {/* ── Brand area ── */}
+      <div className="flex flex-col items-center pt-[162px] pb-8 px-6 gap-4">
+        {/* Shield logo — blue square with white icon */}
+        <div className="w-[84px] h-[84px] rounded-2xl bg-brand flex items-center justify-center">
+          <Shield size={48} className="text-white" strokeWidth={1.5} />
         </div>
 
         {/* Tagline */}
-        <div className="text-center space-y-1.5">
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+        <div className="text-center space-y-1">
+          <h1 className="text-xl font-bold text-[#16181d] tracking-tight">
             더 스마트한 법률 파트너
           </h1>
-          <p className="text-sm text-blue-100">
+          <p className="text-sm text-[#575e6b]">
             AI 법률 정보 구조화 플랫폼
           </p>
         </div>
@@ -82,8 +78,8 @@ export function LoginPage() {
         {/* Security badge */}
         <span
           className={cn(
-            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full',
-            'bg-white/20 text-white text-xs font-medium',
+            'inline-flex items-center gap-1.5 px-4 py-2 rounded-full',
+            'bg-[#f0f7ff] border border-brand/10 text-brand text-[11px] font-normal',
           )}
         >
           <Lock size={12} className="flex-shrink-0" aria-hidden="true" />
@@ -91,15 +87,15 @@ export function LoginPage() {
         </span>
       </div>
 
-      {/* ── Social login area (≈45% of viewport) ── */}
-      <div className="flex-1 flex flex-col justify-between px-5 pt-8 pb-8 bg-white">
-        <div className="flex flex-col gap-3">
+      {/* ── Social login area ── */}
+      <div className="flex-1 flex flex-col justify-end px-6 pb-8 gap-6">
+        <div className="flex flex-col gap-[12px]">
           {/* Kakao */}
           <Button
             variant="kakao"
             size="lg"
             fullWidth
-            className="rounded-xl"
+            className="rounded-[14px] h-14 text-base font-semibold shadow-[0px_2px_4px_0px_rgba(35,37,41,0.06)]"
             leftIcon={<MessageCircle size={20} aria-hidden="true" />}
             onClick={loginWithKakao}
           >
@@ -111,7 +107,7 @@ export function LoginPage() {
             variant="naver"
             size="lg"
             fullWidth
-            className="rounded-xl"
+            className="rounded-[14px] h-14 text-base font-semibold shadow-[0px_2px_4px_0px_rgba(35,37,41,0.06)]"
             leftIcon={
               <span
                 className="flex items-center justify-center w-5 h-5 rounded font-extrabold text-sm leading-none text-white"
@@ -130,7 +126,7 @@ export function LoginPage() {
             variant="google"
             size="lg"
             fullWidth
-            className="rounded-xl"
+            className="rounded-[14px] h-14 text-base font-semibold shadow-[0px_2px_4px_0px_rgba(35,37,41,0.06)]"
             leftIcon={
               <span
                 className="flex items-center justify-center w-5 h-5 font-bold text-sm leading-none text-[#4285F4]"
@@ -141,20 +137,20 @@ export function LoginPage() {
             }
             onClick={loginWithGoogle}
           >
-            구글로 시작하기
+            Google 계정으로 시작하기
           </Button>
         </div>
 
         {/* Terms notice */}
-        <p className="text-center text-xs text-[#94A3B8] leading-relaxed px-2 mt-6">
+        <p className="text-center text-[10px] text-[#575e6b] leading-[18px] px-1">
           로그인 시 SHIELD의{' '}
-          <span className="text-[#64748B] font-medium">이용약관</span> 및{' '}
-          <span className="text-[#64748B] font-medium">개인정보 처리방침</span>에
+          <span className="underline font-medium">이용약관</span> 및{' '}
+          <span className="underline font-medium">개인정보 처리방침</span>에
           동의하는 것으로 간주합니다.
         </p>
 
         {/* ── Dev Login Section ── */}
-        <div className="mt-4 border-t border-dashed border-gray-200 pt-4">
+        <div className="border-t border-dashed border-gray-200 pt-4">
           <button
             type="button"
             onClick={() => setDevOpen(!devOpen)}

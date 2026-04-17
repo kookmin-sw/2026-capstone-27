@@ -1,0 +1,1332 @@
+[
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI130808",
+    "law_name": "민사소송비용법",
+    "law_code": "130808",
+    "announce_date": "2012-12-18",
+    "enforce_date": "2013-12-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI121682",
+    "law_name": "국가보증채무 관리 규칙",
+    "law_code": "121682",
+    "announce_date": "2012-01-06",
+    "enforce_date": "2012-01-06"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI91501",
+    "law_name": "대한민국과 아메리카합중국 간의 상호방위조약 제4조에 의한 시설과 구역 및 대한민국에서의 합중국 군대의 지위에 관한 협정의 시행에 관한 민사특별법",
+    "law_code": "91501",
+    "announce_date": "2009-01-30",
+    "enforce_date": "2009-01-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI36135",
+    "law_name": "고엽제가사용된남방한계선인접지역의범위에관한규칙",
+    "law_code": "36135",
+    "announce_date": "2000-07-05",
+    "enforce_date": "2000-07-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI20194",
+    "law_name": "민법제312조의2단서의시행에관한규정",
+    "law_code": "20194",
+    "announce_date": "1984-09-01",
+    "enforce_date": "1984-09-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI112289",
+    "law_name": "국ㆍ공유 부동산의 등기 촉탁에 관한 법률",
+    "law_code": "112289",
+    "announce_date": "2011-04-12",
+    "enforce_date": "2011-10-13"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI108405",
+    "law_name": "동산ㆍ채권 등의 담보에 관한 법률 시행령",
+    "law_code": "108405",
+    "announce_date": "2010-10-21",
+    "enforce_date": "2012-06-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI98207",
+    "law_name": "축사의 부동산등기에 관한 특례규칙",
+    "law_code": "98207",
+    "announce_date": "2009-12-31",
+    "enforce_date": "2010-01-22"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI125729",
+    "law_name": "국민사법참여위원회 규칙",
+    "law_code": "125729",
+    "announce_date": "2012-05-29",
+    "enforce_date": "2012-05-29"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI36426",
+    "law_name": "유류오염손해배상사건등의절차에관한규칙",
+    "law_code": "36426",
+    "announce_date": "1995-10-27",
+    "enforce_date": "1995-10-27"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI83895",
+    "law_name": "담보부사채신탁법시행규칙",
+    "law_code": "83895",
+    "announce_date": "2008-03-03",
+    "enforce_date": "2008-03-03"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI117412",
+    "law_name": "개인정보 단체소송규칙",
+    "law_code": "117412",
+    "announce_date": "2011-09-28",
+    "enforce_date": "2011-09-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI135992",
+    "law_name": "특정물품등의조달에관한국가를당사자로하는계약에관한법률시행령특례규정",
+    "law_code": "135992",
+    "announce_date": "2013-03-23",
+    "enforce_date": "2013-03-23"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI91383",
+    "law_name": "신원보증법",
+    "law_code": "91383",
+    "announce_date": "2009-01-30",
+    "enforce_date": "2009-01-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI102647",
+    "law_name": "공증인의 정원 및 신원보증금에 관한 규칙",
+    "law_code": "102647",
+    "announce_date": "2010-02-05",
+    "enforce_date": "2010-02-07"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI52366",
+    "law_name": "국제민사사법공조규칙",
+    "law_code": "52366",
+    "announce_date": "2002-06-28",
+    "enforce_date": "2002-07-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI136693",
+    "law_name": "국제민사사법공조법",
+    "law_code": "136693",
+    "announce_date": "2013-03-23",
+    "enforce_date": "2013-03-23"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI125251",
+    "law_name": "남북 주민 사이의 가족관계와 상속 등에 관한 특례법 시행령",
+    "law_code": "125251",
+    "announce_date": "2012-05-07",
+    "enforce_date": "2012-05-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI181255",
+    "law_name": "가사소송수수료규칙",
+    "law_code": "181255",
+    "announce_date": "2016-02-19",
+    "enforce_date": "2016-07-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI173112",
+    "law_name": "특정조달을 위한 국가를 당사자로 하는 계약에 관한 법률 시행 특례규칙",
+    "law_code": "173112",
+    "announce_date": "2015-07-20",
+    "enforce_date": "2016-01-14"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI179505",
+    "law_name": "남북 주민 사이의 가족관계와 상속 등에 관한 특례법",
+    "law_code": "179505",
+    "announce_date": "2016-01-19",
+    "enforce_date": "2016-01-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI139904",
+    "law_name": "베트남 법원연수원 역량강화사업 기술용역계약에 따른 용역비 취급규칙",
+    "law_code": "139904",
+    "announce_date": "2013-05-01",
+    "enforce_date": "2013-05-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI164242",
+    "law_name": "채권의 공정한 추심에 관한 법률 시행령",
+    "law_code": "164242",
+    "announce_date": "2014-11-21",
+    "enforce_date": "2014-11-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI191496",
+    "law_name": "민사소송비용규칙",
+    "law_code": "191496",
+    "announce_date": "2017-02-02",
+    "enforce_date": "2017-02-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI188538",
+    "law_name": "가등기담보 등에 관한 법률",
+    "law_code": "188538",
+    "announce_date": "2016-12-27",
+    "enforce_date": "2017-03-28"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI174491",
+    "law_name": "부도공공건설임대주택 임차인 보호를 위한 특별법",
+    "law_code": "174491",
+    "announce_date": "2015-08-28",
+    "enforce_date": "2015-12-29"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI96889",
+    "law_name": "국가에 귀속하는 상속재산 이전에 관한 법률",
+    "law_code": "96889",
+    "announce_date": "2009-10-21",
+    "enforce_date": "2009-10-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI188376",
+    "law_name": "난민법",
+    "law_code": "188376",
+    "announce_date": "2016-12-20",
+    "enforce_date": "2016-12-20"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI198486",
+    "law_name": "후견등기에 관한 법률",
+    "law_code": "198486",
+    "announce_date": "2017-10-31",
+    "enforce_date": "2019-01-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI186202",
+    "law_name": "회생ㆍ파산위원회 설치 및 운영에 관한 규칙",
+    "law_code": "186202",
+    "announce_date": "2016-09-06",
+    "enforce_date": "2016-09-06"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI207952",
+    "law_name": "민사집행법 시행령",
+    "law_code": "207952",
+    "announce_date": "2019-03-05",
+    "enforce_date": "2019-04-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI185425",
+    "law_name": "부도공공건설임대주택 임차인 보호를 위한 특별법 시행령",
+    "law_code": "185425",
+    "announce_date": "2016-08-11",
+    "enforce_date": "2016-08-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI199798",
+    "law_name": "부동산서비스산업 진흥법",
+    "law_code": "199798",
+    "announce_date": "2017-12-19",
+    "enforce_date": "2018-06-20"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI193039",
+    "law_name": "대한민국과 아메리카합중국 간의 상호방위조약 제4조에 의한 시설과 구역 및 대한민국에서의 합중국 군대의 지위에 관한 협정의 시행에 관한 민사특별법 시행규칙",
+    "law_code": "193039",
+    "announce_date": "2017-03-30",
+    "enforce_date": "2017-03-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI192768",
+    "law_name": "대한민국과아메리카합중국간의상호방위조약제4조에의한시설과구역및대한민국에서의합중국군대의지위에관한협정의시행에관한민사특별법시행령",
+    "law_code": "192768",
+    "announce_date": "2017-03-27",
+    "enforce_date": "2017-03-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI207953",
+    "law_name": "성매매알선 등 행위의 처벌에 관한 법률 시행령",
+    "law_code": "207953",
+    "announce_date": "2019-03-05",
+    "enforce_date": "2019-03-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI205342",
+    "law_name": "담보부사채신탁법 시행령",
+    "law_code": "205342",
+    "announce_date": "2018-12-04",
+    "enforce_date": "2018-12-04"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI193041",
+    "law_name": "부동산 실권리자명의 등기에 관한 법률 시행규칙",
+    "law_code": "193041",
+    "announce_date": "2017-03-30",
+    "enforce_date": "2017-03-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI213959",
+    "law_name": "국가채권 관리법",
+    "law_code": "213959",
+    "announce_date": "2020-02-04",
+    "enforce_date": "2020-08-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI213779",
+    "law_name": "민사조정법",
+    "law_code": "213779",
+    "announce_date": "2020-02-04",
+    "enforce_date": "2020-03-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI208499",
+    "law_name": "보호시설에 있는 미성년자의 후견 직무에 관한 법률 시행령",
+    "law_code": "208499",
+    "announce_date": "2019-04-23",
+    "enforce_date": "2019-05-24"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI219991",
+    "law_name": "고위공직자범죄수사처의 개인정보 처리에 관한 규정",
+    "law_code": "219991",
+    "announce_date": "2020-07-14",
+    "enforce_date": "2020-07-15"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI220609",
+    "law_name": "변호사ㆍ법무사의 자격이 있는 보증인의 보수에 관한 규칙",
+    "law_code": "220609",
+    "announce_date": "2020-07-31",
+    "enforce_date": "2020-08-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI218845",
+    "law_name": "원자력손해배상 보상계약에 관한 법률",
+    "law_code": "218845",
+    "announce_date": "2020-06-09",
+    "enforce_date": "2020-06-09"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI215759",
+    "law_name": "부동산 실권리자명의 등기에 관한 법률",
+    "law_code": "215759",
+    "announce_date": "2020-03-24",
+    "enforce_date": "2020-03-24"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI219877",
+    "law_name": "부동산등기특별조치법에따른대법원규칙",
+    "law_code": "219877",
+    "announce_date": "2020-06-26",
+    "enforce_date": "2020-06-26"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI210145",
+    "law_name": "축사의 부동산등기에 관한 특례법",
+    "law_code": "210145",
+    "announce_date": "2019-08-20",
+    "enforce_date": "2019-11-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI210085",
+    "law_name": "가사소송규칙",
+    "law_code": "210085",
+    "announce_date": "2019-08-02",
+    "enforce_date": "2019-08-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI219361",
+    "law_name": "부동산 가격공시에 관한 법률",
+    "law_code": "219361",
+    "announce_date": "2020-06-09",
+    "enforce_date": "2020-12-10"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI227729",
+    "law_name": "원자력손해배상 보상계약에 관한 법률 시행령",
+    "law_code": "227729",
+    "announce_date": "2021-01-05",
+    "enforce_date": "2021-01-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI227319",
+    "law_name": "국제도로 면세통과 증서의 담보하에 행하는 화물의 국제운송에 관한 관세협약 및 1972년 콘테이너에 관한 관세협약의 시행에 관한 규정",
+    "law_code": "227319",
+    "announce_date": "2021-01-05",
+    "enforce_date": "2021-01-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI222425",
+    "law_name": "동산ㆍ채권 등의 담보에 관한 법률",
+    "law_code": "222425",
+    "announce_date": "2020-10-20",
+    "enforce_date": "2022-04-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI227745",
+    "law_name": "유류오염손해배상 보장법 시행령",
+    "law_code": "227745",
+    "announce_date": "2021-01-05",
+    "enforce_date": "2021-01-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI219353",
+    "law_name": "한국부동산원법",
+    "law_code": "219353",
+    "announce_date": "2020-06-09",
+    "enforce_date": "2020-12-10"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI227727",
+    "law_name": "원자력 손해배상법 시행령",
+    "law_code": "227727",
+    "announce_date": "2021-01-05",
+    "enforce_date": "2021-01-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI231795",
+    "law_name": "이중상환청구권부 채권 발행에 관한 법률",
+    "law_code": "231795",
+    "announce_date": "2021-04-20",
+    "enforce_date": "2021-07-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI240291",
+    "law_name": "주택임대차계약증서상의 확정일자 부여 및 임대차 정보제공에 관한 규칙",
+    "law_code": "240291",
+    "announce_date": "2022-02-07",
+    "enforce_date": "2022-02-07"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI231863",
+    "law_name": "원자력 손해배상법",
+    "law_code": "231863",
+    "announce_date": "2021-04-20",
+    "enforce_date": "2021-10-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI236639",
+    "law_name": "민사조정규칙",
+    "law_code": "236639",
+    "announce_date": "2021-10-29",
+    "enforce_date": "2021-11-18"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI245003",
+    "law_name": "기술보증기금법",
+    "law_code": "245003",
+    "announce_date": "2022-10-18",
+    "enforce_date": "2023-04-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI240625",
+    "law_name": "국가채권 관리법 시행령",
+    "law_code": "240625",
+    "announce_date": "2022-02-17",
+    "enforce_date": "2022-02-18"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI240275",
+    "law_name": "상가건물 임대차계약서상의 확정일자 부여 및 임대차 정보제공에 관한 규칙",
+    "law_code": "240275",
+    "announce_date": "2022-02-07",
+    "enforce_date": "2022-02-07"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI241621",
+    "law_name": "부동산 가격공시에 관한 법률 시행규칙",
+    "law_code": "241621",
+    "announce_date": "2022-03-30",
+    "enforce_date": "2022-03-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI231757",
+    "law_name": "담보부사채신탁법",
+    "law_code": "231757",
+    "announce_date": "2021-04-20",
+    "enforce_date": "2021-07-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI236637",
+    "law_name": "도시철도법 등에 의한 구분지상권 등기규칙",
+    "law_code": "236637",
+    "announce_date": "2021-10-29",
+    "enforce_date": "2021-12-16"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI243613",
+    "law_name": "군검찰 및 군사법경찰관리의 개인정보 처리에 관한 규정",
+    "law_code": "243613",
+    "announce_date": "2022-06-30",
+    "enforce_date": "2022-07-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI236589",
+    "law_name": "국가채권 관리법 시행규칙",
+    "law_code": "236589",
+    "announce_date": "2021-10-28",
+    "enforce_date": "2021-10-28"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI243269",
+    "law_name": "가사근로자의 고용개선 등에 관한 법률 시행규칙",
+    "law_code": "243269",
+    "announce_date": "2022-06-09",
+    "enforce_date": "2022-06-16"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI229871",
+    "law_name": "이중상환청구권부 채권 발행에 관한 법률 시행령",
+    "law_code": "229871",
+    "announce_date": "2021-03-02",
+    "enforce_date": "2021-03-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI232357",
+    "law_name": "후견등기에 관한 규칙",
+    "law_code": "232357",
+    "announce_date": "2021-05-27",
+    "enforce_date": "2021-06-10"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI243145",
+    "law_name": "자동차 등 특정동산 저당법",
+    "law_code": "243145",
+    "announce_date": "2022-06-10",
+    "enforce_date": "2023-06-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI245683",
+    "law_name": "민사판결서 열람 및 복사에 관한 규칙",
+    "law_code": "245683",
+    "announce_date": "2022-12-01",
+    "enforce_date": "2023-01-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI243695",
+    "law_name": "검찰 및 특별사법경찰관리 등의 개인정보 처리에 관한 규정",
+    "law_code": "243695",
+    "announce_date": "2022-07-05",
+    "enforce_date": "2022-07-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI232367",
+    "law_name": "주택임대차계약증서의 확정일자 부여 및 정보제공에 관한 규칙",
+    "law_code": "232367",
+    "announce_date": "2021-05-27",
+    "enforce_date": "2021-06-10"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI248019",
+    "law_name": "민사 및 가사소송의 사물관할에 관한 규칙",
+    "law_code": "248019",
+    "announce_date": "2023-01-31",
+    "enforce_date": "2023-03-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI233459",
+    "law_name": "기술보증기금법 시행규칙",
+    "law_code": "233459",
+    "announce_date": "2021-06-24",
+    "enforce_date": "2021-06-24"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI232959",
+    "law_name": "가사근로자의 고용개선 등에 관한 법률",
+    "law_code": "232959",
+    "announce_date": "2021-06-15",
+    "enforce_date": "2022-06-16"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI233635",
+    "law_name": "유류오염손해배상 보장법 시행규칙",
+    "law_code": "233635",
+    "announce_date": "2021-06-30",
+    "enforce_date": "2021-06-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI238797",
+    "law_name": "상가건물 임대차보호법",
+    "law_code": "238797",
+    "announce_date": "2022-01-04",
+    "enforce_date": "2022-01-04"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI250219",
+    "law_name": "부동산개발업의 관리 및 육성에 관한 법률",
+    "law_code": "250219",
+    "announce_date": "2023-04-18",
+    "enforce_date": "2023-10-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI233691",
+    "law_name": "신용보증기금법 시행규칙",
+    "law_code": "233691",
+    "announce_date": "2021-06-30",
+    "enforce_date": "2021-06-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI250715",
+    "law_name": "감정평가 및 감정평가사에 관한 법률",
+    "law_code": "250715",
+    "announce_date": "2023-05-09",
+    "enforce_date": "2023-08-10"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI238263",
+    "law_name": "부동산등기 특별조치법",
+    "law_code": "238263",
+    "announce_date": "2021-12-28",
+    "enforce_date": "2022-01-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI251271",
+    "law_name": "농림수산업자 신용보증법 시행령",
+    "law_code": "251271",
+    "announce_date": "2023-05-30",
+    "enforce_date": "2023-05-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI249869",
+    "law_name": "보호시설에 있는 미성년자의 후견 직무에 관한 법률",
+    "law_code": "249869",
+    "announce_date": "2023-04-11",
+    "enforce_date": "2023-10-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI234635",
+    "law_name": "남북 주민 사이의 가족관계와 상속 등에 관한 특례법 시행규칙",
+    "law_code": "234635",
+    "announce_date": "2021-08-06",
+    "enforce_date": "2021-08-06"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI238893",
+    "law_name": "농림수산업자 신용보증법",
+    "law_code": "238893",
+    "announce_date": "2022-01-04",
+    "enforce_date": "2022-01-04"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI246561",
+    "law_name": "법인 아닌 사단ㆍ재단 및 외국인의 부동산등기용 등록번호 부여절차에 관한 규정",
+    "law_code": "246561",
+    "announce_date": "2022-12-27",
+    "enforce_date": "2023-01-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI254623",
+    "law_name": "민사소송 등 인지규칙",
+    "law_code": "254623",
+    "announce_date": "2023-08-31",
+    "enforce_date": "2023-10-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI254593",
+    "law_name": "법원 개인정보 보호에 관한 규칙",
+    "law_code": "254593",
+    "announce_date": "2023-08-31",
+    "enforce_date": "2023-09-15"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI252393",
+    "law_name": "민사소송법",
+    "law_code": "252393",
+    "announce_date": "2023-07-11",
+    "enforce_date": "2025-07-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI247035",
+    "law_name": "법인 아닌 사단ㆍ재단 및 외국인의 부동산등기용 등록번호 부여절차에 관한 규정 시행규칙",
+    "law_code": "247035",
+    "announce_date": "2022-12-27",
+    "enforce_date": "2022-12-27"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI267359",
+    "law_name": "채무자 회생 및 파산에 관한 법률",
+    "law_code": "267359",
+    "announce_date": "2024-12-20",
+    "enforce_date": "2025-06-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI263061",
+    "law_name": "채무자 회생 및 파산에 관한 규칙",
+    "law_code": "263061",
+    "announce_date": "2024-05-30",
+    "enforce_date": "2024-05-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI257487",
+    "law_name": "성매매알선 등 행위의 처벌에 관한 법률",
+    "law_code": "257487",
+    "announce_date": "2023-12-29",
+    "enforce_date": "2024-01-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI265307",
+    "law_name": "민법",
+    "law_code": "265307",
+    "announce_date": "2024-09-20",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI265351",
+    "law_name": "민사집행법",
+    "law_code": "265351",
+    "announce_date": "2024-09-20",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI251943",
+    "law_name": "보증인 보호를 위한 특별법",
+    "law_code": "251943",
+    "announce_date": "2023-06-20",
+    "enforce_date": "2023-12-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI265671",
+    "law_name": "공기업ㆍ준정부기관 계약사무규칙",
+    "law_code": "265671",
+    "announce_date": "2024-09-27",
+    "enforce_date": "2024-09-27"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI259881",
+    "law_name": "임금채권보장법",
+    "law_code": "259881",
+    "announce_date": "2024-02-06",
+    "enforce_date": "2024-08-07"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI259641",
+    "law_name": "부동산 거래신고 등에 관한 법률",
+    "law_code": "259641",
+    "announce_date": "2024-02-06",
+    "enforce_date": "2024-05-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI253321",
+    "law_name": "민사소송 등에서의 전자문서 이용 등에 관한 법률",
+    "law_code": "253321",
+    "announce_date": "2023-08-08",
+    "enforce_date": "2025-02-03"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI260897",
+    "law_name": "개인금융채권의 관리 및 개인금융채무자의 보호에 관한 법률",
+    "law_code": "260897",
+    "announce_date": "2024-02-27",
+    "enforce_date": "2024-10-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI265547",
+    "law_name": "감정평가 및 감정평가사에 관한 법률 시행령",
+    "law_code": "265547",
+    "announce_date": "2024-09-26",
+    "enforce_date": "2024-09-26"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI253973",
+    "law_name": "지방자치단체를 당사자로 하는 계약에 관한 법률",
+    "law_code": "253973",
+    "announce_date": "2023-08-16",
+    "enforce_date": "2024-02-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI258671",
+    "law_name": "민사소송 등 인지법",
+    "law_code": "258671",
+    "announce_date": "2024-01-16",
+    "enforce_date": "2025-03-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI256591",
+    "law_name": "부동산개발업의 관리 및 육성에 관한 법률 시행령",
+    "law_code": "256591",
+    "announce_date": "2023-12-12",
+    "enforce_date": "2023-12-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI263457",
+    "law_name": "부동산개발업의 관리 및 육성에 관한 법률 시행규칙",
+    "law_code": "263457",
+    "announce_date": "2024-06-25",
+    "enforce_date": "2024-09-26"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI265653",
+    "law_name": "감정평가 및 감정평가사에 관한 법률 시행규칙",
+    "law_code": "265653",
+    "announce_date": "2024-09-26",
+    "enforce_date": "2024-09-26"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI263089",
+    "law_name": "채무자 회생 및 파산에 관한 법률 시행령",
+    "law_code": "263089",
+    "announce_date": "2024-06-11",
+    "enforce_date": "2024-06-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI264097",
+    "law_name": "방위산업에 관한 계약사무 처리규칙",
+    "law_code": "264097",
+    "announce_date": "2024-07-16",
+    "enforce_date": "2024-07-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI257909",
+    "law_name": "부동산 거래신고 등에 관한 법률 시행규칙",
+    "law_code": "257909",
+    "announce_date": "2023-12-29",
+    "enforce_date": "2024-01-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI249999",
+    "law_name": "주택임대차보호법",
+    "law_code": "249999",
+    "announce_date": "2023-04-18",
+    "enforce_date": "2023-07-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI252747",
+    "law_name": "임차권등기명령 절차에 관한 규칙",
+    "law_code": "252747",
+    "announce_date": "2023-07-14",
+    "enforce_date": "2023-07-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI260619",
+    "law_name": "부동산투자회사법",
+    "law_code": "260619",
+    "announce_date": "2024-02-20",
+    "enforce_date": "2024-08-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI251373",
+    "law_name": "자동차 등 특정동산 저당법 시행령",
+    "law_code": "251373",
+    "announce_date": "2023-06-07",
+    "enforce_date": "2023-06-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI260641",
+    "law_name": "부동산투자회사법 시행규칙",
+    "law_code": "260641",
+    "announce_date": "2024-02-16",
+    "enforce_date": "2024-02-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI249997",
+    "law_name": "가사소송법",
+    "law_code": "249997",
+    "announce_date": "2023-04-18",
+    "enforce_date": "2023-10-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266895",
+    "law_name": "동산ㆍ채권의 담보등기 등에 관한 규칙",
+    "law_code": "266895",
+    "announce_date": "2024-11-29",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266847",
+    "law_name": "부동산등기규칙",
+    "law_code": "266847",
+    "announce_date": "2024-11-29",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI268669",
+    "law_name": "채권의 공정한 추심에 관한 법률",
+    "law_code": "268669",
+    "announce_date": "2025-01-21",
+    "enforce_date": "2025-07-22"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI265377",
+    "law_name": "부동산등기법",
+    "law_code": "265377",
+    "announce_date": "2024-09-20",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI262411",
+    "law_name": "부동산 실권리자명의 등기에 관한 법률 시행령",
+    "law_code": "262411",
+    "announce_date": "2024-05-07",
+    "enforce_date": "2024-05-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266765",
+    "law_name": "공장 및 광업재단 저당등기 규칙",
+    "law_code": "266765",
+    "announce_date": "2024-11-29",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266295",
+    "law_name": "전세사기피해자 지원 및 주거안정에 관한 특별법 시행령",
+    "law_code": "266295",
+    "announce_date": "2024-11-08",
+    "enforce_date": "2024-11-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266851",
+    "law_name": "민법법인 및 특수법인 등기규칙",
+    "law_code": "266851",
+    "announce_date": "2024-11-29",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI267779",
+    "law_name": "가사근로자의 고용개선 등에 관한 법률 시행령",
+    "law_code": "267779",
+    "announce_date": "2024-12-31",
+    "enforce_date": "2024-12-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI264529",
+    "law_name": "성매매알선 등 행위의 처벌에 관한 법률 시행규칙",
+    "law_code": "264529",
+    "announce_date": "2024-07-30",
+    "enforce_date": "2024-07-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI264717",
+    "law_name": "임금채권보장법 시행령",
+    "law_code": "264717",
+    "announce_date": "2024-08-06",
+    "enforce_date": "2024-08-07"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI255265",
+    "law_name": "헌법재판소 개인정보 보호 규칙",
+    "law_code": "255265",
+    "announce_date": "2023-10-05",
+    "enforce_date": "2023-10-05"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI268355",
+    "law_name": "기술보증기금법 시행령",
+    "law_code": "268355",
+    "announce_date": "2025-01-21",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI267909",
+    "law_name": "민사소송 등에서의 전자문서 이용 등에 관한 규칙",
+    "law_code": "267909",
+    "announce_date": "2024-12-31",
+    "enforce_date": "2025-02-03"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI270307",
+    "law_name": "신용보증기금법",
+    "law_code": "270307",
+    "announce_date": "2025-04-01",
+    "enforce_date": "2025-10-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266819",
+    "law_name": "경찰공무원 등의 개인정보 처리에 관한 규정",
+    "law_code": "266819",
+    "announce_date": "2024-12-03",
+    "enforce_date": "2024-12-03"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI268683",
+    "law_name": "자동차손해배상 보장법 시행규칙",
+    "law_code": "268683",
+    "announce_date": "2025-01-17",
+    "enforce_date": "2025-01-17"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI272739",
+    "law_name": "상속세 및 증여세법 시행규칙",
+    "law_code": "272739",
+    "announce_date": "2025-07-04",
+    "enforce_date": "2025-07-04"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI270267",
+    "law_name": "종합부동산세법 시행규칙",
+    "law_code": "270267",
+    "announce_date": "2025-03-21",
+    "enforce_date": "2025-06-04"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI272517",
+    "law_name": "자동차손해배상 보장법 시행령",
+    "law_code": "272517",
+    "announce_date": "2025-06-20",
+    "enforce_date": "2025-06-21"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI269349",
+    "law_name": "개인정보 보호위원회 직제",
+    "law_code": "269349",
+    "announce_date": "2025-02-25",
+    "enforce_date": "2025-02-25"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI276893",
+    "law_name": "양육비 이행확보 및 지원에 관한 법률",
+    "law_code": "276893",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI276899",
+    "law_name": "인신매매등방지 및 피해자보호 등에 관한 법률",
+    "law_code": "276899",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI276877",
+    "law_name": "성매매방지 및 피해자보호 등에 관한 법률",
+    "law_code": "276877",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI272785",
+    "law_name": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙",
+    "law_code": "272785",
+    "announce_date": "2025-07-08",
+    "enforce_date": "2025-07-08"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI273927",
+    "law_name": "신용보증기금법 시행령",
+    "law_code": "273927",
+    "announce_date": "2025-09-30",
+    "enforce_date": "2025-10-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI275181",
+    "law_name": "부동산투자회사법 시행령",
+    "law_code": "275181",
+    "announce_date": "2025-09-30",
+    "enforce_date": "2025-09-30"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI279445",
+    "law_name": "특정물품등의조달에관한국가를당사자로하는계약에관한법률시행특례규칙",
+    "law_code": "279445",
+    "announce_date": "2025-10-31",
+    "enforce_date": "2025-10-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI259323",
+    "law_name": "선거관리위원회 개인정보 보호에 관한 규칙",
+    "law_code": "259323",
+    "announce_date": "2024-01-19",
+    "enforce_date": "2024-01-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI278681",
+    "law_name": "임금채권보장법 시행규칙",
+    "law_code": "278681",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI270549",
+    "law_name": "지역신용보증재단법 시행령",
+    "law_code": "270549",
+    "announce_date": "2025-04-08",
+    "enforce_date": "2025-04-22"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI272631",
+    "law_name": "민사집행규칙",
+    "law_code": "272631",
+    "announce_date": "2025-06-26",
+    "enforce_date": "2025-07-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI272655",
+    "law_name": "민사소송규칙",
+    "law_code": "272655",
+    "announce_date": "2025-06-26",
+    "enforce_date": "2025-07-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI264885",
+    "law_name": "부동산등기 특별조치법에 따른 과태료 부과ㆍ징수규칙",
+    "law_code": "264885",
+    "announce_date": "2024-08-13",
+    "enforce_date": "2024-08-13"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI276123",
+    "law_name": "상속세 및 증여세법",
+    "law_code": "276123",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266399",
+    "law_name": "부동산서비스산업 진흥법 시행규칙",
+    "law_code": "266399",
+    "announce_date": "2024-11-12",
+    "enforce_date": "2024-11-12"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277589",
+    "law_name": "국가를 당사자로 하는 계약에 관한 법률 시행령",
+    "law_code": "277589",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266981",
+    "law_name": "부동산 가격공시에 관한 법률 시행령",
+    "law_code": "266981",
+    "announce_date": "2024-12-10",
+    "enforce_date": "2024-12-10"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277615",
+    "law_name": "상속세 및 증여세법 시행령",
+    "law_code": "277615",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI261415",
+    "law_name": "국가를 당사자로 하는 계약에 관한 법률",
+    "law_code": "261415",
+    "announce_date": "2024-03-26",
+    "enforce_date": "2024-09-27"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI268453",
+    "law_name": "한국부동산원법 시행령",
+    "law_code": "268453",
+    "announce_date": "2025-01-21",
+    "enforce_date": "2025-01-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277773",
+    "law_name": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행령",
+    "law_code": "277773",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI270351",
+    "law_name": "개인정보 보호법",
+    "law_code": "270351",
+    "announce_date": "2025-04-01",
+    "enforce_date": "2025-10-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277629",
+    "law_name": "특정조달을 위한 국가를 당사자로 하는 계약에 관한 법률 시행령 특례규정",
+    "law_code": "277629",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI266929",
+    "law_name": "난민법 시행규칙",
+    "law_code": "266929",
+    "announce_date": "2024-12-03",
+    "enforce_date": "2024-12-03"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI269879",
+    "law_name": "종합부동산세법",
+    "law_code": "269879",
+    "announce_date": "2025-03-14",
+    "enforce_date": "2025-03-14"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI267649",
+    "law_name": "주택임대차보호법 시행령",
+    "law_code": "267649",
+    "announce_date": "2024-12-31",
+    "enforce_date": "2025-03-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI268591",
+    "law_name": "지역신용보증재단법",
+    "law_code": "268591",
+    "announce_date": "2025-01-21",
+    "enforce_date": "2025-04-22"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI271013",
+    "law_name": "국가를 당사자로 하는 계약에 관한 법률 시행규칙",
+    "law_code": "271013",
+    "announce_date": "2025-05-01",
+    "enforce_date": "2025-05-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI270627",
+    "law_name": "도시철도채권 매입사무 취급규칙",
+    "law_code": "270627",
+    "announce_date": "2025-04-11",
+    "enforce_date": "2025-04-11"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI271123",
+    "law_name": "전세사기피해자 지원 및 주거안정에 관한 특별법",
+    "law_code": "271123",
+    "announce_date": "2025-05-20",
+    "enforce_date": "2025-05-20"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277961",
+    "law_name": "부동산서비스산업 진흥법 시행령",
+    "law_code": "277961",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI267689",
+    "law_name": "상가건물 임대차보호법 시행령",
+    "law_code": "267689",
+    "announce_date": "2024-12-31",
+    "enforce_date": "2025-03-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI269603",
+    "law_name": "개인정보 보호위원회 직제 시행규칙",
+    "law_code": "269603",
+    "announce_date": "2025-03-04",
+    "enforce_date": "2025-03-04"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI269477",
+    "law_name": "종합부동산세법 시행령",
+    "law_code": "269477",
+    "announce_date": "2025-02-28",
+    "enforce_date": "2025-02-28"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277441",
+    "law_name": "성매매방지 및 피해자보호 등에 관한 법률 시행령",
+    "law_code": "277441",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI263075",
+    "law_name": "농림수산업자 신용보증법 시행규칙",
+    "law_code": "263075",
+    "announce_date": "2024-05-31",
+    "enforce_date": "2024-05-31"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277461",
+    "law_name": "인신매매등방지 및 피해자보호 등에 관한 법률 시행령",
+    "law_code": "277461",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277455",
+    "law_name": "양육비 이행확보 및 지원에 관한 법률 시행령",
+    "law_code": "277455",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI259391",
+    "law_name": "우주손해배상법",
+    "law_code": "259391",
+    "announce_date": "2024-01-26",
+    "enforce_date": "2024-05-27"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI278839",
+    "law_name": "양육비 이행확보 및 지원에 관한 법률 시행규칙",
+    "law_code": "278839",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI273705",
+    "law_name": "난민법 시행령",
+    "law_code": "273705",
+    "announce_date": "2025-09-16",
+    "enforce_date": "2025-09-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI273851",
+    "law_name": "전세사기피해자 지원 및 주거안정에 관한 특별법 시행규칙",
+    "law_code": "273851",
+    "announce_date": "2025-09-19",
+    "enforce_date": "2025-09-19"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI278831",
+    "law_name": "성매매방지 및 피해자보호 등에 관한 법률 시행규칙",
+    "law_code": "278831",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI278849",
+    "law_name": "인신매매등방지 및 피해자보호 등에 관한 법률 시행규칙",
+    "law_code": "278849",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI270903",
+    "law_name": "부동산 거래신고 등에 관한 법률 시행령",
+    "law_code": "270903",
+    "announce_date": "2025-04-29",
+    "enforce_date": "2025-04-29"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277017",
+    "law_name": "자동차손해배상 보장법",
+    "law_code": "277017",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI273745",
+    "law_name": "개인정보 보호법 시행령",
+    "law_code": "273745",
+    "announce_date": "2025-09-23",
+    "enforce_date": "2025-10-02"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI277081",
+    "law_name": "유류오염손해배상 보장법",
+    "law_code": "277081",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI278137",
+    "law_name": "개인금융채권의 관리 및 개인금융채무자의 보호에 관한 법률 시행령",
+    "law_code": "278137",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI279347",
+    "law_name": "법인 및 재외국민의 부동산등기용등록번호 부여에 관한 규칙",
+    "law_code": "279347",
+    "announce_date": "2025-10-31",
+    "enforce_date": "2025-11-03"
+  },
+  {
+    "resource_uri": "http://lod.law.go.kr/resource/LSI276273",
+    "law_name": "공장 및 광업재단 저당법",
+    "law_code": "276273",
+    "announce_date": "2025-10-01",
+    "enforce_date": "2025-10-01"
+  }
+]

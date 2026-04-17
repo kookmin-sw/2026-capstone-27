@@ -16,20 +16,17 @@ export function SplashPage() {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col min-h-dvh bg-white items-center justify-center gap-6 animate-[fadeIn_0.6s_ease-out_both]">
-      {/* Logo */}
-      <div className="w-20 h-20 rounded-2xl bg-brand flex items-center justify-center shadow-lg shadow-brand/30">
-        <Shield size={42} className="text-white" strokeWidth={1.8} aria-hidden="true" />
-      </div>
+    <div className="flex flex-col min-h-dvh bg-white items-center justify-center relative overflow-hidden animate-[fadeIn_0.6s_ease-out_both]">
+      {/* Decorative blur */}
+      <div className="absolute -top-20 right-0 w-64 h-64 rounded-full bg-brand/5 blur-[64px]" />
 
-      {/* App name + tagline */}
-      <div className="text-center space-y-1.5">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">SHIELD</h1>
-        <p className="text-sm text-gray-500">AI 법률 정보 구조화 플랫폼</p>
+      {/* Shield logo — large centered icon only */}
+      <div className="w-[170px] h-[170px] rounded-[32px] bg-brand flex items-center justify-center shadow-lg shadow-brand/20">
+        <Shield size={96} className="text-white" strokeWidth={1.5} aria-hidden="true" />
       </div>
 
       {/* Loading dots */}
-      <div className="flex items-center gap-1.5 mt-2" aria-label="로딩 중">
+      <div className="flex items-center gap-1.5 mt-10" aria-label="로딩 중">
         {[0, 1, 2].map((i) => (
           <span
             key={i}

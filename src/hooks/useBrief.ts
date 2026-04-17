@@ -90,3 +90,14 @@ export function useDeliveries(briefId: string) {
     enabled: !!briefId,
   });
 }
+
+/** 변호사 매칭 시작 */
+export function useStartMatching(briefId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => briefApi.startMatching(briefId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: KEYS.recommendations(briefId) });
+    },
+  });
+}

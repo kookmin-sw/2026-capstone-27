@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
-import api from '@/lib/api';
+import { authApi } from '@/lib/authApi';
 
 function getRoleHome(role: string): string {
   switch (role) {
@@ -38,19 +38,12 @@ export function GoogleCallbackPage() {
       try {
         // 명세: POST /api/auth/google { authorizationCode, role }
         // role은 첫 로그인 시에만 필요 — 기존 사용자는 서버가 무시
-        const { data } = await api.post<{
-          data: {
-            accessToken: string;
-            userId: string;
-            name: string;
-            role: string;
-          };
-        }>('/auth/google', { authorizationCode: code }, { withCredentials: true });
+        const { data } = await authApi.googleLogin({ authorizationCode: code });
 
         const { accessToken, role } = data.data;
 
         await login(accessToken);
-        navigate(getRoleHome(role), { replace: true });
+        navigate(getRoleHome(role ?? ''), { replace: true });
       } catch (err) {
         console.error('[GoogleCallback] Error:', err);
         setErrorMsg('구글 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');

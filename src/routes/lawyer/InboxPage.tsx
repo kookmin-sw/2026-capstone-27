@@ -1,43 +1,23 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/cn';
+import { formatDate } from '@/lib/dateUtils';
 import { useInboxList } from '@/hooks/useInbox';
 import { Badge, Card, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-import { DOMAIN_LABELS } from '@/lib/constants';
+import { DOMAIN_LABELS, DELIVERY_STATUS_BADGE, DELIVERY_STATUS_LABEL } from '@/lib/constants';
 import type { InboxItemResponse } from '@/types';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 type FilterTab = 'ALL' | 'DELIVERED' | 'CONFIRMED' | 'REJECTED';
-type BadgeVariant = 'primary' | 'success' | 'danger' | 'default';
 
 const TABS: { key: FilterTab; label: string }[] = [
   { key: 'ALL', label: '전체' },
-  { key: 'DELIVERED', label: '대기 중' },
-  { key: 'CONFIRMED', label: '수락' },
-  { key: 'REJECTED', label: '거절' },
+  { key: 'DELIVERED', label: '신규 의뢰' },
+  { key: 'CONFIRMED', label: '검토 중' },
+  { key: 'REJECTED', label: '응답 완료' },
 ];
-
-const STATUS_BADGE: Record<string, BadgeVariant> = {
-  DELIVERED: 'primary',
-  CONFIRMED: 'success',
-  REJECTED: 'danger',
-};
-
-const STATUS_LABEL: Record<string, string> = {
-  DELIVERED: '대기 중',
-  CONFIRMED: '수락',
-  REJECTED: '거절',
-};
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-}
 
 // ─── item card ───────────────────────────────────────────────────────────────
 
@@ -60,8 +40,8 @@ function InboxItemCard({ item }: { item: InboxItemResponse }) {
               <Badge variant="default" size="sm">
                 {DOMAIN_LABELS[item.legalField] ?? item.legalField}
               </Badge>
-              <Badge variant={STATUS_BADGE[item.status] ?? 'default'} size="sm">
-                {STATUS_LABEL[item.status] ?? item.status}
+              <Badge variant={DELIVERY_STATUS_BADGE[item.status] ?? 'default'} size="sm">
+                {DELIVERY_STATUS_LABEL[item.status] ?? item.status}
               </Badge>
             </div>
           </div>
@@ -86,7 +66,7 @@ export function InboxPage() {
 
   return (
     <div className="flex flex-col min-h-dvh bg-surface">
-      <Header title="수신함" showBack onBack={() => navigate('/lawyer')} />
+      <Header title="의뢰함" showBack onBack={() => navigate('/lawyer')} />
 
       {/* Tabs */}
       <div className="bg-white border-b border-gray-200 px-4">

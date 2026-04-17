@@ -36,3 +36,21 @@ export interface RegisterLawyerRequest {
   experienceYears: number;
   licenseNumber: string;
 }
+
+/** POST /api/auth/dev/login 요청 */
+export interface DevLoginRequest {
+  email: string;
+  name: string;
+  role: UserRole;
+}
+
+/** POST /api/auth/google ��청 */
+export interface GoogleLoginRequest {
+  authorizationCode: string;
+  role?: UserRole;
+}
+
+/** POST /api/auth/token/refresh 응답 data */
+export interface RefreshTokenResponse {
+  newAccessToken: string | null;
+}

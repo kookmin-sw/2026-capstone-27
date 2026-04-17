@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { validateNaverState } from '@/lib/naver';
-import api from '@/lib/api';
+import { authApi } from '@/lib/authApi';
 
 function getRoleHome(role: string): string {
   switch (role) {
@@ -44,19 +44,12 @@ export function NaverCallbackPage() {
 
     (async () => {
       try {
-        const { data } = await api.post<{
-          data: {
-            accessToken: string;
-            userId: string;
-            name: string;
-            role: string;
-          };
-        }>('/auth/naver', { authorizationCode: code, state }, { withCredentials: true });
+        const { data } = await authApi.naverLogin({ authorizationCode: code, state: state ?? undefined });
 
         const { accessToken, role } = data.data;
 
         await login(accessToken);
-        navigate(getRoleHome(role), { replace: true });
+        navigate(getRoleHome(role ?? ''), { replace: true });
       } catch (err) {
         console.error('[NaverCallback] Error:', err);
         setErrorMsg('네이버 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');

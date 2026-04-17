@@ -1,177 +1,177 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Info, Bell, Brain, Share2 } from 'lucide-react';
+import { UserCheck, ShieldCheck, UserX, CircleCheck, Circle } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { Button, Card } from '@/components/ui';
+import { useUpdateBrief } from '@/hooks/useBrief';
+import { Button } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
+import type { PrivacySetting } from '@/types/enums';
 
-// ─── Toggle component ────────────────────────────────────────────────────────
+// ─── types ───────────────────────────────────────────────────────────────────
 
-interface ToggleRowProps {
+type PrivacyLevel = 'full' | 'partial' | 'anonymous';
+
+interface PrivacyOption {
+  value: PrivacyLevel;
   icon: React.ReactNode;
-  label: string;
+  iconBg: string;
+  title: string;
   description: string;
-  checked: boolean;
-  onChange: (value: boolean) => void;
+  previewName: string;
+  previewBadge: string;
 }
 
-function ToggleRow({ icon, label, description, checked, onChange }: ToggleRowProps) {
-  return (
-    <div className="flex items-start gap-3 py-3">
-      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center mt-0.5">
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-gray-900">{label}</p>
-        <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{description}</p>
-      </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        onClick={() => onChange(!checked)}
-        className={cn(
-          'relative flex-shrink-0 inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2',
-          checked ? 'bg-brand' : 'bg-gray-300',
-        )}
-      >
-        <span
-          className={cn(
-            'inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200',
-            checked ? 'translate-x-6' : 'translate-x-1',
-          )}
-        />
-      </button>
-    </div>
-  );
-}
+const OPTIONS: PrivacyOption[] = [
+  {
+    value: 'full',
+    icon: <UserCheck size={20} className="text-[#575e6b]" />,
+    iconBg: 'bg-[#f3f5f6]',
+    title: '전체 공개',
+    description: '본인의 실명으로 사건을 의뢰합니다. 변호사의 신뢰도가 높아집니다.',
+    previewName: '홍길동',
+    previewBadge: '의뢰인',
+  },
+  {
+    value: 'partial',
+    icon: <ShieldCheck size={20} className="text-white" />,
+    iconBg: 'bg-brand',
+    title: '부분 공개',
+    description: '이름의 일부를 마스킹 처리하여 공개합니다. 보안과 신뢰의 균형을 맞춥니다.',
+    previewName: '홍○동',
+    previewBadge: '의뢰인',
+  },
+  {
+    value: 'anonymous',
+    icon: <UserX size={20} className="text-[#575e6b]" />,
+    iconBg: 'bg-[#f3f5f6]',
+    title: '비공개 (익명)',
+    description: '실명을 완전히 숨기고 익명으로 의뢰합니다. 개인정보를 최우선으로 보호합니다.',
+    previewName: '익명의 의뢰인',
+    previewBadge: '의뢰인',
+  },
+];
 
 // ─── page ────────────────────────────────────────────────────────────────────
+
+/** UI 선택값 → API PrivacySetting 매핑 */
+const PRIVACY_MAP: Record<PrivacyLevel, PrivacySetting> = {
+  full: 'PUBLIC',
+  partial: 'PARTIAL',
+  anonymous: 'PARTIAL', // API에서 anonymous는 미지원 — PARTIAL로 대체
+};
 
 export function PrivacySettingsPage() {
   const { id = '' } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const updateBrief = useUpdateBrief(id);
+  const [selected, setSelected] = useState<PrivacyLevel>('partial');
 
-  const [shareCase, setShareCase] = useState(true);
-  const [aiImprovement, setAiImprovement] = useState(false);
-  const [pushNotifications, setPushNotifications] = useState(true);
-
-  function handleSave() {
-    // Navigate to the final review page after saving settings
-    navigate(`/briefs/${id}/review`);
+  async function handleSave() {
+    try {
+      await updateBrief.mutateAsync({ privacySetting: PRIVACY_MAP[selected] });
+      navigate(`/briefs/${id}/review`);
+    } catch {
+      // 에러 시 페이지 유지
+    }
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col min-h-dvh bg-white">
       <Header
-        title="개인정보 설정"
+        title="개인정보 공개 설정"
         showBack
         onBack={() => navigate(-1)}
       />
 
-      <main className="flex-1 px-4 py-6 space-y-4 pb-28">
-        {/* Intro section */}
-        <div className="space-y-1.5">
-          <h2 className="text-base font-bold text-gray-900">
-            개인정보 공유 설정
+      <main className="flex-1 px-6 pt-4 pb-32 space-y-5 overflow-y-auto">
+        {/* Title */}
+        <div>
+          <h2 className="text-xl font-bold text-[#161a1d] leading-8">
+            변호사에게 공개할
+            <br />
+            본인의 신원을 선택해 주세요
           </h2>
-          <p className="text-sm text-gray-500 leading-relaxed">
-            변호사와 상담 진행을 위해 필요한 정보 공유 범위를 설정해 주세요.
-            설정은 언제든지 변경할 수 있습니다.
+          <p className="text-sm text-[#31383f] mt-2">
+            설정한 공개 범위는 변호사와의 상담 시에만 적용됩니다.
           </p>
         </div>
 
-        {/* Data sharing toggles */}
-        <Card padding="md">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-            데이터 공유
+        {/* Privacy option cards */}
+        {OPTIONS.map((opt) => {
+          const isSelected = selected === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setSelected(opt.value)}
+              className={cn(
+                'w-full text-left rounded-card p-5 transition-all',
+                isSelected
+                  ? 'border-2 border-brand shadow-md bg-white'
+                  : 'border-2 border-[#dde0e4] bg-[#f9fafb]',
+              )}
+            >
+              <div className="flex items-start gap-4">
+                <div className={cn('shrink-0 w-9 h-9 rounded-[10px] flex items-center justify-center mt-1', opt.iconBg)}>
+                  {opt.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-bold text-[#161a1d]">{opt.title}</p>
+                  <p className="text-sm text-[#31383f] leading-relaxed mt-1">{opt.description}</p>
+                </div>
+                {isSelected ? (
+                  <CircleCheck size={24} className="text-brand shrink-0" />
+                ) : (
+                  <Circle size={24} className="text-[#dde0e4] shrink-0" />
+                )}
+              </div>
+
+              {/* Preview */}
+              <div className="mt-4">
+                <p className="text-[11px] font-medium text-[#31383f] uppercase tracking-tight mb-2">
+                  변호사 확인 화면 미리보기
+                </p>
+                <div className={cn(
+                  'rounded-[10px] border p-4 flex items-center gap-3',
+                  isSelected ? 'bg-[#f0faff] border-brand/30' : 'bg-[#f3f5f6]/30 border-[#dde0e4]',
+                )}>
+                  <div className="w-10 h-10 rounded-full bg-[#e1f1fd] shrink-0" />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-[#31383f]">{opt.previewName}</span>
+                      <span className="text-[10px] text-brand border border-brand/40 rounded-full px-1.5">
+                        {opt.previewBadge}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#31383f] mt-0.5">상담 대기 중 · 민사 사건</p>
+                  </div>
+                </div>
+              </div>
+            </button>
+          );
+        })}
+
+        {/* Notice */}
+        <div className="bg-[#f3f5f6]/40 border border-[#dde0e4] border-dashed rounded-card p-4">
+          <p className="text-[10px] text-[#31383f] leading-5">
+            • 개인정보 공개 설정은 의뢰서 제출 이후에는 변경이 불가능합니다.
+            <br />
+            • 정확한 법률 상담을 위해 가능하면 부분 공개 이상의 설정을 권장합니다.
           </p>
-
-          <ToggleRow
-            icon={<Share2 size={17} className="text-brand" />}
-            label="사건 상세 공유"
-            description="매칭된 변호사에게 사건의 세부 내용을 공유합니다. 상담 품질 향상을 위해 권장됩니다."
-            checked={shareCase}
-            onChange={setShareCase}
-          />
-
-          <div className="h-px bg-gray-100" />
-
-          <ToggleRow
-            icon={<Brain size={17} className="text-purple-500" />}
-            label="AI 모델 개선 동의"
-            description="AI 분석 품질 향상을 위해 익명화된 사건 데이터를 활용합니다. 개인 식별 정보는 포함되지 않습니다."
-            checked={aiImprovement}
-            onChange={setAiImprovement}
-          />
-
-          <div className="h-px bg-gray-100" />
-
-          <ToggleRow
-            icon={<Bell size={17} className="text-amber-500" />}
-            label="푸시 알림 허용"
-            description="변호사 응답, 상담 일정 등 중요한 알림을 푸시 메시지로 받습니다."
-            checked={pushNotifications}
-            onChange={setPushNotifications}
-          />
-        </Card>
-
-        {/* Current selections summary */}
-        <Card padding="md">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-            현재 설정 요약
-          </p>
-          <ul className="space-y-2">
-            <li className="flex items-center justify-between text-sm">
-              <span className="text-gray-700">사건 상세 공유</span>
-              <span className={cn('font-medium', shareCase ? 'text-brand' : 'text-gray-400')}>
-                {shareCase ? '허용' : '거부'}
-              </span>
-            </li>
-            <li className="flex items-center justify-between text-sm">
-              <span className="text-gray-700">AI 모델 개선</span>
-              <span className={cn('font-medium', aiImprovement ? 'text-brand' : 'text-gray-400')}>
-                {aiImprovement ? '동의' : '미동의'}
-              </span>
-            </li>
-            <li className="flex items-center justify-between text-sm">
-              <span className="text-gray-700">푸시 알림</span>
-              <span className={cn('font-medium', pushNotifications ? 'text-brand' : 'text-gray-400')}>
-                {pushNotifications ? '허용' : '거부'}
-              </span>
-            </li>
-          </ul>
-        </Card>
-
-        {/* Privacy policy info box */}
-        <div className="rounded-xl bg-blue-50 p-4 flex gap-3">
-          <Info size={16} className="text-brand flex-shrink-0 mt-0.5" aria-hidden="true" />
-          <div className="space-y-1.5">
-            <p className="text-xs font-semibold text-blue-800">개인정보 보호 정책</p>
-            <p className="text-xs text-blue-700 leading-relaxed">
-              SHIELD는 수집된 모든 개인정보를 암호화하여 안전하게 보관합니다.
-              공유된 정보는 법률 상담 목적으로만 사용되며, 제3자에게 무단 제공되지 않습니다.
-            </p>
-            <p className="text-xs text-blue-600 leading-relaxed">
-              자세한 내용은{' '}
-              <span className="underline font-medium">개인정보 처리방침</span>을
-              확인해 주세요.
-            </p>
-          </div>
         </div>
-
-        {/* Legal consent notice */}
-        <p className="text-xs text-gray-400 text-center leading-relaxed">
-          설정 저장 시 SHIELD의 개인정보 처리방침 및 데이터 공유 조건에
-          동의하는 것으로 간주합니다.
-        </p>
       </main>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-4 safe-area-bottom">
-        <Button variant="primary" fullWidth size="lg" onClick={handleSave}>
-          설정 저장
+      <div className="fixed bottom-0 left-0 right-0 bg-linear-to-t from-white via-white/95 to-transparent px-6 pt-10 pb-6 safe-area-bottom">
+        <Button
+          variant="primary"
+          fullWidth
+          size="lg"
+          isLoading={updateBrief.isPending}
+          onClick={handleSave}
+          className="rounded-card h-14 shadow-lg shadow-brand/25"
+        >
+          다음
         </Button>
       </div>
     </div>

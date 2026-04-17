@@ -48,4 +48,8 @@ export const briefApi = {
   /** 전달 현황 */
   getDeliveries: (id: string) =>
     api.get<ApiResponse<DeliveriesWrapper>>(`${BASE}/${id}/deliveries`),
+
+  /** 변호사 매칭 시작 (비동기) */
+  startMatching: (id: string) =>
+    api.post<ApiResponse<void>>(`${BASE}/${id}/lawyer-recommendations`),
 };

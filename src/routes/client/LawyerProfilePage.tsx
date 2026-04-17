@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { User, Shield, MapPin, Award, Briefcase } from 'lucide-react';
+import { User, MapPin, Award, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerDetail } from '@/hooks/useLawyer';
 import { Button, Card, Badge, Spinner } from '@/components/ui';
@@ -13,8 +13,6 @@ export function LawyerProfilePage() {
   const { id = '' } = useParams<{ id: string }>();
 
   const { data: lawyer, isLoading } = useLawyerDetail(id);
-
-  const isVerified = lawyer?.verificationStatus === 'VERIFIED';
 
   return (
     <div className="flex flex-col min-h-dvh bg-surface">
@@ -67,20 +65,13 @@ export function LawyerProfilePage() {
                   )}
                 </div>
 
-                {/* Name */}
-                <h2 className="text-xl font-bold text-gray-900">{lawyer.name}</h2>
-
-                {/* Verification badge */}
-                {isVerified ? (
-                  <div className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                    <Shield size={14} aria-hidden="true" />
-                    인증된 변호사
-                  </div>
-                ) : (
-                  <div className="inline-flex items-center text-sm font-medium text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
-                    심사 중
-                  </div>
-                )}
+                {/* Name + experience badge */}
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-[#16181d]">{lawyer.name}</h2>
+                  <span className="bg-[#f0f7ff] text-[#0680f9] text-xs font-medium px-2.5 py-0.5 rounded-full">
+                    경력 {lawyer.experienceYears}년
+                  </span>
+                </div>
 
                 {/* Specialization */}
                 {lawyer.specializations && (

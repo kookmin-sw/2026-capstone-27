@@ -108,9 +108,11 @@ groq:
     max-tokens: 512
 
 # RAG 검색 설정
+# Phase A-5: PG 기반 PgLegalRetrievalService 도입 → 기본값 false
+# (tsvector BM25 + pg_trgm 하이브리드). 긴급 fallback 시 RAG_STUB=true 로 override.
 rag:
   retrieval:
-    stub: ${RAG_STUB:true}
+    stub: ${RAG_STUB:false}
 
 # 온톨로지 설정
 ontology:

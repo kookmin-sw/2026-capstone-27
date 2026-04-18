@@ -6,8 +6,9 @@ import java.util.List;
 
 /**
  * Layer 2: 법률 검색 서비스 인터페이스.
- * MongoDB Atlas Vector Search 하이브리드 검색을 수행.
- * 현재는 Stub 구현 — 실제 MongoDB 연동 시 교체.
+ * Phase A에서 RAG 스토리지를 PostgreSQL로 이관하였고,
+ * PG 기반 하이브리드 검색(복수 후보 결합) 구현체가 이 인터페이스를 대체한다.
+ * 현재 기본은 Stub 구현이고, 실제 구현체는 Phase A-5에서 등록된다.
  */
 public interface LegalRetrievalService {
 

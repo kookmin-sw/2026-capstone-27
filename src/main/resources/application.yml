@@ -11,12 +11,6 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-  # MongoDB (RAG 검색용 — RAG_STUB=false 일 때만 활성화)
-  data:
-    mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/shield}
-      database: ${MONGODB_DATABASE:shield}
-
   # PostgreSQL
   datasource:
     url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
@@ -75,7 +69,7 @@ springdoc:
   api-docs:
     path: /api-docs
 
-# Groq API (replaces xAI Grok)
+# Groq API
 groq:
   api-key: ${GROQ_API_KEY}
   base-url: https://api.groq.com/openai

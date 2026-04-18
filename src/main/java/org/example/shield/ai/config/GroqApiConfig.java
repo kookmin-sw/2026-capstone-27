@@ -1,7 +1,9 @@
 package org.example.shield.ai.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelOption;
 import lombok.Getter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +52,12 @@ public class GroqApiConfig {
 
     @Value("${groq.timeout.read-classify:15000}")
     private int classifyReadTimeout;
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Bean
     public WebClient groqWebClient() {

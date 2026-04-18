@@ -107,7 +107,7 @@ ontology:
 # CORS
 app:
   cors:
-    allowed-origins: http://localhost:3000,http://localhost:5173
+    allowed-origins: http://localhost:3000,http://localhost:5173,http://localhost:5174
 
 server:
   port: 8080

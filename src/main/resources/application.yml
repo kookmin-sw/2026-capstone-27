@@ -108,11 +108,26 @@ groq:
     max-tokens: 512
 
 # RAG 검색 설정
-# Phase A-5: PG 기반 PgLegalRetrievalService 도입 → 기본값 false
-# (tsvector BM25 + pg_trgm 하이브리드). 긴급 fallback 시 RAG_STUB=true 로 override.
+#
+# 기본값 true (Stub 활성화):
+#   Phase A-5에서 PgLegalRetrievalService를 구현했으나,
+#   legal_chunks 테이블이 비어 있는 현 시점에서 PG 검색을 기본으로 켜면
+#   검색 결과가 항상 비어 RAG 응답 품질이 저하된다.
+#
+# 활성화 시점:
+#   ① 법령 청크 인제스트 파이프라인 구축 및 실데이터 적재 완료 후
+#   ② 확인된 환경(stg → prod)에서 RAG_STUB=false 명시적 지정
+#   ③ 전체 전환은 application.yml 기본값을 false로 변경
 rag:
   retrieval:
-    stub: ${RAG_STUB:false}
+    stub: ${RAG_STUB:true}
+    # 하이브리드 점수 가중치 (Phase A-5 Review - R3)
+    # 중기적으로 실데이터 기반 MRR 그리드 서치로 튜닝
+    # 합이 1.0일 필요는 없지만 해석을 위해 권장
+    weights:
+      vector: ${RAG_W_VECTOR:0.6}    # 자연어 ts_rank (plainto_tsquery AND)
+      keyword: ${RAG_W_KEYWORD:0.3}  # 키워드 ts_rank (to_tsquery OR)
+      trigram: ${RAG_W_TRIGRAM:0.1}  # pg_trgm similarity (한국어 'simple' 보조)
 
 # 온톨로지 설정
 ontology:

@@ -6,7 +6,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,13 +34,9 @@ import org.hibernate.type.SqlTypes;
  * <p>부분 유니크 제약 {@code (law_id, article_no, chunk_index) WHERE abolition_date IS NULL}은
  * DB 레벨(Flyway V3)에서 관리하므로 JPA 유니크 제약으로 선언하지 않는다.</p>
  */
+// 인덱스/유니크 제약은 Flyway V3 마이그레이션에서 관리 (JPA 중복 선언 지양)
 @Entity
-@Table(
-        name = "legal_chunks",
-        indexes = {
-                @Index(name = "idx_legal_chunks_law_id", columnList = "law_id")
-        }
-)
+@Table(name = "legal_chunks")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

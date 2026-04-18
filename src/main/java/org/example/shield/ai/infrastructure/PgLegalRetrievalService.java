@@ -1,11 +1,11 @@
 package org.example.shield.ai.infrastructure;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.domain.LegalChunkJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository.LegalChunkRow;
 import org.example.shield.ai.dto.LegalChunk;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,16 +21,41 @@ import java.util.stream.Collectors;
  * {@code pg_trgm} 유사도를 결합한 하이브리드 랭킹을 수행한다.
  * 벡터 임베딩 컬럼은 후속 단계에서 도입되며, 그때 이 클래스의 쿼리가 확장된다.</p>
  *
- * <p>활성화 조건: {@code rag.retrieval.stub=false} (application.yml 기본값).
- * Stub 구현과 상호 배타적으로 동작한다.</p>
+ * <p>활성화 조건: {@code rag.retrieval.stub=false}.
+ * Stub 구현과 상호 배타적으로 동작한다. 기본값은 true(Stub)이며,
+ * 실데이터 인제스트 완료 후 환경변수 {@code RAG_STUB=false}로 전환한다.</p>
+ *
+ * <p>점수 가중치는 {@code rag.retrieval.weights.*}로 외부화되어 있어
+ * 재빌드 없이 튜닝 가능하다.</p>
  */
 @Service
 @ConditionalOnProperty(name = "rag.retrieval.stub", havingValue = "false", matchIfMissing = false)
-@RequiredArgsConstructor
 @Slf4j
 public class PgLegalRetrievalService implements LegalRetrievalService {
 
+    /**
+     * tsquery가 빈 문자열을 받으면 parse error가 발생하므로 사용하는 sentinel 토큰.
+     * 실제 법률 문서에 존재할 가능성이 극히 낮은 형태로 구성.
+     */
+    private static final String EMPTY_QUERY_SENTINEL = "__shield_never_match__";
+
     private final LegalChunkJpaRepository legalChunkJpaRepository;
+    private final double vectorWeight;
+    private final double keywordWeight;
+    private final double trigramWeight;
+
+    public PgLegalRetrievalService(
+            LegalChunkJpaRepository legalChunkJpaRepository,
+            @Value("${rag.retrieval.weights.vector:0.6}") double vectorWeight,
+            @Value("${rag.retrieval.weights.keyword:0.3}") double keywordWeight,
+            @Value("${rag.retrieval.weights.trigram:0.1}") double trigramWeight) {
+        this.legalChunkJpaRepository = legalChunkJpaRepository;
+        this.vectorWeight = vectorWeight;
+        this.keywordWeight = keywordWeight;
+        this.trigramWeight = trigramWeight;
+        log.info("PgLegalRetrievalService 활성화 — weights(vector={}, keyword={}, trigram={})",
+                vectorWeight, keywordWeight, trigramWeight);
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -50,16 +75,17 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
             return List.of();
         }
 
-        // tsquery는 빈 문자열을 받으면 parse error가 발생하므로 sentinel로 대체
-        // (plainto_tsquery/to_tsquery 모두 토큰이 하나라도 있어야 안전)
-        String vq = safeVectorQuery.isEmpty() ? "__none__" : safeVectorQuery;
-        String kq = keywordQuery.isEmpty()    ? "__none__" : keywordQuery;
+        // tsquery parse error 방지용 sentinel 대체
+        String vq = safeVectorQuery.isEmpty() ? EMPTY_QUERY_SENTINEL : safeVectorQuery;
+        String kq = keywordQuery.isEmpty()    ? EMPTY_QUERY_SENTINEL : keywordQuery;
 
         List<LegalChunkRow> rows;
         if (lawIds == null || lawIds.isEmpty()) {
-            rows = legalChunkJpaRepository.searchHybrid(vq, kq, safeTopK);
+            rows = legalChunkJpaRepository.searchHybrid(
+                    vq, kq, vectorWeight, keywordWeight, trigramWeight, safeTopK);
         } else {
-            rows = legalChunkJpaRepository.searchHybridByLaws(vq, kq, lawIds, safeTopK);
+            rows = legalChunkJpaRepository.searchHybridByLaws(
+                    vq, kq, lawIds, vectorWeight, keywordWeight, trigramWeight, safeTopK);
         }
 
         log.debug("RAG PG 검색 완료 — vq='{}', kq='{}', lawIds={}, hits={}",

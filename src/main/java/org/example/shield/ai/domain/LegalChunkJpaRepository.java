@@ -52,12 +52,16 @@ public interface LegalChunkJpaRepository extends JpaRepository<LegalChunkEntity,
     //    쿼리도 plainto_tsquery('simple', ...)로 대칭 구성한다.
     //  - :vectorQuery (자연어) → plainto_tsquery (AND)
     //  - :keywordQuery (키워드 ' | ' 조합) → to_tsquery (OR)
-    //  - score = 자연어 ts_rank * 0.6 + 키워드 ts_rank * 0.3 + trigram similarity * 0.1
+    //  - ts_rank(..., 1): normalization flag 1 = "divide rank by 1 + log(doc length)"
+    //    긴 조문이 과도하게 높은 점수를 받는 경향을 억제
+    //  - score = vector_ts_rank * :vectorWeight
+    //          + keyword_ts_rank * :keywordWeight
+    //          + similarity * :trigramWeight
+    //    가중치는 application.yml rag.retrieval.weights.* 에서 외부화
     //  - 법령ID 필터 유무에 따라 두 개의 쿼리로 분기 (빈 IN 회피)
     //  - 임베딩 컬럼(embedding vector)은 차후 단계에서 도입 예정
     //
-    // 투영(constructor projection): LegalChunk record
-    //   (lawName, articleNo, articleTitle, content, effectiveDate, sourceUrl, score)
+    // 투영(projection): LegalChunkRow → Service에서 LegalChunk record 변환
     // ---------------------------------------------------------------------
 
     /** 법령ID 필터 없음 버전 */
@@ -68,9 +72,9 @@ public interface LegalChunkJpaRepository extends JpaRepository<LegalChunkEntity,
                    lc.content         AS content,
                    to_char(lc.effective_date, 'YYYY-MM-DD') AS effectiveDate,
                    lc.source_url      AS sourceUrl,
-                   (ts_rank(lc.content_tsv, plainto_tsquery('simple', :vectorQuery)) * 0.6
-                    + ts_rank(lc.content_tsv, to_tsquery('simple', :keywordQuery)) * 0.3
-                    + similarity(lc.content, :vectorQuery) * 0.1) AS score
+                   (ts_rank(lc.content_tsv, plainto_tsquery('simple', :vectorQuery), 1) * :vectorWeight
+                    + ts_rank(lc.content_tsv, to_tsquery('simple', :keywordQuery), 1) * :keywordWeight
+                    + similarity(lc.content, :vectorQuery) * :trigramWeight) AS score
               FROM legal_chunks lc
              WHERE lc.abolition_date IS NULL
                AND ( lc.content_tsv @@ plainto_tsquery('simple', :vectorQuery)
@@ -81,6 +85,9 @@ public interface LegalChunkJpaRepository extends JpaRepository<LegalChunkEntity,
             """, nativeQuery = true)
     List<LegalChunkRow> searchHybrid(@Param("vectorQuery") String vectorQuery,
                                      @Param("keywordQuery") String keywordQuery,
+                                     @Param("vectorWeight") double vectorWeight,
+                                     @Param("keywordWeight") double keywordWeight,
+                                     @Param("trigramWeight") double trigramWeight,
                                      @Param("topK") int topK);
 
     /** 법령ID 필터 포함 버전 */
@@ -91,9 +98,9 @@ public interface LegalChunkJpaRepository extends JpaRepository<LegalChunkEntity,
                    lc.content         AS content,
                    to_char(lc.effective_date, 'YYYY-MM-DD') AS effectiveDate,
                    lc.source_url      AS sourceUrl,
-                   (ts_rank(lc.content_tsv, plainto_tsquery('simple', :vectorQuery)) * 0.6
-                    + ts_rank(lc.content_tsv, to_tsquery('simple', :keywordQuery)) * 0.3
-                    + similarity(lc.content, :vectorQuery) * 0.1) AS score
+                   (ts_rank(lc.content_tsv, plainto_tsquery('simple', :vectorQuery), 1) * :vectorWeight
+                    + ts_rank(lc.content_tsv, to_tsquery('simple', :keywordQuery), 1) * :keywordWeight
+                    + similarity(lc.content, :vectorQuery) * :trigramWeight) AS score
               FROM legal_chunks lc
              WHERE lc.abolition_date IS NULL
                AND lc.law_id IN (:lawIds)
@@ -106,6 +113,9 @@ public interface LegalChunkJpaRepository extends JpaRepository<LegalChunkEntity,
     List<LegalChunkRow> searchHybridByLaws(@Param("vectorQuery") String vectorQuery,
                                            @Param("keywordQuery") String keywordQuery,
                                            @Param("lawIds") Collection<String> lawIds,
+                                           @Param("vectorWeight") double vectorWeight,
+                                           @Param("keywordWeight") double keywordWeight,
+                                           @Param("trigramWeight") double trigramWeight,
                                            @Param("topK") int topK);
 
     /**

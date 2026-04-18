@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shield.common.enums.ConsultationStatus;
-import org.example.shield.common.enums.DomainType;
 import org.example.shield.common.response.ApiResponse;
 import org.example.shield.common.response.PageResponse;
 import org.example.shield.consultation.application.AnalysisService;
@@ -52,18 +51,13 @@ public class ConsultationController {
     private final ConsultationReader consultationReader;
     private final ConsultationWriter consultationWriter;
 
-    @Operation(summary = "법률 분야 목록 조회", description = "분야 선택 UI에서 사용하는 법률 분야 목록")
-    @GetMapping("/legal-fields")
-    public ApiResponse<List<DomainType>> getLegalFields() {
-        return ApiResponse.success("조회 성공", List.of(DomainType.values()));
-    }
-
     @Operation(summary = "상담 생성", description = "새로운 상담을 생성하고 환영 메시지를 반환합니다")
     @PostMapping
     public ApiResponse<CreateConsultationResponse> create(
             @RequestBody CreateConsultationRequest request,
             @AuthenticationPrincipal UUID userId) {
-        CreateConsultationResponse result = consultationService.createConsultation(userId, request.domain());
+        CreateConsultationResponse result = consultationService.createConsultation(
+                userId, request.domains(), request.subDomains(), request.tags());
         return ApiResponse.success("상담이 생성되었습니다", result);
     }
 
@@ -113,7 +107,7 @@ public class ConsultationController {
             @PathVariable UUID consultationId,
             @Valid @RequestBody ClassifyRequest request) {
         ClassifyResponse result = consultationService.updateClassification(
-                consultationId, request.primaryField());
+                consultationId, request.domains(), request.subDomains(), request.tags());
         return ApiResponse.success("분류가 수정되었습니다", result);
     }
 

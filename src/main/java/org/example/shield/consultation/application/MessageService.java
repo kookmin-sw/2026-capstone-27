@@ -51,7 +51,6 @@ public class MessageService {
         try {
             sanitizedText = sanitizeService.sanitizeUserText(content);
         } catch (SanitizeService.PiiDetectedException e) {
-            // PII 검출 시 사용자에게 안내 메시지 반환
             Message piiMessage = Message.createAiMessage(
                     consultationId, e.getMessage(), null, null, null, null);
             Message savedPii = messageWriter.save(piiMessage);
@@ -65,54 +64,49 @@ public class MessageService {
         // 대화 내역 1회 조회 — RAG와 chat() 양쪽에서 공유 (중복 DB 쿼리 방지)
         List<Message> chatHistory = messageReader.findAllByConsultationId(consultationId);
 
-        // [RAG] Layer 1-2-3 (primaryField가 설정된 이후에만 실행)
+        // [RAG] 도메인 정보가 있을 때만 실행
         String ragContext = "";
-        if (consultation.getPrimaryField() != null && !consultation.getPrimaryField().isEmpty()) {
-            ragContext = ragPipelineService.execute(
-                    chatHistory, consultation.getPrimaryField().get(0), consultationId);
+        String domainForRag = consultation.getFirstDomain();
+        if (domainForRag != null) {
+            ragContext = ragPipelineService.execute(chatHistory, domainForRag, consultationId);
         }
 
-        // 2. Groq API 호출 (Phase 1 대화 — RAG 컨텍스트 포함, 조회된 chatHistory 재사용)
-        AiCallResult<ChatParsedResponse> result = groqService.chat(consultation, sanitizedText, ragContext, chatHistory);
+        // 2. Groq API 호출 (Phase 1 대화)
+        AiCallResult<ChatParsedResponse> result = groqService.chat(
+                consultation, sanitizedText, ragContext, chatHistory);
         ChatParsedResponse parsed = result.data();
 
         // 3. 응답 ID 저장 (감사 로깅용)
         consultation.updateLastResponseId(result.responseId());
 
-        // 4. 분류 결과 처리 (P0-V: primary_field_locked 가드)
-        if (parsed.getPrimaryField() != null && !parsed.getPrimaryField().isEmpty()) {
-            boolean updated = consultation.updateClassificationFromLlm(parsed.getPrimaryField());
+        // 4. AI 분류 결과 처리 (primaryFieldLocked 가드)
+        if (hasAny(parsed.getAiDomains()) || hasAny(parsed.getAiSubDomains()) || hasAny(parsed.getAiTags())) {
+            boolean updated = consultation.updateAiClassification(
+                    parsed.getAiDomains(), parsed.getAiSubDomains(), parsed.getAiTags());
             if (!updated) {
-                log.warn("LLM attempted to override locked primaryField: consultationId={}, llm={}, stored={}",
-                        consultationId, parsed.getPrimaryField(), consultation.getPrimaryField());
+                log.warn("LLM attempted to override locked classification: consultationId={}, aiDomains={}",
+                        consultationId, parsed.getAiDomains());
             }
         }
 
-        // 5. tags 업데이트
-        if (parsed.getTags() != null && !parsed.getTags().isEmpty()) {
-            consultation.updateTags(parsed.getTags());
-        }
-
-        // 6. AI 메시지 저장
+        // 5. AI 메시지 저장
         Message aiMessage = Message.createAiMessage(
                 consultationId,
                 parsed.getNextQuestion(),
-                groqApiConfig.getChatModel(),  // model name from config
+                groqApiConfig.getChatModel(),
                 result.tokensInput(),
                 result.tokensOutput(),
                 result.latencyMs()
         );
         Message savedAi = messageWriter.save(aiMessage);
 
-        // 7. allCompleted AND gate (P0-II — 코드 레벨 검증)
+        // 6. allCompleted AND gate (P0-II)
         boolean effectiveAllCompleted = false;
         if (parsed.isAllCompleted()) {
-            String primaryFieldStr = (consultation.getPrimaryField() != null
-                    && !consultation.getPrimaryField().isEmpty())
-                    ? consultation.getPrimaryField().get(0) : null;
+            String domainForCoverage = consultation.getFirstDomain();
 
             double coverageRatio = checklistCoverageService.compute(
-                    consultationId, primaryFieldStr);
+                    consultationId, domainForCoverage);
             effectiveAllCompleted = checklistCoverageService.isEffectivelyCompleted(
                     true, coverageRatio);
 
@@ -122,7 +116,7 @@ public class MessageService {
             }
         }
 
-        // 8. 상담 마지막 메시지 + updatedAt 갱신
+        // 7. 상담 마지막 메시지 + updatedAt 갱신
         consultation.updateLastMessage(savedAi.getContent(), savedAi.getCreatedAt());
         consultation.touch();
         consultationWriter.save(consultation);
@@ -131,12 +125,15 @@ public class MessageService {
     }
 
     public PageResponse<MessageResponse> getMessages(UUID consultationId, Pageable pageable) {
-        // 상담 존재 확인
         consultationReader.findById(consultationId);
 
         Page<Message> messages = messageReader.findAllByConsultationId(consultationId, pageable);
         Page<MessageResponse> responsePage = messages.map(MessageResponse::from);
 
         return PageResponse.from(responsePage);
+    }
+
+    private boolean hasAny(List<String> list) {
+        return list != null && !list.isEmpty();
     }
 }

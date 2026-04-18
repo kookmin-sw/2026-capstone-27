@@ -6,12 +6,10 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.shield.common.domain.BaseEntity;
 import org.example.shield.common.enums.ConsultationStatus;
-import org.example.shield.common.enums.DomainType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -32,71 +30,87 @@ public class Consultation extends BaseEntity {
     @Column(nullable = false, columnDefinition = "consultation_status")
     private ConsultationStatus status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "domain_type")
-    private DomainType selectedDomain;
+    // ── 사용자 선택 (상담 생성 시) ──
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private List<String> primaryField;
+    private List<String> userDomains;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private List<String> tags;
+    private List<String> userSubDomains;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> userTags;
+
+    // ── AI 분류 (대화 중 LLM이 판단) ──
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> aiDomains;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> aiSubDomains;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> aiTags;
+
+    // ── 공통 필드 ──
 
     @Column(columnDefinition = "text")
     private String lastMessage;
 
     private LocalDateTime lastMessageAt;
 
-    /**
-     * LLM 응답 completion ID (감사 로깅용).
-     * Groq 전환 후 Stateful 연결 용도 없음 — 항상 full history 전송.
-     */
     @Column(columnDefinition = "text")
     private String lastResponseId;
 
     /**
-     * primary_field_locked 플래그 (P0-V).
-     * 사용자가 PATCH /classify로 분류를 수정하면 true → LLM override 방지.
+     * 사용자가 분류를 직접 선택했으면 true → LLM override 방지.
      */
     @Column(nullable = false)
     private boolean primaryFieldLocked = false;
 
-    @Builder
-    private Consultation(UUID userId, DomainType selectedDomain) {
+    private Consultation(UUID userId, List<String> domains, List<String> subDomains, List<String> tags) {
         this.userId = userId;
-        this.selectedDomain = selectedDomain;
+        this.userDomains = domains;
+        this.userSubDomains = subDomains;
+        this.userTags = tags;
         this.status = ConsultationStatus.COLLECTING;
+        this.primaryFieldLocked = hasAnySelection(domains, subDomains, tags);
     }
 
-    public static Consultation create(UUID userId, DomainType selectedDomain) {
-        return Consultation.builder()
-                .userId(userId)
-                .selectedDomain(selectedDomain)
-                .build();
-    }
-
-    public void updateClassification(List<String> primaryField) {
-        this.primaryField = primaryField;
-        this.primaryFieldLocked = true;  // P0-V: 사용자 수정 시 lock
-        this.lastResponseId = null;      // no-op post-Groq migration (full history 모드)
+    public static Consultation create(UUID userId, List<String> domains,
+                                      List<String> subDomains, List<String> tags) {
+        return new Consultation(userId, domains, subDomains, tags);
     }
 
     /**
-     * LLM 분류 결과 반영 (locked가 아닐 때만).
+     * 사용자가 직접 분류를 수정.
      */
-    public boolean updateClassificationFromLlm(List<String> primaryField) {
-        if (this.primaryFieldLocked) {
-            return false;  // locked — 무시
-        }
-        this.primaryField = primaryField;
-        this.lastResponseId = null;  // no-op post-Groq migration (full history 모드)
-        return true;
+    public void updateUserClassification(List<String> domains, List<String> subDomains,
+                                         List<String> tags) {
+        this.userDomains = domains;
+        this.userSubDomains = subDomains;
+        this.userTags = tags;
+        this.primaryFieldLocked = true;
     }
 
-    public void updateTags(List<String> tags) {
-        this.tags = tags;
+    /**
+     * LLM 분류 결과 반영. primaryFieldLocked가 true면 무시.
+     */
+    public boolean updateAiClassification(List<String> domains, List<String> subDomains,
+                                          List<String> tags) {
+        if (this.primaryFieldLocked) {
+            return false;
+        }
+        this.aiDomains = domains;
+        this.aiSubDomains = subDomains;
+        this.aiTags = tags;
+        return true;
     }
 
     public void updateLastResponseId(String responseId) {
@@ -110,5 +124,23 @@ public class Consultation extends BaseEntity {
     public void updateLastMessage(String content, LocalDateTime timestamp) {
         this.lastMessage = content;
         this.lastMessageAt = timestamp;
+    }
+
+    /**
+     * 도메인 정보 추출: userDomains 우선, aiDomains 폴백.
+     */
+    public String getFirstDomain() {
+        if (isNonEmpty(userDomains)) return userDomains.get(0);
+        if (isNonEmpty(aiDomains)) return aiDomains.get(0);
+        return null;
+    }
+
+    private static boolean hasAnySelection(List<String> domains, List<String> subDomains,
+                                           List<String> tags) {
+        return isNonEmpty(domains) || isNonEmpty(subDomains) || isNonEmpty(tags);
+    }
+
+    private static boolean isNonEmpty(List<String> list) {
+        return list != null && !list.isEmpty();
     }
 }

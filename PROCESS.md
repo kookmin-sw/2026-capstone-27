@@ -51,7 +51,7 @@ Response:
 
 ### 백엔드 내부 동작
 1. `content`를 `chat_messages`에 USER 메시지로 저장
-2. AI Router(Grok)로 사건 유형 분류
+2. AI Router(Cohere)로 사건 유형 분류
 3. `consultations.primary_field`에 분류 결과 저장
 4. status: CLASSIFYING → IN_PROGRESS
 
@@ -172,7 +172,7 @@ Response (즉시):
 ### 백엔드 백그라운드 처리
 1. `chat_messages` JSONB에서 대화 내역 조회
 2. 누락 정보 검증
-3. 도메인 에이전트(Grok) → 의뢰서 생성
+3. 도메인 에이전트(Cohere) → 의뢰서 생성
 4. `briefs` 테이블에 저장
    - `legal_field`: "DEPOSIT_FRAUD"
    - `keywords`: "보증금 미반환, 임대인 연락두절"

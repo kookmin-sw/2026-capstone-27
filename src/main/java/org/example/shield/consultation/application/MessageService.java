@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.CategoryLawMappingService;
 import org.example.shield.ai.application.ChecklistCoverageService;
-import org.example.shield.ai.application.GroqService;
+import org.example.shield.ai.application.CohereService;
 import org.example.shield.ai.application.IntentClassificationService;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.application.RagContextBuilder;
-import org.example.shield.ai.config.GroqApiConfig;
+import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
 import org.example.shield.ai.dto.IntentClassificationResult;
 import org.example.shield.ai.dto.LegalChunk;
@@ -41,8 +41,8 @@ public class MessageService {
     private final MessageWriter messageWriter;
     private final ConsultationReader consultationReader;
     private final ConsultationWriter consultationWriter;
-    private final GroqService groqService;
-    private final GroqApiConfig groqApiConfig;
+    private final CohereService cohereService;
+    private final CohereApiConfig cohereApiConfig;
     private final SanitizeService sanitizeService;
     private final ChecklistCoverageService checklistCoverageService;
     private final IntentClassificationService intentClassificationService;
@@ -106,8 +106,8 @@ public class MessageService {
             }
         }
 
-        // 2. Groq API 호출 (Phase 1 대화 — RAG 컨텍스트 포함, 조회된 chatHistory 재사용)
-        AiCallResult<ChatParsedResponse> result = groqService.chat(consultation, sanitizedText, ragContext, chatHistory);
+        // 2. Cohere API 호출 (Phase 1 대화 — RAG 컨텍스트 포함, 조회된 chatHistory 재사용)
+        AiCallResult<ChatParsedResponse> result = cohereService.chat(consultation, sanitizedText, ragContext, chatHistory);
         ChatParsedResponse parsed = result.data();
 
         // 3. 응답 ID 저장 (감사 로깅용)
@@ -131,7 +131,7 @@ public class MessageService {
         Message aiMessage = Message.createAiMessage(
                 consultationId,
                 parsed.getNextQuestion(),
-                groqApiConfig.getChatModel(),  // model name from config
+                cohereApiConfig.getChatModel(),  // model name from config
                 result.tokensInput(),
                 result.tokensOutput(),
                 result.latencyMs()

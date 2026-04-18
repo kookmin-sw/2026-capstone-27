@@ -2,7 +2,7 @@ package org.example.shield.ai.dto;
 
 /**
  * AI API 호출 결과 래퍼.
- * responseId: Groq completion ID (감사 로깅용).
+ * responseId: Cohere chat completion ID (감사 로깅용).
  */
 public record AiCallResult<T>(
         String responseId,

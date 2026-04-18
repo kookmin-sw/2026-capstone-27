@@ -13,44 +13,48 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
+/**
+ * Cohere Chat API v2 클라이언트 설정.
+ * base-url: https://api.cohere.com  (엔드포인트는 클라이언트에서 "/v2/chat")
+ */
 @Configuration
 @Getter
-public class GroqApiConfig {
+public class CohereApiConfig {
 
-    @Value("${groq.api-key}")
+    @Value("${cohere.api-key}")
     private String apiKey;
 
-    @Value("${groq.base-url:https://api.groq.com/openai}")
+    @Value("${cohere.base-url:https://api.cohere.com}")
     private String baseUrl;
 
-    @Value("${groq.model.chat:llama-3.3-70b-versatile}")
+    @Value("${cohere.model.chat:command-a-03-2025}")
     private String chatModel;
 
-    @Value("${groq.model.brief:llama-3.3-70b-versatile}")
+    @Value("${cohere.model.brief:command-a-03-2025}")
     private String briefModel;
 
-    @Value("${groq.timeout.connect:5000}")
+    @Value("${cohere.timeout.connect:5000}")
     private int connectTimeout;
 
-    @Value("${groq.timeout.read-chat:30000}")
+    @Value("${cohere.timeout.read-chat:30000}")
     private int chatReadTimeout;
 
-    @Value("${groq.timeout.read-brief:60000}")
+    @Value("${cohere.timeout.read-brief:60000}")
     private int briefReadTimeout;
 
-    @Value("${groq.chat.max-history-messages:20}")
+    @Value("${cohere.chat.max-history-messages:20}")
     private int maxHistoryMessages;
 
-    @Value("${groq.classify.model:llama-3.3-70b-versatile}")
+    @Value("${cohere.classify.model:command-a-03-2025}")
     private String classifyModel;
 
-    @Value("${groq.classify.temperature:0.1}")
+    @Value("${cohere.classify.temperature:0.1}")
     private double classifyTemperature;
 
-    @Value("${groq.classify.max-tokens:512}")
+    @Value("${cohere.classify.max-tokens:512}")
     private int classifyMaxTokens;
 
-    @Value("${groq.timeout.read-classify:15000}")
+    @Value("${cohere.timeout.read-classify:15000}")
     private int classifyReadTimeout;
 
     @Bean
@@ -60,7 +64,7 @@ public class GroqApiConfig {
     }
 
     @Bean
-    public WebClient groqWebClient() {
+    public WebClient cohereWebClient() {
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout);
 

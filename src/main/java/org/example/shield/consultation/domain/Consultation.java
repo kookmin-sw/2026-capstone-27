@@ -51,7 +51,8 @@ public class Consultation extends BaseEntity {
 
     /**
      * LLM 응답 completion ID (감사 로깅용).
-     * Groq 전환 후 Stateful 연결 용도 없음 — 항상 full history 전송.
+     * Cohere v2 Chat API는 무상태 모델이므로 Stateful 연결 용도 없음 — 항상 full history 전송.
+     * 과거 xAI Grok previous_response_id 호환을 위해 필드는 보존 (DB 스키마 호환성).
      */
     @Column(columnDefinition = "text")
     private String lastResponseId;
@@ -80,7 +81,7 @@ public class Consultation extends BaseEntity {
     public void updateClassification(List<String> primaryField) {
         this.primaryField = primaryField;
         this.primaryFieldLocked = true;  // P0-V: 사용자 수정 시 lock
-        this.lastResponseId = null;      // no-op post-Groq migration (full history 모드)
+        this.lastResponseId = null;      // no-op post-Cohere migration (full history 모드)
     }
 
     /**
@@ -91,7 +92,7 @@ public class Consultation extends BaseEntity {
             return false;  // locked — 무시
         }
         this.primaryField = primaryField;
-        this.lastResponseId = null;  // no-op post-Groq migration (full history 모드)
+        this.lastResponseId = null;  // no-op post-Cohere migration (full history 모드)
         return true;
     }
 

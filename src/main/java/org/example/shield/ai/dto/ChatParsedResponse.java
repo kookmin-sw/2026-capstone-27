@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Phase 1 대화 응답 파싱 결과.
- * Grok output[0].content[0].text를 JSON 파싱한 결과.
+ * Cohere message.content[0].text 를 JSON 파싱한 결과.
  */
 @Getter
 @Setter

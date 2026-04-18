@@ -88,13 +88,16 @@ springdoc:
   api-docs:
     path: /api-docs
 
-# Groq API
-groq:
-  api-key: ${GROQ_API_KEY}
-  base-url: https://api.groq.com/openai
+# Cohere Chat API (v2)
+# - Endpoint: POST https://api.cohere.com/v2/chat
+# - Trial API Key 해도 주요 프로덕션 모델을 모두 호출 가능 (무료 티어)
+# - 모델 후보: command-a-03-2025(최신 플래그십), command-r-plus-08-2024, command-r-08-2024
+cohere:
+  api-key: ${COHERE_API_KEY}
+  base-url: https://api.cohere.com
   model:
-    chat: llama-3.3-70b-versatile
-    brief: llama-3.3-70b-versatile
+    chat: command-a-03-2025
+    brief: command-a-03-2025
   timeout:
     connect: 5000
     read-chat: 30000
@@ -103,7 +106,7 @@ groq:
   chat:
     max-history-messages: 20
   classify:
-    model: llama-3.3-70b-versatile
+    model: command-a-03-2025
     temperature: 0.1
     max-tokens: 512
 

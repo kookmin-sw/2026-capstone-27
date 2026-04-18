@@ -8,9 +8,10 @@ import org.example.shield.ai.dto.LegalChunk;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
+
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -50,8 +51,9 @@ public class MongoLegalRetrievalService implements LegalRetrievalService {
     private List<LegalChunk> executeTextSearch(String searchText, List<String> lawIds, int topK) {
         TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(searchText);
 
-        Query query = TextQuery.queryText(textCriteria)
-                .sortByScore();
+        TextQuery query = TextQuery.queryText(textCriteria)
+                .sortByScore()
+                .includeScore();
 
         // law_id 필터
         if (lawIds != null && !lawIds.isEmpty()) {
@@ -88,7 +90,7 @@ public class MongoLegalRetrievalService implements LegalRetrievalService {
                 doc.getContent(),
                 doc.getEffectiveDate(),
                 doc.getSourceUrl(),
-                0.0  // textScore는 별도 projection 필요 — MVP에서는 0.0
+                doc.getScore() != null ? doc.getScore() : 0.0
         );
     }
 }

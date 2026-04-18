@@ -40,7 +40,7 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
 
-    input_path = os.path.join(project_root, "..", "original-ontology.json")
+    input_path = os.path.join(project_root, "original-ontology.json")
     output_path = os.path.join(
         project_root, "src", "main", "resources", "ontology", "legal-ontology-slim.json"
     )

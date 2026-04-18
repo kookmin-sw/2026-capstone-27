@@ -10,6 +10,7 @@ import org.example.shield.ai.dto.IntentClassificationResult.Keywords;
 import org.example.shield.ai.dto.IntentClassificationResult.MatchedNode;
 import org.example.shield.consultation.domain.Message;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class IntentClassificationService {
     private final ObjectMapper objectMapper;
     private final String slimOntologyJson;
     private final ResourceLoader resourceLoader;
+    private final int contextWindowMessages;
 
     private String intentClassifierPromptTemplate;
 
@@ -39,11 +41,13 @@ public class IntentClassificationService {
             GroqService groqService,
             ObjectMapper objectMapper,
             @Qualifier("slimOntologyJson") String slimOntologyJson,
-            ResourceLoader resourceLoader) {
+            ResourceLoader resourceLoader,
+            @Value("${groq.classify.context-window-messages:6}") int contextWindowMessages) {
         this.groqService = groqService;
         this.objectMapper = objectMapper;
         this.slimOntologyJson = slimOntologyJson;
         this.resourceLoader = resourceLoader;
+        this.contextWindowMessages = contextWindowMessages;
     }
 
     @PostConstruct
@@ -101,8 +105,7 @@ public class IntentClassificationService {
 
     private String buildConversationHistory(List<Message> messages) {
         StringBuilder sb = new StringBuilder();
-        // 최대 최근 3턴 (6개 메시지) 사용
-        int start = Math.max(0, messages.size() - 6);
+        int start = Math.max(0, messages.size() - contextWindowMessages);
         for (int i = start; i < messages.size(); i++) {
             Message msg = messages.get(i);
             String role = switch (msg.getRole()) {

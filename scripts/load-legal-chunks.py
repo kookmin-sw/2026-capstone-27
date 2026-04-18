@@ -104,7 +104,8 @@ def parse_rdf(rdf_path: str) -> list[dict]:
 
         # 각 조문을 chunk로 변환
         for art in articles:
-            chunk_id = f"{law_id}_{art['article_resource'].split('_')[-2]}_{art['article_resource'].split('_')[-1]}"
+            art_match = ARTICLE_PATTERN.search(art["article_resource"])
+            chunk_id = f"{law_id}_{art_match.group(2)}_{art_match.group(3)}" if art_match else f"{law_id}_{art['article_no']}"
             chunks.append(
                 {
                     "_id": chunk_id,

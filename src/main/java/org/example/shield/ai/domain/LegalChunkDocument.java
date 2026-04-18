@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.util.List;
 
@@ -55,4 +56,7 @@ public class LegalChunkDocument {
 
     @Field("legislation_terms")
     private List<String> legislationTerms;
+
+    @TextScore
+    private Float score;
 }

@@ -85,12 +85,15 @@ public class CategoryLawMappingService {
             // 정확한 매칭 시도
             CategoryLawMapping mapping = mappingCache.get(nodeId);
 
-            // L3 노드(law-001-01-01)의 경우 L2 부모(law-001-01)로 폴백
-            if (mapping == null && nodeId.chars().filter(ch -> ch == '-').count() > 2) {
-                String parentId = nodeId.substring(0, nodeId.lastIndexOf('-'));
-                mapping = mappingCache.get(parentId);
+            // 매칭 실패 시 부모 노드를 반복 탐색하여 폴백
+            if (mapping == null) {
+                String currentId = nodeId;
+                while (mapping == null && currentId.contains("-")) {
+                    currentId = currentId.substring(0, currentId.lastIndexOf('-'));
+                    mapping = mappingCache.get(currentId);
+                }
                 if (mapping != null) {
-                    log.debug("L3 노드 {} → L2 부모 {} 매핑으로 폴백", nodeId, parentId);
+                    log.debug("노드 {} → 부모 {} 매핑으로 폴백", nodeId, currentId);
                 }
             }
 

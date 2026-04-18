@@ -93,6 +93,7 @@ groq:
     model: llama-3.3-70b-versatile
     temperature: 0.1
     max-tokens: 512
+    context-window-messages: 6
 
 # RAG 검색 설정
 rag:

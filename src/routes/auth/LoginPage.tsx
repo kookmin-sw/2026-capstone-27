@@ -54,7 +54,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col bg-white relative overflow-hidden">
+    <div className="flex flex-col flex-1 relative overflow-hidden">
       {/* Decorative blur */}
       <div className="absolute -top-20 right-0 w-64 h-64 rounded-full bg-brand/5 blur-[64px]" />
 

@@ -205,7 +205,7 @@ export function RequestTrackingPage() {
   const steps = firstDelivery ? buildSteps(firstDelivery) : [];
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header
         title="요청 현황"
         showBack

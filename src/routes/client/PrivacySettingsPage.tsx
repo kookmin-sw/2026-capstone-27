@@ -76,7 +76,7 @@ export function PrivacySettingsPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-white">
+    <div className="flex flex-col flex-1">
       <Header
         title="개인정보 공개 설정"
         showBack
@@ -162,7 +162,7 @@ export function PrivacySettingsPage() {
       </main>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-linear-to-t from-white via-white/95 to-transparent px-6 pt-10 pb-6 safe-area-bottom">
+      <div className="sticky bottom-0 bg-linear-to-t from-white via-white/95 to-transparent px-6 pt-10 pb-6 safe-area-bottom">
         <Button
           variant="primary"
           fullWidth

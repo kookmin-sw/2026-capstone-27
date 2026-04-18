@@ -53,7 +53,7 @@ export function KakaoCallbackPage() {
   }, [searchParams, navigate, login]);
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center gap-4 px-4">
+    <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4">
       {errorMsg ? (
         <div className="flex flex-col items-center gap-3 text-center">
           <p className="text-sm text-[#EF4444] font-medium">{errorMsg}</p>

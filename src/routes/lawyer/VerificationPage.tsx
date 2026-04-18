@@ -91,7 +91,7 @@ export function VerificationPage() {
   const canApply = !hasActiveApplication || (verificationStatus as string) === 'REJECTED';
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="인증 신청" showBack onBack={() => navigate(-1)} />
 
       <main className="flex-1 px-4 py-4 pb-10 space-y-4">

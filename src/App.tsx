@@ -122,6 +122,9 @@ const LawyerReviewPage = lazy(() =>
 const LogsPage = lazy(() =>
   import('@/routes/admin/LogsPage').then((m) => ({ default: m.LogsPage })),
 );
+const AdminProfilePage = lazy(() =>
+  import('@/routes/admin/AdminProfilePage').then((m) => ({ default: m.AdminProfilePage })),
+);
 
 // Lawyer Profile detail (reuse from client)
 const LawyerMyProfilePage = lazy(() =>
@@ -222,6 +225,7 @@ export default function App() {
                   <Route path="/admin/lawyers" element={<LawyerPendingPage />} />
                   <Route path="/admin/lawyers/:id" element={<LawyerReviewPage />} />
                   <Route path="/admin/logs" element={<LogsPage />} />
+                  <Route path="/admin/profile" element={<AdminProfilePage />} />
                 </Route>
               </Route>
             </Route>

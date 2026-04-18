@@ -1,31 +1,46 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  ArrowLeft,
-  User,
-  MapPin,
-  CheckCircle,
-  XCircle,
-  ExternalLink,
-  Briefcase,
-  Award,
-} from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import {
   useAdminLawyerDetail,
   useVerificationChecks,
   useLawyerDocuments,
   useProcessVerification,
 } from '@/hooks/useAdmin';
-import { Card, Badge, Button, Spinner, Modal, Input } from '@/components/ui';
+import { Spinner, Modal, Input, Button } from '@/components/ui';
 import type { VerificationChecks as VerificationChecksType } from '@/lib/adminApi';
 
 type ActionType = 'APPROVED' | 'REJECTED' | 'SUPPLEMENT_REQUESTED';
+
+const STATUS_BADGE: Record<string, { bg: string; text: string; label: string }> = {
+  PENDING: { bg: 'bg-[#f1f0e8]', text: 'text-[#5f5e5a]', label: '승인 대기' },
+  REVIEWING: { bg: 'bg-[#e8f0fc]', text: 'text-[#0c5fa5]', label: '검토 중' },
+  SUPPLEMENT_REQUESTED: { bg: 'bg-[#faeeda]', text: 'text-[#854f0b]', label: '보완 요청' },
+  VERIFIED: { bg: 'bg-[#eaf3de]', text: 'text-[#3b6e11]', label: '승인 완료' },
+  REJECTED: { bg: 'bg-[#fcebeb]', text: 'text-[#a32c2c]', label: '거절' },
+};
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+const CHECKLIST_ITEMS: { key: keyof Omit<VerificationChecksType, 'lawyerId' | 'completedCount' | 'totalCount' | 'updatedAt'>; label: string }[] = [
+  { key: 'licenseVerified', label: '변호사 자격 증빙 확인' },
+  { key: 'documentMatched', label: '서류 정보 일치' },
+  { key: 'specializationValid', label: '전문 분야 기재 적절' },
+  { key: 'experienceVerified', label: '경력 정보 확인' },
+  { key: 'duplicateSignup', label: '중복 가입 여부 확인' },
+  { key: 'documentComplete', label: '필수 서류 누락 없음' },
+];
+
+const VERIFY_ITEMS: { key: keyof Omit<VerificationChecksType, 'lawyerId' | 'completedCount' | 'totalCount' | 'updatedAt'>; label: string }[] = [
+  { key: 'emailDuplicate', label: '이메일 중복' },
+  { key: 'phoneDuplicate', label: '전화번호 중복' },
+  { key: 'nameDuplicate', label: '동일 이름 계정' },
+  { key: 'requiredFields', label: '필수 항목 누락' },
+];
 
 export function LawyerReviewPage() {
   const { id } = useParams<{ id: string }>();
@@ -57,190 +72,245 @@ export function LawyerReviewPage() {
   if (!lawyer) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-400">변호사 정보를 찾을 수 없습니다</p>
-        <Button variant="secondary" className="mt-4" onClick={() => navigate('/admin/lawyers')}>
+        <p className="text-[#6b7280] text-[13px]">변호사 정보를 찾을 수 없습니다</p>
+        <button
+          type="button"
+          onClick={() => navigate('/admin/lawyers')}
+          className="mt-4 text-[12px] text-[#1a6de0]"
+        >
           목록으로
-        </Button>
+        </button>
       </div>
     );
   }
 
-  const actionLabels: Record<ActionType, { label: string; variant: 'primary' | 'danger' | 'secondary'; desc: string }> = {
-    APPROVED: { label: '승인', variant: 'primary', desc: '이 변호사의 인증을 승인하시겠습니까?' },
-    REJECTED: { label: '반려', variant: 'danger', desc: '반려 사유를 입력해 주세요.' },
-    SUPPLEMENT_REQUESTED: { label: '보충 요청', variant: 'secondary', desc: '보충이 필요한 내용을 입력해 주세요.' },
+  const badge = STATUS_BADGE[lawyer.verificationStatus] ?? STATUS_BADGE.PENDING;
+  const initial = lawyer.name.charAt(0);
+
+  // 체크리스트 진행률 계산
+  const completedCount = checks?.completedCount ?? 0;
+  const totalCount = checks?.totalCount ?? CHECKLIST_ITEMS.length;
+  const progressPct = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+  const actionLabels: Record<ActionType, { label: string; desc: string }> = {
+    APPROVED: { label: '승인', desc: '이 변호사의 인증을 승인하시겠습니까?' },
+    REJECTED: { label: '거절', desc: '거절 사유를 입력해 주세요.' },
+    SUPPLEMENT_REQUESTED: { label: '보완 요청', desc: '보완이 필요한 내용을 입력해 주세요.' },
   };
 
-  const checkItems: { label: string; key: keyof Omit<VerificationChecksType, 'lawyerId'>; desc: string }[] = [
-    { label: '이메일 중복', key: 'emailDuplicate', desc: '이메일 중복 여부' },
-    { label: '전화번호 중복', key: 'phoneDuplicate', desc: '전화번호 중복 여부' },
-    { label: '이름 중복', key: 'nameDuplicate', desc: '이름 중복 여부' },
-    { label: '필수 항목', key: 'requiredFields', desc: '필수 입력 항목 충족 여부' },
-  ];
-
   return (
-    <div className="space-y-5">
-      {/* 헤더 */}
-      <button
-        onClick={() => navigate('/admin/lawyers')}
-        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        목록으로
-      </button>
+    <div className="space-y-4">
+      {/* 헤더 영역: 뒤로가기 + 타이틀 + 상태 */}
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => navigate('/admin/lawyers')}
+          className="w-7 h-7 rounded-full bg-[#f7f8fa] flex items-center justify-center text-[#6b7280]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+        <h1 className="text-[15px] font-medium text-[#1a1a1a] flex-1">가입 신청 상세</h1>
+        <span className={`${badge.bg} ${badge.text} text-[11px] font-medium h-[22px] px-3 rounded-[11px] flex items-center`}>
+          {badge.label}
+        </span>
+      </div>
 
-      {/* 변호사 정보 */}
-      <Card padding="md">
-        <h2 className="font-bold text-gray-900 mb-3">변호사 정보</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="flex items-center gap-2 text-sm">
-            <User className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-700">{lawyer.name}</span>
+      {/* 프로필 카드 */}
+      <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] p-3">
+        <div className="flex items-start gap-3">
+          <div className="w-12 h-12 rounded-full bg-[#1a6de0] flex items-center justify-center shrink-0">
+            <span className="text-[18px] font-medium text-white">{initial}</span>
           </div>
-          {lawyer.region && (
-            <div className="flex items-center gap-2 text-sm">
-              <MapPin className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-700">{lawyer.region}</span>
-            </div>
-          )}
-          <div className="flex items-center gap-2 text-sm">
-            <Briefcase className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-700">경력 {lawyer.experienceYears}년 · 사건 {lawyer.caseCount}건</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-[16px] font-medium text-[#1a1a1a]">{lawyer.name}</p>
+            <p className="text-[11px] text-[#adb5b8]">{lawyer.bio || 'lawyer@shield.com'}</p>
+            <p className="text-[11px] text-[#adb5b8]">{lawyer.region || '-'}</p>
           </div>
         </div>
-        {/* Specialization */}
         {lawyer.specializations && (
-          <div className="flex flex-wrap gap-1.5 mt-3">
-            <Badge variant="default" size="sm">{lawyer.specializations}</Badge>
-          </div>
-        )}
-        {/* Bio */}
-        {lawyer.bio && (
-          <p className="text-sm text-gray-600 mt-3 leading-relaxed">{lawyer.bio}</p>
-        )}
-        {/* Tags */}
-        {lawyer.tags && lawyer.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-3">
-            {lawyer.tags.map((tag) => (
-              <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-medium">
-                {tag}
+          <div className="flex items-center gap-1.5 mt-2.5">
+            {lawyer.specializations.split(',').map((spec) => (
+              <span key={spec.trim()} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
+                {spec.trim()}
               </span>
             ))}
           </div>
         )}
-        {/* Certifications */}
-        {lawyer.certifications && lawyer.certifications.length > 0 && (
-          <div className="mt-3">
-            <p className="text-xs font-semibold text-gray-500 mb-1">자격/인증</p>
-            <div className="flex flex-wrap gap-1.5">
-              {lawyer.certifications.map((cert) => (
-                <span key={cert} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-xs font-medium">
-                  <Award className="h-3 w-3" />
-                  {cert}
-                </span>
-              ))}
+      </div>
+
+      {/* 기본 정보 */}
+      <div>
+        <p className="text-[12px] font-medium text-[#1a6de0] mb-1.5">기본 정보</p>
+        <div className="h-[0.5px] bg-[#e9edef] mb-2.5" />
+        <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] overflow-hidden">
+          {[
+            { label: '경력', value: `${lawyer.experienceYears}년` },
+            { label: '사건 수', value: `${lawyer.caseCount}건` },
+            { label: '활동 지역', value: lawyer.region || '-' },
+          ].map((row, i, arr) => (
+            <div key={row.label}>
+              <div className="flex items-center px-3 h-[22px]">
+                <span className="text-[12px] text-[#6b7280] w-[140px]">{row.label}</span>
+                <span className="text-[12px] text-[#1a1a1a]">{row.value}</span>
+              </div>
+              {i < arr.length - 1 && <div className="h-[0.5px] bg-[#e9edef] mx-3" />}
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 제출 서류 */}
+      <div>
+        <p className="text-[12px] font-medium text-[#1a6de0] mb-1.5">제출 서류</p>
+        <div className="h-[0.5px] bg-[#e9edef] mb-2.5" />
+        {docsLoading ? (
+          <Spinner size="sm" />
+        ) : !docs?.length ? (
+          <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] p-4 text-center">
+            <p className="text-[12px] text-[#6b7280]">제출된 서류가 없습니다</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {docs.map((d: { documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; createdAt: string }) => (
+              <div key={d.documentId} className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] p-3">
+                <div className="flex items-start gap-3">
+                  {/* PDF 아이콘 */}
+                  <div className="w-9 h-11 bg-[#e8f0fc] rounded-[6px] flex items-center justify-center shrink-0">
+                    <span className="text-[10px] font-medium text-[#0c447c]">PDF</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] font-medium text-[#1a1a1a] truncate">{d.fileName}</p>
+                    <p className="text-[11px] text-[#adb5b8] mt-0.5">
+                      {formatFileSize(d.fileSize)} · {new Date(d.createdAt).toLocaleDateString('ko-KR')}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <a
+                        href={d.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#e8f0fc] text-[#1a6de0] text-[10px] h-[18px] px-2 rounded-[9px] flex items-center"
+                      >
+                        미리보기
+                      </a>
+                      <a
+                        href={d.fileUrl}
+                        download
+                        className="bg-[#e8f0fc] text-[#1a6de0] text-[10px] h-[18px] px-2 rounded-[9px] flex items-center"
+                      >
+                        다운로드
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
-      </Card>
+      </div>
 
-      {/* 자동 검증 결과 */}
-      <Card padding="md">
-        <h2 className="font-bold text-gray-900 mb-3">자동 검증 결과</h2>
+      {/* 자동 검증 */}
+      <div>
+        <p className="text-[12px] font-medium text-[#1a6de0] mb-1.5">자동 검증</p>
+        <div className="h-[0.5px] bg-[#e9edef] mb-2.5" />
         {checksLoading ? (
           <Spinner size="sm" />
         ) : !checks ? (
-          <p className="text-sm text-gray-400">검증 데이터가 없습니다</p>
+          <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] p-4 text-center">
+            <p className="text-[12px] text-[#6b7280]">검증 데이터가 없습니다</p>
+          </div>
         ) : (
-          <div className="space-y-2">
-            {checkItems.map((item) => {
-              const value = checks[item.key];
+          <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] overflow-hidden">
+            {VERIFY_ITEMS.map((item, i) => {
+              const value = checks[item.key] as boolean;
+              // emailDuplicate/phoneDuplicate/nameDuplicate: false = pass, true = warning
+              // requiredFields: true = pass, false = warning
               const isPass = item.key === 'requiredFields' ? value : !value;
               return (
-                <div
-                  key={item.key}
-                  className="flex items-start gap-3 rounded-lg border border-gray-100 p-3"
-                >
-                  {isPass ? (
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <XCircle className="h-4 w-4 text-red-500" />
-                  )}
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-900">{item.label}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {item.key === 'requiredFields'
-                        ? (value ? '모든 필수 항목 충족' : '필수 항목 미충족')
-                        : (value ? '중복 발견' : '중복 없음')
-                      }
-                    </p>
+                <div key={item.key}>
+                  <div className="flex items-center justify-between px-3 h-[20px]">
+                    <span className="text-[12px] text-[#6b7280]">{item.label}</span>
+                    {isPass ? (
+                      <span className="text-[11px] text-[#3b6e11]">✓ 이상 없음</span>
+                    ) : (
+                      <span className="text-[11px] text-[#854f0b]">⚠ 주의 필요</span>
+                    )}
                   </div>
+                  {i < VERIFY_ITEMS.length - 1 && <div className="h-[0.5px] bg-[#e9edef] mx-3" />}
                 </div>
               );
             })}
           </div>
         )}
-      </Card>
-
-      {/* 제출 서류 */}
-      <Card padding="md">
-        <h2 className="font-bold text-gray-900 mb-3">제출 서류</h2>
-        {docsLoading ? (
-          <Spinner size="sm" />
-        ) : !docs?.length ? (
-          <p className="text-sm text-gray-400">제출된 서류가 없습니다</p>
-        ) : (
-          <ul className="space-y-2">
-            {docs.map((d: { documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; createdAt: string }) => (
-              <li key={d.documentId}>
-                <a
-                  href={d.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-lg border border-gray-100 px-3 py-2 hover:bg-gray-50"
-                >
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {d.fileName}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {d.fileType} · {formatFileSize(d.fileSize)} · {new Date(d.createdAt).toLocaleDateString('ko-KR')}
-                    </p>
-                  </div>
-                  <ExternalLink className="h-4 w-4 text-gray-400 shrink-0 ml-2" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Card>
-
-      {/* 액션 바 */}
-      <div className="flex flex-wrap gap-2">
-        <Button
-          variant="primary"
-          onClick={() => setModalAction('APPROVED')}
-          disabled={processing}
-        >
-          승인
-        </Button>
-        <Button
-          variant="danger"
-          onClick={() => setModalAction('REJECTED')}
-          disabled={processing}
-        >
-          반려
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => setModalAction('SUPPLEMENT_REQUESTED')}
-          disabled={processing}
-        >
-          보충 요청
-        </Button>
       </div>
 
-      {/* 모달 */}
+      {/* 검토 체크리스트 */}
+      {checks && (
+        <div>
+          <p className="text-[12px] font-medium text-[#1a6de0] mb-1.5">검토 체크리스트</p>
+          <div className="h-[0.5px] bg-[#e9edef] mb-2.5" />
+          <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] overflow-hidden p-3">
+            <div className="space-y-0">
+              {CHECKLIST_ITEMS.map((item, i) => {
+                const checked = checks[item.key] as boolean;
+                // duplicateSignup: false = checked (no duplicate), true = unchecked
+                const isChecked = item.key === 'duplicateSignup' ? !checked : checked;
+                return (
+                  <div key={item.key}>
+                    <div className="flex items-center gap-2.5 h-[22px]">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${isChecked ? 'bg-[#1a6de0]' : 'bg-[#e9edef]'}`}>
+                        {isChecked && <span className="text-[12px] font-medium text-white">✓</span>}
+                      </div>
+                      <span className="text-[12px] text-[#1a1a1a]">{item.label}</span>
+                    </div>
+                    {i < CHECKLIST_ITEMS.length - 1 && <div className="h-[0.5px] bg-[#e9edef] my-0.5" />}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 진행률 바 */}
+            <div className="mt-3">
+              <div className="h-1.5 bg-[#f7f8fa] rounded-[3px] overflow-hidden">
+                <div
+                  className="h-full bg-[#1a6de0] rounded-[3px] transition-all"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+              <p className="text-[11px] text-[#6b7280] mt-1">{completedCount} / {totalCount} 완료</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 액션 버튼 — 세로 스택 */}
+      <div className="space-y-2 pt-2">
+        <button
+          type="button"
+          onClick={() => setModalAction('APPROVED')}
+          disabled={processing}
+          className="w-full h-12 bg-[#1a6de0] rounded-[24px] text-[15px] font-medium text-white disabled:opacity-50"
+        >
+          승인
+        </button>
+        <button
+          type="button"
+          onClick={() => setModalAction('SUPPLEMENT_REQUESTED')}
+          disabled={processing}
+          className="w-full h-11 bg-white border-[1.5px] border-[#faeeda] rounded-[22px] text-[14px] font-medium text-[#854f0b] disabled:opacity-50"
+        >
+          보완 요청
+        </button>
+        <button
+          type="button"
+          onClick={() => setModalAction('REJECTED')}
+          disabled={processing}
+          className="w-full h-11 bg-white border-[1.5px] border-[#fcebeb] rounded-[22px] text-[14px] font-medium text-[#a32c2c] disabled:opacity-50"
+        >
+          거절
+        </button>
+      </div>
+
+      {/* 확인 모달 */}
       {modalAction && (
         <Modal
           isOpen={!!modalAction}
@@ -266,7 +336,7 @@ export function LawyerReviewPage() {
                 취소
               </Button>
               <Button
-                variant={actionLabels[modalAction].variant}
+                variant={modalAction === 'REJECTED' ? 'danger' : 'primary'}
                 onClick={handleSubmit}
                 disabled={processing || (modalAction !== 'APPROVED' && !reason.trim())}
               >

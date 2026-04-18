@@ -12,6 +12,7 @@ interface ChatInputProps {
   onSend: (message: string) => void;
   disabled: boolean;
   placeholder?: string;
+  subtext?: string;
 }
 
 const MAX_ROWS = 4;
@@ -21,6 +22,7 @@ export function ChatInput({
   onSend,
   disabled,
   placeholder = '메시지를 입력하세요...',
+  subtext,
 }: ChatInputProps) {
   const [value, setValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -63,7 +65,8 @@ export function ChatInput({
   }
 
   return (
-    <div className="bg-white border-t border-gray-200 px-4 py-3 flex items-end gap-2">
+    <div className="bg-white border-t border-gray-200 px-4 py-3">
+      <div className="flex items-end gap-2">
       <textarea
         ref={textareaRef}
         rows={1}
@@ -99,6 +102,10 @@ export function ChatInput({
       >
         <SendHorizontal className="h-4 w-4" />
       </button>
+      </div>
+      {subtext && (
+        <p className="text-[10px] text-[#555d6d] text-center mt-1.5">{subtext}</p>
+      )}
     </div>
   );
 }

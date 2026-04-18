@@ -31,11 +31,11 @@ export function useAdminAlerts() {
   });
 }
 
-export function usePendingLawyers(page = 0, size = 20) {
+export function usePendingLawyers(page = 0, size = 20, keyword?: string, status?: string) {
   return useQuery({
-    queryKey: [...KEYS.pending, page, size],
+    queryKey: [...KEYS.pending, page, size, keyword, status],
     queryFn: async () => {
-      const { data } = await adminApi.getPendingLawyers(page, size);
+      const { data } = await adminApi.getPendingLawyers(page, size, keyword, status);
       return data.data;
     },
   });

@@ -160,6 +160,7 @@ export function ChatPage() {
           onSend={sendMessage}
           disabled={isSending || allCompleted}
           placeholder={allCompleted ? '상담이 완료되었습니다' : '메시지를 입력하세요...'}
+          subtext={allCompleted ? undefined : '상담 내용을 입력하면 AI가 법률 분야를 자동으로 분류합니다.'}
         />
       </div>
     </div>

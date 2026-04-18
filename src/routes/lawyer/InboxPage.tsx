@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Clock } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { formatDate } from '@/lib/dateUtils';
 import { useInboxList } from '@/hooks/useInbox';
-import { Badge, Card, Spinner } from '@/components/ui';
+import { Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
-import { DOMAIN_LABELS, DELIVERY_STATUS_BADGE, DELIVERY_STATUS_LABEL } from '@/lib/constants';
+import { DOMAIN_LABELS, DELIVERY_STATUS_LABEL } from '@/lib/constants';
 import type { InboxItemResponse } from '@/types';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -19,38 +19,88 @@ const TABS: { key: FilterTab; label: string }[] = [
   { key: 'REJECTED', label: '응답 완료' },
 ];
 
-// ─── item card ───────────────────────────────────────────────────────────────
+function formatShortDate(iso: string): string {
+  const d = new Date(iso);
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return `${m}.${day} ${h}:${min}`;
+}
 
-function InboxItemCard({ item }: { item: InboxItemResponse }) {
+function getStatusBadgeStyle(status: string) {
+  if (status === 'DELIVERED') return { bg: 'bg-[#e8f0fc]', text: 'text-[#0c447c]' };
+  if (status === 'CONFIRMED') return { bg: 'bg-[#eaf3de]', text: 'text-[#3b6d11]' };
+  if (status === 'REJECTED') return { bg: 'bg-[#fcebeb]', text: 'text-[#a32d2d]' };
+  return { bg: 'bg-[#f1efe8]', text: 'text-[#5f5e5a]' };
+}
+
+// ─── inbox item (figma flat style) ──────────────────────────────────────────
+
+function InboxItem({ item }: { item: InboxItemResponse }) {
   const navigate = useNavigate();
+  const statusStyle = getStatusBadgeStyle(item.status);
+  const isPending = item.status === 'DELIVERED';
+
   return (
-    <button
-      type="button"
-      onClick={() => navigate(`/lawyer/inbox/${item.deliveryId}`)}
-      className="w-full text-left"
-    >
-      <Card
-        padding="md"
-        className="hover:shadow-md active:scale-[0.99] transition-all duration-150 cursor-pointer"
-      >
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-gray-900 truncate">{item.briefTitle}</p>
-            <div className="flex items-center gap-2 mt-1.5">
-              <Badge variant="default" size="sm">
-                {DOMAIN_LABELS[item.legalField] ?? item.legalField}
-              </Badge>
-              <Badge variant={DELIVERY_STATUS_BADGE[item.status] ?? 'default'} size="sm">
-                {DELIVERY_STATUS_LABEL[item.status] ?? item.status}
-              </Badge>
-            </div>
-          </div>
-          <span className="text-xs text-gray-400 flex-shrink-0 mt-0.5">
-            {formatDate(item.sentAt)}
+    <div className="py-3">
+      {/* Category & status badges */}
+      <div className="flex flex-wrap gap-[7px] items-center">
+        <span className="bg-[#e8f0fc] text-[#0c447c] text-[11px] font-medium px-[10px] py-[3px] rounded-full">
+          {DOMAIN_LABELS[item.legalField] ?? item.legalField}
+        </span>
+        <span className={cn('text-[11px] font-medium px-[10px] py-[3px] rounded-full', statusStyle.bg, statusStyle.text)}>
+          {DELIVERY_STATUS_LABEL[item.status] ?? item.status}
+        </span>
+      </div>
+
+      {/* Description */}
+      <p className="text-[12px] text-[#6b7280] leading-[19.2px] mt-2 line-clamp-2">
+        {item.briefTitle}
+      </p>
+
+      {/* Divider + footer */}
+      <div className="border-t border-[#e9ecef] mt-3 pt-[10px] flex items-center justify-between">
+        <div className="flex flex-col gap-[2px]">
+          <span className="text-[11px] text-[#adb5bd]">
+            전달 {formatShortDate(item.sentAt)}
           </span>
+          {isPending && (
+            <div className="flex items-center gap-1">
+              <Clock size={11} className="text-[#a32d2d]" />
+              <span className="text-[11px] font-medium text-[#a32d2d]">24시간 남음</span>
+            </div>
+          )}
         </div>
-      </Card>
-    </button>
+        <div className="flex items-center gap-[6px]">
+          <button
+            type="button"
+            onClick={() => navigate(`/lawyer/inbox/${item.deliveryId}`)}
+            className="bg-[#f7f8fa] border border-[#e9ecef] rounded-full px-[10px] py-[6px] text-[11px] font-medium text-[#6b7280]"
+          >
+            상세 보기
+          </button>
+          {isPending && (
+            <>
+              <button
+                type="button"
+                onClick={() => navigate(`/lawyer/inbox/${item.deliveryId}`)}
+                className="bg-[#1a6de0] text-white text-[11px] font-medium px-[11px] py-[5px] rounded-full"
+              >
+                수락
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate(`/lawyer/inbox/${item.deliveryId}`)}
+                className="bg-white border border-[#fcebeb] text-[#a32d2d] text-[11px] font-medium px-[10px] py-[6px] rounded-full"
+              >
+                거절
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -68,9 +118,9 @@ export function InboxPage() {
     <div className="flex flex-col flex-1">
       <Header title="의뢰함" showBack onBack={() => navigate('/lawyer')} />
 
-      {/* Tabs */}
-      <div className="bg-white border-b border-gray-200 px-4">
-        <div className="flex gap-0">
+      {/* Tabs — figma style */}
+      <div className="bg-white border-b border-[#e9ecef]">
+        <div className="flex">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.key;
             return (
@@ -79,33 +129,35 @@ export function InboxPage() {
                 type="button"
                 onClick={() => setActiveTab(tab.key)}
                 className={cn(
-                  'px-4 py-3 text-sm font-medium transition-colors duration-150',
-                  'border-b-2 -mb-px',
+                  'flex-1 py-[11px] px-1 text-[12px] text-center relative',
                   isActive
-                    ? 'border-brand text-brand'
-                    : 'border-transparent text-gray-500 hover:text-gray-700',
+                    ? 'font-medium text-[#1a6de0]'
+                    : 'font-normal text-[#adb5bd]',
                 )}
               >
                 {tab.label}
+                {isActive && (
+                  <div className="absolute bottom-0 left-[15%] right-[15%] h-[2px] bg-[#1a6de0] rounded-[1px]" />
+                )}
               </button>
             );
           })}
         </div>
       </div>
 
-      <main className="flex-1 px-4 py-4 pb-10">
+      <main className="flex-1 px-[23px] py-4 pb-10">
         {isLoading ? (
           <div className="flex items-center justify-center h-48">
             <Spinner size="lg" />
           </div>
         ) : items.length === 0 ? (
           <div className="flex items-center justify-center h-48">
-            <p className="text-sm text-gray-400">수신된 의뢰서가 없습니다</p>
+            <p className="text-sm text-[#adb5bd]">수신된 의뢰서가 없습니다</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="divide-y divide-[#e9ecef]">
             {items.map((item) => (
-              <InboxItemCard key={item.deliveryId} item={item} />
+              <InboxItem key={item.deliveryId} item={item} />
             ))}
           </div>
         )}

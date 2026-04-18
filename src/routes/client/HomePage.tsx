@@ -22,8 +22,8 @@ export function HomePage() {
 
   return (
     <div className="flex flex-col flex-1">
-      {/* Top bar */}
-      <header className="sticky top-0 z-30 h-14 bg-white border-b border-gray-200 flex items-center px-5 safe-area-top">
+      {/* Top bar — hidden on desktop where SideNav already shows the logo */}
+      <header className="sticky top-0 z-30 h-14 bg-white border-b border-gray-200 flex items-center px-5 safe-area-top lg:hidden">
         <span className="text-base font-bold text-brand tracking-tight">SHIELD</span>
       </header>
 

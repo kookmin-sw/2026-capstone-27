@@ -6,6 +6,7 @@ const KEYS = {
   all: ['lawyers'] as const,
   list: () => [...KEYS.all, 'list'] as const,
   detail: (id: string) => [...KEYS.all, 'detail', id] as const,
+  me: () => [...KEYS.all, 'me'] as const,
   verification: () => [...KEYS.all, 'verification'] as const,
   myDocuments: () => [...KEYS.all, 'my-documents'] as const,
 };
@@ -20,6 +21,17 @@ export function useLawyerList(
     queryKey: [...KEYS.list(), page, size, specialization],
     queryFn: async () => {
       const { data } = await lawyerApi.getList(page, size, specialization);
+      return data.data;
+    },
+  });
+}
+
+/** 내 프로필 (변호사) */
+export function useMyLawyerProfile() {
+  return useQuery({
+    queryKey: KEYS.me(),
+    queryFn: async () => {
+      const { data } = await lawyerApi.getMe();
       return data.data;
     },
   });

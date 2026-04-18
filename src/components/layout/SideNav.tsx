@@ -44,7 +44,7 @@ export function SideNav({ tabs, className }: SideNavProps) {
                 end={to === '/'}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-lg',
+                    'flex items-center gap-3 px-3 py-3 rounded-lg',
                     'text-sm font-medium transition-colors',
                     isActive
                       ? 'bg-blue-50 text-brand'

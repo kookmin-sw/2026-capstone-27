@@ -1,91 +1,158 @@
 import { useState } from 'react';
-import { FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useVerificationLogs } from '@/hooks/useAdmin';
 import { formatDate } from '@/lib/dateUtils';
-import { Card, Spinner, Badge } from '@/components/ui';
+import { Spinner } from '@/components/ui';
+import { FileText } from 'lucide-react';
+import { cn } from '@/lib/cn';
 
-const ACTION_CONFIG: Record<string, { label: string; variant: 'success' | 'danger' | 'warning'; icon: React.ReactNode }> = {
-  APPROVED: { label: '승인', variant: 'success', icon: <CheckCircle size={14} /> },
-  REJECTED: { label: '거절', variant: 'danger', icon: <AlertCircle size={14} /> },
-  SUPPLEMENT_REQUESTED: { label: '보완 요청', variant: 'warning', icon: <RefreshCw size={14} /> },
+const STATUS_BADGE: Record<string, { bg: string; text: string; label: string }> = {
+  PENDING: { bg: 'bg-[#f1f0e8]', text: 'text-[#5f5e5a]', label: '승인 대기' },
+  REVIEWING: { bg: 'bg-[#e8f0fc]', text: 'text-[#0c5fa5]', label: '검토 중' },
+  SUPPLEMENT_REQUESTED: { bg: 'bg-[#faeeda]', text: 'text-[#854f0b]', label: '보완 요청' },
+  APPROVED: { bg: 'bg-[#eaf3de]', text: 'text-[#3b6e11]', label: '승인 완료' },
+  VERIFIED: { bg: 'bg-[#eaf3de]', text: 'text-[#3b6e11]', label: '승인 완료' },
+  REJECTED: { bg: 'bg-[#fcebeb]', text: 'text-[#a32c2c]', label: '거절' },
 };
+
+/** action → (before, after) 상태 전이 매핑 */
+function getTransition(action: string): { before: string; after: string } {
+  switch (action) {
+    case 'APPROVED': return { before: 'REVIEWING', after: 'APPROVED' };
+    case 'REJECTED': return { before: 'PENDING', after: 'REJECTED' };
+    case 'SUPPLEMENT_REQUESTED': return { before: 'PENDING', after: 'SUPPLEMENT_REQUESTED' };
+    default: return { before: 'PENDING', after: action };
+  }
+}
+
+const FILTER_TABS = [
+  { value: '', label: '전체' },
+  { value: 'today', label: '오늘' },
+  { value: 'week', label: '최근 7일' },
+  { value: 'APPROVED', label: '승인' },
+  { value: 'REJECTED', label: '거절' },
+  { value: 'SUPPLEMENT_REQUESTED', label: '보완' },
+] as const;
 
 export function LogsPage() {
   const [page, setPage] = useState(0);
-  const { data, isLoading } = useVerificationLogs(page, 20);
+  const [filter, setFilter] = useState('');
+
+  // 날짜 기반 필터 계산
+  const now = new Date();
+  let filterParams: { status?: string; startDate?: string; endDate?: string } | undefined;
+  if (filter === 'today') {
+    const today = now.toISOString().slice(0, 10);
+    filterParams = { startDate: today, endDate: today };
+  } else if (filter === 'week') {
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    filterParams = { startDate: weekAgo };
+  } else if (filter) {
+    filterParams = { status: filter };
+  }
+
+  const { data, isLoading } = useVerificationLogs(page, 20, filterParams);
 
   return (
     <div className="space-y-4">
-      <h1 className="text-lg font-bold text-gray-900">처리 이력</h1>
+      {/* 필터 탭 */}
+      <div className="flex gap-2 overflow-x-auto no-scrollbar">
+        {FILTER_TABS.map((tab) => (
+          <button
+            key={tab.value}
+            type="button"
+            onClick={() => { setFilter(tab.value); setPage(0); }}
+            className={cn(
+              'h-[26px] px-3 rounded-[13px] text-[12px] font-normal whitespace-nowrap shrink-0 transition-colors',
+              filter === tab.value
+                ? 'bg-[#1a6de0] text-white'
+                : 'bg-white border-[1.5px] border-[#e9edef] text-[#6b7280]',
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
+      {/* 이력 카드 목록 */}
       {isLoading ? (
         <div className="flex items-center justify-center h-48">
           <Spinner size="lg" />
         </div>
       ) : !data || data.content.length === 0 ? (
-        <Card padding="md">
-          <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-            <FileText className="h-12 w-12 mb-3" />
-            <p className="text-sm font-medium">처리 이력이 없습니다</p>
-          </div>
-        </Card>
+        <div className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] py-16 text-center">
+          <FileText className="h-12 w-12 text-[#e9edef] mx-auto mb-3" />
+          <p className="text-[13px] text-[#6b7280]">처리 이력이 없습니다</p>
+        </div>
       ) : (
-        <>
-          <div className="space-y-2">
-            {data.content.map((log) => {
-              const config = ACTION_CONFIG[log.action] ?? { label: log.action, variant: 'warning' as const, icon: null };
-              return (
-                <Card key={log.logId} padding="sm">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-semibold text-gray-900 truncate">
-                          {log.lawyerName}
-                        </p>
-                        <Badge variant={config.variant} size="sm">
-                          {config.label}
-                        </Badge>
-                      </div>
-                      {log.reason && (
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                          사유: {log.reason}
-                        </p>
-                      )}
-                      <p className="text-xs text-gray-400 mt-1">
-                        처리자: {log.processedBy} · {formatDate(log.processedAt)}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
+        <div className="space-y-3.5">
+          {data.content.map((log) => {
+            const { before, after } = getTransition(log.action);
+            const beforeBadge = STATUS_BADGE[before] ?? STATUS_BADGE.PENDING;
+            const afterBadge = STATUS_BADGE[after] ?? STATUS_BADGE.PENDING;
 
-          {/* Pagination */}
-          {data.totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 pt-2">
-              <button
-                type="button"
-                disabled={page === 0}
-                onClick={() => setPage((p) => Math.max(0, p - 1))}
-                className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg disabled:opacity-40"
+            return (
+              <div
+                key={log.logId}
+                className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] overflow-hidden"
               >
-                이전
-              </button>
-              <span className="text-xs text-gray-500">
-                {page + 1} / {data.totalPages}
-              </span>
-              <button
-                type="button"
-                disabled={!data.hasNext}
-                onClick={() => setPage((p) => p + 1)}
-                className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg disabled:opacity-40"
-              >
-                다음
-              </button>
-            </div>
-          )}
-        </>
+                <div className="p-3">
+                  {/* 이름 + 시각 */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-[13px] font-medium text-[#1a1a1a]">{log.lawyerName}</p>
+                    <span className="text-[11px] text-[#adb5b8]">{formatDate(log.processedAt)}</span>
+                  </div>
+
+                  {/* 상태 전이 */}
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <span className={`${beforeBadge.bg} ${beforeBadge.text} text-[10px] font-medium h-[22px] px-2.5 rounded-[11px] flex items-center`}>
+                      {beforeBadge.label}
+                    </span>
+                    <span className="text-[11px] text-[#adb5b8]">→</span>
+                    <span className={`${afterBadge.bg} ${afterBadge.text} text-[10px] font-medium h-[22px] px-2.5 rounded-[11px] flex items-center`}>
+                      {afterBadge.label}
+                    </span>
+                  </div>
+                </div>
+
+                {/* 구분선 */}
+                <div className="h-[0.5px] bg-[#e9edef]" />
+
+                {/* 하단: 담당자 + 사유 */}
+                <div className="px-3 py-2">
+                  <p className="text-[11px] text-[#adb5b8]">담당: {log.processedBy}</p>
+                  {log.reason && (
+                    <p className="text-[10px] text-[#6b7280] mt-0.5">{log.reason}</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* 페이지네이션 */}
+      {data && data.totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-2">
+          <button
+            type="button"
+            disabled={page === 0}
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            className="px-3 py-1.5 text-[11px] font-medium text-[#6b7280] bg-white border border-[#e9edef] rounded-[13px] disabled:opacity-40"
+          >
+            이전
+          </button>
+          <span className="text-[11px] text-[#6b7280]">
+            {page + 1} / {data.totalPages}
+          </span>
+          <button
+            type="button"
+            disabled={!data.hasNext}
+            onClick={() => setPage((p) => p + 1)}
+            className="px-3 py-1.5 text-[11px] font-medium text-[#6b7280] bg-white border border-[#e9edef] rounded-[13px] disabled:opacity-40"
+          >
+            다음
+          </button>
+        </div>
       )}
     </div>
   );

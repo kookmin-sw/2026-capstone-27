@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Shield, MessageCircle, Globe, Lock, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
+import { Shield, MessageCircle, Globe, ShieldCheck, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { loginWithKakao } from '@/lib/kakao';
@@ -82,13 +82,13 @@ export function LoginPage() {
             'bg-[#f0f7ff] border border-brand/10 text-brand text-[11px] font-normal',
           )}
         >
-          <Lock size={12} className="flex-shrink-0" aria-hidden="true" />
+          <ShieldCheck size={12} className="shrink-0" aria-hidden="true" />
           보안 인증 및 데이터 암호화
         </span>
       </div>
 
       {/* ── Social login area ── */}
-      <div className="flex-1 flex flex-col justify-end px-6 pb-8 gap-6">
+      <div className="flex-1 flex flex-col justify-end sm:justify-center px-6 pb-8 sm:pb-12 gap-6">
         <div className="flex flex-col gap-[12px]">
           {/* Kakao */}
           <Button
@@ -142,7 +142,7 @@ export function LoginPage() {
         </div>
 
         {/* Terms notice */}
-        <p className="text-center text-[10px] text-[#575e6b] leading-[18px] px-1">
+        <p className="text-center text-xs text-[#575e6b] leading-4.5 px-1">
           로그인 시 SHIELD의{' '}
           <span className="underline font-medium">이용약관</span> 및{' '}
           <span className="underline font-medium">개인정보 처리방침</span>에

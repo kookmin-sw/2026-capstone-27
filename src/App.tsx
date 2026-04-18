@@ -108,6 +108,9 @@ const VerificationPage = lazy(() =>
 const DocumentsPage = lazy(() =>
   import('@/routes/lawyer/DocumentsPage').then((m) => ({ default: m.DocumentsPage })),
 );
+const CasesPage = lazy(() =>
+  import('@/routes/lawyer/CasesPage').then((m) => ({ default: m.CasesPage })),
+);
 
 // ── Admin Pages (lazy) ──
 const AdminDashboardPage = lazy(() =>
@@ -126,9 +129,9 @@ const AdminProfilePage = lazy(() =>
   import('@/routes/admin/AdminProfilePage').then((m) => ({ default: m.AdminProfilePage })),
 );
 
-// Lawyer Profile detail (reuse from client)
+// Lawyer's own profile page
 const LawyerMyProfilePage = lazy(() =>
-  import('@/routes/client/LawyerProfilePage').then((m) => ({ default: m.LawyerProfilePage })),
+  import('@/routes/lawyer/LawyerProfilePage').then((m) => ({ default: m.LawyerProfilePage })),
 );
 
 // ── Root Redirect ──
@@ -211,6 +214,7 @@ export default function App() {
                   <Route path="/lawyer" element={<LawyerDashboardPage />} />
                   <Route path="/lawyer/inbox" element={<InboxPage />} />
                   <Route path="/lawyer/inbox/:id" element={<InboxDetailPage />} />
+                  <Route path="/lawyer/cases" element={<CasesPage />} />
                   <Route path="/lawyer/profile" element={<LawyerMyProfilePage />} />
                   <Route path="/lawyer/profile/edit" element={<ProfileEditPage />} />
                   <Route path="/lawyer/verification" element={<VerificationPage />} />

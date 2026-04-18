@@ -19,13 +19,13 @@ public interface LawyerProfileRepository extends JpaRepository<LawyerProfile, UU
     @Query(value = """
             SELECT lp.* FROM lawyers lp
             WHERE CAST(lp.verification_status AS TEXT) = 'VERIFIED'
-            AND (CAST(:specialization AS TEXT) IS NULL OR LOWER(lp.specializations) LIKE LOWER('%' || CAST(:specialization AS TEXT) || '%'))
+            AND (CAST(:specialization AS TEXT) IS NULL OR LOWER(lp.domains::text) LIKE LOWER('%' || CAST(:specialization AS TEXT) || '%'))
             AND (CAST(:minExperience AS INTEGER) IS NULL OR lp.experience_years >= CAST(:minExperience AS INTEGER))
             """,
             countQuery = """
             SELECT COUNT(*) FROM lawyers lp
             WHERE CAST(lp.verification_status AS TEXT) = 'VERIFIED'
-            AND (CAST(:specialization AS TEXT) IS NULL OR LOWER(lp.specializations) LIKE LOWER('%' || CAST(:specialization AS TEXT) || '%'))
+            AND (CAST(:specialization AS TEXT) IS NULL OR LOWER(lp.domains::text) LIKE LOWER('%' || CAST(:specialization AS TEXT) || '%'))
             AND (CAST(:minExperience AS INTEGER) IS NULL OR lp.experience_years >= CAST(:minExperience AS INTEGER))
             """,
             nativeQuery = true)

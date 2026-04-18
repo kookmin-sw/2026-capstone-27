@@ -121,7 +121,7 @@ public class AdminService {
                     lawyerUser != null ? lawyerUser.getName() : null,
                     vlog.getFromStatus(),
                     vlog.getToStatus(),
-                    lawyer.getSpecializations(),
+                    lawyer.getDomains(),
                     admin != null ? admin.getName() : null,
                     vlog.getReason(),
                     vlog.getCreatedAt()

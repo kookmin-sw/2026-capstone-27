@@ -64,7 +64,8 @@ public class LawyerService {
     public LawyerResponse updateMyProfile(UUID userId, ProfileUpdateRequest request) {
         LawyerProfile profile = lawyerReader.findByUserId(userId);
         profile.updateProfile(
-                request.specializations(),
+                request.domains(),
+                request.subDomains(),
                 request.experienceYears(),
                 request.certifications(),
                 request.tags(),

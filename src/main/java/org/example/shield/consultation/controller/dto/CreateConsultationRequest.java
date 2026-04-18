@@ -1,7 +1,9 @@
 package org.example.shield.consultation.controller.dto;
 
-import org.example.shield.common.enums.DomainType;
+import java.util.List;
 
 public record CreateConsultationRequest(
-        DomainType domain
+        List<String> domains,
+        List<String> subDomains,
+        List<String> tags
 ) {}

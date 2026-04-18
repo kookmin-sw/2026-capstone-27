@@ -1,9 +1,7 @@
 package org.example.shield.consultation.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shield.brief.domain.Brief;
 import org.example.shield.brief.domain.BriefReader;
-import org.example.shield.common.enums.DomainType;
 import org.example.shield.common.response.PageResponse;
 import org.example.shield.consultation.controller.dto.ClassifyResponse;
 import org.example.shield.consultation.controller.dto.ConsultationResponse;
@@ -35,8 +33,9 @@ public class ConsultationService {
             "반갑습니다. SHIELD 법률 AI입니다. 어떤 법률 문제로 어려움을 겪고 계신가요? 구체적인 상황을 말씀해 주시면 정보 정리를 도와드리겠습니다.";
 
     @Transactional
-    public CreateConsultationResponse createConsultation(UUID userId, DomainType domain) {
-        Consultation consultation = Consultation.create(userId, domain);
+    public CreateConsultationResponse createConsultation(UUID userId, List<String> domains,
+                                                         List<String> subDomains, List<String> tags) {
+        Consultation consultation = Consultation.create(userId, domains, subDomains, tags);
         Consultation saved = consultationWriter.save(consultation);
 
         Message welcomeMsg = Message.createAiMessage(
@@ -69,11 +68,12 @@ public class ConsultationService {
     }
 
     @Transactional
-    public ClassifyResponse updateClassification(UUID consultationId, List<String> primaryField) {
+    public ClassifyResponse updateClassification(UUID consultationId, List<String> domains,
+                                                  List<String> subDomains, List<String> tags) {
         Consultation consultation = consultationReader.findById(consultationId);
-        consultation.updateClassification(primaryField);
+        consultation.updateUserClassification(domains, subDomains, tags);
         consultationWriter.save(consultation);
 
-        return new ClassifyResponse(primaryField);
+        return new ClassifyResponse(domains, subDomains, tags);
     }
 }

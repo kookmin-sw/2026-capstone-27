@@ -118,8 +118,8 @@ public class GroqService {
         String systemPrompt = promptService.loadRouterChatPrompt();
 
         // 분류 완료 시 체크리스트 YAML 동적 주입
-        if (consultation.getPrimaryField() != null && !consultation.getPrimaryField().isEmpty()) {
-            String domain = consultation.getPrimaryField().get(0);
+        String domain = consultation.getFirstDomain();
+        if (domain != null) {
             String checklist = promptService.loadChecklist(domain);
             if (checklist != null) {
                 systemPrompt = systemPrompt + "\n\n" + checklist;

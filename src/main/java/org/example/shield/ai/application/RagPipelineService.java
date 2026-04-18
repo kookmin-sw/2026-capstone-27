@@ -27,21 +27,21 @@ public class RagPipelineService {
      * RAG 파이프라인 실행. 실패 시 빈 문자열 반환 (폴백).
      *
      * @param chatHistory    대화 내역
-     * @param primaryField   상담 분야
+     * @param domain         상담 대분류 (온톨로지 L1)
      * @param consultationId 로깅용 상담 ID
      * @return RAG 컨텍스트 문자열 (실패 시 빈 문자열)
      */
-    public String execute(List<Message> chatHistory, String primaryField, Object consultationId) {
+    public String execute(List<Message> chatHistory, String domain, Object consultationId) {
         try {
             // Layer 1: 의도 분류
             IntentClassificationResult classification =
-                    intentClassificationService.classify(chatHistory, primaryField);
+                    intentClassificationService.classify(chatHistory, domain);
 
             // Layer 2: 법률 검색
             List<String> lawIds = categoryLawMappingService.resolveLawIds(
                     classification.matchedNodeIds());
             String vectorQuery = classification.retrievalQueries().isEmpty()
-                    ? primaryField + " 관련 법률"
+                    ? domain + " 관련 법률"
                     : classification.retrievalQueries().get(0);
             List<LegalChunk> chunks = legalRetrievalService.retrieve(
                     vectorQuery,

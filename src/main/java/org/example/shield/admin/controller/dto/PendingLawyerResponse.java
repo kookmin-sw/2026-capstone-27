@@ -4,6 +4,7 @@ import org.example.shield.lawyer.domain.LawyerProfile;
 import org.example.shield.user.domain.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public record PendingLawyerResponse(
@@ -11,7 +12,8 @@ public record PendingLawyerResponse(
         String name,
         String email,
         String phone,
-        String specializations,
+        List<String> domains,
+        List<String> subDomains,
         Integer experienceYears,
         String verificationStatus,
         long documentCount,
@@ -23,7 +25,8 @@ public record PendingLawyerResponse(
                 user.getName(),
                 user.getEmail(),
                 user.getPhone(),
-                lawyer.getSpecializations(),
+                lawyer.getDomains(),
+                lawyer.getSubDomains(),
                 lawyer.getExperienceYears(),
                 lawyer.getVerificationStatus().name(),
                 documentCount,

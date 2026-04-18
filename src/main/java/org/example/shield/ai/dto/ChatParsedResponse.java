@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Phase 1 대화 응답 파싱 결과.
- * Grok output[0].content[0].text를 JSON 파싱한 결과.
+ * LLM이 온톨로지 기반으로 분류한 대분류/중분류/소분류.
  */
 @Getter
 @Setter
@@ -30,11 +30,15 @@ public class ChatParsedResponse {
 
     @JsonDeserialize(using = FlexibleStringListDeserializer.class)
     @JsonSetter(nulls = Nulls.AS_EMPTY)
-    private List<String> primaryField = new ArrayList<>();
+    private List<String> aiDomains = new ArrayList<>();
 
     @JsonDeserialize(using = FlexibleStringListDeserializer.class)
     @JsonSetter(nulls = Nulls.AS_EMPTY)
-    private List<String> tags = new ArrayList<>();
+    private List<String> aiSubDomains = new ArrayList<>();
+
+    @JsonDeserialize(using = FlexibleStringListDeserializer.class)
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    private List<String> aiTags = new ArrayList<>();
 
     private boolean allCompleted;
 

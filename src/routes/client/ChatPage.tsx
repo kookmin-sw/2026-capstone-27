@@ -74,7 +74,7 @@ export function ChatPage() {
   // ── loading ─────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header
           title="상담"
           showBack
@@ -88,7 +88,7 @@ export function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-dvh bg-surface">
+    <div className="flex flex-col flex-1 min-h-0">
       {/* ── header ─────────────────────────────────────────────────────── */}
       <Header
         title={buildTitle()}

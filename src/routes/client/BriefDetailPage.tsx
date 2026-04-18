@@ -128,7 +128,7 @@ export function BriefDetailPage() {
   // ── loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="의뢰서" showBack onBack={() => navigate('/briefs')} />
         <div className="flex items-center justify-center flex-1">
           <Spinner size="lg" />
@@ -139,7 +139,7 @@ export function BriefDetailPage() {
 
   if (!brief) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="의뢰서" showBack onBack={() => navigate('/briefs')} />
         <div className="flex items-center justify-center flex-1">
           <p className="text-sm text-gray-500">의뢰서를 찾을 수 없습니다.</p>
@@ -150,7 +150,7 @@ export function BriefDetailPage() {
 
   // ── render ───────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header
         title={brief.title}
         showBack

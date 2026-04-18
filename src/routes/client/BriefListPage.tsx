@@ -15,7 +15,7 @@ export function BriefListPage() {
   const briefs = data?.content ?? [];
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="내 의뢰서" />
 
       <main className="flex-1 px-4 py-4">

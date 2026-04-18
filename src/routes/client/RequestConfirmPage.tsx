@@ -20,7 +20,7 @@ export function RequestConfirmPage() {
   const lawyerName = state.lawyerName ?? '담당 변호사';
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="요청 완료" showBack={false} />
 
       <main className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-6 pb-10">

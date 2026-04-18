@@ -65,7 +65,7 @@ export function InboxPage() {
   const items = inboxPage?.content ?? [];
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="의뢰함" showBack onBack={() => navigate('/lawyer')} />
 
       {/* Tabs */}

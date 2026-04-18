@@ -65,7 +65,7 @@ export function ProfileEditPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="프로필 수정" showBack onBack={() => navigate(-1)} />
         <div className="flex items-center justify-center flex-1">
           <Spinner size="lg" />
@@ -75,7 +75,7 @@ export function ProfileEditPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="프로필 수정" showBack onBack={() => navigate(-1)} />
 
       <main className="flex-1 px-4 py-4 pb-10">

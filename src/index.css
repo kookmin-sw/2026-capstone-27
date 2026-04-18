@@ -67,7 +67,6 @@ body {
 
 /* ===== Chat Viewport ===== */
 .chat-viewport {
-  height: calc(100dvh - 64px - 64px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;

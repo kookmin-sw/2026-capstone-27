@@ -32,7 +32,7 @@ export function ConsultationListPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="내 상담" rightAction={rightAction} />
 
       <main className="flex-1 px-4 py-4">

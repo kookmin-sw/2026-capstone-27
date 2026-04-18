@@ -66,7 +66,7 @@ export function LawyerRegisterPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-dvh bg-white">
+    <div className="flex flex-col flex-1">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white border-b border-[#e0e2e6] flex items-center h-17 px-2">
         <button

@@ -39,7 +39,7 @@ export function FinalReviewPage() {
   // ── loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="최종 검토" showBack onBack={() => navigate(-1)} />
         <div className="flex items-center justify-center flex-1">
           <Spinner size="lg" />
@@ -50,7 +50,7 @@ export function FinalReviewPage() {
 
   if (!brief) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="최종 검토" showBack onBack={() => navigate(-1)} />
         <div className="flex items-center justify-center flex-1">
           <p className="text-sm text-gray-500">의뢰서를 찾을 수 없습니다.</p>
@@ -74,7 +74,7 @@ export function FinalReviewPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="최종 검토" showBack onBack={() => navigate(-1)} />
 
       <main className="flex-1 px-6 py-6 space-y-5 pb-36">
@@ -206,7 +206,7 @@ export function FinalReviewPage() {
       </main>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-[0px_-10px_20px_0px_rgba(0,0,0,0.02)] px-6 py-6 safe-area-bottom">
+      <div className="sticky bottom-0 bg-white shadow-[0px_-10px_20px_0px_rgba(0,0,0,0.02)] px-6 py-6 safe-area-bottom">
         <Button
           variant="primary"
           fullWidth

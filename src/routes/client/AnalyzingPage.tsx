@@ -57,7 +57,7 @@ export function AnalyzingPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-white">
+    <div className="flex flex-col flex-1">
       <main className="flex-1 flex flex-col items-center justify-center px-6 text-center">
         {timedOut ? (
           /* ── timeout state ──────────────────────────────────────────── */

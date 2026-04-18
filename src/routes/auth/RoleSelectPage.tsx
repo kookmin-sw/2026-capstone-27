@@ -42,7 +42,7 @@ export function RoleSelectPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col min-h-dvh bg-white">
+    <div className="flex flex-col flex-1">
       {/* Header with back button */}
       <div className="sticky top-0 z-10 bg-white border-b border-[#e0e2e6] px-2 pt-2 pb-3">
         <button

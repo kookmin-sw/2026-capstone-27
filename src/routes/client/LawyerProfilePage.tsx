@@ -15,7 +15,7 @@ export function LawyerProfilePage() {
   const { data: lawyer, isLoading } = useLawyerDetail(id);
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header
         title="변호사 프로필"
         showBack
@@ -155,7 +155,7 @@ export function LawyerProfilePage() {
       {lawyer && (
         <div
           className={cn(
-            'fixed bottom-0 left-0 right-0 z-30',
+            'sticky bottom-0 z-30',
             'bg-white border-t border-gray-200 px-4 py-3 safe-area-bottom',
           )}
         >

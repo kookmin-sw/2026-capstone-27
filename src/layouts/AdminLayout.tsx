@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, ClipboardList, Menu, X, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, ClipboardList, Menu, X, Shield, User } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 const ADMIN_TABS = [
   { to: '/admin',         icon: LayoutDashboard, label: '대시보드', end: true  },
   { to: '/admin/lawyers', icon: Users,           label: '심사 목록', end: false },
   { to: '/admin/logs',    icon: ClipboardList,   label: '처리 이력', end: false },
+  { to: '/admin/profile', icon: User,            label: '프로필',   end: false },
 ] as const;
 
 function AdminSidebar({ onClose }: { onClose?: () => void }) {

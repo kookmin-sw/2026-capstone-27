@@ -111,7 +111,7 @@ export function LawyerListPage() {
   const lawyers = data?.content ?? (Array.isArray(data) ? data : []);
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="변호사 찾기" />
 
       {/* Filter chips */}

@@ -50,7 +50,7 @@ export function InboxDetailPage() {
   // ── loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="의뢰서 상세" showBack onBack={() => navigate('/lawyer/inbox')} />
         <div className="flex items-center justify-center flex-1">
           <Spinner size="lg" />
@@ -61,7 +61,7 @@ export function InboxDetailPage() {
 
   if (!brief) {
     return (
-      <div className="flex flex-col min-h-dvh bg-surface">
+      <div className="flex flex-col flex-1">
         <Header title="의뢰서 상세" showBack onBack={() => navigate('/lawyer/inbox')} />
         <div className="flex items-center justify-center flex-1">
           <p className="text-sm text-gray-500">의뢰서를 찾을 수 없습니다.</p>
@@ -72,7 +72,7 @@ export function InboxDetailPage() {
 
   // ── render ───────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header title="의뢰서 상세" showBack onBack={() => navigate('/lawyer/inbox')} />
 
       <main className="flex-1 px-4 py-4 pb-28">
@@ -188,7 +188,7 @@ export function InboxDetailPage() {
 
       {/* Bottom action bar */}
       {isPending && !successMessage && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-4 safe-area-bottom space-y-2.5">
+        <div className="sticky bottom-0 bg-white px-5 py-4 safe-area-bottom space-y-2.5">
           <Button
             variant="primary"
             fullWidth

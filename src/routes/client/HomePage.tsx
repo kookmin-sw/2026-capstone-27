@@ -21,7 +21,7 @@ export function HomePage() {
   const briefs = briefData?.content ?? [];
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       {/* Top bar */}
       <header className="sticky top-0 z-30 h-14 bg-white border-b border-gray-200 flex items-center px-5 safe-area-top">
         <span className="text-base font-bold text-brand tracking-tight">SHIELD</span>

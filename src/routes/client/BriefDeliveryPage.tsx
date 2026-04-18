@@ -18,7 +18,7 @@ export function BriefDeliveryPage() {
   const list = deliveries ?? [];
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header
         title="전달 현황"
         showBack

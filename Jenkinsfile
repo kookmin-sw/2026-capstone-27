@@ -19,7 +19,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh "cp build/libs/shield-*.jar ${DEPLOY_DIR}/${JAR_NAME}"
+                sh "sudo cp build/libs/shield-*.jar ${DEPLOY_DIR}/${JAR_NAME}"
                 sh 'sudo systemctl restart shield-backend'
             }
         }

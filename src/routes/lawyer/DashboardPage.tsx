@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Clock } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { useInboxList, useInboxStats } from '@/hooks/useInbox';
+import { useInboxList, useInboxStats, useUpdateInboxStatus } from '@/hooks/useInbox';
 import { useMyLawyerProfile } from '@/hooks/useLawyer';
-import { Spinner } from '@/components/ui';
+import { Button, Modal, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { DOMAIN_LABELS, DELIVERY_STATUS_LABEL } from '@/lib/constants';
 import type { InboxItemResponse } from '@/types';
+
+const rejectTextareaClass = cn(
+  'w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#1E293B]',
+  'placeholder:text-[#64748B] resize-none',
+  'outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand',
+  'transition-colors duration-150',
+);
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -113,11 +121,46 @@ export function DashboardPage() {
   const recentItems = inboxPage?.content ?? [];
   const lawyerName = profile?.name ?? '변호사';
 
+  // Urgent request (첫 번째 DELIVERED 건) — 수락/거절 대상
+  const urgentItem = recentItems.find((item) => item.status === 'DELIVERED');
+  const updateStatus = useUpdateInboxStatus(urgentItem?.deliveryId ?? '');
+
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [rejectModalOpen, setRejectModalOpen] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  async function handleAccept() {
+    if (!urgentItem) return;
+    await updateStatus.mutateAsync({ status: 'CONFIRMED' });
+    setConfirmModalOpen(false);
+    setSuccessMessage('의뢰를 수락했습니다.');
+    setTimeout(() => setSuccessMessage(''), 2000);
+  }
+
+  async function handleReject() {
+    if (!urgentItem) return;
+    await updateStatus.mutateAsync({
+      status: 'REJECTED',
+      rejectionReason: rejectReason || undefined,
+    });
+    setRejectModalOpen(false);
+    setRejectReason('');
+    setSuccessMessage('의뢰를 거절했습니다.');
+    setTimeout(() => setSuccessMessage(''), 2000);
+  }
+
   return (
     <div className="flex flex-col flex-1">
       <Header title="변호사 대시보드" />
 
       <main className="flex-1 px-[22px] py-4 space-y-4 pb-10">
+        {successMessage && (
+          <div className="px-4 py-3 bg-green-50 border border-green-200 rounded-xl">
+            <p className="text-sm text-green-700 font-medium">{successMessage}</p>
+          </div>
+        )}
+
         {isLoading ? (
           <div className="flex items-center justify-center h-48">
             <Spinner size="lg" />
@@ -175,14 +218,17 @@ export function DashboardPage() {
                         <div className="flex items-center gap-[6px]">
                           <button
                             type="button"
-                            onClick={() => {/* handled by InboxDetailPage */}}
-                            className="relative z-10 bg-[#1a6de0] text-white text-[11px] font-medium px-[12px] py-[5px] rounded-full"
+                            onClick={() => setConfirmModalOpen(true)}
+                            disabled={updateStatus.isPending}
+                            className="relative z-10 bg-[#1a6de0] text-white text-[11px] font-medium px-[12px] py-[5px] rounded-full disabled:opacity-60"
                           >
                             수락
                           </button>
                           <button
                             type="button"
-                            className="relative z-10 bg-white border border-[#fcebeb] text-[#a32d2d] text-[11px] font-medium px-[11px] py-[6px] rounded-full"
+                            onClick={() => setRejectModalOpen(true)}
+                            disabled={updateStatus.isPending}
+                            className="relative z-10 bg-white border border-[#fcebeb] text-[#a32d2d] text-[11px] font-medium px-[11px] py-[6px] rounded-full disabled:opacity-60"
                           >
                             거절
                           </button>
@@ -220,6 +266,74 @@ export function DashboardPage() {
           </>
         )}
       </main>
+
+      {/* Accept confirm modal */}
+      <Modal
+        isOpen={confirmModalOpen}
+        onClose={() => setConfirmModalOpen(false)}
+        title="의뢰 수락"
+      >
+        <p className="text-sm text-gray-700 mb-5">
+          이 의뢰를 수락하시겠습니까?
+        </p>
+        <div className="flex gap-2">
+          <Button
+            variant="primary"
+            fullWidth
+            isLoading={updateStatus.isPending}
+            onClick={handleAccept}
+          >
+            수락
+          </Button>
+          <Button
+            variant="secondary"
+            fullWidth
+            onClick={() => setConfirmModalOpen(false)}
+          >
+            취소
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Reject confirm modal */}
+      <Modal
+        isOpen={rejectModalOpen}
+        onClose={() => setRejectModalOpen(false)}
+        title="의뢰 거절"
+      >
+        <div className="mb-5 space-y-3">
+          <p className="text-sm text-gray-700">이 의뢰를 거절하시겠습니까?</p>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-[#1E293B]">
+              거절 사유 <span className="text-gray-400 font-normal">(선택)</span>
+            </label>
+            <textarea
+              rows={3}
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="거절 사유를 입력해주세요"
+              className={rejectTextareaClass}
+            />
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="danger"
+            fullWidth
+            isLoading={updateStatus.isPending}
+            onClick={handleReject}
+          >
+            거절
+          </Button>
+          <Button
+            variant="secondary"
+            fullWidth
+            onClick={() => setRejectModalOpen(false)}
+          >
+            취소
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

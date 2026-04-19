@@ -7,5 +7,6 @@ public record LoginResponse(
         String refreshToken,
         UUID userId,
         String name,
-        String role
+        String role,
+        boolean isNewUser
 ) {}

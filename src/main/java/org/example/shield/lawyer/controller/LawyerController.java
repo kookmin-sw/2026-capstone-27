@@ -2,6 +2,8 @@ package org.example.shield.lawyer.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shield.common.response.ApiResponse;
@@ -12,6 +14,7 @@ import org.example.shield.lawyer.application.LawyerService;
 import org.example.shield.lawyer.application.VerificationService;
 import org.example.shield.lawyer.controller.dto.DocumentResponse;
 import org.example.shield.lawyer.controller.dto.LawyerRegisterRequest;
+import org.example.shield.lawyer.controller.dto.LawyerRegisterResponse;
 import org.example.shield.lawyer.controller.dto.LawyerResponse;
 import org.example.shield.lawyer.controller.dto.ProfileUpdateRequest;
 import org.example.shield.lawyer.controller.dto.VerificationRequest;
@@ -95,14 +98,35 @@ public class LawyerController {
         return ApiResponse.success("조회 성공", result);
     }
 
-    @Operation(summary = "변호사 가입", description = "추가정보 입력 + 검증 신청 통합. LawyerProfile을 생성하고 PENDING 상태로 설정합니다")
-    @PreAuthorize("hasRole('LAWYER')")
+    @Operation(
+            summary = "변호사 가입",
+            description = "소셜 로그인 이후 변호사 추가정보 입력 + 검증 신청을 통합 처리합니다. "
+                    + "LawyerProfile을 생성하고 PENDING 상태로 설정하며, User.role을 USER→LAWYER로 승격한 뒤 "
+                    + "새 accessToken을 body에, 새 refreshToken을 HttpOnly 쿠키로 내려줍니다. "
+                    + "이미 LawyerProfile이 존재하면 VERIFICATION_ALREADY_SUBMITTED 에러를 반환합니다."
+    )
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/me/register")
-    public ApiResponse<VerificationResponse> register(
+    public ApiResponse<LawyerRegisterResponse> register(
             @AuthenticationPrincipal UUID userId,
-            @Valid @RequestBody LawyerRegisterRequest request) {
-        VerificationResponse result = verificationService.register(userId, request);
-        return ApiResponse.success("변호사 가입이 완료되었습니다", result);
+            @Valid @RequestBody LawyerRegisterRequest request,
+            HttpServletResponse response) {
+        VerificationService.RegisterResult result = verificationService.register(userId, request);
+        addRefreshTokenCookie(response, result.refreshToken());
+        return ApiResponse.success("변호사 가입이 완료되었습니다", result.response());
+    }
+
+    /**
+     * 로그인 엔드포인트(/api/auth/google 등)과 동일한 속성으로 refreshToken 쿠키를 교체한다.
+     * AuthController 와 중복되는 로직이지만 컨트롤러 경계를 넘어 공유하기는 부적절하여 동일 설정을 재사용한다.
+     */
+    private void addRefreshTokenCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("refreshToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(14 * 24 * 60 * 60);
+        response.addCookie(cookie);
     }
 
     @Operation(summary = "검증 신청", description = "대한변호사협회 등록번호로 자격 검증을 신청합니다")

@@ -69,4 +69,14 @@ public class User {
         if (name != null && !name.isBlank()) this.name = name;
         if (phone != null && !phone.isBlank()) this.phone = phone;
     }
+
+    /**
+     * 소셜 로그인으로 가입한 일반 유저(USER)가 변호사 추가정보 입력을 완료했을 때
+     * 역할을 LAWYER 로 승격시킨다. 이미 LAWYER/ADMIN 인 경우에는 변경하지 않는다.
+     */
+    public void promoteToLawyer() {
+        if (this.role == UserRole.USER) {
+            this.role = UserRole.LAWYER;
+        }
+    }
 }

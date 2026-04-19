@@ -1,5 +1,13 @@
 # Phase B-5 — Redis 쿼리 임베딩 캐시 + HNSW ef_search 튜닝 (완료 보고서)
 
+> **[Issue #38 업데이트 — 2026-04-19]** 본 보고서에 기술된 쿼리 임베딩 Redis 캐시
+> (`EmbeddingCache`, `RedisEmbeddingCache`, `NoopEmbeddingCache`, `RedisConfig`,
+> `rag.cache.embedding.*` 설정, `rag_cache_*` 메트릭)는 캡스톤 규모에서 실익이
+> 크지 않다고 판단하여 **Issue #38에서 전면 제거**되었다. `QueryEmbeddingService`는
+> 이제 매 쿼리마다 `CohereClient.embedQuery`를 직접 호출한다. Cohere 호출 타이머
+> (`rag_cohere_embed_seconds`)와 HNSW ef_search 튜닝 내용은 그대로 유효하다.
+> 본 보고서는 B-5 당시 설계 기록으로 보존한다.
+
 작성일: 2026-04-19
 브랜치: `feature/issue-A-migrate-rag-to-postgres`
 선행: B-4 (3-way 하이브리드 검색)

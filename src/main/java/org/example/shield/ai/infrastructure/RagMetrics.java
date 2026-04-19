@@ -15,7 +15,6 @@ import java.util.function.Supplier;
  *
  * <p>계측 대상:</p>
  * <ul>
- *   <li>임베딩 캐시 히트/미스 — {@code shield.rag.embedding.cache} (counter, tag={@code result=hit|miss})</li>
  *   <li>Cohere 쿼리 임베딩 호출 — {@code shield.rag.cohere.embed} (timer, tag={@code outcome=success|failure})</li>
  *   <li>3-way retrieve 지연 — {@code shield.rag.retrieve} (timer, tag={@code outcome=success|failure|empty})</li>
  *   <li>벡터 경로 degrade(영벡터 fallback) — {@code shield.rag.vector.degrade} (counter, tag={@code reason=...})</li>
@@ -35,7 +34,6 @@ import java.util.function.Supplier;
 @Component
 public class RagMetrics {
 
-    public static final String METRIC_CACHE = "shield.rag.embedding.cache";
     public static final String METRIC_COHERE_EMBED = "shield.rag.cohere.embed";
     public static final String METRIC_RETRIEVE = "shield.rag.retrieve";
     public static final String METRIC_VECTOR_DEGRADE = "shield.rag.vector.degrade";
@@ -45,16 +43,6 @@ public class RagMetrics {
 
     public RagMetrics(MeterRegistry registry) {
         this.registry = registry;
-    }
-
-    // === 임베딩 캐시 ===
-
-    public void recordCacheHit() {
-        counter(METRIC_CACHE, Tags.of("result", "hit")).increment();
-    }
-
-    public void recordCacheMiss() {
-        counter(METRIC_CACHE, Tags.of("result", "miss")).increment();
     }
 
     // === Cohere 쿼리 임베딩 ===

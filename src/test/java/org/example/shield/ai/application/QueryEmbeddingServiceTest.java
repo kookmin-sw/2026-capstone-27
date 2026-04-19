@@ -8,33 +8,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * {@link QueryEmbeddingService}의 Cache-aside 동작 검증 (Phase B-5).
+ * {@link QueryEmbeddingService}의 Cohere 직접 호출 동작 검증.
  *
- * <p>핵심 동작:</p>
- * <ul>
- *   <li>캐시 HIT → Cohere 호출 생략</li>
- *   <li>캐시 MISS → Cohere 호출 + 캐시에 PUT</li>
- *   <li>Cohere 실패 시 예외는 그대로 상위 전파 (PgLegalRetrievalService에서 degrade)</li>
- * </ul>
+ * <p>Issue #38에서 임베딩 캐시 레이어를 제거하여 매 호출마다 Cohere를 호출한다.
+ * 본 테스트는 (1) Cohere 직접 위임, (2) 예외 상위 전파,
+ * (3) 메트릭 타이머 수집을 검증한다.</p>
  */
 class QueryEmbeddingServiceTest {
 
     private CohereClient cohereClient;
     private CohereApiConfig cohereConfig;
-    private EmbeddingCache embeddingCache;
     private SimpleMeterRegistry meterRegistry;
     private RagMetrics ragMetrics;
     private QueryEmbeddingService service;
@@ -43,44 +35,27 @@ class QueryEmbeddingServiceTest {
     void setUp() {
         cohereClient = mock(CohereClient.class);
         cohereConfig = mock(CohereApiConfig.class);
-        embeddingCache = mock(EmbeddingCache.class);
         meterRegistry = new SimpleMeterRegistry();
         ragMetrics = new RagMetrics(meterRegistry);
         when(cohereConfig.getEmbedModel()).thenReturn("embed-v4.0");
-        service = new QueryEmbeddingService(cohereClient, cohereConfig, embeddingCache, ragMetrics);
+        service = new QueryEmbeddingService(cohereClient, cohereConfig, ragMetrics);
     }
 
     @Test
-    @DisplayName("캐시 HIT — Cohere 호출 없이 캐시 값 반환")
-    void cacheHit_skipsCohereCall() {
-        float[] cached = new float[]{0.1f, 0.2f, 0.3f};
-        when(embeddingCache.get(eq("embed-v4.0"), eq("전세 보증금"))).thenReturn(Optional.of(cached));
-
-        float[] result = service.embedQuery("전세 보증금");
-
-        assertThat(result).isSameAs(cached);
-        verify(cohereClient, never()).embedQuery(anyString(), anyString());
-        verify(embeddingCache, never()).put(anyString(), anyString(), any());
-    }
-
-    @Test
-    @DisplayName("캐시 MISS — Cohere 호출 후 캐시에 저장")
-    void cacheMiss_callsCohereAndStores() {
+    @DisplayName("Cohere 호출 위임 — 결과 그대로 반환")
+    void delegatesToCohereAndReturnsResult() {
         float[] computed = new float[]{0.5f, -0.1f};
-        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
         when(cohereClient.embedQuery(eq("embed-v4.0"), eq("임대차 해지"))).thenReturn(computed);
 
         float[] result = service.embedQuery("임대차 해지");
 
         assertThat(result).isSameAs(computed);
         verify(cohereClient, times(1)).embedQuery("embed-v4.0", "임대차 해지");
-        verify(embeddingCache, times(1)).put("embed-v4.0", "임대차 해지", computed);
     }
 
     @Test
-    @DisplayName("Cohere 실패 — 예외 상위 전파 + 캐시 저장 안 함")
-    void cohereFailure_propagatesWithoutCaching() {
-        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
+    @DisplayName("Cohere 실패 — 예외 상위 전파")
+    void cohereFailure_propagates() {
         when(cohereClient.embedQuery(anyString(), anyString()))
                 .thenThrow(new RuntimeException("Cohere down"));
 
@@ -89,48 +64,27 @@ class QueryEmbeddingServiceTest {
         } catch (RuntimeException expected) {
             assertThat(expected).hasMessage("Cohere down");
         }
-
-        verify(embeddingCache, never()).put(anyString(), anyString(), any());
     }
 
     @Test
-    @DisplayName("빈 임베딩 응답 — 캐시 저장 생략")
-    void emptyEmbedding_skipsCaching() {
-        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
+    @DisplayName("빈 임베딩 응답 — 빈 배열 그대로 반환")
+    void emptyEmbedding_returnsEmpty() {
         when(cohereClient.embedQuery(anyString(), anyString())).thenReturn(new float[0]);
 
         float[] result = service.embedQuery("무언가");
 
         assertThat(result).isEmpty();
-        verify(embeddingCache, never()).put(anyString(), anyString(), any());
     }
 
-    // === B-8b: 메트릭 수집 확인 ===
+    // === 메트릭 수집 확인 ===
 
     @Test
-    @DisplayName("메트릭 — 캐시 HIT 시 hit 카운터 증가")
-    void metrics_cacheHitIncrementsHitCounter() {
-        when(embeddingCache.get(anyString(), anyString()))
-                .thenReturn(Optional.of(new float[]{1f}));
-
-        service.embedQuery("전세");
-
-        double hits = meterRegistry.counter(RagMetrics.METRIC_CACHE, "result", "hit").count();
-        double misses = meterRegistry.counter(RagMetrics.METRIC_CACHE, "result", "miss").count();
-        assertThat(hits).isEqualTo(1.0);
-        assertThat(misses).isEqualTo(0.0);
-    }
-
-    @Test
-    @DisplayName("메트릭 — 캐시 MISS 시 miss 카운터 + Cohere 타이머 기록")
-    void metrics_cacheMissIncrementsMissAndTimer() {
-        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
+    @DisplayName("메트릭 — Cohere 성공 시 success 타이머 기록")
+    void metrics_cohereSuccessRecordsSuccessTimer() {
         when(cohereClient.embedQuery(anyString(), anyString())).thenReturn(new float[]{0.1f});
 
         service.embedQuery("전세");
 
-        assertThat(meterRegistry.counter(RagMetrics.METRIC_CACHE, "result", "miss").count())
-                .isEqualTo(1.0);
         assertThat(meterRegistry.timer(RagMetrics.METRIC_COHERE_EMBED, "outcome", "success").count())
                 .isEqualTo(1L);
     }
@@ -138,7 +92,6 @@ class QueryEmbeddingServiceTest {
     @Test
     @DisplayName("메트릭 — Cohere 실패 시 failure 타이머 기록")
     void metrics_cohereFailureRecordsFailureTimer() {
-        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
         when(cohereClient.embedQuery(anyString(), anyString()))
                 .thenThrow(new RuntimeException("boom"));
 

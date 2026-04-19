@@ -1,8 +1,13 @@
 # Phase B-7 — RAG_STUB=false 운영 전환 (완료 보고서)
 
+> **[Issue #38 업데이트 — 2026-04-19]** 선행 항목에 인용된 B-5의 Redis 임베딩
+> 캐시는 Issue #38에서 제거되었다. 본 보고서의 RAG_STUB 운영 전환 작업
+> 자체는 그대로 유효하며, PG 경로는 Cohere 호출이 쿼리마다 1회 발생한다
+> (이전에는 캐시 히트 시 생략되었음).
+
 작성일: 2026-04-19
 브랜치: `feature/issue-A-migrate-rag-to-postgres`
-선행: B-1/B-2 (스키마+인제스트), B-4 (3-way 하이브리드), B-5 (Redis 캐시 + HNSW 튜닝)
+선행: B-1/B-2 (스키마+인제스트), B-4 (3-way 하이브리드), B-5 (Redis 캐시 + HNSW 튜닝 — 캐시는 Issue #38에서 제거됨)
 
 ## 목적
 

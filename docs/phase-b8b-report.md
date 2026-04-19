@@ -1,8 +1,15 @@
 # Phase B-8b — RAG 관측성 (Micrometer + Prometheus) 완료 보고서
 
+> **[Issue #38 업데이트 — 2026-04-19]** 본 보고서에 계측 카탈로그로 등재된
+> 캐시 관련 메트릭(`rag_cache_hits_total`, `rag_cache_misses_total` 등)과
+> "임베딩 캐시"에 대한 서술은 Issue #38의 Redis 전면 제거로 더 이상
+> 노출되지 않는다. 그 외 Cohere 타이머(`rag_cohere_embed_seconds`),
+> 검색 타이머(`rag_retrieve_seconds`), 벡터 degrade 카운터, 파이프라인 폴백
+> 카운터는 모두 그대로 유효하다.
+
 작성일: 2026-04-19
 브랜치: `feature/issue-A-migrate-rag-to-postgres`
-선행: B-5 (쿼리 임베딩 Redis 캐시), B-7 (PG 경로 운영 전환), B-8a (categoryIds 활성화)
+선행: B-5 (쿼리 임베딩 Redis 캐시 — Issue #38에서 제거됨), B-7 (PG 경로 운영 전환), B-8a (categoryIds 활성화)
 
 ## 목적
 

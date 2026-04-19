@@ -14,17 +14,6 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-  # Redis (Phase B-5 — 쿼리 임베딩 캐시)
-  # host가 설정되지 않으면 RedisEmbeddingCache가 등록되지 않고 Noop로 자동 전환.
-  # 로컬 개발에서는 REDIS_HOST를 비워 두고 운영 환경에서만 주입하는 것을 권장.
-  data:
-    redis:
-      host: ${REDIS_HOST:}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
-      timeout: 2000ms
-      client-type: lettuce
-
   # PostgreSQL
   datasource:
     url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
@@ -155,12 +144,6 @@ rag:
     #   데이터 규모가 커지면 80~200 권장. 재빌드 없이 환경변수로 조정 가능.
     hnsw:
       ef-search: ${RAG_HNSW_EF_SEARCH:40}
-  # 쿼리 임베딩 Redis 캐시 (Phase B-5)
-  # Redis 연결(spring.data.redis.host) 미설정 시 자동으로 Noop로 전환.
-  cache:
-    embedding:
-      enabled: ${RAG_EMBED_CACHE_ENABLED:true}
-      ttl-seconds: ${RAG_EMBED_CACHE_TTL:86400}  # 기본 24시간
 
 # 온톨로지 설정
 ontology:

@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto.x86_64'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
         JAR_NAME = 'shield.jar'
         DEPLOY_DIR = '/home/ec2-user/shield'
     }
@@ -11,7 +12,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'chmod +x gradlew'
-                sh './gradlew clean bootJar -x test'
+                sh 'java -version'
+                sh './gradlew clean bootJar -x test -Dorg.gradle.java.home=${JAVA_HOME}'
             }
         }
 

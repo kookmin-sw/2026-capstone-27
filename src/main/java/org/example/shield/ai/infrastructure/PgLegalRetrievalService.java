@@ -7,14 +7,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.application.QueryEmbeddingService;
 import org.example.shield.ai.config.CohereApiConfig;
+import org.example.shield.ai.domain.LegalCaseJpaRepository;
+import org.example.shield.ai.domain.LegalCaseJpaRepository.LegalCaseRow;
 import org.example.shield.ai.domain.LegalChunkJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository.LegalChunkRow;
 import org.example.shield.ai.dto.LegalChunk;
+import org.example.shield.ai.dto.MixedRetrievalResult;
+import org.example.shield.ai.dto.Precedent;
+import org.example.shield.ai.dto.RetrievedDocument;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -58,6 +65,7 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
     private static final String EMPTY_QUERY_SENTINEL = "__shield_never_match__";
 
     private final LegalChunkJpaRepository legalChunkJpaRepository;
+    private final LegalCaseJpaRepository legalCaseJpaRepository;
     private final QueryEmbeddingService queryEmbeddingService;
     private final RagMetrics ragMetrics;
     private final double vectorWeight;
@@ -73,6 +81,7 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
 
     public PgLegalRetrievalService(
             LegalChunkJpaRepository legalChunkJpaRepository,
+            LegalCaseJpaRepository legalCaseJpaRepository,
             QueryEmbeddingService queryEmbeddingService,
             CohereApiConfig cohereConfig,
             RagMetrics ragMetrics,
@@ -81,6 +90,7 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
             @Value("${rag.retrieval.weights.trigram:0.2}") double trigramWeight,
             @Value("${rag.retrieval.hnsw.ef-search:40}") int hnswEfSearch) {
         this.legalChunkJpaRepository = legalChunkJpaRepository;
+        this.legalCaseJpaRepository = legalCaseJpaRepository;
         this.queryEmbeddingService = queryEmbeddingService;
         this.ragMetrics = ragMetrics;
         this.vectorWeight = vectorWeight;
@@ -108,6 +118,114 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
             ragMetrics.stopRetrieveFailure(sample);
             throw e;
         }
+    }
+
+    /**
+     * 법령 + 판례 병합 하이브리드 검색 (C-5, Issue #42).
+     *
+     * <p>{@code legal_chunks} 와 {@code legal_cases} 에 각각 3-way 하이브리드를 돌리고
+     * {@code score DESC} 로 병합한 뒤 상위 {@code topK} 만 잘라 반환한다.
+     * 쿼리 임베딩은 한 번만 생성하여 두 SQL 에 재사용한다 — Cohere API 호출이 RAG 레이턴시의
+     * 대부분을 차지하므로 1회 재사용이 중요.</p>
+     *
+     * <p>{@code lawIds} 는 판례에는 적용되지 않는다 — 판례는 law_id 컬럼이 없고
+     * case_type 으로 분류되기 때문. 판례 필터가 필요하면 caseType 기반 별도 메서드로 확장.</p>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public MixedRetrievalResult retrieveMixed(String vectorQuery,
+                                              List<String> bm25Keywords,
+                                              List<String> categoryIds,
+                                              List<String> lawIds,
+                                              int topK) {
+        Timer.Sample sample = ragMetrics.startRetrieve();
+        try {
+            MixedRetrievalResult result = doRetrieveMixed(vectorQuery, bm25Keywords, categoryIds, lawIds, topK);
+            ragMetrics.stopRetrieveSuccess(sample, result.size());
+            return result;
+        } catch (RuntimeException e) {
+            ragMetrics.stopRetrieveFailure(sample);
+            throw e;
+        }
+    }
+
+    private MixedRetrievalResult doRetrieveMixed(String vectorQuery,
+                                                 List<String> bm25Keywords,
+                                                 List<String> categoryIds,
+                                                 List<String> lawIds,
+                                                 int topK) {
+        String safeVectorQuery = (vectorQuery == null || vectorQuery.isBlank())
+                ? ""
+                : vectorQuery.trim();
+        String keywordQuery = buildKeywordTsQuery(bm25Keywords, safeVectorQuery);
+        int safeTopK = Math.max(1, topK);
+
+        if (safeVectorQuery.isEmpty() && keywordQuery.isEmpty()) {
+            log.debug("RAG mixed 검색 스킵 — vectorQuery/bm25Keywords 모두 비어 있음");
+            return MixedRetrievalResult.empty();
+        }
+
+        String vq = safeVectorQuery.isEmpty() ? EMPTY_QUERY_SENTINEL : safeVectorQuery;
+        String kq = keywordQuery.isEmpty() ? EMPTY_QUERY_SENTINEL : keywordQuery;
+
+        // 쿼리 임베딩 1회 생성 → 법령/판례 SQL 에서 재사용
+        String queryVectorLiteral = buildQueryVectorLiteral(safeVectorQuery);
+        String[] categoryFilter = normalizeCategoryFilter(categoryIds);
+
+        applyHnswEfSearch();
+
+        // 법령 검색 (기존 경로 동일)
+        List<LegalChunkRow> lawRows;
+        if (lawIds == null || lawIds.isEmpty()) {
+            lawRows = legalChunkJpaRepository.search3Way(
+                    queryVectorLiteral, vq, kq, categoryFilter,
+                    vectorWeight, keywordWeight, trigramWeight, safeTopK);
+        } else {
+            lawRows = legalChunkJpaRepository.search3WayByLaws(
+                    queryVectorLiteral, vq, kq, categoryFilter, lawIds,
+                    vectorWeight, keywordWeight, trigramWeight, safeTopK);
+        }
+        List<LegalChunk> laws = lawRows.stream()
+                .map(r -> new LegalChunk(
+                        nz(r.getLawName()),
+                        nz(r.getArticleNo()),
+                        nz(r.getArticleTitle()),
+                        nz(r.getContent()),
+                        nz(r.getEffectiveDate()),
+                        nz(r.getSourceUrl()),
+                        r.getScore() == null ? 0.0 : r.getScore()))
+                .toList();
+
+        // 판례 검색 (C-5 신규 경로)
+        List<LegalCaseRow> caseRows = legalCaseJpaRepository.search3WayCases(
+                queryVectorLiteral, vq, kq, categoryFilter,
+                vectorWeight, keywordWeight, trigramWeight, safeTopK);
+        List<Precedent> cases = caseRows.stream()
+                .map(r -> new Precedent(
+                        nz(r.getCaseNo()),
+                        nz(r.getCourt()),
+                        nz(r.getCaseName()),
+                        nz(r.getDecisionDate()),
+                        nz(r.getCaseType()),
+                        nz(r.getHeadnote()),
+                        nz(r.getHolding()),
+                        nz(r.getSourceUrl()),
+                        r.getScore() == null ? 0.0 : r.getScore()))
+                .toList();
+
+        // score DESC 병합 후 상위 topK cut
+        List<RetrievedDocument> combined = new ArrayList<>(laws.size() + cases.size());
+        combined.addAll(laws);
+        combined.addAll(cases);
+        List<RetrievedDocument> merged = combined.stream()
+                .sorted(Comparator.comparingDouble(RetrievedDocument::score).reversed())
+                .limit(safeTopK)
+                .toList();
+
+        log.debug("RAG mixed 검색 완료 — vq='{}', kq='{}', laws={}, cases={}, merged={}",
+                vq, kq, laws.size(), cases.size(), merged.size());
+
+        return new MixedRetrievalResult(laws, cases, merged);
     }
 
     private List<LegalChunk> doRetrieve(String vectorQuery,

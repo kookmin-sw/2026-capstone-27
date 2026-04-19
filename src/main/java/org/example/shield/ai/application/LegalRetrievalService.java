@@ -1,7 +1,9 @@
 package org.example.shield.ai.application;
 
 import org.example.shield.ai.dto.LegalChunk;
+import org.example.shield.ai.dto.MixedRetrievalResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,4 +72,33 @@ public interface LegalRetrievalService {
             List<String> lawIds,
             int topK
     );
+
+    /**
+     * 법령 + 판례 병합 하이브리드 검색 (C-5, Issue #42).
+     *
+     * <p>각 코퍼스에서 top-K 를 뽑아 {@code score DESC} 기준으로 merge 한 뒤 상위 {@code topK} 만
+     * 반환한다. Phase C-4 벤치마크에서 MRR +0.246 / nDCG@5 +0.250 가 검증된 경로다.</p>
+     *
+     * <p>기본 구현은 기존 {@link #retrieve} 만 호출해 법령 결과만 담아 반환한다 — Stub 구현체
+     * 처럼 판례 검색을 지원하지 않는 구현체에서도 안전하게 동작하도록 하기 위함. 실제 DB
+     * 기반 구현체({@code PgLegalRetrievalService}) 가 override 해서 판례까지 포함한다.</p>
+     *
+     * @param vectorQuery   벡터/BM25 검색용 자연어 쿼리
+     * @param bm25Keywords  BM25 핵심 키워드
+     * @param categoryIds   카테고리 필터 (법령·판례 공통)
+     * @param lawIds        법령 ID 필터 — 판례에는 적용되지 않음
+     * @param topK          상위 반환 개수 (병합 결과 기준)
+     * @return 법령·판례 별도 리스트와 병합 리스트를 모두 가진 결과 객체
+     */
+    default MixedRetrievalResult retrieveMixed(
+            String vectorQuery,
+            List<String> bm25Keywords,
+            List<String> categoryIds,
+            List<String> lawIds,
+            int topK
+    ) {
+        List<LegalChunk> laws = retrieve(vectorQuery, bm25Keywords, categoryIds, lawIds, topK);
+        List<org.example.shield.ai.dto.RetrievedDocument> merged = new ArrayList<>(laws);
+        return new MixedRetrievalResult(laws, List.of(), List.copyOf(merged));
+    }
 }

@@ -4,9 +4,12 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.application.QueryEmbeddingService;
 import org.example.shield.ai.config.CohereApiConfig;
+import org.example.shield.ai.domain.LegalCaseJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository.LegalChunkRow;
+import org.example.shield.ai.domain.LegalCaseJpaRepository.LegalCaseRow;
 import org.example.shield.ai.dto.LegalChunk;
+import org.example.shield.ai.dto.MixedRetrievalResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,7 @@ import static org.mockito.Mockito.*;
 class PgLegalRetrievalServiceTest {
 
     private LegalChunkJpaRepository repository;
+    private LegalCaseJpaRepository caseRepository;
     private QueryEmbeddingService queryEmbeddingService;
     private CohereApiConfig cohereConfig;
     private SimpleMeterRegistry meterRegistry;
@@ -35,13 +39,14 @@ class PgLegalRetrievalServiceTest {
     @BeforeEach
     void setUp() {
         repository = mock(LegalChunkJpaRepository.class);
+        caseRepository = mock(LegalCaseJpaRepository.class);
         queryEmbeddingService = mock(QueryEmbeddingService.class);
         cohereConfig = mock(CohereApiConfig.class);
         meterRegistry = new SimpleMeterRegistry();
         ragMetrics = new RagMetrics(meterRegistry);
         when(cohereConfig.getEmbedModel()).thenReturn("embed-v4.0");
         when(cohereConfig.getEmbedDimension()).thenReturn(1024);
-        service = new PgLegalRetrievalService(repository, queryEmbeddingService, cohereConfig,
+        service = new PgLegalRetrievalService(repository, caseRepository, queryEmbeddingService, cohereConfig,
                 ragMetrics, 0.5, 0.3, 0.2, 40);
     }
 
@@ -187,9 +192,126 @@ class PgLegalRetrievalServiceTest {
                 anyDouble(), anyDouble(), anyDouble(), eq(3));
     }
 
+    @Test
+    @DisplayName("retrieveMixed — 법령/판례 병합 후 score DESC 로 merge 및 topK cut")
+    void retrieveMixed_mergesByScoreAndLimitsTopK() {
+        // given: 법령 2건 (score 0.9, 0.5), 판례 2건 (score 0.8, 0.3)
+        when(queryEmbeddingService.embedQuery(anyString()))
+                .thenReturn(new float[1024]);
+        when(repository.search3Way(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt()))
+                .thenReturn(List.of(
+                        row("민법", "제303조", "전세권", "조문A", "2024-01-01", "urlA", 0.9),
+                        row("민법", "제618조", "임대차", "조문B", "2024-01-01", "urlB", 0.5)));
+        when(caseRepository.search3WayCases(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt()))
+                .thenReturn(List.of(
+                        caseRow("2025다213466", "대법원", "사건뉡1", "2025-03-15", "민사", "판시사항1", "판결요지1", "urlC1", 0.8),
+                        caseRow("2024다111",       "대법원", "사건뉡2", "2024-05-10", "민사", "판시사항2", "판결요지2", "urlC2", 0.3)));
+
+        // when: topK=3
+        MixedRetrievalResult result = service.retrieveMixed(
+                "전세", List.of("전세"), null, null, 3);
+
+        // then
+        assertThat(result.laws()).hasSize(2);
+        assertThat(result.cases()).hasSize(2);
+        assertThat(result.merged()).hasSize(3);
+        // score 내림차순: 0.9 (법령A) → 0.8 (판례1) → 0.5 (법령B). 0.3 은 cut 됨.
+        assertThat(result.merged().get(0).score()).isEqualTo(0.9);
+        assertThat(result.merged().get(1).score()).isEqualTo(0.8);
+        assertThat(result.merged().get(2).score()).isEqualTo(0.5);
+        assertThat(result.merged().get(0).kind()).isEqualTo("law");
+        assertThat(result.merged().get(1).kind()).isEqualTo("case");
+        assertThat(result.merged().get(2).kind()).isEqualTo("law");
+    }
+
+    @Test
+    @DisplayName("retrieveMixed — 쿼리 임베딩은 1회만 생성해 법령·판례 SQL 에 재사용")
+    void retrieveMixed_reusesSingleEmbedding() {
+        when(queryEmbeddingService.embedQuery(anyString())).thenReturn(new float[1024]);
+        when(repository.search3Way(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt())).thenReturn(List.of());
+        when(caseRepository.search3WayCases(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt())).thenReturn(List.of());
+
+        service.retrieveMixed("질문", List.of("키워드"), null, null, 5);
+
+        // Cohere 호출은 정확히 1회
+        verify(queryEmbeddingService, times(1)).embedQuery(anyString());
+        verify(repository, times(1)).search3Way(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt());
+        verify(caseRepository, times(1)).search3WayCases(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt());
+    }
+
+    @Test
+    @DisplayName("retrieveMixed — vectorQuery/bm25Keywords 모두 비면 empty 반환 + repo 미호출")
+    void retrieveMixed_emptyInputs_returnsEmpty() {
+        MixedRetrievalResult result = service.retrieveMixed("", List.of(), null, null, 5);
+
+        assertThat(result.isEmpty()).isTrue();
+        assertThat(result.merged()).isEmpty();
+        assertThat(result.laws()).isEmpty();
+        assertThat(result.cases()).isEmpty();
+        verifyNoInteractions(repository);
+        verifyNoInteractions(caseRepository);
+        verifyNoInteractions(queryEmbeddingService);
+    }
+
+    @Test
+    @DisplayName("retrieveMixed — lawIds 가 주어지면 법령은 *ByLaws, 판례는 search3WayCases 로 분기")
+    void retrieveMixed_withLawIds_branchesCorrectly() {
+        when(queryEmbeddingService.embedQuery(anyString())).thenReturn(new float[1024]);
+        when(repository.search3WayByLaws(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyCollection(), anyDouble(), anyDouble(), anyDouble(), anyInt())).thenReturn(List.of());
+        when(caseRepository.search3WayCases(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt())).thenReturn(List.of());
+
+        service.retrieveMixed("임대차", List.of("임대차"), null, List.of("law-civil"), 5);
+
+        verify(repository, never()).search3Way(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt());
+        verify(repository).search3WayByLaws(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                argThat(c -> c.contains("law-civil")),
+                anyDouble(), anyDouble(), anyDouble(), anyInt());
+        // 판례는 lawIds 영향 없이 항상 search3WayCases 로 감
+        verify(caseRepository).search3WayCases(
+                anyString(), anyString(), anyString(), nullable(String[].class),
+                anyDouble(), anyDouble(), anyDouble(), anyInt());
+    }
+
     // ------------------------------------------------------------------------
     // helpers
     // ------------------------------------------------------------------------
+
+    private static LegalCaseRow caseRow(String caseNo, String court, String caseName,
+                                        String decisionDate, String caseType,
+                                        String headnote, String holding,
+                                        String sourceUrl, double score) {
+        return new LegalCaseRow() {
+            @Override public Long getId() { return 0L; }
+            @Override public String getCaseNo() { return caseNo; }
+            @Override public String getCourt() { return court; }
+            @Override public String getCaseName() { return caseName; }
+            @Override public String getDecisionDate() { return decisionDate; }
+            @Override public String getCaseType() { return caseType; }
+            @Override public String getHeadnote() { return headnote; }
+            @Override public String getHolding() { return holding; }
+            @Override public String getSourceUrl() { return sourceUrl; }
+            @Override public Double getScore() { return score; }
+        };
+    }
 
     private static LegalChunkRow row(String lawName, String articleNo, String articleTitle,
                                      String content, String effectiveDate, String sourceUrl,

@@ -128,7 +128,7 @@ def pipe_escape(s: str) -> str:
     return (s or "").replace("|", "/")
 
 
-def run_search(case: dict, limit: int) -> tuple[list[dict], str]:
+def run_search(case: dict, limit: int, law_id_filter: str | None) -> tuple[list[dict], str]:
     qvec = embed_query(case["query"])
     qvec_lit = to_pgvector_literal(qvec)
     kq = build_keyword_query(case["bm25_keywords"])
@@ -139,9 +139,10 @@ def run_search(case: dict, limit: int) -> tuple[list[dict], str]:
     else:
         cat_literal = "NULL::text[]"
 
-    # law_id는 현재 민법 단일 코퍼스이므로 'law-civil' 고정.
+    # law_id 필터: None이면 전체 코퍼스, 값이 있으면 단일 law_id로 제한.
     # reranker가 쓸 본문(content)과 법령명(law_name)도 SELECT에 포함.
     # 구분자는 |||(삼중 파이프) — 본문에 단일 '|'가 있어도 충돌 없음.
+    law_clause = f"AND lc.law_id = '{law_id_filter}'" if law_id_filter else ""
     sql = f"""
         SELECT lc.law_id || '|||' ||
                REPLACE(COALESCE(lc.law_name,''), '|||', '/') || '|||' ||
@@ -162,7 +163,7 @@ def run_search(case: dict, limit: int) -> tuple[list[dict], str]:
                REPLACE(REPLACE(COALESCE(lc.content,''), E'\\n', ' '), '|||', '/')
           FROM legal_chunks lc
          WHERE lc.abolition_date IS NULL
-           AND lc.law_id = 'law-civil'
+           {law_clause}
            AND ( COALESCE(CARDINALITY({cat_literal}), 0) = 0
                  OR lc.category_ids && {cat_literal} )
            AND ( lc.content_tsv @@ plainto_tsquery('simple', $${case["query"]}$$)
@@ -309,7 +310,8 @@ def render_markdown(cases_result: list[dict], summary: dict, meta: dict) -> str:
     lines.append(f"- 가중치: vector={WV}, keyword(BM25)={WK}, trigram={WT}")
     lines.append(f"- topK: {TOPK} (Recall@K K∈{list(RECALL_KS)}, nDCG@{NDCG_K})")
     lines.append("- BM25 쿼리: prefix 매칭 (`키워드:*`) 적용")
-    lines.append("- 코퍼스: 민법 (law-civil) 단일")
+    corpus_desc = meta.get("corpus_desc") or "전체 법령 코퍼스"
+    lines.append(f"- 코퍼스: {corpus_desc}")
     if meta["use_rerank"]:
         lines.append(f"- 후단 재정렬: Cohere `{RERANK_MODEL}` (후보 pool={meta['pool']} → top-{TOPK})")
     else:
@@ -392,7 +394,14 @@ def main():
     parser.add_argument("--output", required=True, help="Markdown 출력 경로 (.md)")
     parser.add_argument("--rerank", action="store_true", help="Cohere rerank-v3.5 후단 재정렬 활성화")
     parser.add_argument("--pool", type=int, default=20, help="rerank 입력 후보 pool 크기 (기본 20)")
+    parser.add_argument(
+        "--law-id",
+        default="law-civil",
+        help="코퍼스 필터 law_id. 'all'이면 전체 코퍼스(민법+특별법). 기본 'law-civil' (C-1 baseline 호환).",
+    )
     args = parser.parse_args()
+    law_id_filter: str | None = None if args.law_id == "all" else args.law_id
+    corpus_desc = "전체 법령 코퍼스 (민법+특별법)" if law_id_filter is None else f"{law_id_filter} 단일"
 
     eval_path = Path(args.eval)
     out_md = Path(args.output)
@@ -412,7 +421,7 @@ def main():
     t0 = time.time()
     for idx, case in enumerate(cases, 1):
         print(f"[INFO] ({idx}/{len(cases)}) {case['id']} — {case['query'][:30]}…", file=sys.stderr)
-        rows, kq = run_search(case, sql_limit)
+        rows, kq = run_search(case, sql_limit, law_id_filter)
         if args.rerank and rows:
             rows = rerank_rows(case["query"], rows, top_n=TOPK)
         # 무료 티어 rate limit(분당 ~10 호출) 회피용 페이싱.
@@ -459,6 +468,8 @@ def main():
         "use_rerank": bool(args.rerank),
         "pool": args.pool if args.rerank else None,
         "elapsed_sec": elapsed,
+        "law_id_filter": law_id_filter,
+        "corpus_desc": corpus_desc,
     }
 
     md = render_markdown(cases_result, summary, meta)

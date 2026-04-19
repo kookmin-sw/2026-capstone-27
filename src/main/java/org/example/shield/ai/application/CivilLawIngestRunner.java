@@ -6,6 +6,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Profile("ingest")
+@Order(10)
 @RequiredArgsConstructor
 @Slf4j
 public class CivilLawIngestRunner implements ApplicationRunner {
@@ -62,6 +64,19 @@ public class CivilLawIngestRunner implements ApplicationRunner {
             exitCode = 1;
         }
 
+        // 같은 실행에서 --ingest=special-laws도 지정된 경우 SpecialLawIngestRunner가
+        // 이어서 돌아야 하므로, 특별법 러너가 별도로 종료를 담당한다.
+        // Civil 단독 실행일 때만 여기서 종료 처리.
+        boolean alsoSpecialLaws = args.containsOption(OPTION)
+                && args.getOptionValues(OPTION).contains("special-laws");
+        if (alsoSpecialLaws) {
+            log.info("--ingest=special-laws도 지정됨 → 종료는 Special 러너에 위임");
+            if (exitCode != 0) {
+                log.warn("Civil 인제스트 exitCode={} 보존", exitCode);
+            }
+            return;
+        }
+
         // 웹 서버 기동 없이 즉시 종료
         int rc = exitCode;
         new Thread(() -> {
@@ -74,4 +89,6 @@ public class CivilLawIngestRunner implements ApplicationRunner {
             System.exit(code);
         }, "ingest-shutdown").start();
     }
+
+    private static final String OPTION = "ingest";
 }

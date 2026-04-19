@@ -5,12 +5,16 @@
 | 항목 | 값 |
 |------|-----|
 | 테스트 날짜 | 2026-04-17 |
-| 테스트 모델 | `meta-llama/llama-4-scout-17b-16e-instruct` (Groq) |
+| 테스트 모델 | `meta-llama/llama-4-scout-17b-16e-instruct` (Legacy LLM — 레거시 검증, 현재는 Cohere로 전환) |
 | 프롬프트 | `intent-classifier.md` + `legal-ontology-slim.json` (180노드) |
 | 테스트 케이스 | 12건 (4개 도메인 × 3건) |
 | 대상 도메인 | 부동산, 이혼, 상속, 손해배상 |
 
-> **참고**: 프로덕션 모델은 `llama-3.3-70b-versatile`이지만, Groq 무료 tier 일일 토큰 한도(TPD 100K) 제약으로 llama-4-scout(17B)으로 검증 수행. 70B 모델은 이전 세션에서 6건 성공 테스트 완료 (L3 리프까지 정확 분류 확인).
+> **참고**: 본 보고서는 Legacy LLM 환경(llama-4-scout) 기준 레거시 검증 결과입니다. 2026-04 Cohere v2 API(`command-a-03-2025`) 로 LLM 플랫폼을 전환했습니다.
+>
+> **재검증 완료(2026-04-19)**: 동일 12케이스를 Cohere로 재측정한 결과는 [docs/r17-cohere-rerun-report.md](./r17-cohere-rerun-report.md) 참조. 요약: L1 83.3%(10/12), L2 66.7%(8/12), 평균 지연 7.5s. 레거시 대비 소폭 하락했으나 샘플 크기 12의 통계적 노이즈 범위 내로 판단되어 **Cohere 운영을 유지**.
+>
+> 아래 매트릭스·분석 수치는 레거시 검증 시점 기준을 그대로 보존합니다.
 
 ---
 
@@ -115,13 +119,13 @@
 1. **프롬프트 튜닝**: "대화의 핵심 쟁점을 기준으로 분류" 지시 추가 → 도메인 경계 혼동 해소
 2. **온톨로지 키워드 보강**: 유류분, 동물점유자 책임 등 법률 전문 용어 추가
 3. **멀티 노드 검색 전략**: Layer 2에서 `matched_nodes` 상위 3개 모두 사용하여 검색 범위 확대
-4. **모델 업그레이드 시 재검증**: Groq TPD 충분 시 70B 모델로 40건 전체 검증 권장
+4. **모델 업그레이드 시 재검증**: Cohere `command-a-03-2025` / `command-r-plus-08-2024` 등으로 40건 전체 재검증 필요 (Trial API Key로도 사용 가능)
 
 ---
 
 ## 테스트 환경
 
-- **API**: Groq Cloud (무료 tier)
+- **API**: Legacy LLM 플랫폼 (무료 tier) — 레거시. 현재 프로덕션은 Cohere Chat v2 (`POST https://api.cohere.com/v2/chat`)
 - **모델**: `meta-llama/llama-4-scout-17b-16e-instruct`
 - **온톨로지**: `legal-ontology-slim.json` (180노드, 136리프, ~8.3K chars)
 - **프롬프트**: `intent-classifier.md` (JSON Object 모드)

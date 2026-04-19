@@ -5,7 +5,7 @@ import org.example.shield.common.exception.ErrorCode;
 
 /**
  * AI 분석 실패 예외.
- * Groq API 호출 실패, 타임아웃, JSON 파싱 실패 시 발생.
+ * Cohere API 호출 실패, 타임아웃, JSON 파싱 실패 시 발생.
  */
 public class AnalysisFailedException extends BusinessException {
 

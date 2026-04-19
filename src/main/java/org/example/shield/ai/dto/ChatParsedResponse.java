@@ -18,7 +18,8 @@ import java.util.List;
 
 /**
  * Phase 1 대화 응답 파싱 결과.
- * LLM이 온톨로지 기반으로 분류한 대분류/중분류/소분류.
+ * Cohere message.content[0].text 를 JSON 파싱한 결과.
+ * LLM이 온톨로지 기반으로 분류한 대분류/중분류/소분류를 담는다.
  */
 @Getter
 @Setter

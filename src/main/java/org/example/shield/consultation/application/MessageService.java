@@ -3,9 +3,9 @@ package org.example.shield.consultation.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.ChecklistCoverageService;
-import org.example.shield.ai.application.GroqService;
+import org.example.shield.ai.application.CohereService;
 import org.example.shield.ai.application.RagPipelineService;
-import org.example.shield.ai.config.GroqApiConfig;
+import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
 import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.ai.infrastructure.SanitizeService;
@@ -36,8 +36,8 @@ public class MessageService {
     private final MessageWriter messageWriter;
     private final ConsultationReader consultationReader;
     private final ConsultationWriter consultationWriter;
-    private final GroqService groqService;
-    private final GroqApiConfig groqApiConfig;
+    private final CohereService cohereService;
+    private final CohereApiConfig cohereApiConfig;
     private final SanitizeService sanitizeService;
     private final ChecklistCoverageService checklistCoverageService;
     private final RagPipelineService ragPipelineService;
@@ -71,8 +71,8 @@ public class MessageService {
             ragContext = ragPipelineService.execute(chatHistory, domainForRag, consultationId);
         }
 
-        // 2. Groq API 호출 (Phase 1 대화)
-        AiCallResult<ChatParsedResponse> result = groqService.chat(
+        // 2. Cohere API 호출 (Phase 1 대화 — RAG 컨텍스트 포함, 조회된 chatHistory 재사용)
+        AiCallResult<ChatParsedResponse> result = cohereService.chat(
                 consultation, sanitizedText, ragContext, chatHistory);
         ChatParsedResponse parsed = result.data();
 
@@ -93,7 +93,7 @@ public class MessageService {
         Message aiMessage = Message.createAiMessage(
                 consultationId,
                 parsed.getNextQuestion(),
-                groqApiConfig.getChatModel(),
+                cohereApiConfig.getChatModel(),  // model name from config
                 result.tokensInput(),
                 result.tokensOutput(),
                 result.latencyMs()

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.dto.AiCallResult;
-import org.example.shield.ai.dto.GroqRequest;
+import org.example.shield.ai.dto.CohereChatRequest;
 import org.example.shield.ai.dto.IntentClassificationResult;
 import org.example.shield.ai.dto.IntentClassificationResult.Keywords;
 import org.example.shield.ai.dto.IntentClassificationResult.MatchedNode;
@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 public class IntentClassificationService {
 
-    private final GroqService groqService;
+    private final CohereService cohereService;
     private final ObjectMapper objectMapper;
     private final String slimOntologyJson;
     private final ResourceLoader resourceLoader;
@@ -38,12 +38,12 @@ public class IntentClassificationService {
     private String intentClassifierPromptTemplate;
 
     public IntentClassificationService(
-            GroqService groqService,
+            CohereService cohereService,
             ObjectMapper objectMapper,
             @Qualifier("slimOntologyJson") String slimOntologyJson,
             ResourceLoader resourceLoader,
-            @Value("${groq.classify.context-window-messages:6}") int contextWindowMessages) {
-        this.groqService = groqService;
+            @Value("${cohere.classify.context-window-messages:6}") int contextWindowMessages) {
+        this.cohereService = cohereService;
         this.objectMapper = objectMapper;
         this.slimOntologyJson = slimOntologyJson;
         this.resourceLoader = resourceLoader;
@@ -78,12 +78,12 @@ public class IntentClassificationService {
                     .replace("{ONTOLOGY_JSON}", slimOntologyJson)
                     .replace("{CONVERSATION_HISTORY}", conversationHistory);
 
-            List<GroqRequest.Message> messages = List.of(
-                    GroqRequest.Message.system(systemPrompt),
-                    GroqRequest.Message.user("위 대화 내역을 분석하여 법률 의도를 JSON으로 분류해주세요.")
+            List<CohereChatRequest.Message> messages = List.of(
+                    CohereChatRequest.Message.system(systemPrompt),
+                    CohereChatRequest.Message.user("위 대화 내역을 분석하여 법률 의도를 JSON으로 분류해주세요.")
             );
 
-            AiCallResult<String> result = groqService.callClassify(messages);
+            AiCallResult<String> result = cohereService.callClassify(messages);
             return parseClassificationResult(result.data());
 
         } catch (Exception e) {

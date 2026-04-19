@@ -7,9 +7,9 @@ package org.example.shield.consultation.domain;
  * - id: UUID (PK)
  * - consultationId: UUID (FK -> consultations.id)
  * - analysisType: String ("classification" / "brief_generation")
- * - modelUsed: String ("grok-3")
- * - prompt: String (Grok에 보낸 프롬프트 원본)
- * - rawResponse: String (Grok 응답 원본)
+ * - modelUsed: String ("command-a-03-2025" 등 Cohere 모델명)
+ * - prompt: String (Cohere에 보낸 프롬프트 원본)
+ * - rawResponse: String (Cohere 응답 원본)
  * - processingTimeMs: long
  * - createdAt: LocalDateTime
  */

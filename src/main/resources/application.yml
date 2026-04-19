@@ -14,11 +14,16 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-  # MongoDB (RAG 검색용 — RAG_STUB=false 일 때만 활성화)
+  # Redis (Phase B-5 — 쿼리 임베딩 캐시)
+  # host가 설정되지 않으면 RedisEmbeddingCache가 등록되지 않고 Noop로 자동 전환.
+  # 로컬 개발에서는 REDIS_HOST를 비워 두고 운영 환경에서만 주입하는 것을 권장.
   data:
-    mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/shield}
-      database: ${MONGODB_DATABASE:shield}
+    redis:
+      host: ${REDIS_HOST:}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      client-type: lettuce
 
   # PostgreSQL
   datasource:
@@ -43,6 +48,25 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+  # Flyway (Phase A: PostgreSQL 마이그레이션 단일 소스화)
+  # - ddl-auto: none 과 짝을 이뤄 Flyway가 스키마 관리자
+  # - flyway_schema_history 부재 가정 → baseline-on-migrate=true, baseline-version=1 (V2부터 apply)
+  # - placeholder-replacement=false: V3의 PL/pgSQL $$...$$ 및 SQL 내 ${...} 치환 사고 사전 차단
+  flyway:
+    enabled: true
+    url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    locations: classpath:db/migration
+    schemas: public
+    table: flyway_schema_history
+    baseline-on-migrate: true
+    baseline-version: 1
+    baseline-description: "Initial baseline before Flyway adoption"
+    validate-on-migrate: true
+    out-of-order: false
+    placeholder-replacement: false
 
 # JWT
 jwt:
@@ -72,30 +96,71 @@ springdoc:
   api-docs:
     path: /api-docs
 
-# Groq API
-groq:
-  api-key: ${GROQ_API_KEY}
-  base-url: https://api.groq.com/openai
+# Cohere Chat API (v2)
+# - Endpoint: POST https://api.cohere.com/v2/chat
+# - Trial API Key 해도 주요 프로덕션 모델을 모두 호출 가능 (무료 티어)
+# - 모델 후보: command-a-03-2025(최신 플래그십), command-r-plus-08-2024, command-r-08-2024
+cohere:
+  api-key: ${COHERE_API_KEY}
+  base-url: https://api.cohere.com
   model:
-    chat: llama-3.3-70b-versatile
-    brief: llama-3.3-70b-versatile
+    chat: command-a-03-2025
+    brief: command-a-03-2025
+    embed: embed-v4.0
   timeout:
     connect: 5000
     read-chat: 30000
     read-brief: 60000
     read-classify: 15000
+    read-embed: 30000
+  embed:
+    batch-size: 96
+    dimension: 1024
   chat:
     max-history-messages: 20
   classify:
-    model: llama-3.3-70b-versatile
+    model: command-a-03-2025
     temperature: 0.1
     max-tokens: 512
     context-window-messages: 6
 
 # RAG 검색 설정
+#
+# 기본값 false (운영 전환 — Phase B-7, 2026-04-19):
+#   B-2 인제스트로 민법 조문 1,193건이 적재되고 B-4 3-way 하이브리드 검색이
+#   실데이터 검증을 마친 상태. 실제 운영에서는 PgLegalRetrievalService가 사용된다.
+#
+# Stub으로 되돌리고 싶을 때 (로컬 개발‧Cohere 키 없는 테스트 등):
+#   RAG_STUB=true 환경변수로 override. StubLegalRetrievalService가 활성화되어
+#   빈 청크 리스트를 반환한다 — RAG 파이프라인은 그대로 동작하고
+#   MessageService는 ragContext가 비었을 때의 RAG-less 경로로 내려간다.
 rag:
   retrieval:
-    stub: ${RAG_STUB:true}
+    stub: ${RAG_STUB:false}
+    # 3-way 하이브리드 점수 가중치 (Phase B-4 재설계)
+    # 경로:
+    #  - vector:  Cohere embed-v4.0 임베딩 ↔ pgvector cosine similarity (0~1)
+    #  - keyword: BM25 ts_rank on content_tsv (to_tsquery OR)
+    #  - trigram: pg_trgm similarity (오탈자/부분일치 보조)
+    # 합이 1.0일 필요는 없지만 해석을 위해 권장.
+    # 중기적으로 실데이터 기반 MRR 그리드 서치로 튜닝.
+    weights:
+      vector: ${RAG_W_VECTOR:0.5}    # pgvector cosine similarity
+      keyword: ${RAG_W_KEYWORD:0.3}  # BM25 ts_rank
+      trigram: ${RAG_W_TRIGRAM:0.2}  # pg_trgm similarity
+    # HNSW 튜닝 (Phase B-5)
+    # - ef_search: 쿼리 시점 탐색 큐 크기. 높을수록 recall 상승, 지연 증가.
+    #   pgvector 기본값 40. 1,193행 규모의 실측 벤치마크에서 topK=10 기준
+    #   ef=40에서 이미 recall 100% 달성 (scripts/benchmark_hnsw_ef_search.py).
+    #   데이터 규모가 커지면 80~200 권장. 재빌드 없이 환경변수로 조정 가능.
+    hnsw:
+      ef-search: ${RAG_HNSW_EF_SEARCH:40}
+  # 쿼리 임베딩 Redis 캐시 (Phase B-5)
+  # Redis 연결(spring.data.redis.host) 미설정 시 자동으로 Noop로 전환.
+  cache:
+    embedding:
+      enabled: ${RAG_EMBED_CACHE_ENABLED:true}
+      ttl-seconds: ${RAG_EMBED_CACHE_TTL:86400}  # 기본 24시간
 
 # 온톨로지 설정
 ontology:
@@ -104,3 +169,24 @@ ontology:
 
 server:
   port: 8080
+
+# Observability (Phase B-8b)
+# - /actuator/health : 상태 체크 (로드밸런서 등 헬스체크용)
+# - /actuator/prometheus : Prometheus scrape endpoint (RAG 전용 메트릭 포함)
+# 운영 환경에서는 Spring Security나 IP allow list로 접근 제한 권장.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true

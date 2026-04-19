@@ -35,8 +35,11 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/api-docs/**",
                                 "/v3/api-docs/**",
+                                // Actuator (Phase B-8b) — 운영에서는 IP allow list/reverse proxy로 제한
                                 "/actuator/health",
-                                "/actuator/info"
+                                "/actuator/health/**",
+                                "/actuator/info",
+                                "/actuator/prometheus"
                         ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

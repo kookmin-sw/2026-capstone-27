@@ -127,10 +127,11 @@ rag:
   retrieval:
     stub: ${RAG_STUB:false}
     # C-5 (Issue #42): 법령 + 판례 병합 검색 사용 여부.
-    #   false(기본) : legal_chunks 만 검색 (Phase C-4 동작 호환)
-    #   true           : legal_chunks + legal_cases 3-way 하이브리드 병합 후 score DESC merge
-    # Phase C-4 벤치마크에서 MRR +0.246 / nDCG@5 +0.250 검증. 판례 인제스트 완료 후 true 로 전환.
-    include-cases: ${RAG_INCLUDE_CASES:false}
+    #   false          : legal_chunks 만 검색 (Phase C-4 동작 호환)
+    #   true(기본)  : legal_chunks + legal_cases 3-way 하이브리드 병합 후 score DESC merge
+    # Phase C-4 벤치마크에서 MRR +0.246 / nDCG@5 +0.250 검증.
+    # 판례 183건 인제스트 완료로 true 기본 적용. 이상 발생 시 RAG_INCLUDE_CASES=false 로 즉시 롤백.
+    include-cases: ${RAG_INCLUDE_CASES:true}
     # 3-way 하이브리드 점수 가중치 (Phase B-4 재설계)
     # 경로:
     #  - vector:  Cohere embed-v4.0 임베딩 ↔ pgvector cosine similarity (0~1)

@@ -42,6 +42,9 @@ dependencies {
     // .env loader (Spring Environment 자동 주입)
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
+    // Jackson YAML support (민법 카테고리 맵 로드용)
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'

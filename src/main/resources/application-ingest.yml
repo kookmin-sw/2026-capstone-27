@@ -1,0 +1,26 @@
+# 민법 인제스트 전용 프로파일.
+# 웹 서버 기동을 억제하고, 필수 경로(DB, Cohere, Flyway)만 활성화.
+spring:
+  main:
+    web-application-type: none
+    lazy-initialization: true
+  security:
+    user:
+      name: ingest
+      password: ingest
+  jpa:
+    open-in-view: false
+    show-sql: false
+
+# 불필요 외부 의존성은 더미값으로 채워 context 로딩 실패 방지
+google:
+  client-id: dummy
+  client-secret: dummy
+  redirect-uri: http://localhost
+jwt:
+  secret: dummy-ingest-secret-32-characters-padding-xx
+supabase:
+  url: http://localhost
+  service-role-key: dummy
+  storage:
+    bucket: dummy

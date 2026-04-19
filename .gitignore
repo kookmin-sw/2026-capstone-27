@@ -74,3 +74,4 @@ __pycache__/
 *.swo
 *~
 SHEILD-DOCX
+src/main/resources/seed/civil-law.backup.json

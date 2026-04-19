@@ -1,0 +1,423 @@
+# 민법 카테고리 맵 (자동 생성 — 수동 수정 금지)
+# 생성 스크립트: scripts/generate_civil_law_category_map.py
+# 원본: src/main/resources/seed/civil-law.json
+
+meta:
+  law_id: "law-civil"
+  law_name: "민법"
+  source_law_id: "001706"
+  source_mst: "284415"
+
+# 편(book) 단위 — 최상위 분류
+books:
+  - name: "제1편 총칙"
+    range: [1, 184]
+  - name: "제2편 물권"
+    range: [185, 372]
+  - name: "제3편 채권"
+    range: [373, 766]
+  - name: "제4편 친족"
+    range: [767, 996]
+  - name: "제5편 상속 <개정 1990.1.13>"
+    range: [997, 1118]
+
+# 장(chapter) 단위 — 중간 분류
+chapters:
+  - book: "제1편 총칙"
+    name: "제1장 통칙"
+    range: [1, 2]
+  - book: "제1편 총칙"
+    name: "제2장 인"
+    range: [3, 30]
+  - book: "제1편 총칙"
+    name: "제3장 법인"
+    range: [31, 97]
+  - book: "제1편 총칙"
+    name: "제4장 물건"
+    range: [98, 102]
+  - book: "제1편 총칙"
+    name: "제5장 법률행위"
+    range: [103, 154]
+  - book: "제1편 총칙"
+    name: "제6장 기간"
+    range: [155, 161]
+  - book: "제1편 총칙"
+    name: "제7장 소멸시효"
+    range: [162, 184]
+  - book: "제2편 물권"
+    name: "제1장 총칙"
+    range: [185, 191]
+  - book: "제2편 물권"
+    name: "제2장 점유권"
+    range: [192, 210]
+  - book: "제2편 물권"
+    name: "제3장 소유권"
+    range: [211, 278]
+  - book: "제2편 물권"
+    name: "제4장 지상권"
+    range: [279, 290]
+  - book: "제2편 물권"
+    name: "제5장 지역권"
+    range: [291, 302]
+  - book: "제2편 물권"
+    name: "제6장 전세권"
+    range: [303, 319]
+  - book: "제2편 물권"
+    name: "제7장 유치권"
+    range: [320, 328]
+  - book: "제2편 물권"
+    name: "제8장 질권"
+    range: [329, 355]
+  - book: "제2편 물권"
+    name: "제9장 저당권"
+    range: [356, 372]
+  - book: "제3편 채권"
+    name: "제1장 총칙"
+    range: [373, 526]
+  - book: "제3편 채권"
+    name: "제2장 계약"
+    range: [527, 733]
+  - book: "제3편 채권"
+    name: "제3장 사무관리"
+    range: [734, 740]
+  - book: "제3편 채권"
+    name: "제4장 부당이득"
+    range: [741, 749]
+  - book: "제3편 채권"
+    name: "제5장 불법행위"
+    range: [750, 766]
+  - book: "제4편 친족"
+    name: "제1장 총칙"
+    range: [767, 777]
+  - book: "제4편 친족"
+    name: "제2장 가족의 범위와 자의 성과 본 <개정 2005.3.31>"
+    range: [778, 799]
+  - book: "제4편 친족"
+    name: "제3장 혼인"
+    range: [800, 843]
+  - book: "제4편 친족"
+    name: "제4장 부모와 자"
+    range: [844, 927]
+  - book: "제4편 친족"
+    name: "제5장 후견"
+    range: [928, 959]
+  - book: "제4편 친족"
+    name: "제6장 삭제 <2011.3.7>"
+    range: [960, 973]
+  - book: "제4편 친족"
+    name: "제7장 부양"
+    range: [974, 979]
+  - book: "제4편 친족"
+    name: "제8장 삭제 <2005.3.31>"
+    range: [980, 996]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    name: "제1장 상속 <신설 1990.1.13>"
+    range: [997, 1059]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    name: "제2장 유언"
+    range: [1060, 1111]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    name: "제3장 유류분 <개정 1990.1.13>"
+    range: [1112, 1118]
+
+# 절(section) 단위 — 세부 분류 (계약/채권 총칙 등)
+sections:
+  - book: "제1편 총칙"
+    chapter: "제2장 인"
+    name: "제1절 능력"
+    range: [3, 17]
+  - book: "제1편 총칙"
+    chapter: "제2장 인"
+    name: "제2절 주소"
+    range: [18, 21]
+  - book: "제1편 총칙"
+    chapter: "제2장 인"
+    name: "제3절 부재와 실종"
+    range: [22, 30]
+  - book: "제1편 총칙"
+    chapter: "제3장 법인"
+    name: "제1절 총칙"
+    range: [31, 39]
+  - book: "제1편 총칙"
+    chapter: "제3장 법인"
+    name: "제2절 설립"
+    range: [40, 56]
+  - book: "제1편 총칙"
+    chapter: "제3장 법인"
+    name: "제3절 기관"
+    range: [57, 76]
+  - book: "제1편 총칙"
+    chapter: "제3장 법인"
+    name: "제4절 해산"
+    range: [77, 96]
+  - book: "제1편 총칙"
+    chapter: "제3장 법인"
+    name: "제5절 벌칙"
+    range: [97, 97]
+  - book: "제1편 총칙"
+    chapter: "제5장 법률행위"
+    name: "제1절 총칙"
+    range: [103, 106]
+  - book: "제1편 총칙"
+    chapter: "제5장 법률행위"
+    name: "제2절 의사표시"
+    range: [107, 113]
+  - book: "제1편 총칙"
+    chapter: "제5장 법률행위"
+    name: "제3절 대리"
+    range: [114, 136]
+  - book: "제1편 총칙"
+    chapter: "제5장 법률행위"
+    name: "제4절 무효와 취소"
+    range: [137, 146]
+  - book: "제1편 총칙"
+    chapter: "제5장 법률행위"
+    name: "제5절 조건과 기한"
+    range: [147, 154]
+  - book: "제2편 물권"
+    chapter: "제3장 소유권"
+    name: "제1절 소유권의 한계"
+    range: [211, 244]
+  - book: "제2편 물권"
+    chapter: "제3장 소유권"
+    name: "제2절 소유권의 취득"
+    range: [245, 261]
+  - book: "제2편 물권"
+    chapter: "제3장 소유권"
+    name: "제3절 공동소유"
+    range: [262, 278]
+  - book: "제2편 물권"
+    chapter: "제8장 질권"
+    name: "제1절 동산질권"
+    range: [329, 344]
+  - book: "제2편 물권"
+    chapter: "제8장 질권"
+    name: "제2절 권리질권"
+    range: [345, 355]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제1절 채권의 목적"
+    range: [373, 386]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제2절 채권의 효력"
+    range: [387, 407]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제3절 수인의 채권자 및 채무자"
+    range: [408, 448]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제4절 채권의 양도"
+    range: [449, 452]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제5절 채무의 인수"
+    range: [453, 459]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제6절 채권의 소멸"
+    range: [460, 507]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제7절 지시채권"
+    range: [508, 522]
+  - book: "제3편 채권"
+    chapter: "제1장 총칙"
+    name: "제8절 무기명채권"
+    range: [523, 526]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제1절 총칙"
+    range: [527, 553]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제2절 증여"
+    range: [554, 562]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제3절 매매"
+    range: [563, 595]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제4절 교환"
+    range: [596, 597]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제5절 소비대차"
+    range: [598, 608]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제6절 사용대차"
+    range: [609, 617]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제7절 임대차"
+    range: [618, 654]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제8절 고용"
+    range: [655, 663]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제9절 도급"
+    range: [664, 674]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제9절의2 여행계약 <신설 2015.2.3>"
+    range: [674, 674]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제10절 현상광고"
+    range: [675, 679]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제11절 위임"
+    range: [680, 692]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제12절 임치"
+    range: [693, 702]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제13절 조합"
+    range: [703, 724]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제14절 종신정기금"
+    range: [725, 730]
+  - book: "제3편 채권"
+    chapter: "제2장 계약"
+    name: "제15절 화해"
+    range: [731, 733]
+  - book: "제4편 친족"
+    chapter: "제3장 혼인"
+    name: "제1절 약혼"
+    range: [800, 806]
+  - book: "제4편 친족"
+    chapter: "제3장 혼인"
+    name: "제2절 혼인의 성립"
+    range: [807, 814]
+  - book: "제4편 친족"
+    chapter: "제3장 혼인"
+    name: "제3절 혼인의 무효와 취소"
+    range: [815, 825]
+  - book: "제4편 친족"
+    chapter: "제3장 혼인"
+    name: "제4절 혼인의 효력"
+    range: [826, 833]
+  - book: "제4편 친족"
+    chapter: "제3장 혼인"
+    name: "제5절 이혼"
+    range: [834, 843]
+  - book: "제4편 친족"
+    chapter: "제4장 부모와 자"
+    name: "제1절 친생자"
+    range: [844, 865]
+  - book: "제4편 친족"
+    chapter: "제4장 부모와 자"
+    name: "제2절 양자(養子) <개정 2012.2.10>"
+    range: [866, 908]
+  - book: "제4편 친족"
+    chapter: "제4장 부모와 자"
+    name: "제3절 친권"
+    range: [909, 927]
+  - book: "제4편 친족"
+    chapter: "제5장 후견"
+    name: "제1절 미성년후견과 성년후견 <개정 2011.3.7>"
+    range: [928, 959]
+  - book: "제4편 친족"
+    chapter: "제5장 후견"
+    name: "제2절 한정후견과 특정후견 <신설 2011.3.7>"
+    range: [959, 959]
+  - book: "제4편 친족"
+    chapter: "제5장 후견"
+    name: "제3절 후견계약 <신설 2011.3.7>"
+    range: [959, 959]
+  - book: "제4편 친족"
+    chapter: "제8장 삭제 <2005.3.31>"
+    name: "제1절 삭제 <2005.3.31>"
+    range: [980, 983]
+  - book: "제4편 친족"
+    chapter: "제8장 삭제 <2005.3.31>"
+    name: "제2절 삭제 <2005.3.31>"
+    range: [984, 994]
+  - book: "제4편 친족"
+    chapter: "제8장 삭제 <2005.3.31>"
+    name: "제3절 삭제 <2005.3.31>"
+    range: [995, 996]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제1장 상속 <신설 1990.1.13>"
+    name: "제1절 총칙 <개정 1990.1.13>"
+    range: [997, 999]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제1장 상속 <신설 1990.1.13>"
+    name: "제2절 상속인 <개정 1990.1.13>"
+    range: [1000, 1004]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제1장 상속 <신설 1990.1.13>"
+    name: "제3절 상속의 효력 <개정 1990.1.13>"
+    range: [1005, 1018]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제1장 상속 <신설 1990.1.13>"
+    name: "제4절 상속의 승인 및 포기 <개정 1990.1.13>"
+    range: [1019, 1044]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제1장 상속 <신설 1990.1.13>"
+    name: "제5절 재산의 분리"
+    range: [1045, 1052]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제1장 상속 <신설 1990.1.13>"
+    name: "제6절 상속인의 부존재 <개정 1990.1.13>"
+    range: [1053, 1059]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제2장 유언"
+    name: "제1절 총칙"
+    range: [1060, 1064]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제2장 유언"
+    name: "제2절 유언의 방식"
+    range: [1065, 1072]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제2장 유언"
+    name: "제3절 유언의 효력"
+    range: [1073, 1090]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제2장 유언"
+    name: "제4절 유언의 집행"
+    range: [1091, 1107]
+  - book: "제5편 상속 <개정 1990.1.13>"
+    chapter: "제2장 유언"
+    name: "제5절 유언의 철회"
+    range: [1108, 1111]
+
+# 필수 포함 그룹 — matched_nodes 후보에 하나라도 걸리면 전체 포함
+mandatory_groups:
+  - tag: "leasing"
+    label: "임대차"
+    range: [618, 654]
+    origin: "제3편 채권 > 제2장 계약 > 제7절 임대차"
+  - tag: "jeonse"
+    label: "전세권"
+    range: [303, 319]
+    origin: "제2편 물권 > 제6장 전세권"
+  - tag: "guaranty_debtors"
+    label: "보증 · 다수당사자 채권"
+    range: [408, 448]
+    origin: "제3편 채권 > 제1장 총칙 > 제3절 수인의 채권자 및 채무자"
+  - tag: "claim_effect"
+    label: "채권의 효력"
+    range: [387, 407]
+    origin: "제3편 채권 > 제1장 총칙 > 제2절 채권의 효력"
+  - tag: "mortgage"
+    label: "저당권"
+    range: [356, 372]
+    origin: "제2편 물권 > 제9장 저당권"
+  - tag: "pledge"
+    label: "질권"
+    range: [329, 355]
+    origin: "제2편 물권 > 제8장 질권"
+  - tag: "ownership"
+    label: "소유권"
+    range: [211, 278]
+    origin: "제2편 물권 > 제3장 소유권"

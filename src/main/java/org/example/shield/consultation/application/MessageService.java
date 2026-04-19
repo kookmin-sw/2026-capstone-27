@@ -118,6 +118,9 @@ public class MessageService {
             if (nextQuestion == null || nextQuestion.isBlank()) {
                 log.error("AI chat response is blank: consultationId={}, responseId={}, tokensOut={}",
                         consultationId, result.responseId(), result.tokensOutput());
+                // 감사 로깅 목적 lastResponseId 는 별도 트랜잭션으로 커밋 (Issue #45)
+                chatTxBoundary.persistBlankResponseId(consultationId, result.responseId());
+                consultation.updateLastResponseId(result.responseId());
                 chatMetrics.incrementBlankResponse();
                 chatMetrics.recordSendMessage(pipelineStart, "blank");
                 throw new ChatAiException();

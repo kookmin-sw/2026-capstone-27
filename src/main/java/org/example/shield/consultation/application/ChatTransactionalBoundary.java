@@ -63,6 +63,24 @@ public class ChatTransactionalBoundary {
     }
 
     /**
+     * AI 응답이 blank 로 내려온 경우에도 감사 로깅 목적의
+     * {@code lastResponseId} 만은 커밋한다. Issue #45 계약에 따라
+     * USER 메시지 보존과 함께 어떤 responseId 가 blank 로 돌아왔는지
+     * 추적할 수 있어야 한다.
+     *
+     * <p>AI 메시지 저장 · 분류 반영 · lastMessage 갱신은 수행하지 않는다.</p>
+     */
+    @Transactional
+    public void persistBlankResponseId(UUID consultationId, String responseId) {
+        if (responseId == null || responseId.isBlank()) {
+            return;
+        }
+        Consultation consultation = consultationReader.findById(consultationId);
+        consultation.updateLastResponseId(responseId);
+        consultationWriter.save(consultation);
+    }
+
+    /**
      * Cohere 호출 성공 후 DB 에 반영할 상태 변경을 하나의 트랜잭션으로 커밋한다.
      *
      * <p>Consultation 은 준영속(detached) 상태이므로 reader 로 재조회하고

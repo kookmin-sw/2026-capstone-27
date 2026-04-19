@@ -10,9 +10,12 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Consultation L1/L2/L3 getter 행동 검증.
- * - getFirstDomain / getFirstSubDomain / getFirstTag 는 userXxx 우선, aiXxx 폴백.
- * - user 값이 있으면 primaryFieldLocked=true → updateAiClassification 무시.
+ * Consultation 분류 행동 검증 (Issue #48, per-level lock).
+ *
+ * 핵심 규칙:
+ * - getFirstDomain/SubDomain/Tag 는 userXxx 우선, aiXxx 폴백.
+ * - updateAiClassification 은 레벨별로 독립: userXxx 가 비어있는 레벨만 aiXxx 가 채움.
+ * - 모든 레벨이 user 로 채워지면 AI 입력은 전부 무시되고 false 반환.
  */
 class ConsultationTest {
 
@@ -50,37 +53,6 @@ class ConsultationTest {
             Consultation c = Consultation.create(UUID.randomUUID(), null, null, null);
 
             assertThat(c.getFirstSubDomain()).isNull();
-        }
-
-        @Test
-        @DisplayName("user/ai 모두 빈 리스트면 null")
-        void bothEmpty() {
-            Consultation c = Consultation.create(UUID.randomUUID(),
-                    List.of(), List.of(), List.of());
-            boolean applied = c.updateAiClassification(List.of(), List.of(), List.of());
-
-            // 선택값이 없으므로 locked=false → ai 반영은 되지만, ai 도 비어있음
-            assertThat(applied).isTrue();
-            assertThat(c.getFirstSubDomain()).isNull();
-        }
-
-        @Test
-        @DisplayName("userSubDomains 비었고 aiSubDomains 있으면 ai 사용 (mixed)")
-        void mixedUserDomainOnlyAiSub() {
-            // user 는 L1 만 선택, L2/L3 는 비어있음 → primaryFieldLocked=true (L1 만으로도 locked)
-            // 이 상태에서는 updateAiClassification 이 무시되므로, ai 를 먼저 세팅해야 mixed 검증 가능.
-            // 실제 런타임 시나리오: user 가 L1 만 선택, LLM 이 L2/L3 채우는 경우는
-            // updateUserClassification 의 소급 덮어쓰기 없이 ai 가 먼저 반영된 뒤 user 가 덮어쓰지 않음.
-            // 본 테스트는 ai 만 세팅된 케이스로 대체 (aiFallback 과 동일 경로).
-            Consultation c = Consultation.create(UUID.randomUUID(), null, null, null);
-            c.updateAiClassification(
-                    List.of("부동산 거래"),
-                    List.of("부동산 매매"),
-                    null);
-
-            assertThat(c.getFirstDomain()).isEqualTo("부동산 거래");
-            assertThat(c.getFirstSubDomain()).isEqualTo("부동산 매매");
-            assertThat(c.getFirstTag()).isNull();
         }
     }
 
@@ -121,7 +93,7 @@ class ConsultationTest {
     }
 
     @Nested
-    @DisplayName("getFirstDomain (기존 동작 회귀)")
+    @DisplayName("getFirstDomain")
     class GetFirstDomain {
 
         @Test
@@ -144,14 +116,36 @@ class ConsultationTest {
     }
 
     @Nested
-    @DisplayName("primaryFieldLocked 동작")
-    class PrimaryFieldLocked {
+    @DisplayName("updateAiClassification per-level lock (Issue #48)")
+    class PerLevelLock {
 
         @Test
-        @DisplayName("user 선택이 있으면 locked → updateAiClassification 무시")
-        void lockedBlocksAi() {
+        @DisplayName("L1만 선택: L2/L3 는 AI 가 채움")
+        void updateAiClassification_L1만선택_L2L3는AI가채움() {
             Consultation c = Consultation.create(UUID.randomUUID(),
                     List.of("부동산 거래"), null, null);
+
+            boolean applied = c.updateAiClassification(
+                    List.of("이혼·위자료·재산분할"),   // L1 은 userDomains 가 있으므로 무시되어야 함
+                    List.of("부동산 임대차"),
+                    List.of("보증금 및 차임"));
+
+            assertThat(applied).isTrue();
+            // L1: user 우선, ai 는 반영 안 됨
+            assertThat(c.getUserDomains()).containsExactly("부동산 거래");
+            assertThat(c.getAiDomains()).isNull();
+            // L2/L3: user 가 비었으므로 ai 가 채움
+            assertThat(c.getAiSubDomains()).containsExactly("부동산 임대차");
+            assertThat(c.getAiTags()).containsExactly("보증금 및 차임");
+        }
+
+        @Test
+        @DisplayName("L1/L2/L3 모두 선택: AI 는 전부 무시")
+        void updateAiClassification_L1L2L3모두선택_AI무시() {
+            Consultation c = Consultation.create(UUID.randomUUID(),
+                    List.of("부동산 거래"),
+                    List.of("부동산 매매"),
+                    List.of("매매 계약"));
 
             boolean applied = c.updateAiClassification(
                     List.of("이혼·위자료·재산분할"),
@@ -159,9 +153,33 @@ class ConsultationTest {
                     List.of("기여도 산정"));
 
             assertThat(applied).isFalse();
+            assertThat(c.getAiDomains()).isNull();
+            assertThat(c.getAiSubDomains()).isNull();
+            assertThat(c.getAiTags()).isNull();
+            // user 값은 그대로 유지
             assertThat(c.getFirstDomain()).isEqualTo("부동산 거래");
-            assertThat(c.getFirstSubDomain()).isNull();
-            assertThat(c.getFirstTag()).isNull();
+            assertThat(c.getFirstSubDomain()).isEqualTo("부동산 매매");
+            assertThat(c.getFirstTag()).isEqualTo("매매 계약");
+        }
+
+        @Test
+        @DisplayName("L1/L2 선택 + L3 만 AI: L3 만 반영")
+        void L1L2선택_L3만AI() {
+            Consultation c = Consultation.create(UUID.randomUUID(),
+                    List.of("부동산 거래"),
+                    List.of("부동산 임대차"),
+                    null);
+
+            boolean applied = c.updateAiClassification(
+                    List.of("이혼·위자료·재산분할"),
+                    List.of("재산분할"),
+                    List.of("보증금 및 차임"));
+
+            assertThat(applied).isTrue();
+            assertThat(c.getAiDomains()).isNull();
+            assertThat(c.getAiSubDomains()).isNull();
+            assertThat(c.getAiTags()).containsExactly("보증금 및 차임");
+            assertThat(c.getFirstTag()).isEqualTo("보증금 및 차임");
         }
     }
 }

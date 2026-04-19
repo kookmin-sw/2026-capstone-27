@@ -29,8 +29,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -251,5 +253,64 @@ class MessageServiceTest {
         assertThat(real.getAiDomains()).containsExactly("부동산 거래");
         assertThat(real.getAiSubDomains()).containsExactly("부동산 임대차");
         assertThat(real.getAiTags()).containsExactly("보증금 및 차임");
+    }
+
+    // ── Issue #45 후속 — @Transactional(noRollbackFor=ChatAiException) 회귀 테스트 ──
+
+    /**
+     * {@link MessageService#sendMessage} 는 반드시
+     * {@code @Transactional(noRollbackFor = ChatAiException.class)} 로
+     * 지정되어 있어야 한다. 이 어노테이션이 제거되거나 속성이 누락되면
+     * AI blank 응답 시 USER 메시지와 {@code lastResponseId} 까지 롤백되어
+     * Issue #45 가 재발한다 (사용자 입력 유실).
+     *
+     * <p>통합 테스트로 실제 트랜잭션 동작을 검증하는 것이 이상적이지만,
+     * 현재 테스트 슬라이스는 단위 레벨이므로 어노테이션 계약을
+     * 명시적으로 고정해 회귀를 방지한다.</p>
+     */
+    @Test
+    @DisplayName("sendMessage 는 @Transactional(noRollbackFor = ChatAiException.class) 계약을 유지해야 한다 (Issue #45 회귀)")
+    void sendMessage_transactionalContract_noRollbackForChatAiException() throws NoSuchMethodException {
+        Method method = MessageService.class.getDeclaredMethod("sendMessage", UUID.class, String.class);
+        Transactional annotation = method.getAnnotation(Transactional.class);
+
+        assertThat(annotation)
+                .as("sendMessage 에 @Transactional 이 지정되어 있어야 한다")
+                .isNotNull();
+        assertThat(annotation.noRollbackFor())
+                .as("noRollbackFor 에 ChatAiException 이 포함되어야 USER 메시지 유실이 방지된다")
+                .contains(ChatAiException.class);
+    }
+
+    /**
+     * Mockito 단위 테스트 레벨에서 "AI 실패 시에도 USER 메시지는
+     * 저장된 후 예외가 던져진다"는 순서 계약을 명시적으로 검증한다.
+     * (실제 커밋 여부는 통합 테스트 범위)
+     */
+    @Test
+    @DisplayName("nextQuestion blank 시에도 USER 메시지는 먼저 저장된 뒤 ChatAiException 이 발생한다")
+    void sendMessage_blankNextQuestion_userMessageSavedBeforeException() {
+        // given
+        Consultation real = Consultation.create(consultationId, null, null, null);
+        given(consultationReader.findById(consultationId)).willReturn(real);
+        given(ragPipelineService.execute(any(), anyString(), any())).willReturn("");
+
+        ChatParsedResponse parsed = new ChatParsedResponse();
+        parsed.setNextQuestion("   "); // blank
+        given(cohereService.chat(any(), anyString(), anyString(), any()))
+                .willReturn(new AiCallResult<>("resp-blank-regression", parsed, 100, 0, 250));
+        given(messageWriter.save(any(Message.class))).willAnswer(inv -> inv.getArgument(0));
+
+        // when / then
+        assertThatThrownBy(() -> messageService.sendMessage(consultationId, "사용자 입력"))
+                .isInstanceOf(ChatAiException.class);
+
+        // USER 메시지만 저장되어야 한다 (AI 메시지는 blank 차단으로 저장 X)
+        ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
+        verify(messageWriter, times(1)).save(captor.capture());
+        assertThat(captor.getValue().getContent()).isEqualTo("사용자 입력");
+
+        // lastResponseId 도 dirty state 로 남아 있어야 한다 (감사 로깅 목적)
+        assertThat(real.getLastResponseId()).isEqualTo("resp-blank-regression");
     }
 }

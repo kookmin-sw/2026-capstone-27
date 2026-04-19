@@ -51,25 +51,25 @@ const imgGroup43 = "https://www.figma.com/api/mcp/asset/9c5bec93-ef88-4b79-a82c-
 export default function CaseAnalysis() {
   return (
     <div className="bg-white relative shadow-[0px_3px_6px_0px_rgba(18,15,40,0.12)] size-full" data-node-id="1:1157" data-name="Case Analysis">
-      <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[28px] left-[24px] not-italic text-[#161a1d] text-[20px] top-[124px] whitespace-nowrap" data-node-id="1:1158">분석리포트를 확인하세요</p>
-      <div className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[0] left-[166.5px] not-italic text-[#31383f] text-[14px] top-[405.5px] w-[348px] whitespace-pre-wrap" data-node-id="1:1159">
+      <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[28px] left-6 not-italic text-[#161a1d] text-[20px] top-31 whitespace-nowrap" data-node-id="1:1158">분석리포트를 확인하세요</p>
+      <div className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[0] left-[166.5px] not-italic text-[#31383f] text-[14px] top-[405.5px] w-87 whitespace-pre-wrap" data-node-id="1:1159">
         <p className="leading-[20px] mb-0">AI가 분석한 사건의 핵심 내용입니다. 수정을 원하시면</p>
         <p className="leading-[20px]">연필 아이콘을 클릭하세요.</p>
       </div>
       {/* 법률 분야 섹션 */}
-      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-[102px] left-[24px] rounded-[12px] top-[220px] w-[342px]" data-node-id="1:1160">
-        <p className="absolute font-bold leading-[20px] left-[16px] text-[#31383f] text-[14px] top-[16px] tracking-[0.7px] uppercase">법률 분야</p>
-        <div className="absolute bg-[rgba(31,177,249,0.1)] left-[16px] rounded-[10px] size-[36px] top-[48px]" data-node-id="1:1162"></div>
-        <div className="absolute bg-[#d7f1fe] border border-[rgba(31,177,249,0.2)] h-[30px] left-[64.5px] overflow-clip rounded-[15px] top-[51px] w-[107px]">
+      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-25.5 left-6 rounded-xl top-55 w-85.5" data-node-id="1:1160">
+        <p className="absolute font-bold leading-[20px] left-4 text-[#31383f] text-[14px] top-4 tracking-[0.7px] uppercase">법률 분야</p>
+        <div className="absolute bg-[rgba(31,177,249,0.1)] left-4 rounded-[10px] size-9 top-12" data-node-id="1:1162"></div>
+        <div className="absolute bg-[#d7f1fe] border border-[rgba(31,177,249,0.2)] h-7.5 left-[64.5px] overflow-clip rounded-[15px] top-12.75 w-26.75">
           <p className="absolute font-medium left-[calc(50%-43.5px)] text-[#1fb1f9] text-[14px] top-[calc(50%-11px)]">민사 / 손해배상</p>
         </div>
       </div>
       {/* 사건 요약 섹션 */}
-      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-[490px] left-[24px] rounded-[12px] top-[354px] w-[342px]" data-node-id="1:1319">
-        <p className="absolute font-bold leading-[20px] left-[16px] text-[#31383f] text-[14px] top-[16px] tracking-[0.7px] uppercase">사건 요약</p>
-        <p className="absolute font-medium left-[40px] text-[#1fb1f9] text-[12px] top-[48px]">자동 생성 요약문</p>
-        <div className="absolute bg-white border border-[rgba(221,224,228,0.5)] h-[400px] left-[16px] rounded-[10px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] top-[72px] w-[308px]" data-node-id="1:1342">
-          <div className="absolute font-normal left-[16px] text-[12px] text-[rgba(22,26,29,0.9)] top-[15px] w-[282px] leading-[24px]">
+      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-122.5 left-6 rounded-xl top-88.5 w-85.5" data-node-id="1:1319">
+        <p className="absolute font-bold leading-[20px] left-4 text-[#31383f] text-[14px] top-4 tracking-[0.7px] uppercase">사건 요약</p>
+        <p className="absolute font-medium left-10 text-[#1fb1f9] text-[12px] top-12">자동 생성 요약문</p>
+        <div className="absolute bg-white border border-[rgba(221,224,228,0.5)] h-100 left-4 rounded-[10px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] top-18 w-77" data-node-id="1:1342">
+          <div className="absolute font-normal left-4 text-[12px] text-[rgba(22,26,29,0.9)] top-3.75 w-70.5 leading-[24px]">
             <p className="mb-4">본 사건은 의뢰인(이하 '원고')이 2023년 11월 15일 오후 2시경, 서울시 강남구 소재의 'OO 카페' 내에서 발생한 미끄러짐 사고로 인해 우측 발목 골절상을 입은 건입니다.</p>
             <p className="mb-4">당시 카페 바닥에는 청소 후 제거되지 않은 물기가 남아 있었으나, 카페 측은 어떠한 주의 표지판도 설치하지 않았습니다. 이로 인해 원고는 전치 8주의 진단을 받고 수술을 시행하였으며, 현재까지 재활 치료를 이어가고 있습니다.</p>
             <p>원고는 카페 운영자의 관리 소홀에 따른 보호의무 위반을 근거로 치료비, 휴업 손해액, 그리고 정신적 고통에 대한 위자료를 포함한 손해배상을 청구하고자 합니다. 카페 운영자 측은 당시 바닥이 젖어있음을 구두로 알렸다고 주장하며 책임을 회피하고 있는 상황입니다.</p>
@@ -77,31 +77,31 @@ export default function CaseAnalysis() {
         </div>
       </div>
       {/* 핵심 쟁점 섹션 */}
-      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-[395px] left-[24px] rounded-[12px] top-[875px] w-[342px]" data-node-id="1:1183">
-        <p className="absolute font-bold leading-[20px] left-[16px] text-[#31383f] text-[14px] top-[15px] tracking-[0.7px] uppercase">핵심 쟁점</p>
+      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-98.75 left-6 rounded-xl top-218.75 w-85.5" data-node-id="1:1183">
+        <p className="absolute font-bold leading-[20px] left-4 text-[#31383f] text-[14px] top-3.75 tracking-[0.7px] uppercase">핵심 쟁점</p>
         {/* 쟁점 1 */}
-        <div className="absolute left-[16px] top-[80px] w-[308px] h-[102px]">
-          <div className="absolute bg-[#1fb1f9] rounded-[16px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] size-[32px]"><p className="absolute font-bold left-[13px] text-[14px] text-white top-[5px]">1</p></div>
-          <p className="absolute font-bold left-[48px] text-[#161a1d] text-[15px] top-[-1px]">영업주의 공작물 관리 책임 여부</p>
-          <p className="absolute font-normal left-[48px] text-[#31383f] text-[13px] top-[26px] w-[269px] leading-[19px]">카페 바닥의 물기 방치 행위가 민법 제758조에 따른 공작물의 설치·보존상의 하자에 해당하여 손해배상 책임이 발생하는지 여부</p>
+        <div className="absolute left-4 top-20 w-77 h-25.5">
+          <div className="absolute bg-[#1fb1f9] rounded-2xl shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] size-8"><p className="absolute font-bold left-3.25 text-[14px] text-white top-1.25">1</p></div>
+          <p className="absolute font-bold left-12 text-[#161a1d] text-[15px] top-[-1px]">영업주의 공작물 관리 책임 여부</p>
+          <p className="absolute font-normal left-12 text-[#31383f] text-[13px] top-6.5 w-67.25 leading-[19px]">카페 바닥의 물기 방치 행위가 민법 제758조에 따른 공작물의 설치·보존상의 하자에 해당하여 손해배상 책임이 발생하는지 여부</p>
         </div>
         {/* 쟁점 2 */}
-        <div className="absolute left-[16px] top-[197px] w-[308px] h-[82px]">
-          <div className="absolute bg-[#1fb1f9] rounded-[16px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] size-[32px]"><p className="absolute font-bold left-[12px] text-[14px] text-white top-[5px]">2</p></div>
-          <p className="absolute font-bold left-[48px] text-[#161a1d] text-[15px] top-[-1px]">피해자의 과실 상계 비율 산정</p>
-          <p className="absolute font-normal left-[48px] text-[#31383f] text-[13px] top-[26px] w-[270px] leading-[19px]">사고 당시 원고의 주의 의무 이행 정도와 카페 측의 고지 여부에 따른 과실 비율(과실상계) 결정</p>
+        <div className="absolute left-4 top-49.25 w-77 h-20.5">
+          <div className="absolute bg-[#1fb1f9] rounded-2xl shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] size-8"><p className="absolute font-bold left-3 text-[14px] text-white top-1.25">2</p></div>
+          <p className="absolute font-bold left-12 text-[#161a1d] text-[15px] top-[-1px]">피해자의 과실 상계 비율 산정</p>
+          <p className="absolute font-normal left-12 text-[#31383f] text-[13px] top-6.5 w-67.5 leading-[19px]">사고 당시 원고의 주의 의무 이행 정도와 카페 측의 고지 여부에 따른 과실 비율(과실상계) 결정</p>
         </div>
         {/* 쟁점 3 */}
-        <div className="absolute left-[16px] top-[295px]">
-          <div className="absolute bg-[#1fb1f9] rounded-[16px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] size-[32px]"><p className="absolute font-bold left-[11px] text-[14px] text-white top-[5px]">3</p></div>
-          <p className="absolute font-bold left-[48px] text-[#161a1d] text-[15px] top-[-1px]">손해배상 범위의 적정성</p>
-          <p className="absolute font-normal left-[48px] text-[#31383f] text-[13px] top-[26px] w-[267px] leading-[19px]">기왕치료비, 향후치료비, 일실수입 및 위자료 산출 근거의 타당성 검토</p>
+        <div className="absolute left-4 top-73.75">
+          <div className="absolute bg-[#1fb1f9] rounded-2xl shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] size-8"><p className="absolute font-bold left-2.75 text-[14px] text-white top-1.25">3</p></div>
+          <p className="absolute font-bold left-12 text-[#161a1d] text-[15px] top-[-1px]">손해배상 범위의 적정성</p>
+          <p className="absolute font-normal left-12 text-[#31383f] text-[13px] top-6.5 w-66.75 leading-[19px]">기왕치료비, 향후치료비, 일실수입 및 위자료 산출 근거의 타당성 검토</p>
         </div>
       </div>
       {/* 핵심 키워드 섹션 */}
-      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-[200px] left-[24px] rounded-[12px] top-[1301px] w-[342px]" data-node-id="1:1219">
-        <p className="absolute font-bold leading-[20px] left-[16px] text-[#31383f] text-[14px] top-[15px] tracking-[0.7px] uppercase">핵심 키워드</p>
-        <div className="absolute flex flex-wrap gap-2 left-[16px] top-[76px] w-[310px]">
+      <div className="absolute bg-[#f9fafb] border border-[#dde0e4] border-solid h-50 left-6 rounded-xl top-325.25 w-85.5" data-node-id="1:1219">
+        <p className="absolute font-bold leading-[20px] left-4 text-[#31383f] text-[14px] top-3.75 tracking-[0.7px] uppercase">핵심 키워드</p>
+        <div className="absolute flex flex-wrap gap-2 left-4 top-19 w-77.5">
           <span className="bg-[#d7f1fe] border border-[rgba(31,177,249,0.2)] rounded-[15px] px-3 py-1 text-[#1fb1f9] text-[12px] font-medium"># 손해배상</span>
           <span className="border border-[rgba(32,223,96,0.2)] rounded-[15px] px-3 py-1 text-[#15803d] text-[12px] font-medium"># 민법 제758조</span>
           <span className="border border-[rgba(237,166,94,0.2)] rounded-[15px] px-3 py-1 text-[#c2410c] text-[12px] font-medium"># 영업주 책임</span>
@@ -112,15 +112,15 @@ export default function CaseAnalysis() {
         </div>
       </div>
       {/* 헤더 */}
-      <div className="absolute bg-white h-[108px] left-0 top-0 w-[390px]" data-node-id="1:1344">
-        <div className="absolute h-0 left-0 top-[108px] w-[390px] border-b border-[#e0e2e6]"></div>
-        <div className="absolute bg-[#161a1d] left-[16px] rounded-[6px] size-[32px] top-[57px]"></div>
-        <p className="absolute font-medium left-[162px] text-[#161a1d] text-[18px] top-[59px]">SHIELD</p>
+      <div className="absolute bg-white h-27 left-0 top-0 w-97.5" data-node-id="1:1344">
+        <div className="absolute h-0 left-0 top-27 w-97.5 border-b border-[#e0e2e6]"></div>
+        <div className="absolute bg-[#161a1d] left-4 rounded-md size-8 top-14.25"></div>
+        <p className="absolute font-medium left-40.5 text-[#161a1d] text-[18px] top-14.75">SHIELD</p>
       </div>
       {/* 하단 확인 버튼 */}
-      <div className="absolute bg-white h-[105px] left-0 shadow-[0px_20px_25px_0px_rgba(0,0,0,0.1)] top-[1557px] w-[390px]" data-node-id="1:1389">
-        <a className="absolute bg-[#1fb1f9] block h-[56px] left-[20.5px] overflow-clip rounded-[12px] shadow-[0px_10px_15px_0px_rgba(31,177,249,0.2)] top-[25.5px] w-[345px]">
-          <p className="absolute font-bold left-1/2 -translate-x-1/2 text-[16px] text-center text-white top-[15px]">확인</p>
+      <div className="absolute bg-white h-26.25 left-0 shadow-[0px_20px_25px_0px_rgba(0,0,0,0.1)] top-389.25 w-97.5" data-node-id="1:1389">
+        <a className="absolute bg-[#1fb1f9] block h-14 left-[20.5px] overflow-clip rounded-xl shadow-[0px_10px_15px_0px_rgba(31,177,249,0.2)] top-[25.5px] w-86.25">
+          <p className="absolute font-bold left-1/2 -translate-x-1/2 text-[16px] text-center text-white top-3.75">확인</p>
         </a>
       </div>
     </div>

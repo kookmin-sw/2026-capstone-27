@@ -396,14 +396,24 @@ export function searchCategories(
 
   const q = query.trim().toLowerCase();
   const results: CategorySearchResult[] = [];
+  const seen = new Set<string>();
+
+  function push(leaf: CategoryLeaf, path: [string, string, string]) {
+    const key = `${path[0]}|${path[1]}|${path[2]}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    results.push({ leaf, path });
+  }
 
   for (const l1 of data) {
+    const l1Match = l1.name.toLowerCase().includes(q);
     for (const l2 of l1.children) {
+      const l2Match = l2.name.toLowerCase().includes(q);
       for (const leaf of l2.children) {
         const nameMatch = leaf.name.toLowerCase().includes(q);
         const aliasMatch = leaf.aliases.some((a) => a.toLowerCase().includes(q));
-        if (nameMatch || aliasMatch) {
-          results.push({ leaf, path: [l1.name, l2.name, leaf.name] });
+        if (nameMatch || aliasMatch || l1Match || l2Match) {
+          push(leaf, [l1.name, l2.name, leaf.name]);
         }
       }
     }

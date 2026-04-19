@@ -66,8 +66,8 @@ const imgGroup51 = "https://www.figma.com/api/mcp/asset/62c95bf4-2ef8-461f-b214-
 export default function LawyerSearchResults() {
   return (
     <div className="bg-white relative shadow-[0px_3px_6px_0px_rgba(18,15,40,0.12)] size-full" data-node-id="1:2152" data-name="Lawyer Search Results">
-      <div className="absolute bg-[rgba(0,0,0,0)] h-[1408px] left-0 overflow-clip top-[108px] w-[390px]" data-node-id="1:2153" data-name="Container">
-        <div className="absolute bg-white border border-[#e2e2e2] border-solid h-[217px] left-[0.5px] top-[60.5px] w-[390px]" data-node-id="1:2154" data-name="Container">
+      <div className="absolute bg-[rgba(0,0,0,0)] h-352 left-0 overflow-clip top-27 w-97.5" data-node-id="1:2153" data-name="Container">
+        <div className="absolute bg-white border border-[#e2e2e2] border-solid h-54.25 left-[0.5px] top-[60.5px] w-97.5" data-node-id="1:2154" data-name="Container">
           <div className="absolute contents inset-[calc(107.6%+1.15px)_calc(32.69%-0.35px)_calc(-17.74%-1.35px)_calc(6.33%-0.87px)]" data-node-id="1:2155" data-name="serch">
             <div className="absolute inset-[113.2%_90.69%_-14.89%_8.37%]" data-node-id="1:2156" data-name="Vector">
               <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgVector} />
@@ -81,10 +81,10 @@ export default function LawyerSearchResults() {
               <span className="leading-[22px] text-[14px]">명의 변호사가 검색되었습니다</span>
             </p>
           </div>
-          <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[20px] left-[16px] not-italic text-[#31383f] text-[14px] top-[16px] tracking-[0.7px] uppercase whitespace-nowrap" data-node-id="1:2159">
+          <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[20px] left-4 not-italic text-[#31383f] text-[14px] top-4 tracking-[0.7px] uppercase whitespace-nowrap" data-node-id="1:2159">
             핵심 키워드
           </p>
-          <div className="absolute left-[344px] overflow-clip size-[21px] top-[20px]" data-node-id="1:2160" data-name="pencil">
+          <div className="absolute left-86 overflow-clip size-5.25 top-5" data-node-id="1:2160" data-name="pencil">
             <div className="absolute contents inset-[3.94%]" data-node-id="1:2161" data-name="Group">
               <div className="absolute contents inset-[3.94%]" data-node-id="1:2162" data-name="Group">
                 <div className="absolute inset-[3.94%]" data-node-id="1:2163" data-name="Group">
@@ -96,8 +96,8 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(237,166,94,0.2)] border-solid h-[36px] left-[226px] rounded-[15px] top-[61px] w-[105px]" data-node-id="1:2167" data-name="Container">
-            <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2168" data-name="hash">
+          <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(237,166,94,0.2)] border-solid h-9 left-56.5 rounded-[15px] top-15.25 w-26.25" data-node-id="1:2167" data-name="Container">
+            <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2168" data-name="hash">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2169" data-name="Group">
                 <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2170" data-name="Group">
                   <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2171" data-name="Group">
@@ -115,12 +115,12 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#c2410c] text-[13px] top-[9px] w-[79px]" data-node-id="1:2179">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#c2410c] text-[13px] top-2.25 w-19.75" data-node-id="1:2179">
               영업주 책임
             </p>
           </div>
-          <div className="absolute bg-[rgba(231,241,255,0.5)] border border-[rgba(60,94,227,0.2)] border-solid h-[36px] left-[16px] rounded-[15px] top-[60px] w-[89px]" data-node-id="1:2180" data-name="Container">
-            <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2181" data-name="hash">
+          <div className="absolute bg-[rgba(231,241,255,0.5)] border border-[rgba(60,94,227,0.2)] border-solid h-9 left-4 rounded-[15px] top-15 w-22.25" data-node-id="1:2180" data-name="Container">
+            <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2181" data-name="hash">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2182" data-name="Group">
                 <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2183" data-name="Group">
                   <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2184" data-name="Group">
@@ -138,12 +138,12 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#3690de] text-[13px] top-[9px] w-[79px]" data-node-id="1:2192">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#3690de] text-[13px] top-2.25 w-19.75" data-node-id="1:2192">
               손해배상
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] border border-[#d8dff9] border-solid h-[36px] left-[16px] rounded-[15px] top-[114px] w-[89px]" data-node-id="1:2193" data-name="Container">
-            <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2194" data-name="hash">
+          <div className="absolute bg-[rgba(0,0,0,0)] border border-[#d8dff9] border-solid h-9 left-4 rounded-[15px] top-28.5 w-22.25" data-node-id="1:2193" data-name="Container">
+            <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2194" data-name="hash">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2195" data-name="Group">
                 <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2196" data-name="Group">
                   <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2197" data-name="Group">
@@ -161,12 +161,12 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#3690de] text-[13px] top-[9px] w-[79px]" data-node-id="1:2205">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#3690de] text-[13px] top-2.25 w-19.75" data-node-id="1:2205">
               과실상계
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(237,166,94,0.2)] border-solid h-[36px] left-[116px] rounded-[15px] top-[60px] w-[100px]" data-node-id="1:2206" data-name="Container">
-            <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2207" data-name="hash">
+          <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(237,166,94,0.2)] border-solid h-9 left-29 rounded-[15px] top-15 w-25" data-node-id="1:2206" data-name="Container">
+            <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2207" data-name="hash">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2208" data-name="Group">
                 <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2209" data-name="Group">
                   <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2210" data-name="Group">
@@ -184,12 +184,12 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#c2410c] text-[13px] top-[9px] w-[79px]" data-node-id="1:2218">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#c2410c] text-[13px] top-2.25 w-19.75" data-node-id="1:2218">
               공작물하자
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] border border-[#dcdbdb] border-solid h-[36px] left-[247px] rounded-[15px] top-[114px] w-[89px]" data-node-id="1:2219" data-name="Container">
-            <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2220" data-name="hash">
+          <div className="absolute bg-[rgba(0,0,0,0)] border border-[#dcdbdb] border-solid h-9 left-61.75 rounded-[15px] top-28.5 w-22.25" data-node-id="1:2219" data-name="Container">
+            <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2220" data-name="hash">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2221" data-name="Group">
                 <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2222" data-name="Group">
                   <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2223" data-name="Group">
@@ -207,13 +207,13 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#5d534f] text-[13px] top-[9px] w-[79px]" data-node-id="1:2231">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#5d534f] text-[13px] top-2.25 w-19.75" data-node-id="1:2231">
               물기방지
             </p>
           </div>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(80,77,74,0.2)] border-solid h-[36px] left-[17.5px] rounded-[15px] top-[227.5px] w-[89px]" data-node-id="1:2232" data-name="Container">
-          <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2233" data-name="hash">
+        <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(80,77,74,0.2)] border-solid h-9 left-[17.5px] rounded-[15px] top-[227.5px] w-22.25" data-node-id="1:2232" data-name="Container">
+          <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2233" data-name="hash">
             <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2234" data-name="Group">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2235" data-name="Group">
                 <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2236" data-name="Group">
@@ -231,21 +231,21 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#5d534f] text-[13px] top-[9px] w-[79px]" data-node-id="1:2244">
+          <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#5d534f] text-[13px] top-2.25 w-19.75" data-node-id="1:2244">
             카페사고
           </p>
         </div>
-        <div className="absolute bg-white h-[197px] left-[24px] overflow-clip rounded-[12px] shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[321px] w-[342px]" data-node-id="1:2245" data-name="Container">
-          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-[70px] left-[16px] rounded-[10px] top-[110px] w-[310px]" data-node-id="1:2246" data-name="Container">
-            <div className="absolute h-[12px] left-[14px] top-[14px] w-0" data-node-id="1:2247" data-name="Line">
+        <div className="absolute bg-white h-49.25 left-6 overflow-clip rounded-xl shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-80.25 w-85.5" data-node-id="1:2245" data-name="Container">
+          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-17.5 left-4 rounded-[10px] top-27.5 w-77.5" data-node-id="1:2246" data-name="Container">
+            <div className="absolute h-3 left-3.5 top-3.5 w-0" data-node-id="1:2247" data-name="Line">
               <div className="absolute inset-[0_-2px]">
                 <img alt="" className="block max-w-none size-full" src={imgLine} />
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-[24px] not-italic text-[#0680f9] text-[12px] top-[11px] tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2248">
+            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-6 not-italic text-[#0680f9] text-[12px] top-2.75 tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2248">
               Matched Keywords
             </p>
-            <div className="absolute left-[12px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2249" data-name="check">
+            <div className="absolute left-3 overflow-clip size-3.5 top-9.75" data-node-id="1:2249" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2250" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2251" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2252" data-name="Group">
@@ -254,10 +254,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[28px] not-italic text-[#02264b] text-[14px] top-[35px] whitespace-nowrap" data-node-id="1:2254">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-7 not-italic text-[#02264b] text-[14px] top-8.75 whitespace-nowrap" data-node-id="1:2254">
               배임/횡령
             </p>
-            <div className="absolute left-[87px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2255" data-name="check">
+            <div className="absolute left-21.75 overflow-clip size-3.5 top-9.75" data-node-id="1:2255" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2256" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2257" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2258" data-name="Group">
@@ -266,10 +266,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[103px] not-italic text-[#02264b] text-[14px] top-[35px] whitespace-nowrap" data-node-id="1:2260">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-25.75 not-italic text-[#02264b] text-[14px] top-8.75 whitespace-nowrap" data-node-id="1:2260">
               증거 수집
             </p>
-            <div className="absolute left-[160px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2261" data-name="check">
+            <div className="absolute left-40 overflow-clip size-3.5 top-9.75" data-node-id="1:2261" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2262" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2263" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2264" data-name="Group">
@@ -278,16 +278,16 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[175px] not-italic text-[#02264b] text-[14px] top-[35px] whitespace-nowrap" data-node-id="1:2266">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-43.75 not-italic text-[#02264b] text-[14px] top-8.75 whitespace-nowrap" data-node-id="1:2266">
               합의 전략
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[28px] left-[88px] overflow-clip top-[16px] w-[150px]" data-node-id="1:2267" data-name="Container">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-7 left-22 overflow-clip top-4 w-37.5" data-node-id="1:2267" data-name="Container">
             <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[28px] left-0 not-italic text-[#16181d] text-[18px] top-px whitespace-nowrap" data-node-id="1:2268">
               김철수 변호사
             </p>
           </div>
-          <div className="absolute left-[88px] overflow-clip size-[14px] top-[49px]" data-node-id="1:2269" data-name="briefcase">
+          <div className="absolute left-22 overflow-clip size-3.5 top-12.25" data-node-id="1:2269" data-name="briefcase">
             <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2270" data-name="Group">
               <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2271" data-name="Group">
                 <div className="absolute inset-[4.43%_29.29%_12.71%_29.29%]" data-node-id="1:2272" data-name="Group">
@@ -299,10 +299,10 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-[106px] not-italic text-[#575e6b] text-[14px] top-[46px] whitespace-nowrap" data-node-id="1:2276">
+          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-26.5 not-italic text-[#575e6b] text-[14px] top-11.5 whitespace-nowrap" data-node-id="1:2276">
             경력 15년
           </p>
-          <div className="absolute left-[306px] overflow-clip size-[20px] top-[20px]" data-node-id="1:2277" data-name="chevron-right">
+          <div className="absolute left-76.5 overflow-clip size-5 top-5" data-node-id="1:2277" data-name="chevron-right">
             <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2278" data-name="Group">
               <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2279" data-name="Group">
                 <div className="absolute inset-[20.95%_33.4%]" data-node-id="1:2280" data-name="Group">
@@ -311,44 +311,44 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[88px] top-[76px] w-[34px]" data-node-id="1:2282" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2283" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-22 top-19 w-8.5" data-node-id="1:2282" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2283" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2284">
                 형사
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[129px] top-[76px] w-[51px]" data-node-id="1:2285" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[51px]" data-node-id="1:2286" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-32.25 top-19 w-12.75" data-node-id="1:2285" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-12.75" data-node-id="1:2286" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-19.5px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2287">
                 경제범죄
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[187px] top-[76px] w-[51px]" data-node-id="1:2288" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[51px]" data-node-id="1:2289" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-46.75 top-19 w-12.75" data-node-id="1:2288" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-12.75" data-node-id="1:2289" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-19.5px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2290">
                 기업법무
               </p>
             </div>
           </div>
-          <div className="absolute bg-[#f4fdcc] left-[16px] overflow-clip rounded-[28px] size-[56px] top-[16px]" data-node-id="1:2291" data-name="Avatar">
+          <div className="absolute bg-[#f4fdcc] left-4 overflow-clip rounded-[28px] size-14 top-4" data-node-id="1:2291" data-name="Avatar">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <img alt="" className="absolute left-0 max-w-none size-full top-0" src={imgAvatar} />
             </div>
           </div>
         </div>
-        <div className="absolute bg-white h-[197px] left-[24.5px] overflow-clip rounded-[12px] shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[533.5px] w-[342px]" data-node-id="1:2293" data-name="Container">
-          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-[70px] left-[16px] rounded-[10px] top-[110px] w-[310px]" data-node-id="1:2294" data-name="Container">
-            <div className="absolute h-[12px] left-[14px] top-[14px] w-0" data-node-id="1:2295" data-name="Line">
+        <div className="absolute bg-white h-49.25 left-[24.5px] overflow-clip rounded-xl shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[533.5px] w-85.5" data-node-id="1:2293" data-name="Container">
+          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-17.5 left-4 rounded-[10px] top-27.5 w-77.5" data-node-id="1:2294" data-name="Container">
+            <div className="absolute h-3 left-3.5 top-3.5 w-0" data-node-id="1:2295" data-name="Line">
               <div className="absolute inset-[0_-2px]">
                 <img alt="" className="block max-w-none size-full" src={imgLine} />
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-[24px] not-italic text-[#0680f9] text-[12px] top-[12px] tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2296">
+            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-6 not-italic text-[#0680f9] text-[12px] top-3 tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2296">
               Matched Keywords
             </p>
-            <div className="absolute left-[12px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2297" data-name="check">
+            <div className="absolute left-3 overflow-clip size-3.5 top-9.75" data-node-id="1:2297" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2298" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2299" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2300" data-name="Group">
@@ -357,10 +357,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[28px] not-italic text-[#02264b] text-[14px] top-[36px] whitespace-nowrap" data-node-id="1:2302">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-7 not-italic text-[#02264b] text-[14px] top-9 whitespace-nowrap" data-node-id="1:2302">
               의료 과실
             </p>
-            <div className="absolute left-[88px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2303" data-name="check">
+            <div className="absolute left-22 overflow-clip size-3.5 top-9.75" data-node-id="1:2303" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2304" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2305" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2306" data-name="Group">
@@ -369,10 +369,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[104px] not-italic text-[#02264b] text-[14px] top-[36px] whitespace-nowrap" data-node-id="1:2308">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-26 not-italic text-[#02264b] text-[14px] top-9 whitespace-nowrap" data-node-id="1:2308">
               인과관계 증명
             </p>
-            <div className="absolute left-[188px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2309" data-name="check">
+            <div className="absolute left-47 overflow-clip size-3.5 top-9.75" data-node-id="1:2309" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2310" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2311" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2312" data-name="Group">
@@ -381,15 +381,15 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[204px] not-italic text-[#02264b] text-[14px] top-[36px] whitespace-nowrap" data-node-id="1:2314">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-51 not-italic text-[#02264b] text-[14px] top-9 whitespace-nowrap" data-node-id="1:2314">
               정신적 위자료
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[28px] left-[88.5px] top-[15.5px] w-[126px]" data-node-id="1:2315" data-name="Container" />
+          <div className="absolute bg-[rgba(0,0,0,0)] h-7 left-[88.5px] top-[15.5px] w-31.5" data-node-id="1:2315" data-name="Container" />
           <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[28px] left-[88.5px] not-italic text-[#16181d] text-[18px] top-[15.5px] whitespace-nowrap" data-node-id="1:2316">
             이영희 변호사
           </p>
-          <div className="absolute left-[88px] overflow-clip size-[14px] top-[49px]" data-node-id="1:2317" data-name="briefcase">
+          <div className="absolute left-22 overflow-clip size-3.5 top-12.25" data-node-id="1:2317" data-name="briefcase">
             <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2318" data-name="Group">
               <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2319" data-name="Group">
                 <div className="absolute inset-[4.43%_29.29%_12.71%_29.29%]" data-node-id="1:2320" data-name="Group">
@@ -401,10 +401,10 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-[106px] not-italic text-[#575e6b] text-[14px] top-[45px] whitespace-nowrap" data-node-id="1:2324">
+          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-26.5 not-italic text-[#575e6b] text-[14px] top-11.25 whitespace-nowrap" data-node-id="1:2324">
             경력 8년
           </p>
-          <div className="absolute left-[306px] overflow-clip size-[20px] top-[20px]" data-node-id="1:2325" data-name="chevron-right">
+          <div className="absolute left-76.5 overflow-clip size-5 top-5" data-node-id="1:2325" data-name="chevron-right">
             <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2326" data-name="Group">
               <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2327" data-name="Group">
                 <div className="absolute inset-[20.95%_33.4%]" data-node-id="1:2328" data-name="Group">
@@ -413,44 +413,44 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[88px] top-[76px] w-[34px]" data-node-id="1:2330" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2331" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-22 top-19 w-8.5" data-node-id="1:2330" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2331" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2332">
                 민사
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[129px] top-[76px] w-[51px]" data-node-id="1:2333" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[51px]" data-node-id="1:2334" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-32.25 top-19 w-12.75" data-node-id="1:2333" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-12.75" data-node-id="1:2334" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-19.5px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2335">
                 손해배상
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[187px] top-[76px] w-[34px]" data-node-id="1:2336" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2337" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-46.75 top-19 w-8.5" data-node-id="1:2336" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2337" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2338">
                 의료
               </p>
             </div>
           </div>
-          <div className="absolute bg-[#f3f9e2] left-[16px] overflow-clip rounded-[28px] size-[56px] top-[16px]" data-node-id="1:2339" data-name="Avatar">
+          <div className="absolute bg-[#f3f9e2] left-4 overflow-clip rounded-[28px] size-14 top-4" data-node-id="1:2339" data-name="Avatar">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <img alt="" className="absolute left-0 max-w-none size-full top-0" src={imgAvatar1} />
             </div>
           </div>
         </div>
-        <div className="absolute bg-white h-[197px] left-[24.5px] overflow-clip rounded-[12px] shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[746.5px] w-[342px]" data-node-id="1:2341" data-name="Container">
-          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-[70px] left-[16px] rounded-[10px] top-[110px] w-[310px]" data-node-id="1:2342" data-name="Container">
-            <div className="absolute h-[12px] left-[14px] top-[14px] w-0" data-node-id="1:2343" data-name="Line">
+        <div className="absolute bg-white h-49.25 left-[24.5px] overflow-clip rounded-xl shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[746.5px] w-85.5" data-node-id="1:2341" data-name="Container">
+          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-17.5 left-4 rounded-[10px] top-27.5 w-77.5" data-node-id="1:2342" data-name="Container">
+            <div className="absolute h-3 left-3.5 top-3.5 w-0" data-node-id="1:2343" data-name="Line">
               <div className="absolute inset-[0_-2px]">
                 <img alt="" className="block max-w-none size-full" src={imgLine} />
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-[24px] not-italic text-[#0680f9] text-[12px] top-[11px] tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2344">
+            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-6 not-italic text-[#0680f9] text-[12px] top-2.75 tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2344">
               Matched Keywords
             </p>
-            <div className="absolute left-[12px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2345" data-name="check">
+            <div className="absolute left-3 overflow-clip size-3.5 top-9.75" data-node-id="1:2345" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2346" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2347" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2348" data-name="Group">
@@ -459,10 +459,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[28px] not-italic text-[#02264b] text-[14px] top-[35px] whitespace-nowrap" data-node-id="1:2350">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-7 not-italic text-[#02264b] text-[14px] top-8.75 whitespace-nowrap" data-node-id="1:2350">
               재산 분할
             </p>
-            <div className="absolute left-[88px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2351" data-name="check">
+            <div className="absolute left-22 overflow-clip size-3.5 top-9.75" data-node-id="1:2351" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2352" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2353" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2354" data-name="Group">
@@ -471,10 +471,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[104px] not-italic text-[#02264b] text-[14px] top-[35px] whitespace-nowrap" data-node-id="1:2356">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-26 not-italic text-[#02264b] text-[14px] top-8.75 whitespace-nowrap" data-node-id="1:2356">
               양육권 분쟁
             </p>
-            <div className="absolute left-[176px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2357" data-name="check">
+            <div className="absolute left-44 overflow-clip size-3.5 top-9.75" data-node-id="1:2357" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2358" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2359" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2360" data-name="Group">
@@ -483,15 +483,15 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[191px] not-italic text-[#02264b] text-[14px] top-[35px] whitespace-nowrap" data-node-id="1:2362">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-47.75 not-italic text-[#02264b] text-[14px] top-8.75 whitespace-nowrap" data-node-id="1:2362">
               기여도 산정
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[28px] left-[88.5px] top-[15.5px] w-[140px]" data-node-id="1:2363" data-name="Container" />
+          <div className="absolute bg-[rgba(0,0,0,0)] h-7 left-[88.5px] top-[15.5px] w-35" data-node-id="1:2363" data-name="Container" />
           <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[28px] left-[88.5px] not-italic text-[#16181d] text-[18px] top-[14.5px] whitespace-nowrap" data-node-id="1:2364">
             박지민 변호사
           </p>
-          <div className="absolute left-[88px] overflow-clip size-[14px] top-[49px]" data-node-id="1:2365" data-name="briefcase">
+          <div className="absolute left-22 overflow-clip size-3.5 top-12.25" data-node-id="1:2365" data-name="briefcase">
             <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2366" data-name="Group">
               <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2367" data-name="Group">
                 <div className="absolute inset-[4.43%_29.29%_12.71%_29.29%]" data-node-id="1:2368" data-name="Group">
@@ -503,10 +503,10 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-[106px] not-italic text-[#575e6b] text-[14px] top-[46px] whitespace-nowrap" data-node-id="1:2372">
+          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-26.5 not-italic text-[#575e6b] text-[14px] top-11.5 whitespace-nowrap" data-node-id="1:2372">
             경력 12년
           </p>
-          <div className="absolute left-[306px] overflow-clip size-[20px] top-[20px]" data-node-id="1:2373" data-name="chevron-right">
+          <div className="absolute left-76.5 overflow-clip size-5 top-5" data-node-id="1:2373" data-name="chevron-right">
             <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2374" data-name="Group">
               <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2375" data-name="Group">
                 <div className="absolute inset-[20.95%_33.4%]" data-node-id="1:2376" data-name="Group">
@@ -515,44 +515,44 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[88px] top-[76px] w-[34px]" data-node-id="1:2378" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2379" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-22 top-19 w-8.5" data-node-id="1:2378" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2379" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2380">
                 이혼
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[129px] top-[76px] w-[34px]" data-node-id="1:2381" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2382" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-32.25 top-19 w-8.5" data-node-id="1:2381" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2382" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2383">
                 가사
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[170px] top-[76px] w-[34px]" data-node-id="1:2384" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2385" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-42.5 top-19 w-8.5" data-node-id="1:2384" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2385" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2386">
                 상속
               </p>
             </div>
           </div>
-          <div className="absolute bg-[#fde1e8] left-[16px] overflow-clip rounded-[28px] size-[56px] top-[16px]" data-node-id="1:2387" data-name="Avatar">
+          <div className="absolute bg-[#fde1e8] left-4 overflow-clip rounded-[28px] size-14 top-4" data-node-id="1:2387" data-name="Avatar">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <img alt="" className="absolute left-0 max-w-none size-full top-0" src={imgAvatar2} />
             </div>
           </div>
         </div>
-        <div className="absolute bg-white h-[197px] left-[24.5px] overflow-clip rounded-[12px] shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[959.5px] w-[342px]" data-node-id="1:2389" data-name="Container">
-          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-[70px] left-[16px] rounded-[10px] top-[110px] w-[310px]" data-node-id="1:2390" data-name="Container">
-            <div className="absolute h-[12px] left-[14px] top-[14px] w-0" data-node-id="1:2391" data-name="Line">
+        <div className="absolute bg-white h-49.25 left-[24.5px] overflow-clip rounded-xl shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-[959.5px] w-85.5" data-node-id="1:2389" data-name="Container">
+          <div className="absolute bg-[#f0f7ff] border border-[rgba(6,128,249,0.1)] border-solid h-17.5 left-4 rounded-[10px] top-27.5 w-77.5" data-node-id="1:2390" data-name="Container">
+            <div className="absolute h-3 left-3.5 top-3.5 w-0" data-node-id="1:2391" data-name="Line">
               <div className="absolute inset-[0_-2px]">
                 <img alt="" className="block max-w-none size-full" src={imgLine} />
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-[24px] not-italic text-[#0680f9] text-[12px] top-[12px] tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2392">
+            <p className="absolute font-['Inter:Medium',sans-serif] font-medium leading-[16px] left-6 not-italic text-[#0680f9] text-[12px] top-3 tracking-[-0.3px] uppercase whitespace-nowrap" data-node-id="1:2392">
               Matched Keywords
             </p>
-            <div className="absolute left-[12px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2393" data-name="check">
+            <div className="absolute left-3 overflow-clip size-3.5 top-9.75" data-node-id="1:2393" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2394" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2395" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2396" data-name="Group">
@@ -561,10 +561,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[28px] not-italic text-[#02264b] text-[14px] top-[36px] whitespace-nowrap" data-node-id="1:2398">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-7 not-italic text-[#02264b] text-[14px] top-9 whitespace-nowrap" data-node-id="1:2398">
               조합 설립
             </p>
-            <div className="absolute left-[88px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2399" data-name="check">
+            <div className="absolute left-22 overflow-clip size-3.5 top-9.75" data-node-id="1:2399" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2400" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2401" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2402" data-name="Group">
@@ -573,10 +573,10 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[104px] not-italic text-[#02264b] text-[14px] top-[36px] whitespace-nowrap" data-node-id="1:2404">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-26 not-italic text-[#02264b] text-[14px] top-9 whitespace-nowrap" data-node-id="1:2404">
               토지 보상
             </p>
-            <div className="absolute left-[163px] overflow-clip size-[14px] top-[39px]" data-node-id="1:2405" data-name="check">
+            <div className="absolute left-40.75 overflow-clip size-3.5 top-9.75" data-node-id="1:2405" data-name="check">
               <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2406" data-name="Group">
                 <div className="absolute contents inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2407" data-name="Group">
                   <div className="absolute inset-[21%_12.71%_25.14%_12.72%]" data-node-id="1:2408" data-name="Group">
@@ -585,15 +585,15 @@ export default function LawyerSearchResults() {
                 </div>
               </div>
             </div>
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[179px] not-italic text-[#02264b] text-[14px] top-[36px] whitespace-nowrap" data-node-id="1:2410">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-44.75 not-italic text-[#02264b] text-[14px] top-9 whitespace-nowrap" data-node-id="1:2410">
               관리처분계획
             </p>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[28px] left-[88.5px] top-[16.5px] w-[128px]" data-node-id="1:2411" data-name="Container" />
+          <div className="absolute bg-[rgba(0,0,0,0)] h-7 left-[88.5px] top-[16.5px] w-32" data-node-id="1:2411" data-name="Container" />
           <p className="absolute font-['Inter:Bold','Noto_Sans_KR:Bold',sans-serif] font-bold leading-[28px] left-[88.5px] not-italic text-[#16181d] text-[18px] top-[12.5px] whitespace-nowrap" data-node-id="1:2412">
             최도현 변호사
           </p>
-          <div className="absolute left-[88px] overflow-clip size-[14px] top-[49px]" data-node-id="1:2413" data-name="briefcase">
+          <div className="absolute left-22 overflow-clip size-3.5 top-12.25" data-node-id="1:2413" data-name="briefcase">
             <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2414" data-name="Group">
               <div className="absolute contents inset-[4.43%_4.43%_12.71%_4.43%]" data-node-id="1:2415" data-name="Group">
                 <div className="absolute inset-[4.43%_29.29%_12.71%_29.29%]" data-node-id="1:2416" data-name="Group">
@@ -605,10 +605,10 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-[106px] not-italic text-[#575e6b] text-[14px] top-[45px] whitespace-nowrap" data-node-id="1:2420">
+          <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[22px] left-26.5 not-italic text-[#575e6b] text-[14px] top-11.25 whitespace-nowrap" data-node-id="1:2420">
             경력 20년
           </p>
-          <div className="absolute left-[306px] overflow-clip size-[20px] top-[20px]" data-node-id="1:2421" data-name="chevron-right">
+          <div className="absolute left-76.5 overflow-clip size-5 top-5" data-node-id="1:2421" data-name="chevron-right">
             <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2422" data-name="Group">
               <div className="absolute contents inset-[20.95%_33.4%]" data-node-id="1:2423" data-name="Group">
                 <div className="absolute inset-[20.95%_33.4%]" data-node-id="1:2424" data-name="Group">
@@ -617,39 +617,39 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[88px] top-[76px] w-[41px]" data-node-id="1:2426" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[41px]" data-node-id="1:2427" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-22 top-19 w-10.25" data-node-id="1:2426" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-10.25" data-node-id="1:2427" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-14.5px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2428">
                 부동산
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[137px] top-[76px] w-[62px]" data-node-id="1:2429" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[62px]" data-node-id="1:2430" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-34.25 top-19 w-15.5" data-node-id="1:2429" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-15.5" data-node-id="1:2430" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-31px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2431">
                 재건축/재개발
               </p>
             </div>
           </div>
-          <div className="absolute bg-[rgba(0,0,0,0)] h-[19px] left-[209px] top-[76px] w-[34px]" data-node-id="1:2432" data-name="Tag">
-            <div className="absolute bg-[rgba(243,244,246,0.5)] h-[19px] left-0 overflow-clip rounded-[10px] top-0 w-[34px]" data-node-id="1:2433" data-name="Frame">
+          <div className="absolute bg-[rgba(0,0,0,0)] h-4.75 left-52.25 top-19 w-8.5" data-node-id="1:2432" data-name="Tag">
+            <div className="absolute bg-[rgba(243,244,246,0.5)] h-4.75 left-0 overflow-clip rounded-[10px] top-0 w-8.5" data-node-id="1:2433" data-name="Frame">
               <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[18px] left-[calc(50%-10px)] not-italic text-[#1f2228] text-[11px] top-[calc(50%-9px)] whitespace-nowrap" data-node-id="1:2434">
                 행정
               </p>
             </div>
           </div>
-          <div className="absolute bg-[#fae7ef] left-[16px] overflow-clip rounded-[28px] size-[56px] top-[16px]" data-node-id="1:2435" data-name="Avatar">
+          <div className="absolute bg-[#fae7ef] left-4 overflow-clip rounded-[28px] size-14 top-4" data-node-id="1:2435" data-name="Avatar">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <img alt="" className="absolute left-0 max-w-none size-full top-0" src={imgAvatar3} />
             </div>
           </div>
         </div>
-        <div className="absolute left-[45px] size-[36px] top-[1198px]" data-node-id="1:2437" data-name="number">
-          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-0 opacity-50 overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2438" data-name="Button">
+        <div className="absolute left-11.25 size-9 top-299.5" data-node-id="1:2437" data-name="number">
+          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-0 opacity-50 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2438" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Medium',sans-serif] font-medium leading-[22px] left-[calc(50%+9px)] not-italic text-[#16181d] text-[14px] text-center top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2439">
               ​
             </p>
-            <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[18px] top-1/2" data-node-id="1:2440" data-name="Chevron left">
+            <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-4.5 top-1/2" data-node-id="1:2440" data-name="Chevron left">
               <div className="absolute contents inset-[20.83%_33.33%]" data-node-id="1:2441" data-name="Group">
                 <div className="absolute contents inset-[20.83%_33.33%]" data-node-id="1:2442" data-name="Group">
                   <div className="absolute inset-[20.83%_33.33%]" data-node-id="1:2443" data-name="Group">
@@ -659,26 +659,26 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-[#0680f9] left-[44px] overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2445" data-name="Button">
+          <div className="absolute bg-[#0680f9] left-11 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2445" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Bold',sans-serif] font-bold leading-[22px] left-1/2 not-italic text-[14px] text-center text-white top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2446">
               1
             </p>
           </div>
-          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-[88px] overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2447" data-name="Button">
+          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-22 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2447" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Bold',sans-serif] font-bold leading-[22px] left-1/2 not-italic text-[#575e6b] text-[14px] text-center top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2448">
               2
             </p>
           </div>
-          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-[132px] overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2449" data-name="Button">
+          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-33 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2449" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Bold',sans-serif] font-bold leading-[22px] left-1/2 not-italic text-[#575e6b] text-[14px] text-center top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2450">
               3
             </p>
           </div>
-          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-[264px] overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2451" data-name="Button">
+          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-66 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2451" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Medium',sans-serif] font-medium leading-[22px] left-[calc(50%+9px)] not-italic text-[#16181d] text-[14px] text-center top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2452">
               ​
             </p>
-            <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[18px] top-1/2" data-node-id="1:2453" data-name="Chevron right">
+            <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-4.5 top-1/2" data-node-id="1:2453" data-name="Chevron right">
               <div className="absolute contents inset-[20.83%_33.33%]" data-node-id="1:2454" data-name="Group">
                 <div className="absolute contents inset-[20.83%_33.33%]" data-node-id="1:2455" data-name="Group">
                   <div className="absolute inset-[20.83%_33.33%]" data-node-id="1:2456" data-name="Group">
@@ -688,28 +688,28 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-[176px] overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2458" data-name="Button">
+          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-44 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2458" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Bold',sans-serif] font-bold leading-[22px] left-1/2 not-italic text-[#575e6b] text-[14px] text-center top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2459">
               4
             </p>
           </div>
-          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-[220px] overflow-clip rounded-[10px] size-[36px] top-0" data-node-id="1:2460" data-name="Button">
+          <div className="absolute bg-white border border-[#e0e2e6] border-solid left-55 overflow-clip rounded-[10px] size-9 top-0" data-node-id="1:2460" data-name="Button">
             <p className="-translate-x-1/2 absolute font-['Inter:Bold',sans-serif] font-bold leading-[22px] left-[calc(50%+0.5px)] not-italic text-[#575e6b] text-[14px] text-center top-[calc(50%-11px)] whitespace-nowrap" data-node-id="1:2461">
               5
             </p>
           </div>
         </div>
-        <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.95)] h-[61px] left-0 shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-0 w-[390px]" data-node-id="1:2462" data-name="Container">
-          <div className="absolute h-0 left-0 top-[61px] w-[390px]" data-node-id="1:2463" data-name="Line">
+        <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.95)] h-15.25 left-0 shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_2px_4px_0px_rgba(23,25,28,0.06)] top-0 w-97.5" data-node-id="1:2462" data-name="Container">
+          <div className="absolute h-0 left-0 top-15.25 w-97.5" data-node-id="1:2463" data-name="Line">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgLine1} />
             </div>
           </div>
-          <div className="absolute bg-[rgba(243,244,246,0.3)] border border-[#e0e2e6] border-solid h-[34px] left-[24px] rounded-[10px] top-[13px] w-[94px]" data-node-id="1:2464" data-name="Container">
-            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-[12px] not-italic text-[#16181d] text-[14px] top-[6px] whitespace-nowrap" data-node-id="1:2465">
+          <div className="absolute bg-[rgba(243,244,246,0.3)] border border-[#e0e2e6] border-solid h-8.5 left-6 rounded-[10px] top-3.25 w-23.5" data-node-id="1:2464" data-name="Container">
+            <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[20px] left-3 not-italic text-[#16181d] text-[14px] top-1.5 whitespace-nowrap" data-node-id="1:2465">
               관련도순
             </p>
-            <div className="absolute left-[63px] overflow-clip size-[16px] top-[8px]" data-node-id="1:2466" data-name="chevron-down">
+            <div className="absolute left-15.75 overflow-clip size-4 top-2" data-node-id="1:2466" data-name="chevron-down">
               <div className="absolute contents inset-[33.25%_20.69%]" data-node-id="1:2467" data-name="Group">
                 <div className="absolute contents inset-[33.25%_20.69%]" data-node-id="1:2468" data-name="Group">
                   <div className="absolute inset-[33.25%_20.69%]" data-node-id="1:2469" data-name="Group">
@@ -720,8 +720,8 @@ export default function LawyerSearchResults() {
             </div>
           </div>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(237,166,94,0.2)] border-solid h-[36px] left-[118.5px] rounded-[15px] top-[175.5px] w-[116px]" data-node-id="1:2471" data-name="Container">
-          <div className="absolute left-[10px] opacity-50 overflow-clip size-[13px] top-[10px]" data-node-id="1:2472" data-name="hash">
+        <div className="absolute bg-[rgba(0,0,0,0)] border border-[rgba(237,166,94,0.2)] border-solid h-9 left-[118.5px] rounded-[15px] top-[175.5px] w-29" data-node-id="1:2471" data-name="Container">
+          <div className="absolute left-2.5 opacity-50 overflow-clip size-3.25 top-2.5" data-node-id="1:2472" data-name="hash">
             <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2473" data-name="Group">
               <div className="absolute contents inset-[8.33%_12.5%]" data-node-id="1:2474" data-name="Group">
                 <div className="absolute inset-[33.33%_12.5%_58.33%_12.5%]" data-node-id="1:2475" data-name="Group">
@@ -739,20 +739,20 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-[13px] leading-[16px] left-[25px] not-italic text-[#c2410c] text-[13px] top-[9px] w-[79px]" data-node-id="1:2483">
+          <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium h-3.25 leading-[16px] left-6.25 not-italic text-[#c2410c] text-[13px] top-2.25 w-19.75" data-node-id="1:2483">
             민법 제 758조
           </p>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] h-[65px] left-[0.5px] shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_-2px_10px_0px_rgba(0,0,0,0.05)] top-[1268.5px] w-[390px]" data-node-id="1:2484" data-name="Container">
-          <div className="absolute h-0 left-0 top-0 w-[390px]" data-node-id="1:2485" data-name="Line">
+        <div className="absolute bg-[rgba(0,0,0,0)] h-16.25 left-[0.5px] shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_-2px_10px_0px_rgba(0,0,0,0.05)] top-[1268.5px] w-97.5" data-node-id="1:2484" data-name="Container">
+          <div className="absolute h-0 left-0 top-0 w-97.5" data-node-id="1:2485" data-name="Line">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgLine2} />
             </div>
           </div>
-          <div className="absolute bg-white h-[64px] left-0 shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_-2px_10px_0px_rgba(0,0,0,0.05)] top-px w-[390px]" data-node-id="1:2486" data-name="Container">
-            <div className="absolute bg-[rgba(0,0,0,0)] h-[64px] left-0 top-0 w-[384px]" data-node-id="1:2487" data-name="Tab Bar Menu">
-              <a className="absolute bg-[rgba(0,0,0,0)] block cursor-pointer h-[64px] left-[128px] overflow-clip top-0 w-[128px]" data-node-id="1:2488" data-name="Frame">
-                <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[24px] top-[calc(50%-8px)]" data-node-id="1:2489" data-name="Clock">
+          <div className="absolute bg-white h-16 left-0 shadow-[0px_0px_0px_0px_rgba(23,26,31,0),0px_-2px_10px_0px_rgba(0,0,0,0.05)] top-px w-97.5" data-node-id="1:2486" data-name="Container">
+            <div className="absolute bg-[rgba(0,0,0,0)] h-16 left-0 top-0 w-96" data-node-id="1:2487" data-name="Tab Bar Menu">
+              <a className="absolute bg-[rgba(0,0,0,0)] block cursor-pointer h-16 left-32 overflow-clip top-0 w-32" data-node-id="1:2488" data-name="Frame">
+                <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-6 top-[calc(50%-8px)]" data-node-id="1:2489" data-name="Clock">
                   <div className="absolute contents inset-[4.17%]" data-node-id="1:2490" data-name="Group">
                     <div className="absolute contents inset-[4.17%]" data-node-id="1:2491" data-name="Group">
                       <div className="absolute inset-[4.17%]" data-node-id="1:2492" data-name="Group">
@@ -767,14 +767,14 @@ export default function LawyerSearchResults() {
                 <p className="absolute font-['Inter:Regular','Noto_Sans_KR:Regular',sans-serif] font-normal leading-[16px] left-[calc(50%-17.5px)] not-italic text-[#575e6b] text-[10px] text-left top-[calc(50%+4px)] whitespace-nowrap" data-node-id="1:2496">
                   의뢰현황
                 </p>
-                <div className="-translate-x-1/2 -translate-y-1/2 absolute bg-[#eb4747] border-2 border-solid border-white left-[calc(50%+8.16px)] rounded-[7px] size-[16px] top-[calc(50%-16.16px)]" data-node-id="1:2497" data-name="Frame">
+                <div className="-translate-x-1/2 -translate-y-1/2 absolute bg-[#eb4747] border-2 border-solid border-white left-[calc(50%+8.16px)] rounded-[7px] size-4 top-[calc(50%-16.16px)]" data-node-id="1:2497" data-name="Frame">
                   <p className="absolute font-['Inter:Regular',sans-serif] font-normal leading-[14px] left-[calc(50%-2.56px)] not-italic text-[8px] text-left text-white top-[calc(50%-7px)] whitespace-nowrap" data-node-id="1:2498">
                     9
                   </p>
                 </div>
               </a>
-              <div className="absolute bg-[rgba(0,0,0,0)] h-[64px] left-[256px] overflow-clip top-0 w-[128px]" data-node-id="1:2499" data-name="Frame">
-                <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[24px] top-[calc(50%-8px)]" data-node-id="1:2500" data-name="User">
+              <div className="absolute bg-[rgba(0,0,0,0)] h-16 left-64 overflow-clip top-0 w-32" data-node-id="1:2499" data-name="Frame">
+                <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-6 top-[calc(50%-8px)]" data-node-id="1:2500" data-name="User">
                   <div className="absolute contents inset-[8.33%_16.67%]" data-node-id="1:2501" data-name="Group">
                     <div className="absolute contents inset-[8.33%_16.67%]" data-node-id="1:2502" data-name="Group">
                       <div className="absolute inset-[58.33%_16.67%_8.33%_16.67%]" data-node-id="1:2503" data-name="Group">
@@ -790,8 +790,8 @@ export default function LawyerSearchResults() {
                   내 정보
                 </p>
               </div>
-              <div className="absolute bg-[rgba(0,0,0,0)] h-[64px] left-0 overflow-clip top-0 w-[128px]" data-node-id="1:2508" data-name="Frame">
-                <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[24px] top-[calc(50%-8px)]" data-node-id="1:2509" data-name="Search">
+              <div className="absolute bg-[rgba(0,0,0,0)] h-16 left-0 overflow-clip top-0 w-32" data-node-id="1:2508" data-name="Frame">
+                <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-6 top-[calc(50%-8px)]" data-node-id="1:2509" data-name="Search">
                   <div className="absolute contents inset-[8.33%]" data-node-id="1:2510" data-name="Group">
                     <div className="absolute contents inset-[8.33%]" data-node-id="1:2511" data-name="Group">
                       <div className="absolute inset-[65.25%_8.33%_8.33%_65.25%]" data-node-id="1:2512" data-name="Group">
@@ -811,14 +811,14 @@ export default function LawyerSearchResults() {
           </div>
         </div>
       </div>
-      <div className="absolute bg-white h-[108px] left-0 top-0 w-[390px]" data-node-id="1:2517" data-name="Container">
-        <div className="absolute h-0 left-0 top-[108px] w-[390px]" data-node-id="1:2518" data-name="Line">
+      <div className="absolute bg-white h-27 left-0 top-0 w-97.5" data-node-id="1:2517" data-name="Container">
+        <div className="absolute h-0 left-0 top-27 w-97.5" data-node-id="1:2518" data-name="Line">
           <div className="absolute inset-[-0.5px_0]">
             <img alt="" className="block max-w-none size-full" src={imgLine1} />
           </div>
         </div>
-        <div className="absolute bg-[#16181d] left-[16px] rounded-[6px] size-[32px] top-[57px]" data-node-id="1:2519" data-name="Container">
-          <div className="absolute left-[5px] overflow-clip size-[22px] top-[5px]" data-node-id="1:2520" data-name="shield">
+        <div className="absolute bg-[#16181d] left-4 rounded-md size-8 top-14.25" data-node-id="1:2519" data-name="Container">
+          <div className="absolute left-1.25 overflow-clip size-5.5 top-1.25" data-node-id="1:2520" data-name="shield">
             <div className="absolute contents inset-[4%_12.36%_3.99%_12.36%]" data-node-id="1:2521" data-name="Group">
               <div className="absolute contents inset-[4%_12.36%_3.99%_12.36%]" data-node-id="1:2522" data-name="Group">
                 <div className="absolute inset-[4%_12.36%_3.99%_12.36%]" data-node-id="1:2523" data-name="Group">
@@ -828,16 +828,16 @@ export default function LawyerSearchResults() {
             </div>
           </div>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] h-[31px] left-[148px] overflow-clip top-[54px] w-[101px]" data-node-id="1:2525" data-name="Container">
-          <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[24px] left-[9px] not-italic text-[#16181d] text-[16px] top-[8px] whitespace-nowrap" data-node-id="1:2526">
+        <div className="absolute bg-[rgba(0,0,0,0)] h-7.75 left-37 overflow-clip top-13.5 w-25.25" data-node-id="1:2525" data-name="Container">
+          <p className="absolute font-['Inter:Medium','Noto_Sans_KR:Regular',sans-serif] font-medium leading-[24px] left-2.25 not-italic text-[#16181d] text-[16px] top-2 whitespace-nowrap" data-node-id="1:2526">
             변호사 찾기
           </p>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] left-[298px] overflow-clip size-[36px] top-[55px]" data-node-id="1:2527" data-name="Button">
+        <div className="absolute bg-[rgba(0,0,0,0)] left-74.5 overflow-clip size-9 top-13.75" data-node-id="1:2527" data-name="Button">
           <p className="absolute font-['Inter:Regular',sans-serif] font-normal leading-[26px] left-[calc(50%+10px)] not-italic text-[#575e6b] text-[16px] top-[calc(50%-13px)] whitespace-nowrap" data-node-id="1:2528">
             ​
           </p>
-          <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[20px] top-1/2" data-node-id="1:2529" data-name="Search">
+          <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-5 top-1/2" data-node-id="1:2529" data-name="Search">
             <div className="absolute contents inset-[8.5%_8.39%_8.39%_8.5%]" data-node-id="1:2530" data-name="Group">
               <div className="absolute contents inset-[8.5%_8.39%_8.39%_8.5%]" data-node-id="1:2531" data-name="Group">
                 <div className="absolute inset-[65.3%_8.39%_8.39%_65.3%]" data-node-id="1:2532" data-name="Group">
@@ -850,11 +850,11 @@ export default function LawyerSearchResults() {
             </div>
           </div>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] left-[338px] overflow-clip size-[36px] top-[55px]" data-node-id="1:2536" data-name="Button">
+        <div className="absolute bg-[rgba(0,0,0,0)] left-84.5 overflow-clip size-9 top-13.75" data-node-id="1:2536" data-name="Button">
           <p className="absolute font-['Inter:Regular',sans-serif] font-normal leading-[26px] left-[calc(50%+10px)] not-italic text-[#575e6b] text-[16px] top-[calc(50%-13px)] whitespace-nowrap" data-node-id="1:2537">
             ​
           </p>
-          <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-[20px] top-1/2" data-node-id="1:2538" data-name="Bell">
+          <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 overflow-clip size-5 top-1/2" data-node-id="1:2538" data-name="Bell">
             <div className="absolute contents inset-[4.32%_8.5%_4.17%_8.5%]" data-node-id="1:2539" data-name="Group">
               <div className="absolute contents inset-[4.32%_8.5%_4.17%_8.5%]" data-node-id="1:2540" data-name="Group">
                 <div className="absolute inset-[83.37%_38.66%_4.17%_38.66%]" data-node-id="1:2541" data-name="Group">
@@ -867,8 +867,8 @@ export default function LawyerSearchResults() {
             </div>
           </div>
         </div>
-        <div className="absolute bg-[rgba(0,0,0,0)] h-[40px] left-0 top-0 w-[390px]" data-node-id="1:2545" data-name="Container">
-          <div className="absolute h-[40px] left-0 overflow-clip top-0 w-[70px]" data-node-id="1:2546" data-name="Image">
+        <div className="absolute bg-[rgba(0,0,0,0)] h-10 left-0 top-0 w-97.5" data-node-id="1:2545" data-name="Container">
+          <div className="absolute h-10 left-0 overflow-clip top-0 w-17.5" data-node-id="1:2546" data-name="Image">
             <div className="absolute contents inset-[41.96%_19.41%_31.28%_41.5%]" data-node-id="1:2547" data-name="Group">
               <div className="absolute contents inset-[41.96%_19.41%_31.28%_41.5%]" data-node-id="1:2548" data-name="Group">
                 <div className="absolute contents inset-[41.96%_19.41%_31.28%_41.5%]" data-node-id="1:2549" data-name="Group">
@@ -890,7 +890,7 @@ export default function LawyerSearchResults() {
               </div>
             </div>
           </div>
-          <div className="absolute h-[40px] left-[294px] overflow-clip top-0 w-[96px]" data-node-id="1:2559" data-name="Image">
+          <div className="absolute h-10 left-73.5 overflow-clip top-0 w-24" data-node-id="1:2559" data-name="Image">
             <div className="absolute contents inset-[41.68%_18.88%_31.91%_12.5%]" data-node-id="1:2560" data-name="Group">
               <div className="absolute contents inset-[41.68%_18.88%_31.91%_12.5%]" data-node-id="1:2561" data-name="Group">
                 <div className="absolute contents inset-[41.68%_18.88%_31.91%_12.5%]" data-node-id="1:2562" data-name="Group">

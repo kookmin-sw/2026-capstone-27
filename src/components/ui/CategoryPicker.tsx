@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { Search, ChevronRight, ChevronDown, Check, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { Input } from './Input';
@@ -46,9 +46,14 @@ export function CategoryPicker({
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState<string>(data[0]?.name ?? '');
   const [openL2, setOpenL2] = useState<string | null>(null);
+  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const isSearching = query.trim().length > 0;
   const searchResults = useMemo(() => searchCategories(query, data), [query, data]);
+  const activeIndex = useMemo(
+    () => data.findIndex((n) => n.name === activeTab),
+    [data, activeTab],
+  );
 
   const toggle = useCallback(
     (name: string, path: string[]) => {
@@ -66,16 +71,11 @@ export function CategoryPicker({
     onChange(value.filter((s) => pathKey(s.path) !== pathKey(sel.path)));
   }
 
-  const handleTabClick = useCallback(
-    (node: CategoryNode) => {
-      setActiveTab(node.name);
-      setOpenL2(null);
-      toggle(node.name, [node.name]);
-    },
-    [toggle],
-  );
-
-  const activeNode = data.find((n) => n.name === activeTab);
+  // 탭 이동 — 선택 토글 없음
+  const handleTabNavigate = useCallback((node: CategoryNode) => {
+    setActiveTab(node.name);
+    setOpenL2(null);
+  }, []);
 
   // ── Keyboard handler for tabs ──
   const handleTabKeyDown = useCallback(
@@ -98,12 +98,12 @@ export function CategoryPicker({
       }
       setActiveTab(data[nextIndex].name);
       setOpenL2(null);
-      const tabList = (e.currentTarget as HTMLElement).parentElement;
-      const buttons = tabList?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
-      buttons?.[nextIndex]?.focus();
+      tabRefs.current[nextIndex]?.focus();
     },
     [data],
   );
+
+  const activeNode = data[activeIndex];
 
   return (
     <div className="flex flex-col gap-3">
@@ -176,29 +176,48 @@ export function CategoryPicker({
             >
               {data.map((node, index) => {
                 const checked = hasSelection(value, [node.name]);
+                const isActive = activeTab === node.name;
                 return (
-                  <button
+                  <div
                     key={node.name}
-                    type="button"
+                    ref={(el) => {
+                      tabRefs.current[index] = el;
+                    }}
                     role="tab"
                     id={`cat-tab-${index}`}
-                    aria-selected={activeTab === node.name}
+                    aria-selected={isActive}
                     aria-controls={`cat-panel-${index}`}
-                    tabIndex={activeTab === node.name ? 0 : -1}
-                    onClick={() => handleTabClick(node)}
+                    tabIndex={isActive ? 0 : -1}
+                    onClick={() => handleTabNavigate(node)}
                     onKeyDown={(e) => handleTabKeyDown(e, index)}
                     className={cn(
-                      'whitespace-nowrap px-4 py-3 text-sm font-medium text-left transition-colors',
+                      'whitespace-nowrap pr-4 py-3 text-sm font-medium text-left transition-colors cursor-pointer',
                       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-inset',
                       'flex items-center gap-2',
-                      activeTab === node.name
+                      isActive
                         ? 'text-brand bg-blue-50 border-b-2 border-brand md:border-b-0 md:border-r-2'
                         : 'text-[#575e6b] hover:bg-gray-50 hover:text-[#16181d]',
                     )}
                   >
-                    <Checkbox checked={checked} />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggle(node.name, [node.name]);
+                      }}
+                      onKeyDown={(e) => e.stopPropagation()}
+                      className={cn(
+                        'pl-4 py-1 -my-1 flex items-center',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-inset rounded',
+                      )}
+                      aria-pressed={checked}
+                      aria-label={`${node.name} ${checked ? '선택 해제' : '선택'}`}
+                      tabIndex={-1}
+                    >
+                      <Checkbox checked={checked} />
+                    </button>
                     <span className="truncate">{node.name}</span>
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -206,8 +225,8 @@ export function CategoryPicker({
             {/* Content panel */}
             <div
               role="tabpanel"
-              id={`cat-panel-${data.findIndex((n) => n.name === activeTab)}`}
-              aria-labelledby={`cat-tab-${data.findIndex((n) => n.name === activeTab)}`}
+              id={`cat-panel-${activeIndex}`}
+              aria-labelledby={`cat-tab-${activeIndex}`}
               className="flex-1 max-h-80 md:max-h-96 overflow-y-auto"
             >
               {activeNode ? (

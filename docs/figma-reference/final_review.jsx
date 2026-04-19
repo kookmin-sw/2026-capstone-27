@@ -27,75 +27,75 @@ const imgGroup18 = "https://www.figma.com/api/mcp/asset/ececefc5-2056-4e47-a91e-
 export default function FinalReview() {
   return (
     <div className="bg-white relative shadow-[0px_3px_6px_0px_rgba(18,15,40,0.12)] size-full" data-node-id="1:1531" data-name="Final Review">
-      <div className="absolute h-[833px] left-0 overflow-clip top-[107px] w-[390px]" data-node-id="1:1532">
-        <div className="absolute font-bold h-[96px] left-[24px] text-[#161a1d] text-[20px] top-[16px] tracking-[-0.6px] w-[214px]" data-node-id="1:1533">
+      <div className="absolute h-208.25 left-0 overflow-clip top-26.75 w-97.5" data-node-id="1:1532">
+        <div className="absolute font-bold h-24 left-6 text-[#161a1d] text-[20px] top-4 tracking-[-0.6px] w-53.5" data-node-id="1:1533">
           <p className="leading-[32px] mb-0">마지막으로</p>
           <p className="leading-[32px]">내용을 확인해주세요.</p>
         </div>
-        <p className="absolute font-normal leading-[20px] left-[24px] text-[#31383f] text-[14px] top-[84px]" data-node-id="1:1534">작성하신 의뢰서가 변호사님께 전달됩니다.</p>
+        <p className="absolute font-normal leading-[20px] left-6 text-[#31383f] text-[14px] top-21" data-node-id="1:1534">작성하신 의뢰서가 변호사님께 전달됩니다.</p>
         {/* 제출 전 확인 필수 경고 */}
-        <div className="absolute bg-[rgba(235,71,71,0.05)] border border-[rgba(235,71,71,0.2)] h-[114px] left-[24.5px] rounded-[12px] top-[701.5px] w-[342px]" data-node-id="1:1535">
-          <div className="absolute bg-[rgba(235,71,71,0.1)] left-[20px] rounded-[18px] size-[36px] top-[41px]"></div>
-          <p className="absolute font-bold left-[72px] text-[#eb4747] text-[14px] top-[17px]">제출 전 확인 필수</p>
-          <p className="absolute font-medium left-[72px] text-[rgba(235,71,71,0.8)] text-[10px] top-[41px] w-[268px] leading-[18px]">의뢰서 제출 버튼을 누른 후에는 <span className="underline">내용을 수정할 수 없습니다.</span> 모든 항목이 정확한지 다시 한번 확인해 주세요.</p>
+        <div className="absolute bg-[rgba(235,71,71,0.05)] border border-[rgba(235,71,71,0.2)] h-28.5 left-[24.5px] rounded-xl top-[701.5px] w-85.5" data-node-id="1:1535">
+          <div className="absolute bg-[rgba(235,71,71,0.1)] left-5 rounded-[18px] size-9 top-10.25"></div>
+          <p className="absolute font-bold left-18 text-[#eb4747] text-[14px] top-4.25">제출 전 확인 필수</p>
+          <p className="absolute font-medium left-18 text-[rgba(235,71,71,0.8)] text-[10px] top-10.25 w-67 leading-[18px]">의뢰서 제출 버튼을 누른 후에는 <span className="underline">내용을 수정할 수 없습니다.</span> 모든 항목이 정확한지 다시 한번 확인해 주세요.</p>
         </div>
         {/* 의뢰서 카드 */}
-        <div className="absolute bg-[rgba(31,177,249,0.1)] blur-[4px] h-[531px] left-[20px] opacity-50 rounded-[22px] top-[124px] w-[350px]"></div>
-        <div className="absolute bg-white border border-[#dde0e4] h-[553px] left-[24.5px] overflow-clip rounded-[12px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] top-[128.5px] w-[342px]" data-node-id="1:1549">
-          <div className="absolute bg-[#1fb1f9] h-[8px] left-0 top-0 w-[340px]"></div>
-          <div className="absolute bg-[rgba(31,177,249,0.1)] h-[24px] left-[24px] overflow-clip rounded-[12px] top-[34px] w-[71px]">
-            <p className="absolute font-bold left-[5px] text-[#1fb1f9] text-[11px] top-[2px]">민사 / 부동산</p>
+        <div className="absolute bg-[rgba(31,177,249,0.1)] blur-[4px] h-132.75 left-5 opacity-50 rounded-[22px] top-31 w-87.5"></div>
+        <div className="absolute bg-white border border-[#dde0e4] h-138.25 left-[24.5px] overflow-clip rounded-xl shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] top-[128.5px] w-85.5" data-node-id="1:1549">
+          <div className="absolute bg-[#1fb1f9] h-2 left-0 top-0 w-85"></div>
+          <div className="absolute bg-[rgba(31,177,249,0.1)] h-6 left-6 overflow-clip rounded-xl top-8.5 w-17.75">
+            <p className="absolute font-bold left-1.25 text-[#1fb1f9] text-[11px] top-0.5">민사 / 부동산</p>
           </div>
-          <p className="absolute font-bold left-[23px] text-[#161a1d] text-[16px] top-[70px]">임대차 계약 만료에 따른 보증금 반환 청구</p>
+          <p className="absolute font-bold left-5.75 text-[#161a1d] text-[16px] top-17.5">임대차 계약 만료에 따른 보증금 반환 청구</p>
           {/* 사건 요약 미리보기 */}
-          <div className="absolute bg-[rgba(240,250,255,0.5)] border border-[rgba(31,177,249,0.1)] h-[176px] left-[24px] rounded-[12px] top-[119px] w-[292px]" data-node-id="1:1554">
-            <p className="absolute font-bold left-[40px] text-[#1fb1f9] text-[12px] top-[16px] tracking-[0.3px] uppercase">사건 요약 미리보기</p>
-            <p className="absolute font-normal left-[20.5px] text-[11px] text-[rgba(22,26,29,0.8)] top-[39.5px] w-[258px] leading-[23px]">피고(임대인)는 계약 만료일인 2023년 10월 30일이 경과하였음에도 불구하고, 신규 임차인이 구해지지 않았다는 사유로 임대차 보증금 2억 원의 반환을 거부하고 있습니다. 원고는 이미 이사 갈 집의 계약금을 지불한 상태로 막대한 금전적 손실이 예상되는 상황입니다.</p>
+          <div className="absolute bg-[rgba(240,250,255,0.5)] border border-[rgba(31,177,249,0.1)] h-44 left-6 rounded-xl top-29.75 w-73" data-node-id="1:1554">
+            <p className="absolute font-bold left-10 text-[#1fb1f9] text-[12px] top-4 tracking-[0.3px] uppercase">사건 요약 미리보기</p>
+            <p className="absolute font-normal left-[20.5px] text-[11px] text-[rgba(22,26,29,0.8)] top-[39.5px] w-64.5 leading-[23px]">피고(임대인)는 계약 만료일인 2023년 10월 30일이 경과하였음에도 불구하고, 신규 임차인이 구해지지 않았다는 사유로 임대차 보증금 2억 원의 반환을 거부하고 있습니다. 원고는 이미 이사 갈 집의 계약금을 지불한 상태로 막대한 금전적 손실이 예상되는 상황입니다.</p>
           </div>
           {/* 분석된 쟁점 / 개인정보 설정 */}
-          <div className="absolute flex gap-3 left-[24px] top-[315px]">
-            <div className="bg-white border border-[rgba(221,224,228,0.5)] rounded-[10px] w-[140px] h-[81px] p-3">
-              <div className="bg-[#f3f5f6] rounded-[8px] size-[32px] mb-1"></div>
+          <div className="absolute flex gap-3 left-6 top-78.75">
+            <div className="bg-white border border-[rgba(221,224,228,0.5)] rounded-[10px] w-35 h-20.25 p-3">
+              <div className="bg-[#f3f5f6] rounded-lg size-8 mb-1"></div>
               <p className="font-medium text-[#31383f] text-[10px] uppercase">분석된 쟁점</p>
               <p className="font-semibold text-[#161a1d] text-[13px]">3건</p>
             </div>
-            <div className="bg-white border border-[rgba(221,224,228,0.5)] rounded-[10px] w-[140px] h-[81px] p-3">
-              <div className="bg-[#f3f5f6] rounded-[8px] size-[32px] mb-1"></div>
+            <div className="bg-white border border-[rgba(221,224,228,0.5)] rounded-[10px] w-35 h-20.25 p-3">
+              <div className="bg-[#f3f5f6] rounded-lg size-8 mb-1"></div>
               <p className="font-medium text-[#31383f] text-[10px] uppercase">개인정보 설정</p>
               <p className="font-semibold text-[#161a1d] text-[13px]">부분 공개 (이○명)</p>
             </div>
           </div>
           {/* 핵심 키워드 */}
-          <p className="absolute font-bold left-[47px] text-[#31383f] text-[12px] top-[416px] tracking-[0.3px] uppercase">핵심 키워드</p>
-          <div className="absolute flex flex-wrap gap-2 left-[24px] top-[444px]">
+          <p className="absolute font-bold left-11.75 text-[#31383f] text-[12px] top-104 tracking-[0.3px] uppercase">핵심 키워드</p>
+          <div className="absolute flex flex-wrap gap-2 left-6 top-111">
             <span className="bg-[#f3f5f6] border border-[rgba(221,224,228,0.5)] rounded-[17px] px-2 py-1 text-[#1d2125] text-[11px] font-medium"># 보증금 반환</span>
             <span className="bg-[#f3f5f6] border border-[rgba(221,224,228,0.5)] rounded-[17px] px-2 py-1 text-[#1d2125] text-[11px] font-medium"># 임대차 보호법</span>
             <span className="bg-[#f3f5f6] border border-[rgba(221,224,228,0.5)] rounded-[17px] px-2 py-1 text-[#1d2125] text-[11px] font-medium"># 지연 이자</span>
           </div>
           {/* 분석 리포트 포함됨 */}
-          <div className="absolute bg-[rgba(243,245,246,0.3)] h-[53px] left-0 top-[499px] w-[340px]">
-            <div className="absolute h-0 left-0 top-0 w-[340px] border-t border-[#e0e2e6]"></div>
-            <p className="absolute font-medium left-[24px] text-[#31383f] text-[12px] top-[18px]">분석 리포트 포함됨</p>
+          <div className="absolute bg-[rgba(243,245,246,0.3)] h-13.25 left-0 top-124.75 w-85">
+            <div className="absolute h-0 left-0 top-0 w-85 border-t border-[#e0e2e6]"></div>
+            <p className="absolute font-medium left-6 text-[#31383f] text-[12px] top-4.5">분석 리포트 포함됨</p>
           </div>
         </div>
       </div>
       {/* 하단 버튼 */}
-      <div className="absolute bg-white h-[134px] left-0 shadow-[0px_-10px_20px_0px_rgba(0,0,0,0.02)] top-[940px] w-[390px]" data-node-id="1:1620">
-        <div className="absolute h-0 left-0 top-0 w-[390px] border-t border-[#e0e2e6]"></div>
-        <div className="absolute bg-[#1fb1f9] h-[57px] left-[24.5px] overflow-clip rounded-[12px] shadow-[0px_10px_15px_0px_rgba(31,177,249,0.2)] top-[24.5px] w-[342px]">
-          <p className="absolute font-bold left-1/2 -translate-x-1/2 text-[16px] text-white top-[16px]">변호사 선택</p>
+      <div className="absolute bg-white h-33.5 left-0 shadow-[0px_-10px_20px_0px_rgba(0,0,0,0.02)] top-235 w-97.5" data-node-id="1:1620">
+        <div className="absolute h-0 left-0 top-0 w-97.5 border-t border-[#e0e2e6]"></div>
+        <div className="absolute bg-[#1fb1f9] h-14.25 left-[24.5px] overflow-clip rounded-xl shadow-[0px_10px_15px_0px_rgba(31,177,249,0.2)] top-[24.5px] w-85.5">
+          <p className="absolute font-bold left-1/2 -translate-x-1/2 text-[16px] text-white top-4">변호사 선택</p>
         </div>
         <p className="absolute font-normal left-1/2 -translate-x-1/2 text-[#31383f] text-[10px] text-center top-[97.5px]">제출 시 SHIELD 서비스 이용 약관 및 개인정보 처리방침에 동의하게 됩니다.</p>
       </div>
       {/* 헤더 */}
-      <div className="absolute bg-white h-[108px] left-0 top-0 w-[390px]" data-node-id="1:1625">
-        <div className="absolute h-0 left-0 top-[108px] w-[390px] border-b border-[#e0e2e6]"></div>
-        <button className="absolute bg-transparent left-[8px] rounded-[20px] w-[40px] h-[40px] top-[53px]">
-          <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 w-[24px] h-[24px] top-1/2">
+      <div className="absolute bg-white h-27 left-0 top-0 w-97.5" data-node-id="1:1625">
+        <div className="absolute h-0 left-0 top-27 w-97.5 border-b border-[#e0e2e6]"></div>
+        <button className="absolute bg-transparent left-2 rounded-[20px] w-10 h-10 top-13.25">
+          <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 w-6 h-6 top-1/2">
             <div className="absolute inset-[20.83%_33.33%]"><img alt="뒤로" className="absolute block inset-0 max-w-none w-full h-full" src={imgGroup18} /></div>
           </div>
         </button>
-        <p className="absolute font-medium left-[141px] text-[#161a1d] text-[18px] top-[59px]">의뢰서 최종 확인</p>
+        <p className="absolute font-medium left-35.25 text-[#161a1d] text-[18px] top-14.75">의뢰서 최종 확인</p>
       </div>
     </div>
   );

@@ -188,7 +188,7 @@ export function InboxDetailPage() {
 
       {/* Bottom action bar */}
       {isPending && !successMessage && (
-        <div className="sticky bottom-0 bg-white px-5 py-4 safe-area-bottom space-y-2.5">
+        <div className="sticky bottom-16 lg:bottom-0 z-30 bg-white border-t border-gray-200 px-5 py-4 safe-area-bottom space-y-2.5">
           <Button
             variant="primary"
             fullWidth

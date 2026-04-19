@@ -1,79 +1,85 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Scale, Shield, Briefcase, Users } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useCreateConsultation } from '@/hooks/useConsultation';
 import { Button, Card } from '@/components/ui';
+import { CategoryPicker } from '@/components/ui/CategoryPicker';
 import { Header } from '@/components/layout/Header';
-import type { DomainType } from '@/types/enums';
+import type { CategorySelection } from '@/lib/legalCategories';
 
-// ─── domain options ──────────────────────────────────────────────────────────
+// ─── helpers ─────────────────────────────────────────────────────────────────
 
-interface DomainOption {
-  value: DomainType;
-  label: string;
-  description: string;
-  Icon: React.ElementType;
+/**
+ * 선택된 CategorySelection[] 배열을 백엔드 3단계 분류 형태로 변환.
+ *
+ *  - path 길이 1 → 대분류(domains)
+ *  - path 길이 2 → 중분류(subDomains) — 상위 대분류도 함께 포함
+ *  - path 길이 3 → 소분류(tags) — 상위 대/중분류도 함께 포함
+ *
+ *  중복은 Set 으로 제거.
+ */
+function toClassificationRequest(selections: CategorySelection[]): {
+  domains: string[];
+  subDomains: string[];
+  tags: string[];
+} {
+  const domains = new Set<string>();
+  const subDomains = new Set<string>();
+  const tags = new Set<string>();
+
+  for (const sel of selections) {
+    const [l1, l2, l3] = sel.path;
+    if (l1) domains.add(l1);
+    if (l2) subDomains.add(l2);
+    if (l3) tags.add(l3);
+  }
+
+  return {
+    domains: Array.from(domains),
+    subDomains: Array.from(subDomains),
+    tags: Array.from(tags),
+  };
 }
-
-const DOMAIN_OPTIONS: DomainOption[] = [
-  {
-    value: 'CIVIL',
-    label: '민사',
-    description: '계약, 손해배상, 부동산 등',
-    Icon: Scale,
-  },
-  {
-    value: 'CRIMINAL',
-    label: '형사',
-    description: '고소, 고발, 형사 사건 등',
-    Icon: Shield,
-  },
-  {
-    value: 'LABOR',
-    label: '노동',
-    description: '해고, 임금, 근로조건 등',
-    Icon: Briefcase,
-  },
-  {
-    value: 'SCHOOL_VIOLENCE',
-    label: '학교폭력',
-    description: '학교폭력 사건 대응',
-    Icon: Users,
-  },
-];
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
 export function NewConsultationPage() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState<DomainType | null | 'UNKNOWN'>(null);
+  const [selected, setSelected] = useState<CategorySelection[]>([]);
+  const [isUnknown, setIsUnknown] = useState(false);
   const { mutate: createConsultation, isPending } = useCreateConsultation();
 
-  // "잘 모르겠어요" uses empty domain arrays, but we track it as 'UNKNOWN' locally
-  const isDomainChosen = selected !== null;
+  const isDomainChosen = selected.length > 0 || isUnknown;
+
+  function handleCategoryChange(value: CategorySelection[]) {
+    setSelected(value);
+    if (value.length > 0) setIsUnknown(false);
+  }
+
+  function handleUnknownToggle() {
+    setIsUnknown(!isUnknown);
+    if (!isUnknown) setSelected([]);
+  }
 
   function handleSubmit() {
     if (!isDomainChosen) return;
 
-    // 백엔드는 { domains, subDomains, tags } 세 배열을 받음.
-    // 현재 단계에서는 L1 도메인 하나만 선택하므로 domains 에 단일 값, 나머지는 빈 배열로 전달.
-    const domains: string[] =
-      selected === 'UNKNOWN' ? [] : [selected as DomainType];
+    // "잘 모르겠어요" → 세 배열 모두 빈 값으로 전달.
+    // 그 외에는 선택된 경로를 domains/subDomains/tags 로 분해해 전달.
+    const request = isUnknown
+      ? { domains: [], subDomains: [], tags: [] }
+      : toClassificationRequest(selected);
 
-    createConsultation(
-      { domains, subDomains: [], tags: [] },
-      {
-        onSuccess: (res) => {
-          const newId = res.data.data.consultationId;
-          navigate(`/consultations/${newId}`);
-        },
+    createConsultation(request, {
+      onSuccess: (res) => {
+        const newId = res.data.data.consultationId;
+        navigate(`/consultations/${newId}`);
       },
-    );
+    });
   }
 
   return (
-    <div className="flex flex-col min-h-dvh bg-surface">
+    <div className="flex flex-col flex-1">
       <Header
         title="새 상담"
         showBack
@@ -88,65 +94,26 @@ export function NewConsultationPage() {
             어떤 분야의 상담이 필요하신가요?
           </p>
           <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">
-            가장 가까운 분야를 선택해 주세요. 정확하지 않아도 괜찮습니다.
+            관련 분야를 모두 선택해 주세요. 정확하지 않아도 괜찮습니다.
           </p>
         </Card>
 
-        {/* Domain grid */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-          {DOMAIN_OPTIONS.map(({ value, label, description, Icon }) => {
-            const isSelected = selected === value;
-            return (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setSelected(value)}
-                className={cn(
-                  'text-left bg-white rounded-card border-2 p-4',
-                  'transition-all duration-150 cursor-pointer',
-                  'hover:border-brand hover:shadow-sm',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
-                  'active:scale-[0.98]',
-                  isSelected
-                    ? 'border-brand bg-blue-50 shadow-sm'
-                    : 'border-gray-200',
-                )}
-                aria-pressed={isSelected}
-              >
-                <div
-                  className={cn(
-                    'mb-3 w-10 h-10 rounded-xl flex items-center justify-center',
-                    isSelected ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500',
-                    'transition-colors duration-150',
-                  )}
-                >
-                  <Icon size={20} />
-                </div>
-                <p
-                  className={cn(
-                    'text-sm font-semibold mb-0.5',
-                    isSelected ? 'text-brand' : 'text-gray-900',
-                  )}
-                >
-                  {label}
-                </p>
-                <p className="text-xs text-gray-500 leading-snug">
-                  {description}
-                </p>
-              </button>
-            );
-          })}
-        </div>
+        {/* Category picker */}
+        <CategoryPicker
+          value={selected}
+          onChange={handleCategoryChange}
+          placeholder="분야 검색 (예: 보증금 반환, 이혼, 해고...)"
+        />
 
         {/* "잘 모르겠어요" option */}
         <div className="flex justify-center">
           <button
             type="button"
-            onClick={() => setSelected('UNKNOWN')}
+            onClick={handleUnknownToggle}
             className={cn(
               'text-sm font-medium transition-colors duration-150',
               'focus-visible:outline-none focus-visible:underline',
-              selected === 'UNKNOWN'
+              isUnknown
                 ? 'text-brand underline'
                 : 'text-gray-400 hover:text-gray-600',
             )}

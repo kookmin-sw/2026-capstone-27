@@ -9,15 +9,23 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * LegalRetrievalService Stub 구현.
- * Phase A에서 MongoDB를 제거하였고, PostgreSQL 기반 retrieval 구현체가 등록되기 전까지
- * 기본으로 활성화되어 빈 리스트를 반환한다.
+ * LegalRetrievalService Stub 구현 — 개발/테스트 전용 opt-in (Phase B-7 이후).
  *
- * rag.retrieval.stub=true (기본값) 일 때 활성화.
- * PG 기반 실제 구현체가 들어오면 rag.retrieval.stub=false 로 전환.
+ * <p>Phase B-7 (2026-04-19) 이전에는 기본값이었지만, B-2 인제스트와 B-4 3-way
+ * 하이브리드 검색 검증이 끝나면서 {@code rag.retrieval.stub}의 기본값이 {@code false}로
+ * 전환되었다. 따라서 이 Stub은 {@code RAG_STUB=true} 환경변수를 명시적으로
+ * 지정한 경우에만 등록된다.</p>
+ *
+ * <p>사용 시나리오:
+ * <ul>
+ *   <li>로컬 개발에서 Cohere API 키 없이 파이프라인을 돌려보고 싶을 때</li>
+ *   <li>RAG 결과를 결정적으로 비운 상태로 두고 {@code MessageService}의
+ *       fallback 경로를 검증할 때</li>
+ * </ul>
+ * </p>
  */
 @Component
-@ConditionalOnProperty(name = "rag.retrieval.stub", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "rag.retrieval.stub", havingValue = "true", matchIfMissing = false)
 @Slf4j
 public class StubLegalRetrievalService implements LegalRetrievalService {
 

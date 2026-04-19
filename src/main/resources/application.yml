@@ -128,18 +128,17 @@ cohere:
 
 # RAG 검색 설정
 #
-# 기본값 true (Stub 활성화):
-#   Phase A-5에서 PgLegalRetrievalService를 구현했으나,
-#   legal_chunks 테이블이 비어 있는 현 시점에서 PG 검색을 기본으로 켜면
-#   검색 결과가 항상 비어 RAG 응답 품질이 저하된다.
+# 기본값 false (운영 전환 — Phase B-7, 2026-04-19):
+#   B-2 인제스트로 민법 조문 1,193건이 적재되고 B-4 3-way 하이브리드 검색이
+#   실데이터 검증을 마친 상태. 실제 운영에서는 PgLegalRetrievalService가 사용된다.
 #
-# 활성화 시점:
-#   ① 법령 청크 인제스트 파이프라인 구축 및 실데이터 적재 완료 후
-#   ② 확인된 환경(stg → prod)에서 RAG_STUB=false 명시적 지정
-#   ③ 전체 전환은 application.yml 기본값을 false로 변경
+# Stub으로 되돌리고 싶을 때 (로컬 개발‧Cohere 키 없는 테스트 등):
+#   RAG_STUB=true 환경변수로 override. StubLegalRetrievalService가 활성화되어
+#   빈 청크 리스트를 반환한다 — RAG 파이프라인은 그대로 동작하고
+#   MessageService는 ragContext가 비었을 때의 RAG-less 경로로 내려간다.
 rag:
   retrieval:
-    stub: ${RAG_STUB:true}
+    stub: ${RAG_STUB:false}
     # 3-way 하이브리드 점수 가중치 (Phase B-4 재설계)
     # 경로:
     #  - vector:  Cohere embed-v4.0 임베딩 ↔ pgvector cosine similarity (0~1)

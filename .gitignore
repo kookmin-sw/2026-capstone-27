@@ -7,3 +7,7 @@ dist
 .DS_Store
 .vscode
 .idea
+
+# Lockfiles from other package managers (this project uses npm)
+pnpm-lock.yaml
+yarn.lock

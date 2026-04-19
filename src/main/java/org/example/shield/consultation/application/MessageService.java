@@ -67,6 +67,19 @@ public class MessageService {
     private final ChatTransactionalBoundary chatTxBoundary;
     private final ChatMetrics chatMetrics;
 
+    /**
+     * 사용자 메시지 처리 및 AI 응답 생성.
+     *
+     * <p>{@code noRollbackFor = ChatAiException.class} (Issue #45 후속):
+     * AI 응답이 blank 로 내려와 {@link ChatAiException} 이 발생하더라도
+     * 사용자가 이미 저장한 USER 메시지와 감사 로깅용
+     * {@code lastResponseId} 는 커밋되어야 한다. 그렇지 않으면 AI 실패
+     * 시마다 사용자 입력이 유실되어 재현 가능한 데이터 손실이 발생한다.</p>
+     *
+     * <p>ChatAiException 이외의 런타임 예외는 기존 기본 동작(전체 롤백)
+     * 을 유지하므로 RAG/Cohere 호출 실패는 그대로 롤백된다.</p>
+     */
+    @Transactional(noRollbackFor = ChatAiException.class)
     public SendMessageResponse sendMessage(UUID consultationId, String content) {
         long pipelineStart = System.nanoTime();
         try {

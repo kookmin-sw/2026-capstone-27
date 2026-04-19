@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# 로컬 CORS
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173,http://localhost:5174
+
+logging:
+  level:
+    org.example.shield: DEBUG
+    org.springframework.web: INFO

@@ -1,0 +1,25 @@
+[Unit]
+Description=SHIELD Backend Spring Boot Application
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/shield
+EnvironmentFile=/etc/shield/shield.env
+ExecStart=/usr/bin/java \
+  -Xms256m -Xmx512m \
+  -XX:+UseG1GC \
+  -XX:+ExitOnOutOfMemoryError \
+  -Dspring.profiles.active=prod \
+  -Dfile.encoding=UTF-8 \
+  -jar /home/ec2-user/shield/shield.jar
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=shield-backend
+
+[Install]
+WantedBy=multi-user.target

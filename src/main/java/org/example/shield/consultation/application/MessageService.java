@@ -86,13 +86,18 @@ public class MessageService {
                 // Layer 2: 법률 검색
                 List<String> lawIds = categoryLawMappingService.resolveLawIds(
                         classification.matchedNodeIds());
+                // B-8a: 온톨로지 노드 → DB category_ids 토큰 매핑 (soft-filter)
+                List<String> categoryIds = categoryLawMappingService.resolveCategoryIds(
+                        classification.matchedNodeIds());
                 String vectorQuery = classification.retrievalQueries().isEmpty()
                         ? primaryField + " 관련 법률"
                         : classification.retrievalQueries().get(0);
                 List<LegalChunk> chunks = legalRetrievalService.retrieve(
                         vectorQuery,
                         classification.keywords().core(),
-                        lawIds, 3);
+                        categoryIds,
+                        lawIds,
+                        3);
 
                 // Layer 3: 컨텍스트 빌드
                 ragContext = ragContextBuilder.build(chunks, classification.intentSummary());

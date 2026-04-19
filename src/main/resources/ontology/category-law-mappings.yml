@@ -1,3 +1,7 @@
+# category_ids (선택): 이 온톨로지 노드에 매핑되는 legal_chunks.category_ids 토큰.
+# 지정 시 PgLegalRetrievalService의 soft-filter로 작동하여 후보군을 우선 강화한다.
+# B-8a에서 민법 시맨틱 그룹(group:*) 7종에 한해 매핑을 추가했다. 미지정 노드는
+# 필터 없이 벡터/BM25/트라이그램 점수에만 의존한다.
 mappings:
   # === 부동산 거래 (law-001) ===
   law-001-01:  # 부동산 매매
@@ -6,6 +10,7 @@ mappings:
     secondary:
       - { law_id: "LSI265377", name: "부동산등기법" }
       - { law_id: "LSI215759", name: "부동산 실권리자명의 등기에 관한 법률" }
+    category_ids: ["group:ownership"]
 
   law-001-02:  # 부동산 임대차
     primary:
@@ -13,18 +18,21 @@ mappings:
       - { law_id: "LSI238797", name: "상가건물 임대차보호법" }
     secondary:
       - { law_id: "LSI265307", name: "민법" }
+    category_ids: ["group:leasing", "group:jeonse"]
 
   law-001-03:  # 부동산 담보
     primary:
       - { law_id: "LSI265307", name: "민법" }
     secondary:
       - { law_id: "LSI265351", name: "민사집행법" }
+    category_ids: ["group:mortgage", "group:pledge"]
 
   law-001-04:  # 부동산 권리관계
     primary:
       - { law_id: "LSI265307", name: "민법" }
     secondary:
       - { law_id: "LSI265377", name: "부동산등기법" }
+    category_ids: ["group:ownership"]
 
   # === 이혼·위자료·재산분할 (law-002) ===
   law-002-01:  # 이혼 절차
@@ -133,12 +141,14 @@ mappings:
     primary:
       - { law_id: "LSI265307", name: "민법" }
     secondary: []
+    category_ids: ["group:claim_effect"]
 
   law-006-02:  # 보증
     primary:
       - { law_id: "LSI265307", name: "민법" }
       - { law_id: "LSI251943", name: "보증인 보호를 위한 특별법" }
     secondary: []
+    category_ids: ["group:guaranty_debtors"]
 
   law-006-03:  # 민사집행 및 보전처분
     primary:
@@ -163,12 +173,14 @@ mappings:
       - { law_id: "LSI271123", name: "전세사기피해자 지원 및 주거안정에 관한 특별법" }
     secondary:
       - { law_id: "LSI267649", name: "주택임대차보호법 시행령" }
+    category_ids: ["group:leasing", "group:jeonse"]
 
   law-007-02:  # 상가건물임대차보호
     primary:
       - { law_id: "LSI238797", name: "상가건물 임대차보호법" }
     secondary:
       - { law_id: "LSI267689", name: "상가건물 임대차보호법 시행령" }
+    category_ids: ["group:leasing"]
 
   law-007-03:  # 임차인 보호 절차
     primary:
@@ -176,6 +188,7 @@ mappings:
       - { law_id: "LSI265351", name: "민사집행법" }
     secondary:
       - { law_id: "LSI252747", name: "임차권등기명령 절차에 관한 규칙" }
+    category_ids: ["group:leasing", "group:jeonse"]
 
   # === 기업·상사거래 (law-008) ===
   law-008-01:  # 상사계약 일반

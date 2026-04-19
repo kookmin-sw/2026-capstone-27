@@ -59,6 +59,7 @@ public class CategoryLawMappingService {
                 mapping.setCategoryId(categoryId);
                 mapping.setPrimaryLawIds(parseLawRefs((List<Map<String, String>>) value.get("primary")));
                 mapping.setSecondaryLawIds(parseLawRefs((List<Map<String, String>>) value.get("secondary")));
+                mapping.setCategoryIds(parseCategoryIds(value.get("category_ids")));
 
                 mappingCache.put(categoryId, mapping);
             }
@@ -69,6 +70,35 @@ public class CategoryLawMappingService {
             log.error("category-law-mappings.yml 로드 실패", e);
             throw new RuntimeException("카테고리-법령 매핑 로드 실패", e);
         }
+    }
+
+    /**
+     * 분류된 카테고리 노드 ID 목록 → 매핑된 {@code legal_chunks.category_ids} 토큰 목록으로 변환.
+     *
+     * <p>B-8a에서 도입. 온톨로지 노드(예: {@code law-001-02})는 의미 네임스페이스가
+     * DB의 {@code category_ids}({@code group:jeonse} 등)와 상이하므로,
+     * {@code category-law-mappings.yml}에 명시적으로 등록된 매핑을 치환한다.
+     * 매핑이 없는 노드는 결과에 포함되지 않는다 (작아지면 전체 필터 미적용 동등).</p>
+     *
+     * <p>L3 노드(예: {@code law-001-02-01})도 {@link #resolveLawIds} 동일 방식으로
+     * L2 부모로 폴백한다.</p>
+     *
+     * @param categoryNodeIds 온톨로지 카테고리 노드 ID 목록
+     * @return 중복 제거된 category_ids 토큰 목록. null/empty면 빈 리스트
+     */
+    public List<String> resolveCategoryIds(List<String> categoryNodeIds) {
+        if (categoryNodeIds == null || categoryNodeIds.isEmpty()) {
+            return List.of();
+        }
+        Set<String> tokens = new LinkedHashSet<>();
+        for (String nodeId : categoryNodeIds) {
+            CategoryLawMapping mapping = resolveWithL3Fallback(nodeId);
+            if (mapping == null || mapping.getCategoryIds() == null) {
+                continue;
+            }
+            tokens.addAll(mapping.getCategoryIds());
+        }
+        return new ArrayList<>(tokens);
     }
 
     /**
@@ -111,6 +141,35 @@ public class CategoryLawMappingService {
      */
     int getMappingCount() {
         return mappingCache.size();
+    }
+
+    /**
+     * L3 노드(하이픈 3개 이상) 요청 시 정확 매칭 후 없으면 L2 부모로 폴백.
+     * {@link #resolveLawIds}와 동일 규칙을 {@link #resolveCategoryIds}에도 적용하기 위해 추출.
+     */
+    private CategoryLawMapping resolveWithL3Fallback(String nodeId) {
+        CategoryLawMapping mapping = mappingCache.get(nodeId);
+        if (mapping == null && nodeId != null && nodeId.chars().filter(ch -> ch == '-').count() > 2) {
+            String parentId = nodeId.substring(0, nodeId.lastIndexOf('-'));
+            mapping = mappingCache.get(parentId);
+            if (mapping != null) {
+                log.debug("L3 노드 {} → L2 부모 {} 매핑으로 폴백", nodeId, parentId);
+            }
+        }
+        return mapping;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> parseCategoryIds(Object raw) {
+        if (raw == null) return List.of();
+        if (!(raw instanceof List<?> list)) return List.of();
+        List<String> out = new ArrayList<>(list.size());
+        for (Object item : list) {
+            if (item instanceof String s && !s.isBlank()) {
+                out.add(s);
+            }
+        }
+        return out;
     }
 
     private void addNonExternalLawIds(Set<String> lawIds, List<LawRef> refs) {

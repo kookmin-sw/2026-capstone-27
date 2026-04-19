@@ -19,6 +19,12 @@ public class CategoryLawMapping {
     private String name;
     private List<LawRef> primaryLawIds;
     private List<LawRef> secondaryLawIds;
+    /**
+     * 이 카테고리(온톨로지 노드)에 매핑되는 {@code legal_chunks.category_ids} 토큰 목록.
+     * 예: {@code law-001-02} → {@code [group:leasing, group:jeonse]}.
+     * null/empty면 retrieval 단계에서 카테고리 soft-filter가 적용되지 않는다.
+     */
+    private List<String> categoryIds;
 
     @Getter
     @Setter

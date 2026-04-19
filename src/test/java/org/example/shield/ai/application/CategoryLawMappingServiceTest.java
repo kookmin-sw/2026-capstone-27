@@ -71,4 +71,50 @@ class CategoryLawMappingServiceTest {
         long civilLawCount = lawIds.stream().filter("LSI265307"::equals).count();
         assertThat(civilLawCount).isEqualTo(1);
     }
+
+    // === B-8a: resolveCategoryIds 관련 ===
+
+    @Test
+    @DisplayName("resolveCategoryIds — L2 노드에서 매핑된 group: 토큰 반환")
+    void resolveCategoryIds_l2Mapped() {
+        // law-001-02 (부동산 임대차) → [group:leasing, group:jeonse]
+        List<String> ids = service.resolveCategoryIds(List.of("law-001-02"));
+
+        assertThat(ids).containsExactlyInAnyOrder("group:leasing", "group:jeonse");
+    }
+
+    @Test
+    @DisplayName("resolveCategoryIds — L3 노드는 L2 부모로 폴백")
+    void resolveCategoryIds_l3FallbackToL2() {
+        // law-001-02-02는 YAML에 없으므로 law-001-02로 폴백
+        List<String> ids = service.resolveCategoryIds(List.of("law-001-02-02"));
+
+        assertThat(ids).contains("group:leasing", "group:jeonse");
+    }
+
+    @Test
+    @DisplayName("resolveCategoryIds — 매핑 없는 노드는 조용히 무시 (빈 리스트)")
+    void resolveCategoryIds_noMappingReturnsEmpty() {
+        // law-004-01 (근로계약)은 category_ids 미등록 → 빈 리스트
+        List<String> ids = service.resolveCategoryIds(List.of("law-004-01"));
+
+        assertThat(ids).isEmpty();
+    }
+
+    @Test
+    @DisplayName("resolveCategoryIds — 다중 노드 토큰 중복 제거")
+    void resolveCategoryIds_dedup() {
+        // law-001-02 → [group:leasing, group:jeonse]
+        // law-007-01 → [group:leasing, group:jeonse]
+        List<String> ids = service.resolveCategoryIds(List.of("law-001-02", "law-007-01"));
+
+        assertThat(ids).containsExactlyInAnyOrder("group:leasing", "group:jeonse");
+    }
+
+    @Test
+    @DisplayName("resolveCategoryIds — null/empty 입력 안전")
+    void resolveCategoryIds_nullSafe() {
+        assertThat(service.resolveCategoryIds(null)).isEmpty();
+        assertThat(service.resolveCategoryIds(List.of())).isEmpty();
+    }
 }

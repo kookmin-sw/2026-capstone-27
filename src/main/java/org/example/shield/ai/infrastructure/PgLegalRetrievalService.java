@@ -1,5 +1,6 @@
 package org.example.shield.ai.infrastructure;
 
+import io.micrometer.core.instrument.Timer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,7 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
 
     private final LegalChunkJpaRepository legalChunkJpaRepository;
     private final QueryEmbeddingService queryEmbeddingService;
+    private final RagMetrics ragMetrics;
     private final double vectorWeight;
     private final double keywordWeight;
     private final double trigramWeight;
@@ -73,12 +75,14 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
             LegalChunkJpaRepository legalChunkJpaRepository,
             QueryEmbeddingService queryEmbeddingService,
             CohereApiConfig cohereConfig,
+            RagMetrics ragMetrics,
             @Value("${rag.retrieval.weights.vector:0.5}") double vectorWeight,
             @Value("${rag.retrieval.weights.keyword:0.3}") double keywordWeight,
             @Value("${rag.retrieval.weights.trigram:0.2}") double trigramWeight,
             @Value("${rag.retrieval.hnsw.ef-search:40}") int hnswEfSearch) {
         this.legalChunkJpaRepository = legalChunkJpaRepository;
         this.queryEmbeddingService = queryEmbeddingService;
+        this.ragMetrics = ragMetrics;
         this.vectorWeight = vectorWeight;
         this.keywordWeight = keywordWeight;
         this.trigramWeight = trigramWeight;
@@ -95,7 +99,22 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
                                      List<String> categoryIds,
                                      List<String> lawIds,
                                      int topK) {
+        Timer.Sample sample = ragMetrics.startRetrieve();
+        try {
+            List<LegalChunk> result = doRetrieve(vectorQuery, bm25Keywords, categoryIds, lawIds, topK);
+            ragMetrics.stopRetrieveSuccess(sample, result.size());
+            return result;
+        } catch (RuntimeException e) {
+            ragMetrics.stopRetrieveFailure(sample);
+            throw e;
+        }
+    }
 
+    private List<LegalChunk> doRetrieve(String vectorQuery,
+                                        List<String> bm25Keywords,
+                                        List<String> categoryIds,
+                                        List<String> lawIds,
+                                        int topK) {
         String safeVectorQuery = (vectorQuery == null || vectorQuery.isBlank())
                 ? ""
                 : vectorQuery.trim();
@@ -152,18 +171,21 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
      */
     private String buildQueryVectorLiteral(String vectorQuery) {
         if (vectorQuery == null || vectorQuery.isEmpty()) {
+            ragMetrics.recordVectorDegrade("empty_query");
             return zeroVectorLiteral;
         }
         try {
             float[] vec = queryEmbeddingService.embedQuery(vectorQuery);
             if (vec == null || vec.length == 0) {
                 log.warn("쿼리 임베딩 응답이 비어 영벡터로 degrade: query='{}'", vectorQuery);
+                ragMetrics.recordVectorDegrade("empty_response");
                 return zeroVectorLiteral;
             }
             return floatArrayToPgVector(vec);
         } catch (Exception e) {
             log.warn("쿼리 임베딩 실패, 2-way(BM25+trigram)로 degrade: query='{}', error={}",
                     vectorQuery, e.getMessage());
+            ragMetrics.recordVectorDegrade("cohere_error");
             return zeroVectorLiteral;
         }
     }

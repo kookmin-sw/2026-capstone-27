@@ -8,6 +8,7 @@ import org.example.shield.ai.application.CohereService;
 import org.example.shield.ai.application.IntentClassificationService;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.application.RagContextBuilder;
+import org.example.shield.ai.infrastructure.RagMetrics;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
 import org.example.shield.ai.dto.IntentClassificationResult;
@@ -49,6 +50,7 @@ public class MessageService {
     private final CategoryLawMappingService categoryLawMappingService;
     private final LegalRetrievalService legalRetrievalService;
     private final RagContextBuilder ragContextBuilder;
+    private final RagMetrics ragMetrics;
 
     @Transactional
     public SendMessageResponse sendMessage(UUID consultationId, String content) {
@@ -107,6 +109,7 @@ public class MessageService {
             } catch (Exception e) {
                 log.warn("RAG 파이프라인 실패, 폴백 (RAG 없이 진행): consultationId={}, error={}",
                         consultationId, e.getMessage());
+                ragMetrics.recordPipelineFallback();
                 ragContext = "";
             }
         }

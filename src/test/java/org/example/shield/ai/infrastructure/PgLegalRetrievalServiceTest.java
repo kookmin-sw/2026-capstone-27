@@ -1,5 +1,6 @@
 package org.example.shield.ai.infrastructure;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.application.QueryEmbeddingService;
 import org.example.shield.ai.config.CohereApiConfig;
@@ -27,6 +28,8 @@ class PgLegalRetrievalServiceTest {
     private LegalChunkJpaRepository repository;
     private QueryEmbeddingService queryEmbeddingService;
     private CohereApiConfig cohereConfig;
+    private SimpleMeterRegistry meterRegistry;
+    private RagMetrics ragMetrics;
     private PgLegalRetrievalService service;
 
     @BeforeEach
@@ -34,10 +37,12 @@ class PgLegalRetrievalServiceTest {
         repository = mock(LegalChunkJpaRepository.class);
         queryEmbeddingService = mock(QueryEmbeddingService.class);
         cohereConfig = mock(CohereApiConfig.class);
+        meterRegistry = new SimpleMeterRegistry();
+        ragMetrics = new RagMetrics(meterRegistry);
         when(cohereConfig.getEmbedModel()).thenReturn("embed-v4.0");
         when(cohereConfig.getEmbedDimension()).thenReturn(1024);
         service = new PgLegalRetrievalService(repository, queryEmbeddingService, cohereConfig,
-                0.5, 0.3, 0.2, 40);
+                ragMetrics, 0.5, 0.3, 0.2, 40);
     }
 
     @Test

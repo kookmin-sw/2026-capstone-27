@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.infrastructure.CohereClient;
+import org.example.shield.ai.infrastructure.RagMetrics;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +28,7 @@ public class QueryEmbeddingService {
     private final CohereClient cohereClient;
     private final CohereApiConfig cohereConfig;
     private final EmbeddingCache embeddingCache;
+    private final RagMetrics ragMetrics;
 
     /**
      * 쿼리 임베딩을 반환한다. 캐시 히트 시 Cohere 호출을 생략한다.
@@ -39,9 +41,11 @@ public class QueryEmbeddingService {
         var cached = embeddingCache.get(model, query);
         if (cached.isPresent()) {
             log.debug("쿼리 임베딩 캐시 HIT: model={}, queryLen={}", model, query.length());
+            ragMetrics.recordCacheHit();
             return cached.get();
         }
-        float[] vec = cohereClient.embedQuery(model, query);
+        ragMetrics.recordCacheMiss();
+        float[] vec = ragMetrics.timeCohereEmbed(() -> cohereClient.embedQuery(model, query));
         if (vec != null && vec.length > 0) {
             embeddingCache.put(model, query, vec);
         }

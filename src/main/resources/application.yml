@@ -176,3 +176,24 @@ app:
 
 server:
   port: 8080
+
+# Observability (Phase B-8b)
+# - /actuator/health : 상태 체크 (로드밸런서 등 헬스체크용)
+# - /actuator/prometheus : Prometheus scrape endpoint (RAG 전용 메트릭 포함)
+# 운영 환경에서는 Spring Security나 IP allow list로 접근 제한 권장.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true

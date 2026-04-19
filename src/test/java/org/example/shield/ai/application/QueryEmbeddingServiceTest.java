@@ -1,7 +1,9 @@
 package org.example.shield.ai.application;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.infrastructure.CohereClient;
+import org.example.shield.ai.infrastructure.RagMetrics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,8 @@ class QueryEmbeddingServiceTest {
     private CohereClient cohereClient;
     private CohereApiConfig cohereConfig;
     private EmbeddingCache embeddingCache;
+    private SimpleMeterRegistry meterRegistry;
+    private RagMetrics ragMetrics;
     private QueryEmbeddingService service;
 
     @BeforeEach
@@ -40,8 +44,10 @@ class QueryEmbeddingServiceTest {
         cohereClient = mock(CohereClient.class);
         cohereConfig = mock(CohereApiConfig.class);
         embeddingCache = mock(EmbeddingCache.class);
+        meterRegistry = new SimpleMeterRegistry();
+        ragMetrics = new RagMetrics(meterRegistry);
         when(cohereConfig.getEmbedModel()).thenReturn("embed-v4.0");
-        service = new QueryEmbeddingService(cohereClient, cohereConfig, embeddingCache);
+        service = new QueryEmbeddingService(cohereClient, cohereConfig, embeddingCache, ragMetrics);
     }
 
     @Test
@@ -97,5 +103,52 @@ class QueryEmbeddingServiceTest {
 
         assertThat(result).isEmpty();
         verify(embeddingCache, never()).put(anyString(), anyString(), any());
+    }
+
+    // === B-8b: 메트릭 수집 확인 ===
+
+    @Test
+    @DisplayName("메트릭 — 캐시 HIT 시 hit 카운터 증가")
+    void metrics_cacheHitIncrementsHitCounter() {
+        when(embeddingCache.get(anyString(), anyString()))
+                .thenReturn(Optional.of(new float[]{1f}));
+
+        service.embedQuery("전세");
+
+        double hits = meterRegistry.counter(RagMetrics.METRIC_CACHE, "result", "hit").count();
+        double misses = meterRegistry.counter(RagMetrics.METRIC_CACHE, "result", "miss").count();
+        assertThat(hits).isEqualTo(1.0);
+        assertThat(misses).isEqualTo(0.0);
+    }
+
+    @Test
+    @DisplayName("메트릭 — 캐시 MISS 시 miss 카운터 + Cohere 타이머 기록")
+    void metrics_cacheMissIncrementsMissAndTimer() {
+        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
+        when(cohereClient.embedQuery(anyString(), anyString())).thenReturn(new float[]{0.1f});
+
+        service.embedQuery("전세");
+
+        assertThat(meterRegistry.counter(RagMetrics.METRIC_CACHE, "result", "miss").count())
+                .isEqualTo(1.0);
+        assertThat(meterRegistry.timer(RagMetrics.METRIC_COHERE_EMBED, "outcome", "success").count())
+                .isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("메트릭 — Cohere 실패 시 failure 타이머 기록")
+    void metrics_cohereFailureRecordsFailureTimer() {
+        when(embeddingCache.get(anyString(), anyString())).thenReturn(Optional.empty());
+        when(cohereClient.embedQuery(anyString(), anyString()))
+                .thenThrow(new RuntimeException("boom"));
+
+        try {
+            service.embedQuery("전세");
+        } catch (RuntimeException ignored) {
+            // expected
+        }
+
+        assertThat(meterRegistry.timer(RagMetrics.METRIC_COHERE_EMBED, "outcome", "failure").count())
+                .isEqualTo(1L);
     }
 }

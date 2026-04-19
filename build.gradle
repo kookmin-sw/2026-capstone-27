@@ -46,6 +46,10 @@ dependencies {
     // Jackson YAML support (민법 카테고리 맵 로드용)
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
 
+    // Observability (Phase B-8b) — Prometheus/Micrometer
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'

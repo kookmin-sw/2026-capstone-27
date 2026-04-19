@@ -176,13 +176,13 @@ export function DashboardPage() {
                           <button
                             type="button"
                             onClick={() => {/* handled by InboxDetailPage */}}
-                            className="bg-[#1a6de0] text-white text-[11px] font-medium px-[12px] py-[5px] rounded-full"
+                            className="relative z-10 bg-[#1a6de0] text-white text-[11px] font-medium px-[12px] py-[5px] rounded-full"
                           >
                             수락
                           </button>
                           <button
                             type="button"
-                            className="bg-white border border-[#fcebeb] text-[#a32d2d] text-[11px] font-medium px-[11px] py-[6px] rounded-full"
+                            className="relative z-10 bg-white border border-[#fcebeb] text-[#a32d2d] text-[11px] font-medium px-[11px] py-[6px] rounded-full"
                           >
                             거절
                           </button>

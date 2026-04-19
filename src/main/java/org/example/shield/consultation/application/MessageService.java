@@ -9,6 +9,7 @@ import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
 import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.ai.infrastructure.SanitizeService;
+import org.example.shield.common.exception.ChatAiException;
 import org.example.shield.common.response.PageResponse;
 import org.example.shield.consultation.controller.dto.MessageResponse;
 import org.example.shield.consultation.controller.dto.SendMessageResponse;
@@ -79,6 +80,17 @@ public class MessageService {
         // 3. 응답 ID 저장 (감사 로깅용)
         consultation.updateLastResponseId(result.responseId());
 
+        // 3-1. AI 응답 blank 차단 (Issue #45)
+        //      — nextQuestion 이 비어있으면 사용자에게 의미 있는 응답을 만들 수 없고,
+        //        이 상태로 DB에 저장되면 이후 Cohere v2 Chat API 가 빈 assistant
+        //        content 를 400 으로 거부해 대화가 영구적으로 막힌다.
+        String nextQuestion = parsed.getNextQuestion();
+        if (nextQuestion == null || nextQuestion.isBlank()) {
+            log.error("AI chat response is blank: consultationId={}, responseId={}, tokensOut={}",
+                    consultationId, result.responseId(), result.tokensOutput());
+            throw new ChatAiException();
+        }
+
         // 4. AI 분류 결과 처리 (primaryFieldLocked 가드)
         if (hasAny(parsed.getAiDomains()) || hasAny(parsed.getAiSubDomains()) || hasAny(parsed.getAiTags())) {
             boolean updated = consultation.updateAiClassification(
@@ -92,7 +104,7 @@ public class MessageService {
         // 5. AI 메시지 저장
         Message aiMessage = Message.createAiMessage(
                 consultationId,
-                parsed.getNextQuestion(),
+                nextQuestion,
                 cohereApiConfig.getChatModel(),  // model name from config
                 result.tokensInput(),
                 result.tokensOutput(),

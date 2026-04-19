@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.ChecklistCoverageService;
 import org.example.shield.ai.application.CohereService;
+import org.example.shield.ai.application.OntologyService;
 import org.example.shield.ai.application.RagPipelineService;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
@@ -42,6 +43,7 @@ public class MessageService {
     private final SanitizeService sanitizeService;
     private final ChecklistCoverageService checklistCoverageService;
     private final RagPipelineService ragPipelineService;
+    private final OntologyService ontologyService;
 
     @Transactional
     public SendMessageResponse sendMessage(UUID consultationId, String content) {
@@ -91,10 +93,30 @@ public class MessageService {
             throw new ChatAiException();
         }
 
-        // 4. AI 분류 결과 처리 (primaryFieldLocked 가드)
-        if (hasAny(parsed.getAiDomains()) || hasAny(parsed.getAiSubDomains()) || hasAny(parsed.getAiTags())) {
+        // 4. AI 분류 결과 처리 (per-level lock + 온톨로지 환각 필터, Issue #48)
+        boolean hasAnyAi = hasAny(parsed.getAiDomains())
+                || hasAny(parsed.getAiSubDomains())
+                || hasAny(parsed.getAiTags());
+        if (hasAnyAi) {
+            // L2 검증: 부모 = userDomains 의 첫 값 (있을 때만)
+            List<String> validSubs = filterValidChildren(
+                    parsed.getAiSubDomains(),
+                    firstOrNull(consultation.getUserDomains()),
+                    consultationId,
+                    "L2");
+
+            // L3 검증: 부모 = userSubDomains 가 있으면 그것, 없으면 방금 검증된 validSubs 첫 값
+            List<String> l2Ref = hasAny(consultation.getUserSubDomains())
+                    ? consultation.getUserSubDomains()
+                    : validSubs;
+            List<String> validTags = filterValidChildren(
+                    parsed.getAiTags(),
+                    firstOrNull(l2Ref),
+                    consultationId,
+                    "L3");
+
             boolean updated = consultation.updateAiClassification(
-                    parsed.getAiDomains(), parsed.getAiSubDomains(), parsed.getAiTags());
+                    parsed.getAiDomains(), validSubs, validTags);
             if (!updated) {
                 log.warn("LLM attempted to override locked classification: consultationId={}, aiDomains={}",
                         consultationId, parsed.getAiDomains());
@@ -150,5 +172,29 @@ public class MessageService {
 
     private boolean hasAny(List<String> list) {
         return list != null && !list.isEmpty();
+    }
+
+    /**
+     * LLM 이 반환한 하위 분류 중 온톨로지상 parentName 의 직계 자식인 것만 남긴다.
+     * parentName 이 null 이면 검증을 건너뛴다 (부모 자체가 미정이면 환각 판정 불가).
+     */
+    private List<String> filterValidChildren(List<String> aiNodes, String parentName,
+                                             UUID consultationId, String level) {
+        if (!hasAny(aiNodes)) return null;
+        if (parentName == null) return aiNodes;
+
+        List<String> valid = aiNodes.stream()
+                .filter(name -> ontologyService.isChildOf(name, parentName))
+                .toList();
+
+        if (valid.size() < aiNodes.size()) {
+            log.warn("온톨로지 위반 {} 제거: consultationId={}, parent={}, 원본={}, 유효={}",
+                    level, consultationId, parentName, aiNodes, valid);
+        }
+        return valid.isEmpty() ? null : valid;
+    }
+
+    private static String firstOrNull(List<String> list) {
+        return (list == null || list.isEmpty()) ? null : list.get(0);
     }
 }

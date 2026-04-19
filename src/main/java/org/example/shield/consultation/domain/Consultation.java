@@ -73,19 +73,12 @@ public class Consultation extends BaseEntity {
     @Column(columnDefinition = "text")
     private String lastResponseId;
 
-    /**
-     * 사용자가 분류를 직접 선택했으면 true → LLM override 방지.
-     */
-    @Column(nullable = false)
-    private boolean primaryFieldLocked = false;
-
     private Consultation(UUID userId, List<String> domains, List<String> subDomains, List<String> tags) {
         this.userId = userId;
         this.userDomains = domains;
         this.userSubDomains = subDomains;
         this.userTags = tags;
         this.status = ConsultationStatus.COLLECTING;
-        this.primaryFieldLocked = hasAnySelection(domains, subDomains, tags);
     }
 
     public static Consultation create(UUID userId, List<String> domains,
@@ -101,21 +94,31 @@ public class Consultation extends BaseEntity {
         this.userDomains = domains;
         this.userSubDomains = subDomains;
         this.userTags = tags;
-        this.primaryFieldLocked = true;
     }
 
     /**
-     * LLM 분류 결과 반영. primaryFieldLocked가 true면 무시.
+     * LLM 분류 결과를 반영한다.
+     * 사용자가 이미 선택한 레벨(userDomains/SubDomains/Tags 가 비어있지 않은 레벨)
+     * 은 잠기고, 비워둔 레벨만 AI 가 채운다 (per-level lock, Issue #48).
+     *
+     * @return 실제로 하나라도 업데이트되었으면 true
      */
     public boolean updateAiClassification(List<String> domains, List<String> subDomains,
                                           List<String> tags) {
-        if (this.primaryFieldLocked) {
-            return false;
+        boolean anyUpdated = false;
+        if (!isNonEmpty(this.userDomains) && domains != null) {
+            this.aiDomains = domains;
+            anyUpdated = true;
         }
-        this.aiDomains = domains;
-        this.aiSubDomains = subDomains;
-        this.aiTags = tags;
-        return true;
+        if (!isNonEmpty(this.userSubDomains) && subDomains != null) {
+            this.aiSubDomains = subDomains;
+            anyUpdated = true;
+        }
+        if (!isNonEmpty(this.userTags) && tags != null) {
+            this.aiTags = tags;
+            anyUpdated = true;
+        }
+        return anyUpdated;
     }
 
     public void updateLastResponseId(String responseId) {
@@ -159,11 +162,6 @@ public class Consultation extends BaseEntity {
         if (isNonEmpty(userTags)) return userTags.get(0);
         if (isNonEmpty(aiTags)) return aiTags.get(0);
         return null;
-    }
-
-    private static boolean hasAnySelection(List<String> domains, List<String> subDomains,
-                                           List<String> tags) {
-        return isNonEmpty(domains) || isNonEmpty(subDomains) || isNonEmpty(tags);
     }
 
     private static boolean isNonEmpty(List<String> list) {

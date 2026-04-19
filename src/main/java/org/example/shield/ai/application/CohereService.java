@@ -40,6 +40,7 @@ public class CohereService {
     private final GuardrailFilter guardrailFilter;
     private final MessageReader messageReader;
     private final CohereClient cohereClient;
+    private final OntologyService ontologyService;
 
     /**
      * Phase 1 대화 — 사용자 메시지 처리 후 AI 응답 반환.
@@ -127,6 +128,12 @@ public class CohereService {
             }
         }
 
+        // 분류 컨텍스트: 사용자 사전 선택 + 허용 자식 목록 (Issue #48)
+        String classificationContext = buildClassificationContext(consultation);
+        if (!classificationContext.isEmpty()) {
+            systemPrompt = systemPrompt + "\n\n" + classificationContext;
+        }
+
         // RAG Layer 3: 법률 조문 컨텍스트 주입
         if (ragContext != null && !ragContext.isEmpty()) {
             systemPrompt = systemPrompt + "\n\n" + ragContext;
@@ -197,6 +204,55 @@ public class CohereService {
         }
 
         return truncateMessages(msgs, config.getMaxHistoryMessages());
+    }
+
+    /**
+     * 분류 컨텍스트 프롬프트 구성 (Issue #48).
+     *
+     * <p>사용자가 선택한 레벨은 "재분류 금지"로 명시하고, 비워둔
+     * 레벨은 온톨로지 허용 자식 목록을 주입한다. LLM 이 환각 L2/L3 을
+     * 반환하는 것을 사전 차단하고 분류 정확도를 올린다.</p>
+     *
+     * <p>userDomains 가 비어있으면 빈 문자열 반환 — L1 조차 아직 못정하면
+     * 허용 자식 목록을 만들 기준이 없어 주입 skip.</p>
+     */
+    private String buildClassificationContext(Consultation c) {
+        List<String> userL1 = c.getUserDomains();
+        if (userL1 == null || userL1.isEmpty()) return "";
+
+        StringBuilder sb = new StringBuilder("## 사용자 사전 선택 분류\n");
+        sb.append("- 대분류: ").append(String.join(", ", userL1)).append("\n");
+
+        boolean hasL2 = isNonEmpty(c.getUserSubDomains());
+        boolean hasL3 = isNonEmpty(c.getUserTags());
+
+        if (hasL2) sb.append("- 중분류: ").append(String.join(", ", c.getUserSubDomains())).append("\n");
+        if (hasL3) sb.append("- 소분류: ").append(String.join(", ", c.getUserTags())).append("\n");
+
+        sb.append("\n## 분류 제약 (엄수)\n");
+        sb.append("- 대분류는 재분류하지 마세요 (사용자 확정).\n");
+
+        if (!hasL2) {
+            List<String> allowedL2 = ontologyService.childrenOf(userL1.get(0));
+            sb.append("- aiSubDomains는 아래 목록에서만 선택:\n");
+            sb.append("  ").append(allowedL2).append("\n");
+        } else {
+            sb.append("- 중분류는 재분류하지 마세요 (사용자 확정).\n");
+        }
+
+        if (!hasL3) {
+            String l2Ref = hasL2 ? c.getUserSubDomains().get(0) : "확정될 aiSubDomains";
+            sb.append("- aiTags는 '").append(l2Ref).append("'의 직계 자식(L3)에서만 선택하세요.\n");
+        } else {
+            sb.append("- 소분류는 재분류하지 마세요 (사용자 확정).\n");
+        }
+
+        sb.append("\n사용자 선택과 중복되는 질문은 하지 마세요.");
+        return sb.toString();
+    }
+
+    private static boolean isNonEmpty(List<String> list) {
+        return list != null && !list.isEmpty();
     }
 
     /**

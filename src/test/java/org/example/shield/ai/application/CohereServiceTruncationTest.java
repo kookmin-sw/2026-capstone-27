@@ -75,7 +75,9 @@ class CohereServiceTruncationTest {
     private CohereService createMinimalService() throws Exception {
         var constructor = CohereService.class.getDeclaredConstructors()[0];
         constructor.setAccessible(true);
-        // CohereService has 7 constructor params — pass null for all (we only test truncateMessages)
-        return (CohereService) constructor.newInstance(null, null, null, null, null, null, null);
+        // CohereService 생성자 파라미터 수만큼 null 을 채워 넣는다 (truncateMessages 만 테스트하므로 의존성 불필요).
+        int paramCount = constructor.getParameterCount();
+        Object[] args = new Object[paramCount];
+        return (CohereService) constructor.newInstance(args);
     }
 }

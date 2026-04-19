@@ -13,6 +13,11 @@ spring:
       hibernate:
         format_sql: false
 
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
+      - org.springframework.boot.data.redis.autoconfigure.DataRedisReactiveAutoConfiguration
+
 # ALB 뒤에서 HTTPS 프록시 처리
 server:
   forward-headers-strategy: framework

@@ -1,7 +1,9 @@
 package org.example.shield.consultation.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.shield.ai.application.ChecklistCoverageService;
 import org.example.shield.ai.application.CohereService;
+import org.example.shield.ai.application.OntologyService;
 import org.example.shield.ai.application.RagPipelineService;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.AiCallResult;
@@ -19,12 +21,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -60,8 +67,29 @@ class MessageServiceTest {
     @Mock private RagPipelineService ragPipelineService;
     @Mock private Consultation consultation;
 
+    // 실제 온톨로지 JSON 을 로드한 real OntologyService 주입 — 환각 필터 동작을 end-to-end 로 검증.
+    @Spy
+    private OntologyService ontologyService = createRealOntologyService();
+
     @InjectMocks
     private MessageService messageService;
+
+    private static OntologyService createRealOntologyService() {
+        try {
+            String json;
+            try (InputStream in = new ClassPathResource("ontology/legal-ontology-slim.json").getInputStream()) {
+                json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            }
+            OntologyService svc = new OntologyService(json, new ObjectMapper());
+            // loadOntology 는 package-private(@PostConstruct) — 다른 패키지에서는 reflection 으로 호출
+            var m = OntologyService.class.getDeclaredMethod("loadOntology");
+            m.setAccessible(true);
+            m.invoke(svc);
+            return svc;
+        } catch (Exception e) {
+            throw new IllegalStateException("온톨로지 로드 실패", e);
+        }
+    }
 
     private UUID consultationId;
 
@@ -142,5 +170,86 @@ class MessageServiceTest {
         // Consultation 상태 업데이트 경로 도달 확인
         verify(consultation).updateLastResponseId("resp-ok-1");
         verify(consultationWriter, times(1)).save(consultation);
+    }
+
+    // =====================================================================
+    // Issue #48 온톨로지 환각 필터 통합 검증 (real OntologyService)
+    // =====================================================================
+
+    @Test
+    @DisplayName("L1=부동산 거래, AI 가 잘못된 L2=재산분할(이혼 도메인) 반환 → 필터링되어 null 저장")
+    void sendMessage_환각L2필터링() {
+        // given — 실제 Consultation 으로 교체 (update 검증)
+        Consultation real = Consultation.create(consultationId,
+                List.of("부동산 거래"), null, null);
+        given(consultationReader.findById(consultationId)).willReturn(real);
+        given(ragPipelineService.execute(any(), anyString(), any())).willReturn("");
+
+        ChatParsedResponse parsed = new ChatParsedResponse();
+        parsed.setNextQuestion("어떤 유형의 부동산 거래인가요?");
+        parsed.setAiDomains(List.of("부동산 거래"));
+        // 환각: 재산분할 은 이혼·위자료·재산분할 트리 소속 → 부동산 거래 의 직계 자식 아님
+        parsed.setAiSubDomains(List.of("재산분할"));
+        parsed.setAiTags(List.of());
+        AiCallResult<ChatParsedResponse> result = new AiCallResult<>(
+                "resp-hallu-1", parsed, 100, 42, 250);
+        given(cohereService.chat(any(), anyString(), anyString(), any())).willReturn(result);
+        given(messageWriter.save(any(Message.class))).willAnswer(inv -> inv.getArgument(0));
+
+        // when
+        messageService.sendMessage(consultationId, "사용자 입력");
+
+        // then — L1 은 user 고정, AI 의 L2 는 온톨로지 위반으로 제거되어 null 저장
+        assertThat(real.getUserDomains()).containsExactly("부동산 거래");
+        assertThat(real.getAiDomains()).isNull();        // user 가 있으므로 ai 미반영
+        assertThat(real.getAiSubDomains()).isNull();     // 환각 제거 → 유효 0개 → null
+        assertThat(real.getAiTags()).isNull();
+    }
+
+    @Test
+    @DisplayName("L1=부동산 거래, AI L2=[부동산 임대차(정상),재산분할(환각)] → 정상만 남음")
+    void sendMessage_환각L2부분필터링() {
+        Consultation real = Consultation.create(consultationId,
+                List.of("부동산 거래"), null, null);
+        given(consultationReader.findById(consultationId)).willReturn(real);
+        given(ragPipelineService.execute(any(), anyString(), any())).willReturn("");
+
+        ChatParsedResponse parsed = new ChatParsedResponse();
+        parsed.setNextQuestion("임대차 관련 상세식 알려주세요.");
+        parsed.setAiDomains(List.of("부동산 거래"));
+        parsed.setAiSubDomains(List.of("부동산 임대차", "재산분할")); // 1개만 정상
+        parsed.setAiTags(List.of("보증금 및 차임"));                    // 부동산 임대차 자식 → 정상
+        given(cohereService.chat(any(), anyString(), anyString(), any()))
+                .willReturn(new AiCallResult<>("resp-hallu-2", parsed, 100, 42, 250));
+        given(messageWriter.save(any(Message.class))).willAnswer(inv -> inv.getArgument(0));
+
+        messageService.sendMessage(consultationId, "사용자 입력");
+
+        // 정상 L2 1개만 남고, L3 도 정상 부모(부동산 임대차) 중 유효하므로 저장
+        assertThat(real.getAiSubDomains()).containsExactly("부동산 임대차");
+        assertThat(real.getAiTags()).containsExactly("보증금 및 차임");
+    }
+
+    @Test
+    @DisplayName("부모(userDomains)가 없으면 검증 skip — AI 가 반환한 L2 그대로 저장")
+    void sendMessage_부모없으면검증skip() {
+        Consultation real = Consultation.create(consultationId, null, null, null);
+        given(consultationReader.findById(consultationId)).willReturn(real);
+
+        ChatParsedResponse parsed = new ChatParsedResponse();
+        parsed.setNextQuestion("더 자세히 설명해주세요.");
+        parsed.setAiDomains(List.of("부동산 거래"));
+        parsed.setAiSubDomains(List.of("부동산 임대차"));
+        parsed.setAiTags(List.of("보증금 및 차임"));
+        given(cohereService.chat(any(), anyString(), anyString(), any()))
+                .willReturn(new AiCallResult<>("resp-noparent", parsed, 100, 42, 250));
+        given(messageWriter.save(any(Message.class))).willAnswer(inv -> inv.getArgument(0));
+
+        messageService.sendMessage(consultationId, "사용자 입력");
+
+        // user 가 없으므로 AI 값이 그대로 반영 (부모가 null 이면 검증 skip)
+        assertThat(real.getAiDomains()).containsExactly("부동산 거래");
+        assertThat(real.getAiSubDomains()).containsExactly("부동산 임대차");
+        assertThat(real.getAiTags()).containsExactly("보증금 및 차임");
     }
 }

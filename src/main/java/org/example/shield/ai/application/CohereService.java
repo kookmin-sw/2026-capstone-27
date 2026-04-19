@@ -142,27 +142,7 @@ public class CohereService {
         msgs.add(CohereChatRequest.Message.system(systemPrompt));
 
         // 2. 기존 대화 내역 (시간순) — 호출자가 전달한 리스트 사용
-        //    방어적 skip: 과거 DB 에 이미 저장된 빈 content 메시지가 섞여 있을 수 있음.
-        //    Cohere v2 Chat API 는 빈 content 를 400 으로 거부하므로 history 구성
-        //    시점에서 제외해야 한다. (Issue #45)
-        for (Message msg : chatHistory) {
-            if (msg.getRole() == MessageRole.USER) {
-                // TODO: 저장 시점에 sanitize된 텍스트를 별도 필드에 보관하면 중복 sanitize 제거 가능
-                String sanitized = sanitizeService.sanitizeUserText(msg.getContent());
-                if (sanitized == null || sanitized.isBlank()) {
-                    log.warn("Skipping blank USER message in chat history: messageId={}", msg.getId());
-                    continue;
-                }
-                msgs.add(CohereChatRequest.Message.user(sanitized));
-            } else if (msg.getRole() == MessageRole.CHATBOT) {
-                String content = msg.getContent();
-                if (content == null || content.isBlank()) {
-                    log.warn("Skipping blank CHATBOT message in chat history: messageId={}", msg.getId());
-                    continue;
-                }
-                msgs.add(CohereChatRequest.Message.assistant(content));
-            }
-        }
+        appendHistory(msgs, chatHistory, "chat");
 
         // 3. 새 사용자 메시지 (이미 sanitize됨)
         msgs.add(CohereChatRequest.Message.user(latestSanitizedUserText));
@@ -182,28 +162,48 @@ public class CohereService {
         msgs.add(CohereChatRequest.Message.system(systemPrompt));
 
         // 2. 전체 대화 내역
-        //    방어적 skip: 빈 content 메시지는 Cohere v2 Chat API 가 400 으로 거부.
-        //    (Issue #45)
         List<Message> history = messageReader.findAllByConsultationId(consultation.getId());
+        appendHistory(msgs, history, "brief");
+
+        return truncateMessages(msgs, config.getMaxHistoryMessages());
+    }
+
+    /**
+     * DB 대화 내역을 Cohere messages 배열로 변환 — buildChatMessages /
+     * buildBriefMessages 공통 로직.
+     *
+     * <p>방어적 skip 정책 (Issue #45):</p>
+     * <ul>
+     *   <li>USER/CHATBOT 무관하게 원본 content 가 null/blank 이면 skip → sanitize 호출 자체를 회피해 불필요한 PII 스캔 비용 제거</li>
+     *   <li>USER 의 경우 sanitize 결과가 blank 로 수축하는 경우도 skip (예: 전체가 마스킹 대상)</li>
+     *   <li>Cohere v2 Chat API 가 빈 content 를 400 으로 거부하므로 history 구성 시점에서 배제해야 한다</li>
+     * </ul>
+     *
+     * <p>{@code context} 는 로그 구분용 (\"chat\" / \"brief\" / \"search\" 등) —
+     * 한 곳에서 메트릭/알럿을 달기 쉽게 태깅한다.</p>
+     */
+    private void appendHistory(
+            List<CohereChatRequest.Message> msgs, List<Message> history, String context) {
         for (Message msg : history) {
+            String raw = msg.getContent();
+            if (raw == null || raw.isBlank()) {
+                log.warn("Skipping blank {} message in {} history: messageId={}",
+                        msg.getRole(), context, msg.getId());
+                continue;
+            }
             if (msg.getRole() == MessageRole.USER) {
-                String sanitized = sanitizeService.sanitizeUserText(msg.getContent());
+                // TODO: 저장 시점에 sanitize된 텍스트를 별도 필드에 보관하면 중복 sanitize 제거 가능
+                String sanitized = sanitizeService.sanitizeUserText(raw);
                 if (sanitized == null || sanitized.isBlank()) {
-                    log.warn("Skipping blank USER message in brief history: messageId={}", msg.getId());
+                    log.warn("Skipping post-sanitize blank USER message in {} history: messageId={}",
+                            context, msg.getId());
                     continue;
                 }
                 msgs.add(CohereChatRequest.Message.user(sanitized));
             } else if (msg.getRole() == MessageRole.CHATBOT) {
-                String content = msg.getContent();
-                if (content == null || content.isBlank()) {
-                    log.warn("Skipping blank CHATBOT message in brief history: messageId={}", msg.getId());
-                    continue;
-                }
-                msgs.add(CohereChatRequest.Message.assistant(content));
+                msgs.add(CohereChatRequest.Message.assistant(raw));
             }
         }
-
-        return truncateMessages(msgs, config.getMaxHistoryMessages());
     }
 
     /**

@@ -24,7 +24,7 @@ logging:
     root: WARN
     org.example.shield: INFO
   file:
-    name: /var/log/shield/application.log
+    name: logs/application.log
   logback:
     rollingpolicy:
       max-file-size: 10MB

@@ -1,6 +1,7 @@
 package org.example.shield.lawyer.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shield.common.enums.VerificationStatus;
 import org.example.shield.common.response.PageResponse;
 import org.example.shield.lawyer.controller.dto.LawyerResponse;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,6 +30,7 @@ public class LawyerService {
     private final LawyerReader lawyerReader;
     private final LawyerWriter lawyerWriter;
     private final UserReader userReader;
+    private final LawyerEmbeddingService lawyerEmbeddingService;
 
     public PageResponse<LawyerResponse> getLawyers(Pageable pageable, String specialization, Integer minExperience) {
         Page<LawyerProfile> profiles = lawyerReader.findVerifiedLawyers(
@@ -72,6 +75,17 @@ public class LawyerService {
                 request.bio(),
                 request.region()
         );
+
+        // VERIFIED 변호사 가 프로필 을 바꾸면 임베딩을 새로 계산 (Issue #50)
+        if (profile.getVerificationStatus() == VerificationStatus.VERIFIED) {
+            try {
+                lawyerEmbeddingService.upsertEmbedding(profile);
+            } catch (Exception ex) {
+                log.warn("변호사 임베딩 재계산 실패 (프로필 저장은 성공) lawyerId={} error={}",
+                        profile.getId(), ex.getMessage());
+            }
+        }
+
         User user = userReader.findById(userId);
         return LawyerResponse.from(profile, user.getName(), user.getProfileImageUrl());
     }

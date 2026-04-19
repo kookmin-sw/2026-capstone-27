@@ -164,6 +164,33 @@ public class Consultation extends BaseEntity {
         return null;
     }
 
+    /**
+     * 매칭용 전체 대분류 리스트: userDomains 우선, 없으면 aiDomains.
+     */
+    public List<String> getEffectiveDomains() {
+        if (isNonEmpty(userDomains)) return userDomains;
+        if (isNonEmpty(aiDomains)) return aiDomains;
+        return List.of();
+    }
+
+    /**
+     * 매칭용 전체 중분류 리스트: userSubDomains 우선, 없으면 aiSubDomains.
+     */
+    public List<String> getEffectiveSubDomains() {
+        if (isNonEmpty(userSubDomains)) return userSubDomains;
+        if (isNonEmpty(aiSubDomains)) return aiSubDomains;
+        return List.of();
+    }
+
+    /**
+     * 매칭용 전체 소분류(태그) 리스트: userTags 우선, 없으면 aiTags.
+     */
+    public List<String> getEffectiveTags() {
+        if (isNonEmpty(userTags)) return userTags;
+        if (isNonEmpty(aiTags)) return aiTags;
+        return List.of();
+    }
+
     private static boolean isNonEmpty(List<String> list) {
         return list != null && !list.isEmpty();
     }

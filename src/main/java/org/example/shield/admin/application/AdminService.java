@@ -18,6 +18,7 @@ import org.example.shield.common.enums.VerificationStatus;
 import org.example.shield.common.exception.BusinessException;
 import org.example.shield.common.exception.ErrorCode;
 import org.example.shield.common.response.PageResponse;
+import org.example.shield.lawyer.application.LawyerEmbeddingService;
 import org.example.shield.lawyer.domain.LawyerProfile;
 import org.example.shield.lawyer.domain.LawyerReader;
 import org.example.shield.lawyer.domain.LawyerWriter;
@@ -52,6 +53,7 @@ public class AdminService {
     private final VerificationLogReader verificationLogReader;
     private final VerificationLogRepository verificationLogRepository;
     private final VerificationCheckReader verificationCheckReader;
+    private final LawyerEmbeddingService lawyerEmbeddingService;
 
     public DashboardStatsResponse getDashboardStats() {
         log.info("대시보드 통계 조회");
@@ -196,6 +198,15 @@ public class AdminService {
 
         lawyer.updateVerificationStatus(newStatus);
         lawyerWriter.save(lawyer);
+
+        // VERIFIED 로 전환된 경우 매칭용 임베딩을 업서트 (Issue #50)
+        if (newStatus == VerificationStatus.VERIFIED) {
+            try {
+                lawyerEmbeddingService.upsertEmbedding(lawyer);
+            } catch (Exception ex) {
+                log.warn("변호사 임베딩 생성 실패 (승인은 성공) lawyerId={} error={}", lawyerId, ex.getMessage());
+            }
+        }
 
         VerificationLog log = VerificationLog.create(lawyerId, adminId, previousStatus, newStatus.name(), reason);
         verificationLogWriter.save(log);

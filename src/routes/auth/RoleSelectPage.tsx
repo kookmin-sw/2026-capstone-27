@@ -1,6 +1,7 @@
 import { ArrowLeft, Briefcase, ChevronRight, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/cn';
+import type { PendingRegistrationState } from '@/lib/authFlow';
 
 interface RoleCardProps {
   icon: React.ReactNode;
@@ -40,6 +41,16 @@ function RoleCard({ icon, iconBg, title, description, onClick }: RoleCardProps) 
 
 export function RoleSelectPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  // 소셜 로그인 콜백에서 넘어올 때 state로 accessToken / name / email / provider 를 전달한다.
+  // 직접 URL 입력 등으로 들어온 경우엔 state 가 없을 수 있다.
+  const pending = (location.state ?? null) as PendingRegistrationState | null;
+
+  const goToRegister = (role: 'client' | 'lawyer') => {
+    navigate(`/register/${role}`, {
+      state: pending ?? undefined,
+    });
+  };
 
   return (
     <div className="flex flex-col flex-1">
@@ -78,14 +89,14 @@ export function RoleSelectPage() {
             iconBg="bg-brand/10"
             title="의뢰인 (Client)"
             description="인공지능 법률 상담을 통해 고민을 해결하고 적합한 변호사를 찾고 싶습니다."
-            onClick={() => navigate('/register/client')}
+            onClick={() => goToRegister('client')}
           />
           <RoleCard
             icon={<Briefcase size={28} className="text-green-500" />}
             iconBg="bg-green-500/10"
             title="변호사 (Lawyer)"
             description="전문적인 법률 지식을 공유하고 새로운 의뢰인과 사건을 수임하고 싶습니다."
-            onClick={() => navigate('/register/lawyer')}
+            onClick={() => goToRegister('lawyer')}
           />
         </div>
 

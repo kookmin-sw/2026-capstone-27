@@ -3,17 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { authApi } from '@/lib/authApi';
-
-function getRoleHome(role: string): string {
-  switch (role) {
-    case 'LAWYER':
-      return '/lawyer';
-    case 'ADMIN':
-      return '/admin';
-    default:
-      return '/home';
-  }
-}
+import { getRoleHome, routeAfterSocialLogin } from '@/lib/authFlow';
 
 export function KakaoCallbackPage() {
   const navigate = useNavigate();
@@ -38,10 +28,20 @@ export function KakaoCallbackPage() {
       try {
         const { data } = await authApi.kakaoLogin({ authorizationCode: code });
 
-        const { accessToken, role } = data.data;
+        const payload = data.data;
+        const { accessToken, isNewUser, role, name, email } = payload;
 
         await login(accessToken);
-        navigate(getRoleHome(role ?? ''), { replace: true });
+
+        const next = routeAfterSocialLogin({ isNewUser, role });
+        if (next === '/role-select') {
+          navigate(next, {
+            replace: true,
+            state: { accessToken, name, email, provider: 'kakao' },
+          });
+          return;
+        }
+        navigate(getRoleHome(role), { replace: true });
       } catch (err) {
         console.error('[KakaoCallback] Error:', err);
         setErrorMsg('카카오 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');

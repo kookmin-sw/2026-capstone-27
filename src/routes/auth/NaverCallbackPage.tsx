@@ -4,17 +4,7 @@ import { Spinner } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { validateNaverState } from '@/lib/naver';
 import { authApi } from '@/lib/authApi';
-
-function getRoleHome(role: string): string {
-  switch (role) {
-    case 'LAWYER':
-      return '/lawyer';
-    case 'ADMIN':
-      return '/admin';
-    default:
-      return '/home';
-  }
-}
+import { getRoleHome, routeAfterSocialLogin } from '@/lib/authFlow';
 
 export function NaverCallbackPage() {
   const navigate = useNavigate();
@@ -44,12 +34,25 @@ export function NaverCallbackPage() {
 
     (async () => {
       try {
-        const { data } = await authApi.naverLogin({ authorizationCode: code, state: state ?? undefined });
+        const { data } = await authApi.naverLogin({
+          authorizationCode: code,
+          state: state ?? undefined,
+        });
 
-        const { accessToken, role } = data.data;
+        const payload = data.data;
+        const { accessToken, isNewUser, role, name, email } = payload;
 
         await login(accessToken);
-        navigate(getRoleHome(role ?? ''), { replace: true });
+
+        const next = routeAfterSocialLogin({ isNewUser, role });
+        if (next === '/role-select') {
+          navigate(next, {
+            replace: true,
+            state: { accessToken, name, email, provider: 'naver' },
+          });
+          return;
+        }
+        navigate(getRoleHome(role), { replace: true });
       } catch (err) {
         console.error('[NaverCallback] Error:', err);
         setErrorMsg('네이버 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');

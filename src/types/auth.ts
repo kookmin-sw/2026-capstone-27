@@ -6,10 +6,21 @@ export interface SocialLoginRequest {
   state?: string; // Naver CSRF state
 }
 
+/**
+ * POST /api/auth/google, /api/auth/dev/login 응답 data
+ *
+ * 서버 명세(API 명세서 기준):
+ *   - accessToken, userId, name, role 필수
+ *   - refreshToken은 HttpOnly 쿠키로 내려오므로 body에는 없을 수 있음
+ *   - isNewUser는 최초 가입 시 true — 프론트에서 역할 선택 화면으로 분기하기 위해 사용
+ */
 export interface LoginResponse {
   accessToken: string;
-  refreshToken: string;
-  isNewUser: boolean;
+  refreshToken?: string;
+  userId?: string;
+  name?: string;
+  email?: string;
+  isNewUser?: boolean;
   role?: UserRole;
   user?: UserInfo;
 }
@@ -28,13 +39,25 @@ export interface RegisterClientRequest {
   phone: string;
 }
 
+/**
+ * POST /api/lawyers/me/register 요청
+ * API 명세서 기준 필드 (온톨로지 L1/L2/L3 + 기본 정보)
+ */
 export interface RegisterLawyerRequest {
-  name: string;
-  email: string;
-  phone: string;
-  specializations: string[];
-  experienceYears: number;
-  licenseNumber: string;
+  barAssociationNumber: string;     // 대한변호사협회 등록번호 (필수)
+  domains?: string[];                // 대분류 (온톨로지 L1)
+  subDomains?: string[];             // 중분류 (온톨로지 L2)
+  tags?: string[];                   // 소분류 (온톨로지 L3)
+  experienceYears?: number;          // 경력 연수
+  bio?: string;                      // 자기소개
+  region?: string;                   // 활동 지역
+}
+
+/**
+ * POST /api/lawyers/me/register 응답 data
+ */
+export interface RegisterLawyerResponse {
+  verificationStatus: 'PENDING' | 'REVIEWING' | 'SUPPLEMENT_REQUESTED' | 'VERIFIED' | 'REJECTED';
 }
 
 /** POST /api/auth/dev/login 요청 */
@@ -44,7 +67,7 @@ export interface DevLoginRequest {
   role: UserRole;
 }
 
-/** POST /api/auth/google ��청 */
+/** POST /api/auth/google 요청 */
 export interface GoogleLoginRequest {
   authorizationCode: string;
   role?: UserRole;

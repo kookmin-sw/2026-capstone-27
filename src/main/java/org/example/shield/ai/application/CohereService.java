@@ -135,13 +135,25 @@ public class CohereService {
         msgs.add(CohereChatRequest.Message.system(systemPrompt));
 
         // 2. 기존 대화 내역 (시간순) — 호출자가 전달한 리스트 사용
+        //    방어적 skip: 과거 DB 에 이미 저장된 빈 content 메시지가 섞여 있을 수 있음.
+        //    Cohere v2 Chat API 는 빈 content 를 400 으로 거부하므로 history 구성
+        //    시점에서 제외해야 한다. (Issue #45)
         for (Message msg : chatHistory) {
             if (msg.getRole() == MessageRole.USER) {
                 // TODO: 저장 시점에 sanitize된 텍스트를 별도 필드에 보관하면 중복 sanitize 제거 가능
-                msgs.add(CohereChatRequest.Message.user(
-                        sanitizeService.sanitizeUserText(msg.getContent())));
+                String sanitized = sanitizeService.sanitizeUserText(msg.getContent());
+                if (sanitized == null || sanitized.isBlank()) {
+                    log.warn("Skipping blank USER message in chat history: messageId={}", msg.getId());
+                    continue;
+                }
+                msgs.add(CohereChatRequest.Message.user(sanitized));
             } else if (msg.getRole() == MessageRole.CHATBOT) {
-                msgs.add(CohereChatRequest.Message.assistant(msg.getContent()));
+                String content = msg.getContent();
+                if (content == null || content.isBlank()) {
+                    log.warn("Skipping blank CHATBOT message in chat history: messageId={}", msg.getId());
+                    continue;
+                }
+                msgs.add(CohereChatRequest.Message.assistant(content));
             }
         }
 
@@ -163,13 +175,24 @@ public class CohereService {
         msgs.add(CohereChatRequest.Message.system(systemPrompt));
 
         // 2. 전체 대화 내역
+        //    방어적 skip: 빈 content 메시지는 Cohere v2 Chat API 가 400 으로 거부.
+        //    (Issue #45)
         List<Message> history = messageReader.findAllByConsultationId(consultation.getId());
         for (Message msg : history) {
             if (msg.getRole() == MessageRole.USER) {
-                msgs.add(CohereChatRequest.Message.user(
-                        sanitizeService.sanitizeUserText(msg.getContent())));
+                String sanitized = sanitizeService.sanitizeUserText(msg.getContent());
+                if (sanitized == null || sanitized.isBlank()) {
+                    log.warn("Skipping blank USER message in brief history: messageId={}", msg.getId());
+                    continue;
+                }
+                msgs.add(CohereChatRequest.Message.user(sanitized));
             } else if (msg.getRole() == MessageRole.CHATBOT) {
-                msgs.add(CohereChatRequest.Message.assistant(msg.getContent()));
+                String content = msg.getContent();
+                if (content == null || content.isBlank()) {
+                    log.warn("Skipping blank CHATBOT message in brief history: messageId={}", msg.getId());
+                    continue;
+                }
+                msgs.add(CohereChatRequest.Message.assistant(content));
             }
         }
 

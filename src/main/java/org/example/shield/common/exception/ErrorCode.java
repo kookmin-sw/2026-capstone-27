@@ -59,7 +59,10 @@ public enum ErrorCode {
     // Document
     DOCUMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "서류를 찾을 수 없습니다"),
     DOCUMENT_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "파일 크기가 10MB를 초과합니다"),
-    DOCUMENT_TYPE_NOT_SUPPORTED(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식입니다");
+    DOCUMENT_TYPE_NOT_SUPPORTED(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식입니다"),
+
+    // AI
+    CHAT_AI_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "AI 응답 생성에 실패했습니다");
 
     private final HttpStatus httpStatus;
     private final String message;

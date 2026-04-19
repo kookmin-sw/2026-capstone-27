@@ -5,16 +5,16 @@
 | 항목 | 값 |
 |------|-----|
 | 테스트 날짜 | 2026-04-17 |
-| 테스트 모델 | `meta-llama/llama-4-scout-17b-16e-instruct` (Groq — 레거시 검증, 현재는 Cohere로 전환) |
+| 테스트 모델 | `meta-llama/llama-4-scout-17b-16e-instruct` (Legacy LLM — 레거시 검증, 현재는 Cohere로 전환) |
 | 프롬프트 | `intent-classifier.md` + `legal-ontology-slim.json` (180노드) |
 | 테스트 케이스 | 12건 (4개 도메인 × 3건) |
 | 대상 도메인 | 부동산, 이혼, 상속, 손해배상 |
 
-> **참고**: 본 보고서는 Groq 환경(llama-4-scout) 기준 레거시 검증 결과입니다. 2026-04 Cohere v2 API(`command-a-03-2025`) 로 LLM 플랫폼을 전환했습니다.
+> **참고**: 본 보고서는 Legacy LLM 환경(llama-4-scout) 기준 레거시 검증 결과입니다. 2026-04 Cohere v2 API(`command-a-03-2025`) 로 LLM 플랫폼을 전환했습니다.
 >
 > **재검증 완료(2026-04-19)**: 동일 12케이스를 Cohere로 재측정한 결과는 [docs/r17-cohere-rerun-report.md](./r17-cohere-rerun-report.md) 참조. 요약: L1 83.3%(10/12), L2 66.7%(8/12), 평균 지연 7.5s. 레거시 대비 소폭 하락했으나 샘플 크기 12의 통계적 노이즈 범위 내로 판단되어 **Cohere 운영을 유지**.
 >
-> 아래 매트릭스·분석 수치는 Groq 시절 기준을 그대로 보존합니다.
+> 아래 매트릭스·분석 수치는 레거시 검증 시점 기준을 그대로 보존합니다.
 
 ---
 
@@ -125,7 +125,7 @@
 
 ## 테스트 환경
 
-- **API**: Groq Cloud (무료 tier) — 레거시. 현재 프로덕션은 Cohere Chat v2 (`POST https://api.cohere.com/v2/chat`)
+- **API**: Legacy LLM 플랫폼 (무료 tier) — 레거시. 현재 프로덕션은 Cohere Chat v2 (`POST https://api.cohere.com/v2/chat`)
 - **모델**: `meta-llama/llama-4-scout-17b-16e-instruct`
 - **온톨로지**: `legal-ontology-slim.json` (180노드, 136리프, ~8.3K chars)
 - **프롬프트**: `intent-classifier.md` (JSON Object 모드)

@@ -2,7 +2,7 @@
 """
 R-17 의도 분류 재검증 스크립트 (Cohere v2 / command-a-03-2025).
 
-레거시 Groq(llama-4-scout) 기준 결과(docs/test-results/r17-intent-classification-results.json)를
+레거시 LLM(llama-4-scout) 기준 결과(docs/test-results/r17-intent-classification-results.json)를
 같은 12케이스 × 동일 프롬프트로 Cohere v2 API에서 재측정한다.
 
 - 입력 쿼리: 기존 결과 파일의 intent_summary 필드 (원본 질의 미보존으로 인해 대용)
@@ -174,7 +174,7 @@ def main():
                 "usage": usage,
                 "error": err,
             },
-            "legacy_groq": {
+            "legacy_baseline": {
                 "actual_id": legacy_actual,
                 "confidence": legacy_conf,
                 "l1_match": legacy_l1,

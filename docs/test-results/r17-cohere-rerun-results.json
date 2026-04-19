@@ -47,7 +47,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-001-01-03",
         "confidence": 0.8,
         "l1_match": true,
@@ -96,7 +96,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-001-02-03",
         "confidence": 0.8,
         "l1_match": true,
@@ -137,7 +137,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-002-01-01",
         "confidence": 1.0,
         "l1_match": true,
@@ -178,7 +178,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-002-04-01",
         "confidence": 0.9,
         "l1_match": true,
@@ -223,7 +223,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-003-01-01",
         "confidence": 0.9,
         "l1_match": true,
@@ -272,7 +272,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-005-02",
         "confidence": 0.9,
         "l1_match": true,
@@ -321,7 +321,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-003",
         "confidence": 0.8,
         "l1_match": true,
@@ -366,7 +366,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-003-02-03",
         "confidence": 1.0,
         "l1_match": true,
@@ -415,7 +415,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-005-03",
         "confidence": 0.9,
         "l1_match": true,
@@ -460,7 +460,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-005",
         "confidence": 0.8,
         "l1_match": true,
@@ -509,7 +509,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-003-01-04",
         "confidence": 0.8,
         "l1_match": false,
@@ -554,7 +554,7 @@
         },
         "error": null
       },
-      "legacy_groq": {
+      "legacy_baseline": {
         "actual_id": "law-002-02",
         "confidence": 0.9,
         "l1_match": true,

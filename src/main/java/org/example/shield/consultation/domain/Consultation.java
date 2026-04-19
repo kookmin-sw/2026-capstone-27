@@ -52,7 +52,7 @@ public class Consultation extends BaseEntity {
     /**
      * LLM 응답 completion ID (감사 로깅용).
      * Cohere v2 Chat API는 무상태 모델이므로 Stateful 연결 용도 없음 — 항상 full history 전송.
-     * 과거 xAI Grok previous_response_id 호환을 위해 필드는 보존 (DB 스키마 호환성).
+     * 과거 LLM 제공자의 previous_response_id 호환을 위해 필드는 보존 (DB 스키마 호환성).
      */
     @Column(columnDefinition = "text")
     private String lastResponseId;

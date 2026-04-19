@@ -44,3 +44,5 @@ management:
   health:
     db:
       enabled: true
+    mongodb:
+      enabled: false

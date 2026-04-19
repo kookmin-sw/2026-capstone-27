@@ -1,7 +1,11 @@
-import type { ConsultationStatus, DomainType, MessageRole } from './enums';
+import type { ConsultationStatus, MessageRole } from './enums';
 
+/** 명세: POST /api/consultations 요청 본문
+ *  3단계 분류 체계 — domains(L1) / subDomains(L2) / tags(L3) 배열로 전달. */
 export interface CreateConsultationRequest {
-  domain: DomainType | null;
+  domains: string[];
+  subDomains: string[];
+  tags: string[];
 }
 
 export interface CreateConsultationResponse {

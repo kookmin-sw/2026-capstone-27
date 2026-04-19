@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { consultationApi } from '@/lib/consultationApi';
-import type { DomainType } from '@/types/enums';
+import type { CreateConsultationRequest } from '@/types/consultation';
 
 const KEYS = {
   all: ['consultations'] as const,
@@ -36,7 +36,8 @@ export function useCreateConsultation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (domain: DomainType | null) => consultationApi.create(domain),
+    mutationFn: (request: CreateConsultationRequest) =>
+      consultationApi.create(request),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: KEYS.list() });
     },

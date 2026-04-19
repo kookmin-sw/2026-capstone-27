@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { User, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useLawyerList } from '@/hooks/useLawyer';
-import { useLegalFields } from '@/hooks/useLegalFields';
 import { Badge, Spinner } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { DOMAIN_LABELS } from '@/lib/constants';
@@ -101,10 +100,12 @@ export function LawyerListPage() {
     string | undefined
   >(undefined);
 
-  const { data: legalFields } = useLegalFields();
   const filters: { label: string; value: string | undefined }[] = [
     { label: '전체', value: undefined },
-    ...(legalFields ?? []).map((f) => ({ label: f.label, value: f.value })),
+    ...Object.entries(DOMAIN_LABELS).map(([value, label]) => ({
+      label,
+      value,
+    })),
   ];
 
   const { data, isLoading } = useLawyerList(0, 20, selectedSpecialization);

@@ -33,7 +33,11 @@ describe('consultationApi – BE contract tests', () => {
 
   describe('create', () => {
     it('returns consultationId and welcomeMessage', async () => {
-      const { data } = await consultationApi.create('CIVIL');
+      const { data } = await consultationApi.create({
+        domains: ['CIVIL'],
+        subDomains: [],
+        tags: [],
+      });
       const created = data.data;
 
       expect(created).toHaveProperty('consultationId');

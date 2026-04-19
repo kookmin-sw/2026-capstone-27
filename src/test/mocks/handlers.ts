@@ -147,10 +147,6 @@ export const handlers = [
   }),
 
   // ── Consultation ──
-  http.get(`${BASE}/consultations/legal-fields`, () => {
-    return ok(['CIVIL', 'CRIMINAL', 'LABOR', 'SCHOOL_VIOLENCE']);
-  }),
-
   http.post(`${BASE}/consultations`, () => {
     return ok({
       consultationId: mockConsultation.consultationId,

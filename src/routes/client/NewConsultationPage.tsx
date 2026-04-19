@@ -3,33 +3,45 @@ import { useNavigate } from 'react-router-dom';
 import { Scale, Shield, Briefcase, Users } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useCreateConsultation } from '@/hooks/useConsultation';
-import { useLegalFields } from '@/hooks/useLegalFields';
-import { Button, Spinner } from '@/components/ui';
+import { Button, Card } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import type { DomainType } from '@/types/enums';
 
-// ─── domain icon mapping ─────────────────────────────────────────────────────
+// ─── domain options ──────────────────────────────────────────────────────────
 
-const DOMAIN_ICONS: Record<string, React.ElementType> = {
-  CIVIL: Scale,
-  CRIMINAL: Shield,
-  LABOR: Briefcase,
-  SCHOOL_VIOLENCE: Users,
-};
+interface DomainOption {
+  value: DomainType;
+  label: string;
+  description: string;
+  Icon: React.ElementType;
+}
 
-const DOMAIN_ENGLISH: Record<string, string> = {
-  CIVIL: 'Civil',
-  CRIMINAL: 'Criminal',
-  LABOR: 'Labor',
-  SCHOOL_VIOLENCE: 'School Violence',
-};
-
-const DOMAIN_DESCRIPTIONS: Record<string, string> = {
-  CIVIL: '손해배상, 대여금, 부동산 등 개인 간의 분쟁',
-  CRIMINAL: '사기, 절도, 폭행 등 범죄 관련 처벌 절차',
-  LABOR: '부당해고, 임금체불 등 직장 내 권리 구제',
-  SCHOOL_VIOLENCE: '학폭 심의, 징계처분 등 교육 현장 법적 대응',
-};
+const DOMAIN_OPTIONS: DomainOption[] = [
+  {
+    value: 'CIVIL',
+    label: '민사',
+    description: '계약, 손해배상, 부동산 등',
+    Icon: Scale,
+  },
+  {
+    value: 'CRIMINAL',
+    label: '형사',
+    description: '고소, 고발, 형사 사건 등',
+    Icon: Shield,
+  },
+  {
+    value: 'LABOR',
+    label: '노동',
+    description: '해고, 임금, 근로조건 등',
+    Icon: Briefcase,
+  },
+  {
+    value: 'SCHOOL_VIOLENCE',
+    label: '학교폭력',
+    description: '학교폭력 사건 대응',
+    Icon: Users,
+  },
+];
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -37,102 +49,94 @@ export function NewConsultationPage() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<DomainType | null | 'UNKNOWN'>(null);
   const { mutate: createConsultation, isPending } = useCreateConsultation();
-  const { data: legalFields, isLoading: fieldsLoading } = useLegalFields();
 
-  // "잘 모르겠어요" uses domain=null, but we track it as 'UNKNOWN' locally
+  // "잘 모르겠어요" uses empty domain arrays, but we track it as 'UNKNOWN' locally
   const isDomainChosen = selected !== null;
 
   function handleSubmit() {
     if (!isDomainChosen) return;
-    const domain: DomainType | null =
-      selected === 'UNKNOWN' ? null : (selected as DomainType);
 
-    createConsultation(domain, {
-      onSuccess: (res) => {
-        const newId = res.data.data.consultationId;
-        navigate(`/consultations/${newId}`);
+    // 백엔드는 { domains, subDomains, tags } 세 배열을 받음.
+    // 현재 단계에서는 L1 도메인 하나만 선택하므로 domains 에 단일 값, 나머지는 빈 배열로 전달.
+    const domains: string[] =
+      selected === 'UNKNOWN' ? [] : [selected as DomainType];
+
+    createConsultation(
+      { domains, subDomains: [], tags: [] },
+      {
+        onSuccess: (res) => {
+          const newId = res.data.data.consultationId;
+          navigate(`/consultations/${newId}`);
+        },
       },
-    });
+    );
   }
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col min-h-dvh bg-surface">
       <Header
-        title="분야 선택"
+        title="새 상담"
         showBack
         onBack={() => navigate(-1)}
       />
 
-      <main className="flex-1 flex flex-col px-5 py-6 gap-6">
-        {/* Step label + title */}
-        <div>
-          <p className="text-xs font-bold text-brand uppercase tracking-widest mb-2">
-            Step 02. Classification
+      <main className="flex-1 flex flex-col px-4 py-6 gap-6">
+        {/* Description card */}
+        <Card padding="md">
+          <p className="text-sm font-medium text-gray-500 mb-0.5">분야 선택</p>
+          <p className="text-base font-semibold text-gray-900">
+            어떤 분야의 상담이 필요하신가요?
           </p>
-          <h2 className="text-xl font-bold text-[#181b20] leading-8">
-            어떤 법률 분야에 해당하시나요?
-          </h2>
-          <p className="mt-2 text-sm text-[#555d6d] leading-relaxed">
-            AI 분석을 보완하기 위해 정확한 분야를 직접 선택해 주세요.
-            <br />
-            <span className="font-semibold text-brand">주요 분야 1개</span>는 필수입니다.
+          <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            가장 가까운 분야를 선택해 주세요. 정확하지 않아도 괜찮습니다.
           </p>
-        </div>
+        </Card>
 
         {/* Domain grid */}
-        {fieldsLoading ? (
-          <div className="flex items-center justify-center h-32">
-            <Spinner size="md" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-            {(legalFields ?? []).map(({ value, label }) => {
-              const isSelected = selected === value;
-              const Icon = DOMAIN_ICONS[value] ?? Scale;
-              const description = DOMAIN_DESCRIPTIONS[value] ?? label;
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setSelected(value as DomainType)}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+          {DOMAIN_OPTIONS.map(({ value, label, description, Icon }) => {
+            const isSelected = selected === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setSelected(value)}
+                className={cn(
+                  'text-left bg-white rounded-card border-2 p-4',
+                  'transition-all duration-150 cursor-pointer',
+                  'hover:border-brand hover:shadow-sm',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
+                  'active:scale-[0.98]',
+                  isSelected
+                    ? 'border-brand bg-blue-50 shadow-sm'
+                    : 'border-gray-200',
+                )}
+                aria-pressed={isSelected}
+              >
+                <div
                   className={cn(
-                    'flex flex-col items-center bg-white rounded-[10px] border-2 pt-5 pb-3 px-3',
-                    'shadow-[0px_2px_4px_0px_rgba(23,25,28,0.08)]',
-                    'transition-all duration-150 cursor-pointer',
-                    'hover:border-brand hover:shadow-md',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40',
-                    'active:scale-[0.98]',
-                    isSelected
-                      ? 'border-brand bg-blue-50'
-                      : 'border-[#dee1e6]',
+                    'mb-3 w-10 h-10 rounded-xl flex items-center justify-center',
+                    isSelected ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500',
+                    'transition-colors duration-150',
                   )}
-                  aria-pressed={isSelected}
                 >
-                  <div
-                    className={cn(
-                      'mb-3 w-12 h-12 rounded-full flex items-center justify-center',
-                      isSelected ? 'bg-brand text-white' : 'bg-[#f3f4f6] text-gray-500',
-                      'transition-colors duration-150',
-                    )}
-                  >
-                    <Icon size={20} />
-                  </div>
-                  <p
-                    className={cn(
-                      'text-sm font-bold mb-0.5 text-center',
-                      isSelected ? 'text-brand' : 'text-gray-900',
-                    )}
-                  >
-                    {label} ({DOMAIN_ENGLISH[value] ?? value})
-                  </p>
-                  <p className="text-[10px] text-[#555d6d] text-center leading-snug">
-                    {description}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        )}
+                  <Icon size={20} />
+                </div>
+                <p
+                  className={cn(
+                    'text-sm font-semibold mb-0.5',
+                    isSelected ? 'text-brand' : 'text-gray-900',
+                  )}
+                >
+                  {label}
+                </p>
+                <p className="text-xs text-gray-500 leading-snug">
+                  {description}
+                </p>
+              </button>
+            );
+          })}
+        </div>
 
         {/* "잘 모르겠어요" option */}
         <div className="flex justify-center">
@@ -140,9 +144,11 @@ export function NewConsultationPage() {
             type="button"
             onClick={() => setSelected('UNKNOWN')}
             className={cn(
-              'text-xs font-medium text-brand transition-colors duration-150',
-              'focus-visible:outline-none',
-              selected === 'UNKNOWN' && 'underline',
+              'text-sm font-medium transition-colors duration-150',
+              'focus-visible:outline-none focus-visible:underline',
+              selected === 'UNKNOWN'
+                ? 'text-brand underline'
+                : 'text-gray-400 hover:text-gray-600',
             )}
           >
             잘 모르겠어요

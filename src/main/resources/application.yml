@@ -98,11 +98,16 @@ cohere:
   model:
     chat: command-a-03-2025
     brief: command-a-03-2025
+    embed: embed-v4.0
   timeout:
     connect: 5000
     read-chat: 30000
     read-brief: 60000
     read-classify: 15000
+    read-embed: 30000
+  embed:
+    batch-size: 96
+    dimension: 1024
   chat:
     max-history-messages: 20
   classify:

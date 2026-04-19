@@ -57,6 +57,18 @@ public class CohereApiConfig {
     @Value("${cohere.timeout.read-classify:15000}")
     private int classifyReadTimeout;
 
+    @Value("${cohere.model.embed:embed-v4.0}")
+    private String embedModel;
+
+    @Value("${cohere.timeout.read-embed:30000}")
+    private int embedReadTimeout;
+
+    @Value("${cohere.embed.batch-size:96}")
+    private int embedBatchSize;
+
+    @Value("${cohere.embed.dimension:1024}")
+    private int embedDimension;
+
     @Bean
     @ConditionalOnMissingBean
     public ObjectMapper objectMapper() {

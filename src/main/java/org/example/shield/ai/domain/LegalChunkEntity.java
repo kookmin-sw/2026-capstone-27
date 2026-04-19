@@ -31,6 +31,9 @@ import org.hibernate.type.SqlTypes;
  * <p>category_ids, legislation_terms는 PostgreSQL text[] 타입으로,
  * Hibernate 6 {@link JdbcTypeCode}(SqlTypes.ARRAY)를 통해 {@code String[]}로 매핑한다.</p>
  *
+ * <p>embedding은 pgvector {@code vector(1024)} 컬럼으로 Hibernate 6.5+ {@link SqlTypes#VECTOR}를 통해
+ * {@code float[]}로 매핑된다. Flyway V4에서 추가되며 Phase B-2 인제스트 전까지는 NULL이다.</p>
+ *
  * <p>부분 유니크 제약 {@code (law_id, article_no, chunk_index) WHERE abolition_date IS NULL}은
  * DB 레벨(Flyway V3)에서 관리하므로 JPA 유니크 제약으로 선언하지 않는다.</p>
  */
@@ -84,6 +87,20 @@ public class LegalChunkEntity {
     @Column(name = "legislation_terms", columnDefinition = "text[]")
     private String[] legislationTerms;
 
+    /**
+     * Cohere embed-v4.0 (1024차원) 임베딩 벡터.
+     * B-2 인제스트 파이프라인이 채우기 전에는 NULL.
+     */
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    @Column(name = "embedding", columnDefinition = "vector(1024)")
+    private float[] embedding;
+
+    /**
+     * 임베딩 생성에 사용된 모델 ID (예: "embed-v4.0"). 재임베딩 필요성 판단용.
+     */
+    @Column(name = "embedding_model", length = 64)
+    private String embeddingModel;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -104,7 +121,9 @@ public class LegalChunkEntity {
                              String sourceUrl,
                              String[] categoryIds,
                              String lodUri,
-                             String[] legislationTerms) {
+                             String[] legislationTerms,
+                             float[] embedding,
+                             String embeddingModel) {
         this.lawId = lawId;
         this.lawName = lawName;
         this.articleNo = articleNo;
@@ -117,5 +136,16 @@ public class LegalChunkEntity {
         this.categoryIds = categoryIds;
         this.lodUri = lodUri;
         this.legislationTerms = legislationTerms;
+        this.embedding = embedding;
+        this.embeddingModel = embeddingModel;
+    }
+
+    /**
+     * B-2 인제스트/재임베딩 파이프라인이 사용하는 업데이트라이터.
+     * embedding과 embeddingModel은 항상 함께 갱신하여 정합성을 유지한다.
+     */
+    public void updateEmbedding(float[] embedding, String embeddingModel) {
+        this.embedding = embedding;
+        this.embeddingModel = embeddingModel;
     }
 }

@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.example.shield.ai.application.LegalRetrievalService;
 import org.example.shield.ai.application.QueryEmbeddingService;
 import org.example.shield.ai.config.CohereApiConfig;
+import org.example.shield.ai.domain.LegalCaseJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository.LegalChunkRow;
 import org.example.shield.ai.dto.LegalChunk;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 class PgLegalRetrievalServiceTest {
 
     private LegalChunkJpaRepository repository;
+    private LegalCaseJpaRepository caseRepository;
     private QueryEmbeddingService queryEmbeddingService;
     private CohereApiConfig cohereConfig;
     private SimpleMeterRegistry meterRegistry;
@@ -35,13 +37,14 @@ class PgLegalRetrievalServiceTest {
     @BeforeEach
     void setUp() {
         repository = mock(LegalChunkJpaRepository.class);
+        caseRepository = mock(LegalCaseJpaRepository.class);
         queryEmbeddingService = mock(QueryEmbeddingService.class);
         cohereConfig = mock(CohereApiConfig.class);
         meterRegistry = new SimpleMeterRegistry();
         ragMetrics = new RagMetrics(meterRegistry);
         when(cohereConfig.getEmbedModel()).thenReturn("embed-v4.0");
         when(cohereConfig.getEmbedDimension()).thenReturn(1024);
-        service = new PgLegalRetrievalService(repository, queryEmbeddingService, cohereConfig,
+        service = new PgLegalRetrievalService(repository, caseRepository, queryEmbeddingService, cohereConfig,
                 ragMetrics, 0.5, 0.3, 0.2, 40);
     }
 

@@ -22,7 +22,7 @@ class RagContextBuilderTest {
     @Test
     @DisplayName("null chunks — 빈 문자열 반환")
     void build_nullChunks_returnsEmpty() {
-        String result = builder.build(null, "테스트 요약");
+        String result = builder.build((List<LegalChunk>) null, "테스트 요약");
         assertThat(result).isEmpty();
     }
 

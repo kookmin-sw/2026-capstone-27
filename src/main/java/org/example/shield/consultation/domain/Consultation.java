@@ -133,10 +133,31 @@ public class Consultation extends BaseEntity {
 
     /**
      * 도메인 정보 추출: userDomains 우선, aiDomains 폴백.
+     * 온톨로지 L1 한글 이름을 담는다 (예: "부동산 거래").
      */
     public String getFirstDomain() {
         if (isNonEmpty(userDomains)) return userDomains.get(0);
         if (isNonEmpty(aiDomains)) return aiDomains.get(0);
+        return null;
+    }
+
+    /**
+     * 서브도메인(L2) 추출: userSubDomains 우선, aiSubDomains 폴백.
+     * 온톨로지 L2 한글 이름을 담는다 (예: "부동산 매매").
+     */
+    public String getFirstSubDomain() {
+        if (isNonEmpty(userSubDomains)) return userSubDomains.get(0);
+        if (isNonEmpty(aiSubDomains)) return aiSubDomains.get(0);
+        return null;
+    }
+
+    /**
+     * 태그(L3) 추출: userTags 우선, aiTags 폴백.
+     * 온톨로지 L3 한글 이름을 담는다 (예: "매매 계약 불이행").
+     */
+    public String getFirstTag() {
+        if (isNonEmpty(userTags)) return userTags.get(0);
+        if (isNonEmpty(aiTags)) return aiTags.get(0);
         return null;
     }
 

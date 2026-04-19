@@ -100,19 +100,22 @@ public class MessageService {
         );
         Message savedAi = messageWriter.save(aiMessage);
 
-        // 6. allCompleted AND gate (P0-II)
+        // 6. allCompleted AND gate (P0-II, Issue #40 3레벨 커버리지)
         boolean effectiveAllCompleted = false;
         if (parsed.isAllCompleted()) {
-            String domainForCoverage = consultation.getFirstDomain();
+            String l1 = consultation.getFirstDomain();
+            String l2 = consultation.getFirstSubDomain();
+            String l3 = consultation.getFirstTag();
 
             double coverageRatio = checklistCoverageService.compute(
-                    consultationId, domainForCoverage);
+                    consultationId, l1, l2, l3);
             effectiveAllCompleted = checklistCoverageService.isEffectivelyCompleted(
                     true, coverageRatio);
 
             if (!effectiveAllCompleted) {
-                log.warn("LLM reported allCompleted=true but coverage={} < {}: consultationId={}",
-                        coverageRatio, checklistCoverageService.getThreshold(), consultationId);
+                log.warn("LLM reported allCompleted=true but coverage={} < {}: consultationId={}, L1={}, L2={}, L3={}",
+                        coverageRatio, checklistCoverageService.getThreshold(), consultationId,
+                        l1, l2, l3);
             }
         }
 

@@ -55,9 +55,23 @@ export interface RegisterLawyerRequest {
 
 /**
  * POST /api/lawyers/me/register 응답 data
+ *
+ * 서버 처리:
+ *   1) 호출자 권한 체크: authenticated() (USER 상태에서도 호출 가능)
+ *   2) User.role → LAWYER 로 승격
+ *   3) LawyerProfile 생성, verificationStatus = PENDING
+ *   4) role 이 바뀌었으므로 새 JWT(accessToken) 를 재발급하여 응답 포함
+ *
+ * 프론트는 accessToken 을 받아 useAuthStore.login(accessToken) 으로 교체해야
+ * 이후 변호사 전용 API 접근이 가능.
  */
 export interface RegisterLawyerResponse {
   verificationStatus: 'PENDING' | 'REVIEWING' | 'SUPPLEMENT_REQUESTED' | 'VERIFIED' | 'REJECTED';
+  /**
+   * 역할 승격(USER → LAWYER) 이후 재발급된 JWT.
+   * 기존 토큰은 role=USER 로 서명되어 있어 변호사 API 호출 시 권한 부족.
+   */
+  accessToken?: string;
 }
 
 /** POST /api/auth/dev/login 요청 */

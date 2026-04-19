@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Button, Input } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { cn } from '@/lib/cn';
+import { userApi } from '@/lib/userApi';
 import type { PendingRegistrationState } from '@/lib/authFlow';
 
 const schema = z.object({
@@ -45,9 +46,21 @@ export function ClientRegisterPage() {
     },
   });
 
-  const onSubmit = async (_data: FormValues) => {
-    // TODO(next PR): /api/users/me 프로필 업데이트 API 연동 (전화번호/이름 저장)
-    // 현재 PR에서는 UI 플로우만 연결. 소셜 로그인으로 이미 accessToken 발급된 상태.
+  const onSubmit = async (data: FormValues) => {
+    // 확정된 플로우: 의뢰인(USER) 은 이미 소셜 로그인으로 기본 생성되어 있으므로
+    // 별도의 role 변경/register API 호출 불필요. 이름이 바뀌었으면 PATCH /api/users/me 에
+    // 만 반영.  전화번호는 현재 UserInfo 스키마에 없어 저장하지 않음 (서버 스키마 확장 시 추가 가능).
+    try {
+      const originalName = pending?.name?.trim() ?? '';
+      const nextName = data.name.trim();
+      if (nextName && nextName !== originalName) {
+        await userApi.updateMe({ name: nextName });
+      }
+    } catch (err) {
+      // 이름 저장 실패로 가입 플로우 자체를 막지는 않는다.
+      console.warn('[ClientRegister] 이름 업데이트 실패:', err);
+    }
+
     if (pending?.accessToken) {
       await login(pending.accessToken);
     }

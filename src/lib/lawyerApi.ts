@@ -8,6 +8,7 @@ import type {
   VerificationRequestData,
   DocumentResponse,
 } from '@/types/lawyer';
+import type { RegisterLawyerRequest, RegisterLawyerResponse } from '@/types/auth';
 
 const BASE = '/lawyers';
 
@@ -37,6 +38,15 @@ export const lawyerApi = {
   /** 검증 신청 */
   requestVerification: (data: VerificationRequestData) =>
     api.post<ApiResponse<void>>(`${BASE}/me/verification-request`, data),
+
+  /**
+   * 변호사 등록
+   * 명세: POST /api/lawyers/me/register
+   *   - 서버가 User.role 을 LAWYER 로 승격 + LawyerProfile 생성 + 새 JWT 재발급
+   *   - 응답 data.accessToken 으로 토큰 교체 필수
+   */
+  register: (data: RegisterLawyerRequest) =>
+    api.post<ApiResponse<RegisterLawyerResponse>>(`${BASE}/me/register`, data),
 
   /** 본인 서류 목록 조회 */
   getMyDocuments: () =>

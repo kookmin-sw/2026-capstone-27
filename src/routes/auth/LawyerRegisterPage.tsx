@@ -1,19 +1,26 @@
+import { useState } from 'react';
 import { ArrowLeft, User, Mail, Phone, Briefcase, MapPin, CircleCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import axios from 'axios';
 import { Button, Input, SpecializationPicker } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { cn } from '@/lib/cn';
+import { lawyerApi } from '@/lib/lawyerApi';
+import { resolveSpecHierarchy } from '@/lib/specializations';
 import type { PendingRegistrationState } from '@/lib/authFlow';
+import type { RegisterLawyerRequest } from '@/types/auth';
 
 // API 명세: POST /api/lawyers/me/register
 //   - barAssociationNumber (필수)   ex) "KBA-2018-12345"
 //   - domains / subDomains / tags   (온톨로지 L1/L2/L3)
 //   - experienceYears, bio, region
 //
-// 이번 PR은 UI만 정리. 서버 연동은 다음 PR에서 추가한다.
+// 서버는 이 요청 처리 시 User.role 을 LAWYER 로 승격하고
+// 새 JWT 를 재발급해 응답에 포함함 → 프론트는 이 토큰으로 교체해야
+// 이후 변호사 전용 API 호출이 가능.
 const schema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
   email: z
@@ -43,6 +50,7 @@ export function LawyerRegisterPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const login = useAuthStore((s) => s.login);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const pending = (location.state ?? null) as PendingRegistrationState | null;
 
@@ -69,15 +77,56 @@ export function LawyerRegisterPage() {
   const selectedTags = watch('tags') ?? [];
   const bio = watch('bio') ?? '';
 
-  const onSubmit = async (_data: FormValues) => {
-    // TODO(next PR): POST /api/lawyers/me/register 연동
-    // 현재 PR은 UI 플로우만 맞추므로 소셜 로그인으로 발급된 accessToken 만 적용하고
-    // 변호사 홈으로 이동. 서버 실제 승인 상태는 다음 PR에서 verificationStatus 로 분기.
-    if (pending?.accessToken) {
-      await login(pending.accessToken);
-    }
+  const onSubmit = async (data: FormValues) => {
+    setSubmitError(null);
 
-    navigate('/lawyer', { replace: true });
+    // SpecializationPicker 는 L3 값만 돌려주므로 존재하는 트리에서 L1/L2 조상을 역추적.
+    const { domains, subDomains, tags } = resolveSpecHierarchy(data.tags);
+
+    const payload: RegisterLawyerRequest = {
+      barAssociationNumber: data.barAssociationNumber.trim(),
+      domains,
+      subDomains,
+      tags,
+      experienceYears: data.experienceYears,
+      bio: data.bio?.trim() ? data.bio.trim() : undefined,
+      region: data.region?.trim() ? data.region.trim() : undefined,
+    };
+
+    try {
+      const { data: body } = await lawyerApi.register(payload);
+      const newAccessToken = body?.data?.accessToken;
+
+      // 서버가 role 승격 후 재발급한 JWT 로 교체해야 /lawyer 진입 가능.
+      // 만약 응답에 accessToken 이 누락되면 기존 (USER) 토큰으로는 권한 부족 가능성이
+      // 있으므로 경고만 남기고 진행. 이후 /users/me 재조회로 role 을 갱신시도한다.
+      if (newAccessToken) {
+        await login(newAccessToken);
+      } else if (pending?.accessToken) {
+        await login(pending.accessToken);
+        console.warn(
+          '[LawyerRegister] 응답에 accessToken 이 없어 기존 토큰 유지. role 이 서버에서 승격되어도 토큰은 USER 인 상태.',
+        );
+      }
+
+      navigate('/lawyer', { replace: true });
+    } catch (err) {
+      console.error('[LawyerRegister] 등록 실패:', err);
+
+      let message = '등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const serverMsg = err.response?.data?.message;
+        if (status === 401) {
+          message = '인증이 만료되었습니다. 다시 로그인 후 등록해 주세요.';
+        } else if (status === 409) {
+          message = serverMsg ?? '이미 등록된 변호사 계정입니다.';
+        } else if (typeof serverMsg === 'string' && serverMsg.length > 0) {
+          message = serverMsg;
+        }
+      }
+      setSubmitError(message);
+    }
   };
 
   return (
@@ -247,6 +296,15 @@ export function LawyerRegisterPage() {
               </p>
             </div>
           </div>
+
+          {submitError && (
+            <p
+              role="alert"
+              className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-[10px] px-3 py-2"
+            >
+              {submitError}
+            </p>
+          )}
 
           <div className="pt-2">
             <Button

@@ -378,6 +378,44 @@ export const SPECIALIZATION_TREE: SpecLevel1[] = [
 
 // ── Search utility ─────────────────────────────────────────────────────────
 
+/**
+ * 리프(L3) 태그 이름 배열을 받아 조상 추적을 통해
+ * { domains(L1), subDomains(L2), tags(L3) } 을 리턴한다.
+ *
+ * 중복 제거 + 정규화된 순서 유지. 매칭 실패 리프는 tags 에만 남긴다
+ * (상위 없이도 서버가 별도 저장할 수 있도록 허용).
+ */
+export function resolveSpecHierarchy(leafTags: string[]): {
+  domains: string[];
+  subDomains: string[];
+  tags: string[];
+} {
+  const domainSet = new Set<string>();
+  const subDomainSet = new Set<string>();
+  const tagSet = new Set<string>();
+
+  for (const tag of leafTags) {
+    if (!tag) continue;
+    tagSet.add(tag);
+
+    outer: for (const l1 of SPECIALIZATION_TREE) {
+      for (const l2 of l1.children) {
+        if (l2.children.some((leaf) => leaf.name === tag)) {
+          domainSet.add(l1.name);
+          subDomainSet.add(l2.name);
+          break outer;
+        }
+      }
+    }
+  }
+
+  return {
+    domains: Array.from(domainSet),
+    subDomains: Array.from(subDomainSet),
+    tags: Array.from(tagSet),
+  };
+}
+
 export function searchSpecializations(query: string): SearchResult[] {
   if (!query.trim()) return [];
 

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   SPECIALIZATION_TREE,
   searchSpecializations,
+  resolveSpecHierarchy,
 } from './specializations';
 
 describe('SPECIALIZATION_TREE', () => {
@@ -78,5 +79,41 @@ describe('searchSpecializations', () => {
   it('should return no results for nonsense query', () => {
     const results = searchSpecializations('xyzqwerty');
     expect(results).toEqual([]);
+  });
+});
+
+describe('resolveSpecHierarchy', () => {
+  it('returns empty arrays for empty input', () => {
+    expect(resolveSpecHierarchy([])).toEqual({
+      domains: [],
+      subDomains: [],
+      tags: [],
+    });
+  });
+
+  it('derives L1(domains)/L2(subDomains) from a single L3 leaf', () => {
+    const result = resolveSpecHierarchy(['협의이혼']);
+    expect(result.tags).toEqual(['협의이혼']);
+    expect(result.domains).toEqual(['이혼·위자료·재산분할']);
+    expect(result.subDomains).toEqual(['이혼 절차']);
+  });
+
+  it('dedupes L1/L2 when multiple leaves share ancestors', () => {
+    const result = resolveSpecHierarchy(['협의이혼', '재판상 이혼']);
+    expect(result.tags).toHaveLength(2);
+    expect(result.domains).toEqual(['이혼·위자료·재산분할']);
+    expect(result.subDomains).toEqual(['이혼 절차']);
+  });
+
+  it('keeps unknown leaves only under tags', () => {
+    const result = resolveSpecHierarchy(['존재하지-않는-태그']);
+    expect(result.tags).toEqual(['존재하지-않는-태그']);
+    expect(result.domains).toEqual([]);
+    expect(result.subDomains).toEqual([]);
+  });
+
+  it('ignores falsy entries', () => {
+    const result = resolveSpecHierarchy(['', '협의이혼']);
+    expect(result.tags).toEqual(['협의이혼']);
   });
 });

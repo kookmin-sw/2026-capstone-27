@@ -1,7 +1,10 @@
 package org.example.shield.ai.infrastructure;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shield.ai.application.LegalRetrievalService;
+import org.example.shield.ai.application.QueryEmbeddingService;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.domain.LegalChunkJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository.LegalChunkRow;
@@ -54,30 +57,35 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
     private static final String EMPTY_QUERY_SENTINEL = "__shield_never_match__";
 
     private final LegalChunkJpaRepository legalChunkJpaRepository;
-    private final CohereClient cohereClient;
-    private final CohereApiConfig cohereConfig;
+    private final QueryEmbeddingService queryEmbeddingService;
     private final double vectorWeight;
     private final double keywordWeight;
     private final double trigramWeight;
+    /** HNSW 인덱스 튜닝 파라미터. 1 이하이면 SET LOCAL 생략. */
+    private final int hnswEfSearch;
     /** 1024차원 영벡터의 pgvector 리터럴 문자열 (벡터 경로 degrade 시 사용). */
     private final String zeroVectorLiteral;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public PgLegalRetrievalService(
             LegalChunkJpaRepository legalChunkJpaRepository,
-            CohereClient cohereClient,
+            QueryEmbeddingService queryEmbeddingService,
             CohereApiConfig cohereConfig,
             @Value("${rag.retrieval.weights.vector:0.5}") double vectorWeight,
             @Value("${rag.retrieval.weights.keyword:0.3}") double keywordWeight,
-            @Value("${rag.retrieval.weights.trigram:0.2}") double trigramWeight) {
+            @Value("${rag.retrieval.weights.trigram:0.2}") double trigramWeight,
+            @Value("${rag.retrieval.hnsw.ef-search:40}") int hnswEfSearch) {
         this.legalChunkJpaRepository = legalChunkJpaRepository;
-        this.cohereClient = cohereClient;
-        this.cohereConfig = cohereConfig;
+        this.queryEmbeddingService = queryEmbeddingService;
         this.vectorWeight = vectorWeight;
         this.keywordWeight = keywordWeight;
         this.trigramWeight = trigramWeight;
+        this.hnswEfSearch = hnswEfSearch;
         this.zeroVectorLiteral = buildZeroVectorLiteral(cohereConfig.getEmbedDimension());
-        log.info("PgLegalRetrievalService 활성화 (3-way) — weights(vector={}, keyword={}, trigram={}), embedDim={}",
-                vectorWeight, keywordWeight, trigramWeight, cohereConfig.getEmbedDimension());
+        log.info("PgLegalRetrievalService 활성화 (3-way) — weights(vector={}, keyword={}, trigram={}), embedDim={}, hnsw.ef_search={}",
+                vectorWeight, keywordWeight, trigramWeight, cohereConfig.getEmbedDimension(), hnswEfSearch);
     }
 
     @Override
@@ -107,6 +115,10 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
         String queryVectorLiteral = buildQueryVectorLiteral(safeVectorQuery);
 
         String[] categoryFilter = normalizeCategoryFilter(categoryIds);
+
+        // HNSW ef_search 튜닝: 동일 트랜잭션 내 이후 실행되는 쿼리에만 적용.
+        // @Transactional(readOnly=true)로 래핑된 본 메서드 범위 내에서 유효.
+        applyHnswEfSearch();
 
         List<LegalChunkRow> rows;
         if (lawIds == null || lawIds.isEmpty()) {
@@ -143,7 +155,7 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
             return zeroVectorLiteral;
         }
         try {
-            float[] vec = cohereClient.embedQuery(cohereConfig.getEmbedModel(), vectorQuery);
+            float[] vec = queryEmbeddingService.embedQuery(vectorQuery);
             if (vec == null || vec.length == 0) {
                 log.warn("쿼리 임베딩 응답이 비어 영벡터로 degrade: query='{}'", vectorQuery);
                 return zeroVectorLiteral;
@@ -154,6 +166,35 @@ public class PgLegalRetrievalService implements LegalRetrievalService {
                     vectorQuery, e.getMessage());
             return zeroVectorLiteral;
         }
+    }
+
+    /**
+     * HNSW {@code ef_search} 세션 파라미터를 현재 트랜잭션에 적용한다.
+     *
+     * <p>pgvector 기본값 40. 1,193행 규모에서는 ef=40에서 topK=10 recall 100%가 확인되어
+     * 기본값으로 40을 두고, 데이터가 커지면 {@code rag.retrieval.hnsw.ef-search}로
+     * 80~200 범위에서 상향하는 것을 권장한다. 값은 적어도 topK 이상이어야 한다.</p>
+     *
+     * <p>{@code SET LOCAL}은 현재 트랜잭션에서만 유효하고 커넥션 풀 반납 시
+     * 자동으로 해제되므로 다른 쿼리에 영향을 주지 않는다.</p>
+     *
+     * <p>HNSW 인덱스가 아직 생성되지 않았거나 파라미터가 비활성화된 환경에서도
+     * 검색이 멈추지 않도록 예외는 삼키고 로그로만 남긴다.</p>
+     */
+    private void applyHnswEfSearch() {
+        if (hnswEfSearch <= 1 || entityManager == null) {
+            return;
+        }
+        try {
+            entityManager.createNativeQuery("SET LOCAL hnsw.ef_search = " + hnswEfSearch).executeUpdate();
+        } catch (Exception e) {
+            log.debug("hnsw.ef_search 설정 실패 (무시): value={}, error={}", hnswEfSearch, e.getMessage());
+        }
+    }
+
+    /** 테스트용 — EntityManager 주입 */
+    void setEntityManager(EntityManager em) {
+        this.entityManager = em;
     }
 
     /**

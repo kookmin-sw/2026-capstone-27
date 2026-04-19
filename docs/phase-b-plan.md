@@ -10,7 +10,7 @@ Phase A에서 준비한 PostgreSQL 하이브리드 검색 인프라 위에 **실
 | B-1 | V4 임베딩 스키마 + LegalChunkEntity 매핑 + Cohere embed 헬퍼 | 진행 예정 |
 | B-2 | 인제스트 파이프라인: 민법 전체 적재 + 임베딩 생성 | 진행 예정 |
 | B-4 | PgLegalRetrievalService 3-way 하이브리드 확장 | 진행 예정 |
-| B-5 | 쿼리 임베딩 Redis 캐시 + HNSW `ef_search` 튜닝 | 진행 예정 |
+| B-5 | 쿼리 임베딩 Redis 캐시 + HNSW `ef_search` 튜닝 | 완료 (2026-04-19) |
 | B-7 | 운영 전환 (`RAG_STUB=false`) | 진행 예정 |
 | B-8 | 잔존 TODO 정리 (Optional) | 보류 |
 

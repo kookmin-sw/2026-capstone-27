@@ -1,6 +1,7 @@
 package org.example.shield.ai.infrastructure;
 
 import org.example.shield.ai.application.LegalRetrievalService;
+import org.example.shield.ai.application.QueryEmbeddingService;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.domain.LegalChunkJpaRepository;
 import org.example.shield.ai.domain.LegalChunkJpaRepository.LegalChunkRow;
@@ -24,19 +25,19 @@ import static org.mockito.Mockito.*;
 class PgLegalRetrievalServiceTest {
 
     private LegalChunkJpaRepository repository;
-    private CohereClient cohereClient;
+    private QueryEmbeddingService queryEmbeddingService;
     private CohereApiConfig cohereConfig;
     private PgLegalRetrievalService service;
 
     @BeforeEach
     void setUp() {
         repository = mock(LegalChunkJpaRepository.class);
-        cohereClient = mock(CohereClient.class);
+        queryEmbeddingService = mock(QueryEmbeddingService.class);
         cohereConfig = mock(CohereApiConfig.class);
         when(cohereConfig.getEmbedModel()).thenReturn("embed-v4.0");
         when(cohereConfig.getEmbedDimension()).thenReturn(1024);
-        service = new PgLegalRetrievalService(repository, cohereClient, cohereConfig,
-                0.5, 0.3, 0.2);
+        service = new PgLegalRetrievalService(repository, queryEmbeddingService, cohereConfig,
+                0.5, 0.3, 0.2, 40);
     }
 
     @Test
@@ -59,7 +60,7 @@ class PgLegalRetrievalServiceTest {
         float[] qvec = new float[1024];
         qvec[0] = 0.5f;
         qvec[1023] = -0.3f;
-        when(cohereClient.embedQuery(eq("embed-v4.0"), eq("전세 보증금 미반환")))
+        when(queryEmbeddingService.embedQuery(eq("전세 보증금 미반환")))
                 .thenReturn(qvec);
         when(repository.search3Way(
                 anyString(), anyString(), anyString(), nullable(String[].class),
@@ -86,7 +87,7 @@ class PgLegalRetrievalServiceTest {
     @Test
     @DisplayName("retrieve — 임베딩 실패 시 영벡터로 degrade (예외 전파 없음)")
     void retrieve_embeddingFailure_degradesToZeroVector() {
-        when(cohereClient.embedQuery(anyString(), anyString()))
+        when(queryEmbeddingService.embedQuery(anyString()))
                 .thenThrow(new RuntimeException("Cohere down"));
         when(repository.search3Way(
                 anyString(), anyString(), anyString(), nullable(String[].class),
@@ -107,7 +108,7 @@ class PgLegalRetrievalServiceTest {
     @Test
     @DisplayName("retrieve — categoryIds가 주어지면 String[]로 정규화되어 repository에 전달")
     void retrieve_normalizesCategoryIds() {
-        when(cohereClient.embedQuery(anyString(), anyString()))
+        when(queryEmbeddingService.embedQuery(anyString()))
                 .thenReturn(new float[1024]);
         when(repository.search3Way(
                 anyString(), anyString(), anyString(), any(String[].class),
@@ -135,7 +136,7 @@ class PgLegalRetrievalServiceTest {
     @Test
     @DisplayName("retrieve — lawIds가 주어지면 *ByLaws 쿼리로 분기")
     void retrieve_withLawIds_usesByLawsVariant() {
-        when(cohereClient.embedQuery(anyString(), anyString()))
+        when(queryEmbeddingService.embedQuery(anyString()))
                 .thenReturn(new float[1024]);
         when(repository.search3WayByLaws(
                 anyString(), anyString(), anyString(), nullable(String[].class),
@@ -159,13 +160,13 @@ class PgLegalRetrievalServiceTest {
         List<LegalChunk> result = service.retrieve("", List.of(), null, null, 5);
         assertThat(result).isEmpty();
         verifyNoInteractions(repository);
-        verifyNoInteractions(cohereClient);
+        verifyNoInteractions(queryEmbeddingService);
     }
 
     @Test
     @DisplayName("하위호환 4-인자 retrieve는 categoryIds=null로 5-인자에 위임한다 (LegalRetrievalService 인터페이스 기본 메서드)")
     void legacyRetrieve_delegatesWithNullCategoryIds() {
-        when(cohereClient.embedQuery(anyString(), anyString()))
+        when(queryEmbeddingService.embedQuery(anyString()))
                 .thenReturn(new float[1024]);
         when(repository.search3Way(
                 anyString(), anyString(), anyString(), nullable(String[].class),

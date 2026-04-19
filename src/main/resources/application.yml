@@ -11,6 +11,17 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+  # Redis (Phase B-5 — 쿼리 임베딩 캐시)
+  # host가 설정되지 않으면 RedisEmbeddingCache가 등록되지 않고 Noop로 자동 전환.
+  # 로컬 개발에서는 REDIS_HOST를 비워 두고 운영 환경에서만 주입하는 것을 권장.
+  data:
+    redis:
+      host: ${REDIS_HOST:}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      client-type: lettuce
+
   # PostgreSQL
   datasource:
     url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
@@ -140,6 +151,19 @@ rag:
       vector: ${RAG_W_VECTOR:0.5}    # pgvector cosine similarity
       keyword: ${RAG_W_KEYWORD:0.3}  # BM25 ts_rank
       trigram: ${RAG_W_TRIGRAM:0.2}  # pg_trgm similarity
+    # HNSW 튜닝 (Phase B-5)
+    # - ef_search: 쿼리 시점 탐색 큐 크기. 높을수록 recall 상승, 지연 증가.
+    #   pgvector 기본값 40. 1,193행 규모의 실측 벤치마크에서 topK=10 기준
+    #   ef=40에서 이미 recall 100% 달성 (scripts/benchmark_hnsw_ef_search.py).
+    #   데이터 규모가 커지면 80~200 권장. 재빌드 없이 환경변수로 조정 가능.
+    hnsw:
+      ef-search: ${RAG_HNSW_EF_SEARCH:40}
+  # 쿼리 임베딩 Redis 캐시 (Phase B-5)
+  # Redis 연결(spring.data.redis.host) 미설정 시 자동으로 Noop로 전환.
+  cache:
+    embedding:
+      enabled: ${RAG_EMBED_CACHE_ENABLED:true}
+      ttl-seconds: ${RAG_EMBED_CACHE_TTL:86400}  # 기본 24시간
 
 # 온톨로지 설정
 ontology:

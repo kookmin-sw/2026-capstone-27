@@ -37,29 +37,28 @@ public class PromptService {
     }
 
     /**
-     * 분야별 체크리스트 YAML 로드.
-     * primaryField → 파일명 변환: CRIMINAL_LAW → criminal-law
+     * L1 분야 체크리스트 YAML 로드 (Issue #40 3레벨 구조).
      *
-     * @param primaryField 분류 코드 (예: CRIMINAL_LAW)
-     * @return YAML 문자열 또는 null (파일 없을 경우)
+     * <p>입력은 온톨로지 L1 한글 이름(예: "부동산 거래")이며,
+     * {@link ChecklistSlugMap} 을 통해 고정 slug 로 매핑 후 파일을 로드한다.
+     * 매핑 불가(한글 L1 이름이 아닌 값 또는 미지원) 시 null 반환.</p>
+     *
+     * @param l1Name 온톨로지 L1 한글 이름 (예: "부동산 거래", "이혼·위자료·재산분할")
+     * @return YAML 문자열 또는 null (slug 매핑 실패 / 파일 없음)
      */
-    public String loadChecklist(String primaryField) {
-        String domain = toFileName(primaryField);
-        String path = "ai/checklists/" + domain + ".yaml";
+    public String loadChecklist(String l1Name) {
+        String slug = ChecklistSlugMap.slugFor(l1Name);
+        if (slug == null) {
+            log.warn("지원하지 않는 L1 분야입니다: {}", l1Name);
+            return null;
+        }
+        String path = "ai/checklists/" + slug + ".yaml";
         try {
             return loadFile(path);
         } catch (RuntimeException e) {
-            log.warn("체크리스트 파일을 찾을 수 없습니다: {}", path);
+            log.warn("체크리스트 파일을 찾을 수 없습니다: {} (L1={})", path, l1Name);
             return null;
         }
-    }
-
-    /**
-     * primaryField → 파일명 변환.
-     * 예: CRIMINAL_LAW → criminal-law, DEPOSIT_FRAUD → deposit-fraud
-     */
-    private String toFileName(String primaryField) {
-        return primaryField.toLowerCase().replace("_", "-");
     }
 
     private String loadFile(String path) {

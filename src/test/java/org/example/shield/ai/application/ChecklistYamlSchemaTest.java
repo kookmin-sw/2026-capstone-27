@@ -33,19 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ChecklistYamlSchemaTest {
 
-    /** L1 이름 → slug 매핑 (지시서 기준 고정). */
-    private static final Map<String, String> L1_SLUG_MAP = new LinkedHashMap<>();
-
-    static {
-        L1_SLUG_MAP.put("부동산 거래", "real-estate");
-        L1_SLUG_MAP.put("이혼·위자료·재산분할", "divorce");
-        L1_SLUG_MAP.put("상속·유류분·유언", "inheritance");
-        L1_SLUG_MAP.put("근로계약·해고·임금", "labor");
-        L1_SLUG_MAP.put("손해배상·불법행위", "damages-tort");
-        L1_SLUG_MAP.put("채무·보증·개인파산·회생", "debt");
-        L1_SLUG_MAP.put("임대차보호", "lease-protection");
-        L1_SLUG_MAP.put("기업·상사거래", "commercial");
-    }
+    /** L1 이름 → slug 매핑 (프로덕션 상수 {@link ChecklistSlugMap} 와 동일 소스). */
+    private static final Map<String, String> L1_SLUG_MAP = ChecklistSlugMap.L1_TO_SLUG;
 
     private static final String CHECKLIST_DIR = "ai/checklists/";
     private static final String ONTOLOGY_PATH = "ontology/legal-ontology-slim.json";

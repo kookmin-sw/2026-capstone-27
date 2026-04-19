@@ -8,9 +8,10 @@ import {
   useProcessVerification,
 } from '@/hooks/useAdmin';
 import { Spinner, Modal, Input, Button } from '@/components/ui';
-import type { VerificationChecks as VerificationChecksType } from '@/lib/adminApi';
+import type { VerificationChecks as VerificationChecksType } from '@/types/admin';
+import type { DocumentResponse } from '@/types/lawyer';
 
-type ActionType = 'APPROVED' | 'REJECTED' | 'SUPPLEMENT_REQUESTED';
+type ActionType = 'VERIFIED' | 'REJECTED' | 'SUPPLEMENT_REQUESTED';
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; label: string }> = {
   PENDING: { bg: 'bg-[#f1f0e8]', text: 'text-[#5f5e5a]', label: '승인 대기' },
@@ -123,15 +124,15 @@ export function LawyerReviewPage() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[16px] font-medium text-[#1a1a1a]">{lawyer.name}</p>
-            <p className="text-[11px] text-[#adb5b8]">{lawyer.bio || 'lawyer@shield.com'}</p>
-            <p className="text-[11px] text-[#adb5b8]">{lawyer.region || '-'}</p>
+            <p className="text-[11px] text-[#adb5b8]">{lawyer.email || '-'}</p>
+            <p className="text-[11px] text-[#adb5b8]">{lawyer.phone || '-'}</p>
           </div>
         </div>
-        {lawyer.specializations && (
+        {lawyer.domains && lawyer.domains.length > 0 && (
           <div className="flex items-center gap-1.5 mt-2.5">
-            {lawyer.specializations.split(',').map((spec) => (
-              <span key={spec.trim()} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
-                {spec.trim()}
+            {lawyer.domains.map((spec: string) => (
+              <span key={spec} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
+                {spec}
               </span>
             ))}
           </div>
@@ -171,7 +172,7 @@ export function LawyerReviewPage() {
           </div>
         ) : (
           <div className="space-y-2">
-            {docs.map((d: { documentId: string; fileName: string; fileSize: number; fileType: string; fileUrl: string; createdAt: string }) => (
+            {docs.map((d: DocumentResponse) => (
               <div key={d.documentId} className="bg-white border-[0.5px] border-[#e9edef] rounded-[14px] p-3">
                 <div className="flex items-start gap-3">
                   {/* PDF 아이콘 */}

@@ -4,6 +4,7 @@ import type {
   LawyerResponse,
   LawyerDetailResponse,
   LawyerMeResponse,
+  ProfileUpdateRequest,
   VerificationStatusResponse,
   VerificationRequestData,
   DocumentResponse,
@@ -27,8 +28,8 @@ export const lawyerApi = {
   getMe: () =>
     api.get<ApiResponse<LawyerMeResponse>>(`${BASE}/me`),
 
-  /** 프로필 수정 (변호사) */
-  updateMe: (data: Partial<LawyerMeResponse>) =>
+  /** 프로필 수정 (변호사) — BE ProfileUpdateRequest 와 정합 맞춤 */
+  updateMe: (data: ProfileUpdateRequest) =>
     api.patch<ApiResponse<LawyerMeResponse>>(`${BASE}/me`, data),
 
   /** 검증 상태 확인 */

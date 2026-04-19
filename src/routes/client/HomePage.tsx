@@ -107,11 +107,15 @@ export function HomePage() {
                           <Badge variant={CONSULT_STATUS_BADGE[c.status]} size="sm">
                             {CONSULTATION_STATUS_LABELS[c.status] ?? c.status}
                           </Badge>
-                          {c.primaryField && c.primaryField.length > 0 && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">
-                              {DOMAIN_LABELS[c.primaryField[0]] ?? c.primaryField[0]}
-                            </span>
-                          )}
+                          {(() => {
+                            const domains = c.userDomains ?? c.aiDomains ?? [];
+                            if (domains.length === 0) return null;
+                            return (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">
+                                {DOMAIN_LABELS[domains[0]] ?? domains[0]}
+                              </span>
+                            );
+                          })()}
                         </div>
                         <span className="text-xs text-gray-400">
                           {relativeTime(c.lastMessageAt ?? c.createdAt)}

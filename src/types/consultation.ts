@@ -15,12 +15,20 @@ export interface CreateConsultationResponse {
   createdAt: string;
 }
 
-/** 명세: GET /api/consultations 목록 및 상세 */
+/** 명세: GET /api/consultations 목록 및 상세
+ *  3단계 분류 체계 — L1(domains) / L2(subDomains) / L3(tags) 를
+ *  사용자 입력(user*) 과 AI 분류(ai*) 로 분리해 내려준다. */
 export interface ConsultationResponse {
   consultationId: string;
   status: ConsultationStatus;
-  primaryField: string[] | null;
-  tags: string[] | null;
+  /** 사용자가 상담 생성 시 선택한 3단계 분류 */
+  userDomains: string[] | null;
+  userSubDomains: string[] | null;
+  userTags: string[] | null;
+  /** AI 분류 결과 (대화 진행 중/완료 후 채워짐) */
+  aiDomains: string[] | null;
+  aiSubDomains: string[] | null;
+  aiTags: string[] | null;
   lastMessage: string | null;
   lastMessageAt: string | null;
   createdAt: string;

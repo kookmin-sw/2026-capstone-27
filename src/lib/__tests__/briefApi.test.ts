@@ -76,7 +76,8 @@ describe('briefApi – BE contract tests', () => {
       const lawyer = page.content[0];
       expect(lawyer).toHaveProperty('lawyerId');
       expect(lawyer).toHaveProperty('name');
-      expect(lawyer).toHaveProperty('specializations');
+      expect(lawyer).toHaveProperty('domains');
+      expect(lawyer).toHaveProperty('subDomains');
       expect(lawyer).toHaveProperty('experienceYears');
       expect(lawyer).toHaveProperty('tags');
       expect(lawyer).toHaveProperty('matchedKeywords');

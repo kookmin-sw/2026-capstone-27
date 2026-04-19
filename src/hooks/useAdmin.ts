@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminApi } from '@/lib/adminApi';
+import type { VerificationActionRequest, VerificationLogsFilter } from '@/types/admin';
 
 const KEYS = {
   stats: ['admin', 'stats'] as const,
@@ -77,7 +78,7 @@ export function useLawyerDocuments(id: string) {
 export function useProcessVerification(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { status: string; reason?: string }) =>
+    mutationFn: (data: VerificationActionRequest) =>
       adminApi.processVerification(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: KEYS.pending });
@@ -87,11 +88,14 @@ export function useProcessVerification(id: string) {
   });
 }
 
-/** 처리 이력 조회 */
+/**
+ * 처리 이력 조회 — BE 는 period(today/week) 와 status 만 지원한다.
+ * 임의 날짜 범위는 지원하지 않으므로 filters 타입도 그에 맞춤.
+ */
 export function useVerificationLogs(
   page = 0,
   size = 20,
-  filters?: { status?: string; startDate?: string; endDate?: string },
+  filters?: VerificationLogsFilter,
 ) {
   return useQuery({
     queryKey: [...KEYS.logs, page, size, filters],

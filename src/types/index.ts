@@ -4,3 +4,4 @@ export * from './auth';
 export * from './consultation';
 export * from './brief';
 export * from './lawyer';
+export * from './admin';

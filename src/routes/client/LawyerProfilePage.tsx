@@ -73,12 +73,14 @@ export function LawyerProfilePage() {
                   </span>
                 </div>
 
-                {/* Specialization */}
-                {lawyer.specializations && (
+                {/* Specialization — L1 대분류 배열을 Badge 로 나열 */}
+                {lawyer.domains && lawyer.domains.length > 0 && (
                   <div className="flex flex-wrap justify-center gap-1.5">
-                    <Badge variant="primary" size="sm">
-                      {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
-                    </Badge>
+                    {lawyer.domains.map((d: string) => (
+                      <Badge key={d} variant="primary" size="sm">
+                        {DOMAIN_LABELS[d] ?? d}
+                      </Badge>
+                    ))}
                   </div>
                 )}
 

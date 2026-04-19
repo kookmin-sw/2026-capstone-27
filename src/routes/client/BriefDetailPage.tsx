@@ -386,10 +386,12 @@ export function BriefDetailPage() {
                           </span>
                         </div>
 
-                        {/* Specializations */}
-                        {lawyer.specializations && (
+                        {/* Specializations — L1 도메인을 연결해 표시 */}
+                        {lawyer.domains && lawyer.domains.length > 0 && (
                           <p className="text-xs text-gray-600 mb-2 line-clamp-1">
-                            {lawyer.specializations}
+                            {lawyer.domains
+                              .map((d: string) => DOMAIN_LABELS[d] ?? d)
+                              .join(', ')}
                           </p>
                         )}
 

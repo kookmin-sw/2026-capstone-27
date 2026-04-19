@@ -75,12 +75,14 @@ function LawyerCard({ lawyer, onClick }: LawyerCardProps) {
         </p>
       )}
 
-      {/* Specialization badge */}
-      {lawyer.specializations && (
+      {/* Specialization badges — L1 대분류 배열을 모두 표시 */}
+      {lawyer.domains && lawyer.domains.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
-          <Badge variant="primary" size="sm">
-            {DOMAIN_LABELS[lawyer.specializations] ?? lawyer.specializations}
-          </Badge>
+          {lawyer.domains.map((d) => (
+            <Badge key={d} variant="primary" size="sm">
+              {DOMAIN_LABELS[d] ?? d}
+            </Badge>
+          ))}
         </div>
       )}
 

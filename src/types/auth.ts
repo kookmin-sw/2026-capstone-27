@@ -54,24 +54,28 @@ export interface RegisterLawyerRequest {
 }
 
 /**
- * POST /api/lawyers/me/register 응답 data
+ * POST /api/lawyers/me/register 응답 data — BE LawyerRegisterResponse 와 정합.
  *
  * 서버 처리:
  *   1) 호출자 권한 체크: authenticated() (USER 상태에서도 호출 가능)
  *   2) User.role → LAWYER 로 승격
  *   3) LawyerProfile 생성, verificationStatus = PENDING
- *   4) role 이 바뀌었으므로 새 JWT(accessToken) 를 재발급하여 응답 포함
+ *   4) role 이 바뀌었으므로 새 JWT(accessToken) 를 재발급하여 응답에 포함
  *
  * 프론트는 accessToken 을 받아 useAuthStore.login(accessToken) 으로 교체해야
  * 이후 변호사 전용 API 접근이 가능.
  */
 export interface RegisterLawyerResponse {
+  /** 역할 승격(USER → LAWYER) 이후 재발급된 JWT. */
+  accessToken: string;
+  /** 승격된 새 롤 — 보통 'LAWYER'. */
+  role: string;
   verificationStatus: 'PENDING' | 'REVIEWING' | 'SUPPLEMENT_REQUESTED' | 'VERIFIED' | 'REJECTED';
-  /**
-   * 역할 승격(USER → LAWYER) 이후 재발급된 JWT.
-   * 기존 토큰은 role=USER 로 서명되어 있어 변호사 API 호출 시 권한 부족.
-   */
-  accessToken?: string;
+  barAssociationNumber: string;
+  /** 검증 신청 시각 — BE TODO: verificationRequestedAt 까지는 createdAt 으로 대체 전송. */
+  requestedAt: string;
+  /** 이미 승인 완료된 경우에만 채워짐. */
+  verifiedAt: string | null;
 }
 
 /** POST /api/auth/dev/login 요청 */

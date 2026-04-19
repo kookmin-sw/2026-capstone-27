@@ -61,9 +61,11 @@ export function AnalyzingPage() {
 
   // ── classification result view ───────────────────────────────────────────
   if (classificationResult) {
-    const primaryDomain = classificationResult.primaryField?.[0] ?? '';
+    // 분석 완료 후 조회 단계 — AI 분류값 우선, 없으면 사용자 입력값으로 폴백
+    const domains = classificationResult.aiDomains ?? classificationResult.userDomains ?? [];
+    const primaryDomain = domains[0] ?? '';
     const domainLabel = DOMAIN_LABELS[primaryDomain] ?? primaryDomain;
-    const tags = classificationResult.tags ?? [];
+    const tags: string[] = classificationResult.aiTags ?? classificationResult.userTags ?? [];
 
     return (
       <div className="flex flex-col flex-1">

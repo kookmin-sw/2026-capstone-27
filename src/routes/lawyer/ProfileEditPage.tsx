@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +7,7 @@ import { cn } from '@/lib/cn';
 import { lawyerApi } from '@/lib/lawyerApi';
 import { Button, Card, Spinner, SpecializationPicker } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
+import type { LawyerResponse } from '@/types/lawyer';
 
 // ─── schema ──────────────────────────────────────────────────────────────────
 
@@ -43,21 +44,31 @@ export function ProfileEditPage() {
 
   const selectedSpecs = watch('specializations') ?? [];
 
+  // 변경하지 않는 필드(subDomains, certifications, tags, bio, region) 는 서버 값을 그대로 전송해야 한다.
+  const profileRef = useRef<LawyerResponse | null>(null);
+
   // Fetch current profile on mount
   useEffect(() => {
     lawyerApi.getMe().then(({ data }) => {
       const profile = data.data;
+      profileRef.current = profile;
       reset({
-        specializations: profile.specializations ? profile.specializations.split(',').map((s) => s.trim()).filter(Boolean) : [],
+        specializations: profile.domains ?? [],
         experienceYears: profile.experienceYears ?? 0,
       });
     });
   }, [reset]);
 
   async function onSubmit(values: FormValues) {
+    const profile = profileRef.current;
     await lawyerApi.updateMe({
-      specializations: values.specializations.join(','),
+      domains: values.specializations,
+      subDomains: profile?.subDomains ?? [],
       experienceYears: values.experienceYears,
+      certifications: profile?.certifications ?? [],
+      tags: profile?.tags ?? [],
+      bio: profile?.bio ?? '',
+      region: profile?.region ?? '',
     });
     alert('프로필이 저장되었습니다.');
     navigate('/lawyer/profile');

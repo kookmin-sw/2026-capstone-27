@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Clock, Eye, FileQuestion, CheckSquare, AlertTriangle } from 'lucide-react';
 import { useAdminStats, useAdminAlerts, usePendingLawyers } from '@/hooks/useAdmin';
 import { Spinner } from '@/components/ui';
-import type { LawyerDetailResponse } from '@/types/lawyer';
+import type { PendingLawyerResponse } from '@/types/admin';
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; label: string }> = {
   PENDING: { bg: 'bg-[#f1f0e8]', text: 'text-[#5f5e5a]', label: '승인 대기' },
@@ -30,7 +30,7 @@ export function AdminDashboardPage() {
     { label: '오늘 처리', value: stats?.todayProcessedCount ?? 0, icon: CheckSquare, color: 'text-[#3b6e11]' },
   ];
 
-  const recentLawyers: LawyerDetailResponse[] = pendingData?.content ?? [];
+  const recentLawyers: PendingLawyerResponse[] = pendingData?.content ?? [];
 
   return (
     <div className="space-y-4">
@@ -101,7 +101,7 @@ export function AdminDashboardPage() {
                   {/* 정보 */}
                   <div className="flex-1 min-w-0">
                     <p className="text-[14px] font-medium text-[#1a1a1a]">{lawyer.name}</p>
-                    <p className="text-[11px] text-[#adb5b8]">{lawyer.bio || 'lawyer@shield.com'}</p>
+                    <p className="text-[11px] text-[#adb5b8]">{lawyer.email || '-'}</p>
                   </div>
                   {/* 상태 배지 */}
                   <span className={`${badge.bg} ${badge.text} text-[11px] font-medium h-[22px] px-3 rounded-[11px] flex items-center shrink-0`}>
@@ -112,9 +112,9 @@ export function AdminDashboardPage() {
                 {/* 전문분야 태그 + 경력 */}
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex items-center gap-1.5">
-                    {lawyer.specializations?.split(',').map((spec) => (
-                      <span key={spec.trim()} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
-                        {spec.trim()}
+                    {lawyer.domains?.map((spec: string) => (
+                      <span key={spec} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
+                        {spec}
                       </span>
                     ))}
                   </div>

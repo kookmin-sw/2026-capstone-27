@@ -9,46 +9,40 @@ const STATUS_BADGE: Record<string, { bg: string; text: string; label: string }> 
   PENDING: { bg: 'bg-[#f1f0e8]', text: 'text-[#5f5e5a]', label: '승인 대기' },
   REVIEWING: { bg: 'bg-[#e8f0fc]', text: 'text-[#0c5fa5]', label: '검토 중' },
   SUPPLEMENT_REQUESTED: { bg: 'bg-[#faeeda]', text: 'text-[#854f0b]', label: '보완 요청' },
-  APPROVED: { bg: 'bg-[#eaf3de]', text: 'text-[#3b6e11]', label: '승인 완료' },
   VERIFIED: { bg: 'bg-[#eaf3de]', text: 'text-[#3b6e11]', label: '승인 완료' },
   REJECTED: { bg: 'bg-[#fcebeb]', text: 'text-[#a32c2c]', label: '거절' },
 };
 
-/** action → (before, after) 상태 전이 매핑 */
-function getTransition(action: string): { before: string; after: string } {
-  switch (action) {
-    case 'APPROVED': return { before: 'REVIEWING', after: 'APPROVED' };
-    case 'REJECTED': return { before: 'PENDING', after: 'REJECTED' };
-    case 'SUPPLEMENT_REQUESTED': return { before: 'PENDING', after: 'SUPPLEMENT_REQUESTED' };
-    default: return { before: 'PENDING', after: action };
-  }
+/**
+ * BE 는 VerificationStatus.name() 을 fromStatus/toStatus 로 저장하지만
+ * 예외적으로 APPROVED 같은 구식 값이 남아있을 경우 VERIFIED 로 매핑.
+ */
+function normalizeStatus(status: string): string {
+  if (status === 'APPROVED') return 'VERIFIED';
+  return status;
 }
 
+/** FILTER_TABS 는 value 가 빈 문자열(전체), period(today/week), 또는 status 값(VERIFIED/REJECTED/...). */
 const FILTER_TABS = [
   { value: '', label: '전체' },
   { value: 'today', label: '오늘' },
   { value: 'week', label: '최근 7일' },
-  { value: 'APPROVED', label: '승인' },
+  { value: 'VERIFIED', label: '승인' },
   { value: 'REJECTED', label: '거절' },
   { value: 'SUPPLEMENT_REQUESTED', label: '보완' },
 ] as const;
 
 export function LogsPage() {
   const [page, setPage] = useState(0);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState<(typeof FILTER_TABS)[number]['value']>('');
 
-  // 날짜 기반 필터 계산
-  const now = new Date();
-  let filterParams: { status?: string; startDate?: string; endDate?: string } | undefined;
-  if (filter === 'today') {
-    const today = now.toISOString().slice(0, 10);
-    filterParams = { startDate: today, endDate: today };
-  } else if (filter === 'week') {
-    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-    filterParams = { startDate: weekAgo };
-  } else if (filter) {
-    filterParams = { status: filter };
-  }
+  // BE 는 period(today/week) / status 만 지원. 임의 날짜 범위는 지원 없음.
+  const filterParams =
+    filter === 'today' || filter === 'week'
+      ? { period: filter as 'today' | 'week' }
+      : filter
+        ? { status: filter }
+        : undefined;
 
   const { data, isLoading } = useVerificationLogs(page, 20, filterParams);
 
@@ -86,7 +80,8 @@ export function LogsPage() {
       ) : (
         <div className="space-y-3.5">
           {data.content.map((log) => {
-            const { before, after } = getTransition(log.action);
+            const before = normalizeStatus(log.fromStatus);
+            const after = normalizeStatus(log.toStatus);
             const beforeBadge = STATUS_BADGE[before] ?? STATUS_BADGE.PENDING;
             const afterBadge = STATUS_BADGE[after] ?? STATUS_BADGE.PENDING;
 
@@ -99,7 +94,7 @@ export function LogsPage() {
                   {/* 이름 + 시각 */}
                   <div className="flex items-center justify-between">
                     <p className="text-[13px] font-medium text-[#1a1a1a]">{log.lawyerName}</p>
-                    <span className="text-[11px] text-[#adb5b8]">{formatDate(log.processedAt)}</span>
+                    <span className="text-[11px] text-[#adb5b8]">{formatDate(log.createdAt)}</span>
                   </div>
 
                   {/* 상태 전이 */}
@@ -119,7 +114,7 @@ export function LogsPage() {
 
                 {/* 하단: 담당자 + 사유 */}
                 <div className="px-3 py-2">
-                  <p className="text-[11px] text-[#adb5b8]">담당: {log.processedBy}</p>
+                  <p className="text-[11px] text-[#adb5b8]">담당: {log.adminName || '-'}</p>
                   {log.reason && (
                     <p className="text-[10px] text-[#6b7280] mt-0.5">{log.reason}</p>
                   )}

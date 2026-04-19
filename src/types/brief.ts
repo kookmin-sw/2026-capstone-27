@@ -39,18 +39,21 @@ export interface BriefUpdateRequest {
   status?: string;
 }
 
-/** 명세: GET /api/briefs/{id}/lawyer-recommendations */
+/** 명세: GET /api/briefs/{id}/lawyer-recommendations
+ *  BE MatchingResponse 와 정합. 3단계 분류(domains/subDomains/tags) +
+ *  매칭 스코어와 매칭 키워드를 내려준다. */
 export interface MatchingResponse {
   lawyerId: string;
   name: string;
-  profileImageUrl: string;
-  specializations: string;
+  profileImageUrl: string | null;
+  domains: string[];
+  subDomains: string[];
   experienceYears: number;
   tags: string[];
+  matchedKeywords: string[] | null;
   bio: string;
   region: string;
   score: number;
-  matchedKeywords?: string[];
 }
 
 export interface DeliveryRequest {

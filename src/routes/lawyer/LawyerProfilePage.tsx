@@ -56,20 +56,27 @@ export function LawyerProfilePage() {
   useEffect(() => {
     if (profile) {
       reset({
-        specializations: profile.specializations
-          ? profile.specializations.split(',').map((s) => s.trim()).filter(Boolean)
-          : [],
+        // 이 간단 폼은 L1 domains 만 편집. 심층 수정은 ProfileEditPage 에서 처리.
+        specializations: profile.domains ?? [],
         experienceYears: profile.experienceYears ?? 0,
       });
     }
   }, [profile, reset]);
 
   async function onSubmit(values: FormValues) {
+    if (!profile) return;
     setIsSaving(true);
     try {
+      // BE ProfileUpdateRequest 는 L1/L2/L3 + 인증 · bio · region 을 모두 받는다.
+      // 이 간단 폼은 L1(domains) + 경력만 편집하고 나머지는 기존 값을 유지한다.
       await lawyerApi.updateMe({
-        specializations: values.specializations.join(','),
+        domains: values.specializations,
+        subDomains: profile.subDomains ?? [],
         experienceYears: values.experienceYears,
+        certifications: profile.certifications ?? [],
+        tags: profile.tags ?? [],
+        bio: profile.bio ?? '',
+        region: profile.region ?? '',
       });
       alert('프로필이 저장되었습니다.');
     } finally {
@@ -114,7 +121,9 @@ export function LawyerProfilePage() {
               {profile?.name ?? user?.name ?? '변호사'} 변호사
             </span>
             <span className="text-[12px] text-[#adb5bd]">
-              {profile?.specializations ?? '전문분야 미설정'}
+              {profile?.domains && profile.domains.length > 0
+                ? profile.domains.join(', ')
+                : '전문분야 미설정'}
             </span>
             {verification && (
               <span className={cn('text-[10px] font-medium px-[10px] py-[3px] rounded-full self-start mt-0.5', verification.bg, verification.color)}>

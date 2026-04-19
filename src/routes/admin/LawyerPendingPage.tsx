@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { usePendingLawyers } from '@/hooks/useAdmin';
 import { Spinner } from '@/components/ui';
-import type { LawyerDetailResponse } from '@/types/lawyer';
+import type { PendingLawyerResponse } from '@/types/admin';
 import { cn } from '@/lib/cn';
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; label: string }> = {
@@ -35,7 +35,7 @@ export function LawyerPendingPage() {
     statusFilter || undefined,
   );
 
-  const lawyers: LawyerDetailResponse[] = data?.content ?? [];
+  const lawyers: PendingLawyerResponse[] = data?.content ?? [];
 
   if (isLoading) return <Spinner size="lg" text="변호사 목록 불러오는 중..." />;
 
@@ -99,20 +99,20 @@ export function LawyerPendingPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[14px] font-medium text-[#1a1a1a]">{lawyer.name}</p>
-                      <p className="text-[11px] text-[#adb5b8] mt-0.5">{lawyer.bio || '-'}</p>
-                      <p className="text-[11px] text-[#adb5b8]">{lawyer.region || '-'}</p>
+                      <p className="text-[11px] text-[#adb5b8] mt-0.5">{lawyer.email || '-'}</p>
+                      <p className="text-[11px] text-[#adb5b8]">{lawyer.phone || '-'}</p>
                     </div>
                     <span className={`${badge.bg} ${badge.text} text-[11px] font-medium h-[22px] px-3 rounded-[11px] flex items-center shrink-0`}>
                       {badge.label}
                     </span>
                   </div>
 
-                  {/* 전문분야 태그 */}
-                  {lawyer.specializations && (
+                  {/* 전문분야 태그 — L1 domains 만 표시 */}
+                  {lawyer.domains && lawyer.domains.length > 0 && (
                     <div className="flex items-center gap-1.5 mt-3">
-                      {lawyer.specializations.split(',').map((spec) => (
-                        <span key={spec.trim()} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
-                          {spec.trim()}
+                      {lawyer.domains.map((spec: string) => (
+                        <span key={spec} className="bg-[#e8f0fc] text-[#0c447c] text-[10px] h-5 px-2 rounded-[10px] flex items-center">
+                          {spec}
                         </span>
                       ))}
                     </div>
@@ -121,7 +121,7 @@ export function LawyerPendingPage() {
                   {/* 경력 + 서류 수 */}
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-[11px] text-[#6b7280]">경력 {lawyer.experienceYears}년</span>
-                    <span className="text-[11px] text-[#3b6e11]">서류 {lawyer.caseCount ?? 0}개</span>
+                    <span className="text-[11px] text-[#3b6e11]">서류 {lawyer.documentCount ?? 0}개</span>
                   </div>
                 </div>
 

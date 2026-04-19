@@ -55,9 +55,10 @@ export function ChatPage() {
   function buildTitle(): string {
     if (!consultation) return '상담';
     const statusLabel = CONSULTATION_STATUS_LABELS[consultation.status];
+    const domains = consultation.userDomains ?? consultation.aiDomains ?? [];
     const domainLabel =
-      consultation.primaryField && consultation.primaryField.length > 0
-        ? consultation.primaryField.map((f) => DOMAIN_LABELS[f] ?? f).join(' · ')
+      domains.length > 0
+        ? domains.map((f) => DOMAIN_LABELS[f] ?? f).join(' · ')
         : null;
     return domainLabel ? `${domainLabel} 상담` : statusLabel ?? '상담';
   }

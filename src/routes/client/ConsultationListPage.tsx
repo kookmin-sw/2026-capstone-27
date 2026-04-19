@@ -98,19 +98,23 @@ export function ConsultationListPage() {
                     </span>
                   </div>
 
-                  {/* Row 2: domain tags */}
-                  {c.primaryField && c.primaryField.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {c.primaryField.map((field) => (
-                        <span
-                          key={field}
-                          className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium"
-                        >
-                          {DOMAIN_LABELS[field] ?? field}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  {/* Row 2: domain tags — 사용자 입력 우선, 없으면 AI 분류값 */}
+                  {(() => {
+                    const domains = c.userDomains ?? c.aiDomains ?? [];
+                    if (domains.length === 0) return null;
+                    return (
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {domains.map((field) => (
+                          <span
+                            key={field}
+                            className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium"
+                          >
+                            {DOMAIN_LABELS[field] ?? field}
+                          </span>
+                        ))}
+                      </div>
+                    );
+                  })()}
 
                   {/* Row 3: last message preview */}
                   {c.lastMessage ? (

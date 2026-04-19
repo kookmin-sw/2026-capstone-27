@@ -58,136 +58,138 @@ export function HomePage() {
           <ArrowRight size={22} className="flex-shrink-0" aria-hidden="true" />
         </button>
 
-        {/* Recent consultations */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700">최근 상담</h2>
-            <Link
-              to="/consultations"
-              className="flex items-center gap-0.5 text-xs text-brand hover:text-blue-700 font-medium transition-colors"
-            >
-              전체 보기
-              <ChevronRight size={14} aria-hidden="true" />
-            </Link>
-          </div>
-
-          {consultLoading && (
-            <div className="flex flex-col gap-2">
-              {[1, 2].map((i) => (
-                <div key={i} className="h-20 rounded-card bg-gray-100 animate-pulse" />
-              ))}
+        <div className="grid gap-6 xl:grid-cols-2">
+          {/* Recent consultations */}
+          <section className="min-w-0">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-gray-700">최근 상담</h2>
+              <Link
+                to="/consultations"
+                className="flex items-center gap-0.5 text-xs text-brand hover:text-blue-700 font-medium transition-colors"
+              >
+                전체 보기
+                <ChevronRight size={14} aria-hidden="true" />
+              </Link>
             </div>
-          )}
 
-          {!consultLoading && consultations.length === 0 && (
-            <Card padding="md" className="flex flex-col items-center gap-2 py-6">
-              <MessageSquare size={28} className="text-gray-300" aria-hidden="true" />
-              <p className="text-sm text-gray-400">아직 상담이 없습니다</p>
-            </Card>
-          )}
+            {consultLoading && (
+              <div className="flex flex-col gap-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-20 rounded-card bg-gray-100 animate-pulse" />
+                ))}
+              </div>
+            )}
 
-          {!consultLoading && consultations.length > 0 && (
-            <ul className="flex flex-col gap-2">
-              {consultations.map((c) => (
-                <li key={c.consultationId}>
-                  <Card
-                    padding="sm"
-                    className="cursor-pointer hover:shadow-md active:scale-[0.99] transition-all duration-150"
-                    onClick={() => navigate(`/consultations/${c.consultationId}`)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ')
-                        navigate(`/consultations/${c.consultationId}`);
-                    }}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <div className="flex items-center gap-1.5">
-                        <Badge variant={CONSULT_STATUS_BADGE[c.status]} size="sm">
-                          {CONSULTATION_STATUS_LABELS[c.status] ?? c.status}
-                        </Badge>
-                        {c.primaryField && c.primaryField.length > 0 && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">
-                            {DOMAIN_LABELS[c.primaryField[0]] ?? c.primaryField[0]}
-                          </span>
-                        )}
+            {!consultLoading && consultations.length === 0 && (
+              <Card padding="md" className="flex min-h-28 flex-col items-center justify-center gap-2 py-6">
+                <MessageSquare size={28} className="text-gray-300" aria-hidden="true" />
+                <p className="text-sm text-gray-400">아직 상담이 없습니다</p>
+              </Card>
+            )}
+
+            {!consultLoading && consultations.length > 0 && (
+              <ul className="flex flex-col gap-2">
+                {consultations.map((c) => (
+                  <li key={c.consultationId}>
+                    <Card
+                      padding="sm"
+                      className="cursor-pointer hover:shadow-md active:scale-[0.99] transition-all duration-150"
+                      onClick={() => navigate(`/consultations/${c.consultationId}`)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ')
+                          navigate(`/consultations/${c.consultationId}`);
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <Badge variant={CONSULT_STATUS_BADGE[c.status]} size="sm">
+                            {CONSULTATION_STATUS_LABELS[c.status] ?? c.status}
+                          </Badge>
+                          {c.primaryField && c.primaryField.length > 0 && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">
+                              {DOMAIN_LABELS[c.primaryField[0]] ?? c.primaryField[0]}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-xs text-gray-400">
+                          {relativeTime(c.lastMessageAt ?? c.createdAt)}
+                        </span>
                       </div>
-                      <span className="text-xs text-gray-400">
-                        {relativeTime(c.lastMessageAt ?? c.createdAt)}
-                      </span>
-                    </div>
-                    {c.lastMessage ? (
-                      <p className="text-sm text-gray-700 line-clamp-1">{c.lastMessage}</p>
-                    ) : (
-                      <p className="text-sm text-gray-400 italic">아직 메시지가 없습니다</p>
-                    )}
-                  </Card>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+                      {c.lastMessage ? (
+                        <p className="text-sm text-gray-700 line-clamp-1">{c.lastMessage}</p>
+                      ) : (
+                        <p className="text-sm text-gray-400 italic">아직 메시지가 없습니다</p>
+                      )}
+                    </Card>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
 
-        {/* Recent briefs */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700">최근 의뢰서</h2>
-            <Link
-              to="/briefs"
-              className="flex items-center gap-0.5 text-xs text-brand hover:text-blue-700 font-medium transition-colors"
-            >
-              전체 보기
-              <ChevronRight size={14} aria-hidden="true" />
-            </Link>
-          </div>
-
-          {briefLoading && (
-            <div className="flex flex-col gap-2">
-              {[1, 2].map((i) => (
-                <div key={i} className="h-16 rounded-card bg-gray-100 animate-pulse" />
-              ))}
+          {/* Recent briefs */}
+          <section className="min-w-0">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-gray-700">최근 의뢰서</h2>
+              <Link
+                to="/briefs"
+                className="flex items-center gap-0.5 text-xs text-brand hover:text-blue-700 font-medium transition-colors"
+              >
+                전체 보기
+                <ChevronRight size={14} aria-hidden="true" />
+              </Link>
             </div>
-          )}
 
-          {!briefLoading && briefs.length === 0 && (
-            <Card padding="md" className="flex flex-col items-center gap-2 py-6">
-              <FileText size={28} className="text-gray-300" aria-hidden="true" />
-              <p className="text-sm text-gray-400">아직 의뢰서가 없습니다</p>
-            </Card>
-          )}
+            {briefLoading && (
+              <div className="flex flex-col gap-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-16 rounded-card bg-gray-100 animate-pulse" />
+                ))}
+              </div>
+            )}
 
-          {!briefLoading && briefs.length > 0 && (
-            <ul className="flex flex-col gap-2">
-              {briefs.map((b) => (
-                <li key={b.briefId}>
-                  <Card
-                    padding="sm"
-                    className="cursor-pointer hover:shadow-md active:scale-[0.99] transition-all duration-150"
-                    onClick={() => navigate(`/briefs/${b.briefId}`)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ')
-                        navigate(`/briefs/${b.briefId}`);
-                    }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <Badge variant={BRIEF_STATUS_BADGE[b.status]} size="sm">
-                          {BRIEF_STATUS_LABELS[b.status] ?? b.status}
-                        </Badge>
-                        <p className="text-sm font-medium text-gray-800 truncate">{b.title}</p>
+            {!briefLoading && briefs.length === 0 && (
+              <Card padding="md" className="flex min-h-28 flex-col items-center justify-center gap-2 py-6">
+                <FileText size={28} className="text-gray-300" aria-hidden="true" />
+                <p className="text-sm text-gray-400">아직 의뢰서가 없습니다</p>
+              </Card>
+            )}
+
+            {!briefLoading && briefs.length > 0 && (
+              <ul className="flex flex-col gap-2">
+                {briefs.map((b) => (
+                  <li key={b.briefId}>
+                    <Card
+                      padding="sm"
+                      className="cursor-pointer hover:shadow-md active:scale-[0.99] transition-all duration-150"
+                      onClick={() => navigate(`/briefs/${b.briefId}`)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ')
+                          navigate(`/briefs/${b.briefId}`);
+                      }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Badge variant={BRIEF_STATUS_BADGE[b.status]} size="sm">
+                            {BRIEF_STATUS_LABELS[b.status] ?? b.status}
+                          </Badge>
+                          <p className="text-sm font-medium text-gray-800 truncate">{b.title}</p>
+                        </div>
+                        <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
+                          {formatDate(b.createdAt)}
+                        </span>
                       </div>
-                      <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
-                        {formatDate(b.createdAt)}
-                      </span>
-                    </div>
-                  </Card>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+                    </Card>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
       </main>
     </div>
   );

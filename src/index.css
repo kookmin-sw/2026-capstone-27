@@ -40,11 +40,17 @@ html {
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 320px;
 }
 
 body {
   margin: 0;
   background-color: var(--color-surface);
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100dvh;
 }
 
 /* ===== iOS Safe Area ===== */

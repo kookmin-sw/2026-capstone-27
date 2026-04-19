@@ -19,7 +19,7 @@ export function ProfilePage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 py-4">
       {/* 프로필 카드 */}
       <Card padding="lg">
         <div className="flex flex-col items-center gap-3">

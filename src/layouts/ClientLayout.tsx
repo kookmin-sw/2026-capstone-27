@@ -16,9 +16,9 @@ export function ClientLayout() {
       {/* Desktop sidebar */}
       <SideNav tabs={[...CLIENT_TABS]} />
 
-      {/* Page content — flex-1 so pages can fill remaining space */}
-      <main className="flex-1 flex flex-col lg:pl-60 pb-20 lg:pb-0 min-h-0">
-        <div className="mx-auto max-w-2xl lg:max-w-3xl xl:max-w-5xl w-full flex-1 flex flex-col min-h-0">
+      {/* Page content */}
+      <main className="flex-1 flex flex-col lg:pl-60 pb-20 lg:pb-0 min-h-0 overflow-y-auto overflow-x-auto">
+        <div className="mx-auto w-full max-w-7xl flex-1 flex flex-col min-h-0">
           <Outlet />
         </div>
       </main>

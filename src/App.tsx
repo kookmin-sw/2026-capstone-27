@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/authStore';
 // Guards
 import { ProtectedRoute } from '@/guards/ProtectedRoute';
 import { RoleRoute } from '@/guards/RoleRoute';
+import { OnboardingRoute } from '@/guards/OnboardingRoute';
 
 // Error Boundary + Page Loader
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -180,9 +181,13 @@ export default function App() {
               <Route path="/auth/kakao/callback" element={<KakaoCallbackPage />} />
               <Route path="/auth/naver/callback" element={<NaverCallbackPage />} />
               <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
-              <Route path="/role-select" element={<RoleSelectPage />} />
-              <Route path="/register/client" element={<ClientRegisterPage />} />
-              <Route path="/register/lawyer" element={<LawyerRegisterPage />} />
+
+              {/* 온보딩 전용: 소셜 로그인 직후 중간 단계. 인증되었거나 state.accessToken 이 있을 때만 접근 허용 */}
+              <Route element={<OnboardingRoute />}>
+                <Route path="/role-select" element={<RoleSelectPage />} />
+                <Route path="/register/client" element={<ClientRegisterPage />} />
+                <Route path="/register/lawyer" element={<LawyerRegisterPage />} />
+              </Route>
             </Route>
 
             {/* ══════ 보호 라우트 ══════ */}

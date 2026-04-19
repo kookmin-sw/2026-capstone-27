@@ -56,9 +56,8 @@ public class AnalysisService {
             BriefParsedResponse parsed = result.data();
 
             // 3. Brief 엔티티 생성 + 저장
-            String legalField = (consultation.getPrimaryField() != null
-                    && !consultation.getPrimaryField().isEmpty())
-                    ? consultation.getPrimaryField().get(0) : "UNKNOWN";
+            String legalField = consultation.getFirstDomain() != null
+                    ? consultation.getFirstDomain() : "UNKNOWN";
 
             List<KeyIssue> keyIssueList = parsed.getKeyIssues() != null
                     ? parsed.getKeyIssues().stream()
@@ -108,4 +107,5 @@ public class AnalysisService {
 
         return CompletableFuture.completedFuture(null);
     }
+
 }

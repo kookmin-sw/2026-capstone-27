@@ -48,14 +48,8 @@ public class LawyerService {
         return PageResponse.from(responsePage);
     }
 
-    public LawyerResponse getLawyer(UUID lawyerId) {
-        LawyerProfile profile;
-        try {
-            profile = lawyerReader.findById(lawyerId);
-        } catch (Exception e) {
-            // lawyerId가 userId인 경우 (추천 API에서 userId를 반환하므로)
-            profile = lawyerReader.findByUserId(lawyerId);
-        }
+    public LawyerResponse getLawyer(UUID userId) {
+        LawyerProfile profile = lawyerReader.findByUserId(userId);
         User user = userReader.findById(profile.getUserId());
         return LawyerResponse.from(profile, user.getName(), user.getProfileImageUrl());
     }
@@ -70,7 +64,8 @@ public class LawyerService {
     public LawyerResponse updateMyProfile(UUID userId, ProfileUpdateRequest request) {
         LawyerProfile profile = lawyerReader.findByUserId(userId);
         profile.updateProfile(
-                request.specializations(),
+                request.domains(),
+                request.subDomains(),
                 request.experienceYears(),
                 request.certifications(),
                 request.tags(),

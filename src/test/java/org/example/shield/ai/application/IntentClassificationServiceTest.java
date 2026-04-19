@@ -18,7 +18,7 @@ class IntentClassificationServiceTest {
         // IntentClassificationService의 parseClassificationResult만 단독 테스트.
         // LLM 호출은 통합 테스트에서 검증.
         service = new IntentClassificationService(
-                null, new ObjectMapper(), "{\"id\":\"law-000\"}", null);
+                null, new ObjectMapper(), "{\"id\":\"law-000\"}", null, 6);
     }
 
     @Test

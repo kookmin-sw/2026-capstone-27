@@ -2,17 +2,11 @@ package org.example.shield.consultation.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.shield.ai.application.CategoryLawMappingService;
 import org.example.shield.ai.application.ChecklistCoverageService;
 import org.example.shield.ai.application.CohereService;
-import org.example.shield.ai.application.IntentClassificationService;
-import org.example.shield.ai.application.LegalRetrievalService;
-import org.example.shield.ai.application.RagContextBuilder;
-import org.example.shield.ai.infrastructure.RagMetrics;
+import org.example.shield.ai.application.RagPipelineService;
 import org.example.shield.ai.config.CohereApiConfig;
 import org.example.shield.ai.dto.ChatParsedResponse;
-import org.example.shield.ai.dto.IntentClassificationResult;
-import org.example.shield.ai.dto.LegalChunk;
 import org.example.shield.ai.dto.AiCallResult;
 import org.example.shield.ai.infrastructure.SanitizeService;
 import org.example.shield.common.response.PageResponse;
@@ -46,11 +40,7 @@ public class MessageService {
     private final CohereApiConfig cohereApiConfig;
     private final SanitizeService sanitizeService;
     private final ChecklistCoverageService checklistCoverageService;
-    private final IntentClassificationService intentClassificationService;
-    private final CategoryLawMappingService categoryLawMappingService;
-    private final LegalRetrievalService legalRetrievalService;
-    private final RagContextBuilder ragContextBuilder;
-    private final RagMetrics ragMetrics;
+    private final RagPipelineService ragPipelineService;
 
     @Transactional
     public SendMessageResponse sendMessage(UUID consultationId, String content) {
@@ -61,7 +51,6 @@ public class MessageService {
         try {
             sanitizedText = sanitizeService.sanitizeUserText(content);
         } catch (SanitizeService.PiiDetectedException e) {
-            // PII 검출 시 사용자에게 안내 메시지 반환
             Message piiMessage = Message.createAiMessage(
                     consultationId, e.getMessage(), null, null, null, null);
             Message savedPii = messageWriter.save(piiMessage);
@@ -75,67 +64,32 @@ public class MessageService {
         // 대화 내역 1회 조회 — RAG와 chat() 양쪽에서 공유 (중복 DB 쿼리 방지)
         List<Message> chatHistory = messageReader.findAllByConsultationId(consultationId);
 
-        // [RAG] Layer 1-2-3 (primaryField가 설정된 이후에만 실행)
+        // [RAG] 도메인 정보가 있을 때만 실행
         String ragContext = "";
-        if (consultation.getPrimaryField() != null && !consultation.getPrimaryField().isEmpty()) {
-            try {
-                String primaryField = consultation.getPrimaryField().get(0);
-
-                // Layer 1: 의도 분류
-                IntentClassificationResult classification =
-                        intentClassificationService.classify(chatHistory, primaryField);
-
-                // Layer 2: 법률 검색
-                List<String> lawIds = categoryLawMappingService.resolveLawIds(
-                        classification.matchedNodeIds());
-                // B-8a: 온톨로지 노드 → DB category_ids 토큰 매핑 (soft-filter)
-                List<String> categoryIds = categoryLawMappingService.resolveCategoryIds(
-                        classification.matchedNodeIds());
-                String vectorQuery = classification.retrievalQueries().isEmpty()
-                        ? primaryField + " 관련 법률"
-                        : classification.retrievalQueries().get(0);
-                List<LegalChunk> chunks = legalRetrievalService.retrieve(
-                        vectorQuery,
-                        classification.keywords().core(),
-                        categoryIds,
-                        lawIds,
-                        3);
-
-                // Layer 3: 컨텍스트 빌드
-                ragContext = ragContextBuilder.build(chunks, classification.intentSummary());
-                if (!ragContext.isEmpty()) {
-                    log.info("RAG 컨텍스트 생성 완료: consultationId={}, chunks={}", consultationId, chunks.size());
-                }
-            } catch (Exception e) {
-                log.warn("RAG 파이프라인 실패, 폴백 (RAG 없이 진행): consultationId={}, error={}",
-                        consultationId, e.getMessage());
-                ragMetrics.recordPipelineFallback();
-                ragContext = "";
-            }
+        String domainForRag = consultation.getFirstDomain();
+        if (domainForRag != null) {
+            ragContext = ragPipelineService.execute(chatHistory, domainForRag, consultationId);
         }
 
         // 2. Cohere API 호출 (Phase 1 대화 — RAG 컨텍스트 포함, 조회된 chatHistory 재사용)
-        AiCallResult<ChatParsedResponse> result = cohereService.chat(consultation, sanitizedText, ragContext, chatHistory);
+        AiCallResult<ChatParsedResponse> result = cohereService.chat(
+                consultation, sanitizedText, ragContext, chatHistory);
         ChatParsedResponse parsed = result.data();
 
         // 3. 응답 ID 저장 (감사 로깅용)
         consultation.updateLastResponseId(result.responseId());
 
-        // 4. 분류 결과 처리 (P0-V: primary_field_locked 가드)
-        if (parsed.getPrimaryField() != null && !parsed.getPrimaryField().isEmpty()) {
-            boolean updated = consultation.updateClassificationFromLlm(parsed.getPrimaryField());
+        // 4. AI 분류 결과 처리 (primaryFieldLocked 가드)
+        if (hasAny(parsed.getAiDomains()) || hasAny(parsed.getAiSubDomains()) || hasAny(parsed.getAiTags())) {
+            boolean updated = consultation.updateAiClassification(
+                    parsed.getAiDomains(), parsed.getAiSubDomains(), parsed.getAiTags());
             if (!updated) {
-                log.warn("LLM attempted to override locked primaryField: consultationId={}, llm={}, stored={}",
-                        consultationId, parsed.getPrimaryField(), consultation.getPrimaryField());
+                log.warn("LLM attempted to override locked classification: consultationId={}, aiDomains={}",
+                        consultationId, parsed.getAiDomains());
             }
         }
 
-        // 5. tags 업데이트
-        if (parsed.getTags() != null && !parsed.getTags().isEmpty()) {
-            consultation.updateTags(parsed.getTags());
-        }
-
-        // 6. AI 메시지 저장
+        // 5. AI 메시지 저장
         Message aiMessage = Message.createAiMessage(
                 consultationId,
                 parsed.getNextQuestion(),
@@ -146,15 +100,13 @@ public class MessageService {
         );
         Message savedAi = messageWriter.save(aiMessage);
 
-        // 7. allCompleted AND gate (P0-II — 코드 레벨 검증)
+        // 6. allCompleted AND gate (P0-II)
         boolean effectiveAllCompleted = false;
         if (parsed.isAllCompleted()) {
-            String primaryFieldStr = (consultation.getPrimaryField() != null
-                    && !consultation.getPrimaryField().isEmpty())
-                    ? consultation.getPrimaryField().get(0) : null;
+            String domainForCoverage = consultation.getFirstDomain();
 
             double coverageRatio = checklistCoverageService.compute(
-                    consultationId, primaryFieldStr);
+                    consultationId, domainForCoverage);
             effectiveAllCompleted = checklistCoverageService.isEffectivelyCompleted(
                     true, coverageRatio);
 
@@ -164,7 +116,7 @@ public class MessageService {
             }
         }
 
-        // 8. 상담 마지막 메시지 + updatedAt 갱신
+        // 7. 상담 마지막 메시지 + updatedAt 갱신
         consultation.updateLastMessage(savedAi.getContent(), savedAi.getCreatedAt());
         consultation.touch();
         consultationWriter.save(consultation);
@@ -173,12 +125,15 @@ public class MessageService {
     }
 
     public PageResponse<MessageResponse> getMessages(UUID consultationId, Pageable pageable) {
-        // 상담 존재 확인
         consultationReader.findById(consultationId);
 
         Page<Message> messages = messageReader.findAllByConsultationId(consultationId, pageable);
         Page<MessageResponse> responsePage = messages.map(MessageResponse::from);
 
         return PageResponse.from(responsePage);
+    }
+
+    private boolean hasAny(List<String> list) {
+        return list != null && !list.isEmpty();
     }
 }

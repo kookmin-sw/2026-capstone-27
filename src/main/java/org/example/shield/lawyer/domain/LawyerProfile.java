@@ -28,7 +28,13 @@ public class LawyerProfile extends BaseEntity {
     @Column(nullable = false, unique = true)
     private UUID userId;
 
-    private String specializations;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> domains;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private List<String> subDomains;
 
     private Integer experienceYears;
 
@@ -61,12 +67,13 @@ public class LawyerProfile extends BaseEntity {
     private Long version;
 
     @Builder
-    public LawyerProfile(UUID userId, String barAssociationNumber, String specializations,
-                         Integer experienceYears, List<String> tags, String bio,
-                         List<String> certifications, String region) {
+    public LawyerProfile(UUID userId, String barAssociationNumber, List<String> domains,
+                         List<String> subDomains, Integer experienceYears, List<String> tags,
+                         String bio, List<String> certifications, String region) {
         this.userId = userId;
         this.barAssociationNumber = barAssociationNumber;
-        this.specializations = specializations;
+        this.domains = domains;
+        this.subDomains = subDomains;
         this.experienceYears = experienceYears;
         this.tags = tags;
         this.bio = bio;
@@ -76,10 +83,11 @@ public class LawyerProfile extends BaseEntity {
         this.caseCount = 0;
     }
 
-    public void updateProfile(String specializations, Integer experienceYears,
-                              List<String> certifications, List<String> tags,
-                              String bio, String region) {
-        this.specializations = specializations;
+    public void updateProfile(List<String> domains, List<String> subDomains,
+                              Integer experienceYears, List<String> certifications,
+                              List<String> tags, String bio, String region) {
+        this.domains = domains;
+        this.subDomains = subDomains;
         this.experienceYears = experienceYears;
         this.certifications = certifications;
         this.tags = tags;

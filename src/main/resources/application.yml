@@ -2,6 +2,9 @@ spring:
   application:
     name: shield
 
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
   servlet:
     encoding:
       charset: UTF-8
@@ -27,8 +30,6 @@ spring:
     url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    hikari:
-      maximum-pool-size: 5
 
   mail:
     host: smtp.gmail.com
@@ -47,10 +48,6 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 
   # Flyway (Phase A: PostgreSQL 마이그레이션 단일 소스화)
   # - ddl-auto: none 과 짝을 이뤄 Flyway가 스키마 관리자
@@ -125,6 +122,7 @@ cohere:
     model: command-a-03-2025
     temperature: 0.1
     max-tokens: 512
+    context-window-messages: 6
 
 # RAG 검색 설정
 #
@@ -168,11 +166,6 @@ rag:
 ontology:
   slim-json-path: classpath:ontology/legal-ontology-slim.json
   cache-ttl-minutes: 60
-
-# CORS
-app:
-  cors:
-    allowed-origins: http://localhost:3000,http://localhost:5173,http://localhost:5174
 
 server:
   port: 8080

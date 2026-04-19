@@ -11,6 +11,7 @@ import org.example.shield.lawyer.application.LawyerDocumentService;
 import org.example.shield.lawyer.application.LawyerService;
 import org.example.shield.lawyer.application.VerificationService;
 import org.example.shield.lawyer.controller.dto.DocumentResponse;
+import org.example.shield.lawyer.controller.dto.LawyerRegisterRequest;
 import org.example.shield.lawyer.controller.dto.LawyerResponse;
 import org.example.shield.lawyer.controller.dto.ProfileUpdateRequest;
 import org.example.shield.lawyer.controller.dto.VerificationRequest;
@@ -92,6 +93,16 @@ public class LawyerController {
             @AuthenticationPrincipal UUID userId) {
         VerificationResponse result = verificationService.getVerificationStatus(userId);
         return ApiResponse.success("조회 성공", result);
+    }
+
+    @Operation(summary = "변호사 가입", description = "추가정보 입력 + 검증 신청 통합. LawyerProfile을 생성하고 PENDING 상태로 설정합니다")
+    @PreAuthorize("hasRole('LAWYER')")
+    @PostMapping("/me/register")
+    public ApiResponse<VerificationResponse> register(
+            @AuthenticationPrincipal UUID userId,
+            @Valid @RequestBody LawyerRegisterRequest request) {
+        VerificationResponse result = verificationService.register(userId, request);
+        return ApiResponse.success("변호사 가입이 완료되었습니다", result);
     }
 
     @Operation(summary = "검증 신청", description = "대한변호사협회 등록번호로 자격 검증을 신청합니다")

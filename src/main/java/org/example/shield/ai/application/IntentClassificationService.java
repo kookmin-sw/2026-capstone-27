@@ -10,6 +10,7 @@ import org.example.shield.ai.dto.IntentClassificationResult.Keywords;
 import org.example.shield.ai.dto.IntentClassificationResult.MatchedNode;
 import org.example.shield.consultation.domain.Message;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class IntentClassificationService {
     private final ObjectMapper objectMapper;
     private final String slimOntologyJson;
     private final ResourceLoader resourceLoader;
+    private final int contextWindowMessages;
 
     private String intentClassifierPromptTemplate;
 
@@ -39,11 +41,13 @@ public class IntentClassificationService {
             CohereService cohereService,
             ObjectMapper objectMapper,
             @Qualifier("slimOntologyJson") String slimOntologyJson,
-            ResourceLoader resourceLoader) {
+            ResourceLoader resourceLoader,
+            @Value("${cohere.classify.context-window-messages:6}") int contextWindowMessages) {
         this.cohereService = cohereService;
         this.objectMapper = objectMapper;
         this.slimOntologyJson = slimOntologyJson;
         this.resourceLoader = resourceLoader;
+        this.contextWindowMessages = contextWindowMessages;
     }
 
     @PostConstruct
@@ -62,10 +66,10 @@ public class IntentClassificationService {
      * 대화 내역을 분석하여 법률 의도를 분류.
      *
      * @param recentMessages 최근 메시지 목록 (최대 3턴)
-     * @param primaryField   현재 상담 분야 (폴백용)
+     * @param domain         현재 상담 대분류 (폴백용)
      * @return IntentClassificationResult
      */
-    public IntentClassificationResult classify(List<Message> recentMessages, String primaryField) {
+    public IntentClassificationResult classify(List<Message> recentMessages, String domain) {
         try {
             String promptTemplate = intentClassifierPromptTemplate;
             String conversationHistory = buildConversationHistory(recentMessages);
@@ -83,8 +87,8 @@ public class IntentClassificationService {
             return parseClassificationResult(result.data());
 
         } catch (Exception e) {
-            log.warn("의도 분류 실패, 폴백 적용: primaryField={}, error={}", primaryField, e.getMessage());
-            return createFallbackResult(primaryField);
+            log.warn("의도 분류 실패, 폴백 적용: domain={}, error={}", domain, e.getMessage());
+            return createFallbackResult(domain);
         }
     }
 
@@ -101,8 +105,7 @@ public class IntentClassificationService {
 
     private String buildConversationHistory(List<Message> messages) {
         StringBuilder sb = new StringBuilder();
-        // 최대 최근 3턴 (6개 메시지) 사용
-        int start = Math.max(0, messages.size() - 6);
+        int start = Math.max(0, messages.size() - contextWindowMessages);
         for (int i = start; i < messages.size(); i++) {
             Message msg = messages.get(i);
             String role = switch (msg.getRole()) {
@@ -165,12 +168,12 @@ public class IntentClassificationService {
         }
     }
 
-    private IntentClassificationResult createFallbackResult(String primaryField) {
+    private IntentClassificationResult createFallbackResult(String domain) {
         return new IntentClassificationResult(
                 "분류 실패 — 기본 분야 기반 폴백",
                 List.of(),
                 new Keywords(List.of(), List.of()),
-                List.of(primaryField != null ? primaryField + " 관련 법률 조항" : "법률 상담")
+                List.of(domain != null ? domain + " 관련 법률 조항" : "법률 상담")
         );
     }
 }

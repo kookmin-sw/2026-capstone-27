@@ -1,6 +1,7 @@
 package org.example.shield.admin.controller.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public record VerificationLogResponse(
@@ -8,7 +9,7 @@ public record VerificationLogResponse(
         String lawyerName,
         String fromStatus,
         String toStatus,
-        String specializations,
+        List<String> domains,
         String adminName,
         String reason,
         LocalDateTime createdAt

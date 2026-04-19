@@ -3,17 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { authApi } from '@/lib/authApi';
-
-function getRoleHome(role: string): string {
-  switch (role) {
-    case 'LAWYER':
-      return '/lawyer';
-    case 'ADMIN':
-      return '/admin';
-    default:
-      return '/home';
-  }
-}
+import { getRoleHome, routeAfterSocialLogin } from '@/lib/authFlow';
 
 export function GoogleCallbackPage() {
   const navigate = useNavigate();
@@ -36,14 +26,26 @@ export function GoogleCallbackPage() {
 
     (async () => {
       try {
-        // 명세: POST /api/auth/google { authorizationCode, role }
-        // role은 첫 로그인 시에만 필요 — 기존 사용자는 서버가 무시
+        // 명세: POST /api/auth/google { authorizationCode }
+        // 최초 로그인 시 서버가 기본 USER로 가입시킴. role 지정이 필요한 경우는
+        // 역할 선택 화면(/role-select)을 거쳐 해당 역할로 재요청하는 플로우.
         const { data } = await authApi.googleLogin({ authorizationCode: code });
 
-        const { accessToken, role } = data.data;
+        const payload = data.data;
+        const { accessToken, isNewUser, role, name, email } = payload;
 
         await login(accessToken);
-        navigate(getRoleHome(role ?? ''), { replace: true });
+
+        // 신규 사용자면 역할 선택 화면으로, 아니면 역할별 홈으로
+        const next = routeAfterSocialLogin({ isNewUser, role });
+        if (next === '/role-select') {
+          navigate(next, {
+            replace: true,
+            state: { accessToken, name, email, provider: 'google' },
+          });
+          return;
+        }
+        navigate(getRoleHome(role), { replace: true });
       } catch (err) {
         console.error('[GoogleCallback] Error:', err);
         setErrorMsg('구글 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');

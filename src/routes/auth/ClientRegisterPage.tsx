@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Button, Input } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { cn } from '@/lib/cn';
+import type { PendingRegistrationState } from '@/lib/authFlow';
 
 const schema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
@@ -28,22 +29,27 @@ export function ClientRegisterPage() {
   const login = useAuthStore((s) => s.login);
   const [agreed, setAgreed] = useState(false);
 
+  // 소셜 로그인에서 전달받은 사전 정보 (구글은 name/email 제공)
+  const pending = (location.state ?? null) as PendingRegistrationState | null;
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { name: '', email: '', phone: '' },
+    defaultValues: {
+      name: pending?.name ?? '',
+      email: pending?.email ?? '',
+      phone: '',
+    },
   });
 
   const onSubmit = async (_data: FormValues) => {
-    const state = location.state as
-      | { accessToken?: string; refreshToken?: string }
-      | undefined;
-
-    if (state?.accessToken && state?.refreshToken) {
-      await login(state.accessToken);
+    // TODO(next PR): /api/users/me 프로필 업데이트 API 연동 (전화번호/이름 저장)
+    // 현재 PR에서는 UI 플로우만 연결. 소셜 로그인으로 이미 accessToken 발급된 상태.
+    if (pending?.accessToken) {
+      await login(pending.accessToken);
     }
 
     navigate('/home', { replace: true });

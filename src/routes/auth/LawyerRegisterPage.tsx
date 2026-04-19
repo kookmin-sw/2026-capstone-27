@@ -1,4 +1,4 @@
-import { ArrowLeft, User, Mail, Phone, Briefcase, CircleCheck } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, Briefcase, MapPin, CircleCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,7 +6,14 @@ import { z } from 'zod';
 import { Button, Input, SpecializationPicker } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 import { cn } from '@/lib/cn';
+import type { PendingRegistrationState } from '@/lib/authFlow';
 
+// API 명세: POST /api/lawyers/me/register
+//   - barAssociationNumber (필수)   ex) "KBA-2018-12345"
+//   - domains / subDomains / tags   (온톨로지 L1/L2/L3)
+//   - experienceYears, bio, region
+//
+// 이번 PR은 UI만 정리. 서버 연동은 다음 PR에서 추가한다.
 const schema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
   email: z
@@ -17,13 +24,17 @@ const schema = z.object({
     .string()
     .min(1, '전화번호를 입력해주세요')
     .regex(/^010-\d{4}-\d{4}$/, '010-XXXX-XXXX 형식으로 입력해주세요'),
-  specializations: z
-    .array(z.string())
-    .min(1, '전문분야를 1개 이상 선택해주세요'),
+  barAssociationNumber: z
+    .string()
+    .min(1, '대한변호사협회 등록번호를 입력해주세요'),
+  // 현재 SpecializationPicker 는 L3(리프) 태그만 반환하므로
+  // 일단 UI에서는 tags 로 모으고, 실제 서버 요청 시 도메인 매핑은 다음 PR에서 처리한다.
+  tags: z.array(z.string()).min(1, '전문 분야를 1개 이상 선택해주세요'),
   experienceYears: z
-    .number()
+    .number({ error: '경력 연수를 숫자로 입력해주세요' })
     .min(0, '경력은 0년 이상이어야 합니다'),
-  licenseNumber: z.string().min(1, '변호사 자격번호를 입력해주세요'),
+  bio: z.string().max(500, '자기소개는 500자 이하로 작성해주세요').optional().or(z.literal('')),
+  region: z.string().optional().or(z.literal('')),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -32,6 +43,8 @@ export function LawyerRegisterPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const login = useAuthStore((s) => s.login);
+
+  const pending = (location.state ?? null) as PendingRegistrationState | null;
 
   const {
     register,
@@ -42,24 +55,26 @@ export function LawyerRegisterPage() {
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: pending?.name ?? '',
+      email: pending?.email ?? '',
       phone: '',
-      specializations: [],
+      barAssociationNumber: '',
+      tags: [],
       experienceYears: 0,
-      licenseNumber: '',
+      bio: '',
+      region: '',
     },
   });
 
-  const selectedSpecs = watch('specializations') ?? [];
+  const selectedTags = watch('tags') ?? [];
+  const bio = watch('bio') ?? '';
 
   const onSubmit = async (_data: FormValues) => {
-    const state = location.state as
-      | { accessToken?: string; refreshToken?: string }
-      | undefined;
-
-    if (state?.accessToken && state?.refreshToken) {
-      await login(state.accessToken);
+    // TODO(next PR): POST /api/lawyers/me/register 연동
+    // 현재 PR은 UI 플로우만 맞추므로 소셜 로그인으로 발급된 accessToken 만 적용하고
+    // 변호사 홈으로 이동. 서버 실제 승인 상태는 다음 PR에서 verificationStatus 로 분기.
+    if (pending?.accessToken) {
+      await login(pending.accessToken);
     }
 
     navigate('/lawyer', { replace: true });
@@ -91,7 +106,7 @@ export function LawyerRegisterPage() {
         {/* Title */}
         <h2 className="text-2xl font-bold text-[#16181d] tracking-tight mb-2">전문 변호사 등록</h2>
         <p className="text-sm text-[#575e6b] leading-5 mb-6">
-          SHIELD의 법률 전문가로 활동하기 위해
+          SHIELD에서 변호사로 등록되기 위한
           <br />
           정보를 입력해주세요.
         </p>
@@ -135,21 +150,38 @@ export function LawyerRegisterPage() {
             {...register('phone')}
           />
 
+          <Input
+            label="활동 지역"
+            placeholder="서울특별시"
+            error={errors.region?.message}
+            leftAddon={<MapPin size={16} />}
+            className="bg-white rounded-[10px]"
+            {...register('region')}
+          />
+
           {/* ── Section: 전문성 정보 ── */}
           <div className="flex items-center gap-2 border-b border-[#e0e2e6] pb-2 mt-2">
             <Briefcase size={16} className="text-[#575e6b]" />
             <span className="text-sm font-bold text-[#575e6b] uppercase tracking-wide">전문성 정보</span>
           </div>
 
-          {/* Specializations */}
+          <Input
+            label="대한변호사협회 등록번호"
+            placeholder="예) KBA-2018-12345"
+            error={errors.barAssociationNumber?.message}
+            className="bg-white rounded-[10px]"
+            {...register('barAssociationNumber')}
+          />
+
+          {/* Specializations (tags) */}
           <div className="flex flex-col gap-2">
             <span className="text-xs font-semibold text-[#16181d]">
               전문 분야 (하나 이상 선택)
             </span>
             <SpecializationPicker
-              value={selectedSpecs}
-              onChange={(v) => setValue('specializations', v, { shouldValidate: true })}
-              error={errors.specializations?.message}
+              value={selectedTags}
+              onChange={(v) => setValue('tags', v, { shouldValidate: true })}
+              error={errors.tags?.message}
             />
           </div>
 
@@ -180,13 +212,30 @@ export function LawyerRegisterPage() {
             )}
           </div>
 
-          <Input
-            label="변호사 자격번호"
-            placeholder="자격번호를 입력해주세요"
-            error={errors.licenseNumber?.message}
-            className="bg-white rounded-[10px]"
-            {...register('licenseNumber')}
-          />
+          {/* Bio */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-[#16181d]">자기소개</span>
+              <span className="text-[11px] text-[#575e6b]">{bio.length}/500</span>
+            </div>
+            <textarea
+              placeholder="여기에 자기소개를 간략하게 작성해 주세요..."
+              maxLength={500}
+              rows={4}
+              className={cn(
+                'w-full rounded-[10px] border bg-white px-3 py-2.5 text-sm text-[#16181d]',
+                'placeholder:text-[#575e6b] resize-none',
+                'outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand',
+                errors.bio ? 'border-red-500' : 'border-[#e0e2e6]',
+              )}
+              {...register('bio')}
+            />
+            {errors.bio && (
+              <p className="text-xs text-red-500 leading-snug" role="alert">
+                {errors.bio.message}
+              </p>
+            )}
+          </div>
 
           {/* Info banner */}
           <div className="flex gap-3 bg-[#f0f7ff] border border-brand/10 rounded-[14px] p-4">
@@ -194,7 +243,7 @@ export function LawyerRegisterPage() {
             <div>
               <p className="text-sm font-bold text-brand mb-1">자격 확인 후 승인됩니다</p>
               <p className="text-[11px] text-[#02264b] leading-5">
-                입력하신 정보와 업로드하신 서류는 운영팀의 검토를 거쳐 1~3 영업일 이내에 승인 처리가 완료됩니다.
+                등록된 정보를 바탕으로 SHIELD 검토팀에서 검토 후 승인해 드립니다. (1~3 영업일 내 처리)
               </p>
             </div>
           </div>

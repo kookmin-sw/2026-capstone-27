@@ -18,6 +18,10 @@ export interface BriefResponse {
   privacySetting: PrivacySetting;
   status: BriefStatus;
   createdAt: string;
+  /** 수락한 담당 변호사 — 수락 전이면 모두 null */
+  acceptedLawyerId: string | null;
+  acceptedLawyerName: string | null;
+  acceptedAt: string | null;
 }
 
 /** 명세: GET /api/briefs 목록 내 요약 */
@@ -26,6 +30,9 @@ export interface BriefSummaryResponse {
   title: string;
   status: BriefStatus;
   createdAt: string;
+  acceptedLawyerId: string | null;
+  acceptedLawyerName: string | null;
+  acceptedAt: string | null;
 }
 
 /** 명세: PATCH /api/briefs/{id} 수정 요청 */

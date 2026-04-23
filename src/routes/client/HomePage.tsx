@@ -24,7 +24,13 @@ export function HomePage() {
     <div className="flex flex-col flex-1">
       {/* Top bar — hidden on desktop where SideNav already shows the logo */}
       <header className="sticky top-0 z-30 h-14 bg-white border-b border-gray-200 flex items-center px-5 safe-area-top lg:hidden">
-        <span className="text-base font-bold text-brand tracking-tight">SHIELD</span>
+        <Link
+          to="/"
+          aria-label="홈으로 이동"
+          className="text-base font-bold text-brand tracking-tight hover:opacity-80 transition-opacity"
+        >
+          SHIELD
+        </Link>
       </header>
 
       <main className="flex-1 px-4 py-5 space-y-6">

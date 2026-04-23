@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Shield, User } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
@@ -24,15 +24,23 @@ export function SideNav({ tabs, className }: SideNavProps) {
         className,
       )}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100">
+      {/* Logo — click to home */}
+      <Link
+        to="/"
+        aria-label="홈으로 이동"
+        className={cn(
+          'flex items-center gap-2.5 px-5 py-5 border-b border-gray-100',
+          'hover:bg-gray-50 transition-colors',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/50',
+        )}
+      >
         <div className="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-lg">
           <Shield size={18} className="text-white" aria-hidden="true" />
         </div>
         <span className="text-lg font-bold tracking-tight text-gray-900">
           SHIELD
         </span>
-      </div>
+      </Link>
 
       {/* Nav items */}
       <nav className="flex-1 overflow-y-auto py-3 px-3">

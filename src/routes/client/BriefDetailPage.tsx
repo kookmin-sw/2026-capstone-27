@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Edit2, Check, X, ChevronRight, User } from 'lucide-react';
+import { Edit2, Check, X, ChevronRight, User, CheckCircle2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { cn } from '@/lib/cn';
 import {
@@ -9,6 +9,7 @@ import {
   useConfirmBrief,
   useLawyerRecommendations,
   useDeliverBrief,
+  useDeliveries,
 } from '@/hooks/useBrief';
 import { Button, Card, Badge, Spinner, Modal, Input } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
@@ -45,6 +46,10 @@ export function BriefDetailPage() {
     isConfirmed,
   );
 
+  // 이미 전달된 변호사 목록 — 중복 전달 방지용
+  const { data: deliveries } = useDeliveries(id);
+  const deliveredLawyerIds = new Set((deliveries ?? []).map((d) => d.lawyerId));
+
   // Edit mode state
   const [editMode, setEditMode] = useState(false);
 
@@ -53,6 +58,7 @@ export function BriefDetailPage() {
     null,
   );
   const [deliverSuccess, setDeliverSuccess] = useState(false);
+  const [alreadyDeliveredName, setAlreadyDeliveredName] = useState<string | null>(null);
 
   const {
     register,
@@ -414,19 +420,27 @@ export function BriefDetailPage() {
                           <Button
                             variant="secondary"
                             size="sm"
-                            onClick={() => navigate(`/lawyers/${lawyer.lawyerId}`)}
+                            onClick={() =>
+                              navigate(`/lawyers/${lawyer.lawyerId}`, {
+                                state: { briefId: id },
+                              })
+                            }
                           >
                             프로필 보기
                           </Button>
                           <Button
                             variant="primary"
                             size="sm"
-                            onClick={() =>
+                            onClick={() => {
+                              if (deliveredLawyerIds.has(lawyer.lawyerId)) {
+                                setAlreadyDeliveredName(lawyer.name);
+                                return;
+                              }
                               setDeliverTarget({
                                 lawyerId: lawyer.lawyerId,
                                 name: lawyer.name,
-                              })
-                            }
+                              });
+                            }}
                           >
                             전달
                           </Button>
@@ -479,6 +493,58 @@ export function BriefDetailPage() {
             onClick={() => setDeliverTarget(null)}
           >
             취소
+          </Button>
+        </div>
+      </Modal>
+
+      {/* ── Already delivered modal ──────────────────────────────────────── */}
+      <Modal
+        isOpen={!!alreadyDeliveredName}
+        onClose={() => setAlreadyDeliveredName(null)}
+        title="전달 불가"
+      >
+        <p className="text-sm text-gray-700 mb-5">
+          <span className="font-semibold text-gray-900">{alreadyDeliveredName}</span> 변호사에게는
+          이미 의뢰서를 전달했습니다.
+        </p>
+        <Button
+          variant="primary"
+          fullWidth
+          onClick={() => setAlreadyDeliveredName(null)}
+        >
+          확인
+        </Button>
+      </Modal>
+
+      {/* ── Deliver success modal ─────────────────────────────────────────── */}
+      <Modal
+        isOpen={deliverSuccess}
+        onClose={() => setDeliverSuccess(false)}
+        title="전달 완료"
+      >
+        <div className="flex flex-col items-center gap-3 py-2">
+          <CheckCircle2 size={48} className="text-brand" aria-hidden="true" />
+          <p className="text-base font-semibold text-gray-900">
+            의뢰서가 전달되었습니다
+          </p>
+        </div>
+        <div className="mt-5 flex gap-2">
+          <Button
+            variant="primary"
+            fullWidth
+            onClick={() => {
+              setDeliverSuccess(false);
+              navigate(`/briefs/${id}/delivery`);
+            }}
+          >
+            전달 현황 보기
+          </Button>
+          <Button
+            variant="secondary"
+            fullWidth
+            onClick={() => setDeliverSuccess(false)}
+          >
+            확인
           </Button>
         </div>
       </Modal>

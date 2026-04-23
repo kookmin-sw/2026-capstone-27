@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, Shield } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 interface HeaderProps {
@@ -27,9 +28,9 @@ export function Header({
         className,
       )}
     >
-      {/* Left: back button or spacer */}
+      {/* Left: back button, or SHIELD logo → 홈 이동 on tab roots */}
       <div className="w-10 shrink-0 flex items-center">
-        {showBack && (
+        {showBack ? (
           <button
             type="button"
             onClick={onBack}
@@ -38,6 +39,14 @@ export function Header({
           >
             <ArrowLeft size={20} aria-hidden="true" />
           </button>
+        ) : (
+          <Link
+            to="/"
+            aria-label="홈으로 이동"
+            className="flex items-center justify-center w-11 h-11 -ml-2 rounded-lg text-brand hover:bg-gray-100 active:bg-gray-200 transition-colors"
+          >
+            <Shield size={20} aria-hidden="true" />
+          </Link>
         )}
       </div>
 

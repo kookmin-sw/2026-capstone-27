@@ -193,6 +193,9 @@ public class AdminService {
         LawyerProfile lawyer = lawyerReader.findById(lawyerId);
         String previousStatus = lawyer.getVerificationStatus().name();
 
+        // Issue #64: 이미 최종 상태(VERIFIED/REJECTED)인 건은 재처리 차단
+        validateNotFinalized(lawyer.getVerificationStatus());
+
         VerificationStatus newStatus = parseVerificationStatus(statusStr);
         validateReasonRequired(newStatus, reason);
 
@@ -239,6 +242,16 @@ public class AdminService {
         if ((status == VerificationStatus.REJECTED || status == VerificationStatus.SUPPLEMENT_REQUESTED)
                 && (reason == null || reason.isBlank())) {
             throw new BusinessException(ErrorCode.INVALID_INPUT_VALUE) {};
+        }
+    }
+
+    /**
+     * Issue #64: 이미 최종 처리된(VERIFIED 또는 REJECTED) 변호사의 상태 변경을 차단한다.
+     * PENDING / REVIEWING / SUPPLEMENT_REQUESTED 는 진행 중 상태이므로 변경 허용.
+     */
+    private void validateNotFinalized(VerificationStatus current) {
+        if (current == VerificationStatus.VERIFIED || current == VerificationStatus.REJECTED) {
+            throw new BusinessException(ErrorCode.VERIFICATION_ALREADY_PROCESSED) {};
         }
     }
 }

@@ -83,16 +83,20 @@ public class LawyerProfile extends BaseEntity {
         this.caseCount = 0;
     }
 
+    /**
+     * 부분 업데이트 (PATCH semantics). null 인 필드는 기존 값을 유지한다.
+     * 명시적 초기화가 필요하면 빈 컬렉션 또는 빈 문자열을 전달해야 한다.
+     */
     public void updateProfile(List<String> domains, List<String> subDomains,
                               Integer experienceYears, List<String> certifications,
                               List<String> tags, String bio, String region) {
-        this.domains = domains;
-        this.subDomains = subDomains;
-        this.experienceYears = experienceYears;
-        this.certifications = certifications;
-        this.tags = tags;
-        this.bio = bio;
-        this.region = region;
+        if (domains != null) this.domains = domains;
+        if (subDomains != null) this.subDomains = subDomains;
+        if (experienceYears != null) this.experienceYears = experienceYears;
+        if (certifications != null) this.certifications = certifications;
+        if (tags != null) this.tags = tags;
+        if (bio != null) this.bio = bio;
+        if (region != null) this.region = region;
     }
 
     public void requestVerification(String barAssociationNumber) {

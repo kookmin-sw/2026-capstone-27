@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Edit2, Check, X, ChevronRight, User, CheckCircle2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { cn } from '@/lib/cn';
+import { formatDateTime } from '@/lib/dateUtils';
 import {
   useBriefDetail,
   useUpdateBrief,
@@ -39,11 +40,13 @@ export function BriefDetailPage() {
 
   const isEditable = brief?.status === 'DRAFT';
   const isConfirmed = brief?.status === 'CONFIRMED' || brief?.status === 'DELIVERED';
+  // 담당 변호사 확정 — 서버가 내려준 derived 필드 기준
+  const hasAcceptedLawyer = !!brief?.acceptedLawyerId;
 
-  // Lawyer recommendations — only enabled after confirmed
+  // Lawyer recommendations — 확정 후, 담당 변호사 확정 전까지만 노출
   const { data: recommendations, isLoading: recLoading } = useLawyerRecommendations(
     id,
-    isConfirmed,
+    isConfirmed && !hasAcceptedLawyer,
   );
 
   // 이미 전달된 변호사 목록 — 중복 전달 방지용
@@ -337,8 +340,56 @@ export function BriefDetailPage() {
           )}
         </Card>
 
-        {/* ── Lawyer recommendations (CONFIRMED / DELIVERED) ───────────── */}
-        {isConfirmed && (
+        {/* ── 담당 변호사 확정 — 추천 리스트 대신 노출 ─────────────────── */}
+        {hasAcceptedLawyer && brief && (
+          <section>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-gray-700">담당 변호사</h2>
+              <Link
+                to={`/briefs/${id}/delivery`}
+                className="flex items-center gap-0.5 text-xs text-brand hover:text-blue-700 font-medium"
+              >
+                전달 현황 보기
+                <ChevronRight size={14} aria-hidden="true" />
+              </Link>
+            </div>
+            <Card padding="md">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0">
+                  <User size={20} className="text-green-500" aria-hidden="true" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-sm font-semibold text-gray-900">
+                      {brief.acceptedLawyerName ?? '담당 변호사'}
+                    </p>
+                    <Badge variant="success" size="sm">수락</Badge>
+                  </div>
+                  {brief.acceptedAt && (
+                    <p className="text-xs text-gray-500 mb-2">
+                      수락 일시: {formatDateTime(brief.acceptedAt)}
+                    </p>
+                  )}
+                  <div className="flex gap-2">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() =>
+                        brief.acceptedLawyerId &&
+                        navigate(`/lawyers/${brief.acceptedLawyerId}`)
+                      }
+                    >
+                      프로필 보기
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </section>
+        )}
+
+        {/* ── Lawyer recommendations — 확정 후, 담당 변호사 확정 전까지 ─── */}
+        {isConfirmed && !hasAcceptedLawyer && (
           <section>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-gray-700">추천 변호사</h2>

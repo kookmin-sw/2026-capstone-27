@@ -63,9 +63,13 @@ export function BriefListPage() {
                   }}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <Badge variant={BRIEF_STATUS_BADGE[b.status]} size="sm">
-                      {BRIEF_STATUS_LABELS[b.status] ?? b.status}
-                    </Badge>
+                    {b.acceptedLawyerId ? (
+                      <Badge variant="success" size="sm">담당 변호사 확정</Badge>
+                    ) : (
+                      <Badge variant={BRIEF_STATUS_BADGE[b.status]} size="sm">
+                        {BRIEF_STATUS_LABELS[b.status] ?? b.status}
+                      </Badge>
+                    )}
                     <p className="flex-1 text-sm font-medium text-gray-800 truncate">
                       {b.title}
                     </p>

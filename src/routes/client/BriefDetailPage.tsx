@@ -49,9 +49,10 @@ export function BriefDetailPage() {
     isConfirmed && !hasAcceptedLawyer,
   );
 
-  // 이미 전달된 변호사 목록 — 중복 전달 방지용
+  // 이미 전달된 변호사 목록 — 중복 전달 방지 + 전달 현황 링크 노출 조건
   const { data: deliveries } = useDeliveries(id);
   const deliveredLawyerIds = new Set((deliveries ?? []).map((d) => d.lawyerId));
+  const hasAnyDelivery = (deliveries?.length ?? 0) > 0;
 
   // Edit mode state
   const [editMode, setEditMode] = useState(false);
@@ -393,7 +394,7 @@ export function BriefDetailPage() {
           <section>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-gray-700">추천 변호사</h2>
-              {deliverSuccess && (
+              {hasAnyDelivery && (
                 <Link
                   to={`/briefs/${id}/delivery`}
                   className="flex items-center gap-0.5 text-xs text-brand hover:text-blue-700 font-medium"
@@ -503,18 +504,6 @@ export function BriefDetailPage() {
               </div>
             )}
 
-            {/* After delivery: link to delivery status */}
-            {deliverSuccess && (
-              <div className="mt-3 text-center">
-                <Link
-                  to={`/briefs/${id}/delivery`}
-                  className="inline-flex items-center gap-1 text-sm text-brand hover:text-blue-700 font-medium transition-colors"
-                >
-                  전달 현황 보기
-                  <ChevronRight size={15} aria-hidden="true" />
-                </Link>
-              </div>
-            )}
           </section>
         )}
       </main>

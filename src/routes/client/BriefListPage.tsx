@@ -39,7 +39,7 @@ export function BriefListPage() {
             <Button
               variant="primary"
               size="md"
-              onClick={() => navigate('/consultations')}
+              onClick={() => navigate('/consultations/new')}
             >
               상담 시작하기
             </Button>

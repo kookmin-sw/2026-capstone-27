@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield } from 'lucide-react';
 
 // ─── page ────────────────────────────────────────────────────────────────────
 
@@ -20,10 +19,12 @@ export function SplashPage() {
       {/* Decorative blur */}
       <div className="absolute -top-20 right-0 w-64 h-64 rounded-full bg-brand/5 blur-[64px]" />
 
-      {/* Shield logo — large centered icon only */}
-      <div className="w-[170px] h-[170px] rounded-[32px] bg-brand flex items-center justify-center shadow-lg shadow-brand/20">
-        <Shield size={96} className="text-white" strokeWidth={1.5} aria-hidden="true" />
-      </div>
+      {/* SHIELD logo — large centered image */}
+      <img
+        src="/logo.png"
+        alt="SHIELD"
+        className="w-[170px] h-[170px] object-contain"
+      />
 
       {/* Loading dots */}
       <div className="flex items-center gap-1.5 mt-10" aria-label="로딩 중">

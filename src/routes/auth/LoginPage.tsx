@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Shield, ShieldCheck, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
+import { ShieldCheck, Terminal, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { loginWithKakao } from '@/lib/kakao';
@@ -109,10 +109,12 @@ export function LoginPage() {
 
       {/* ── Brand area ── */}
       <div className="flex flex-col items-center pt-[96px] sm:pt-[120px] pb-8 px-6 gap-4">
-        {/* Shield logo — blue square with white filled icon */}
-        <div className="w-[88px] h-[88px] rounded-[22px] bg-brand flex items-center justify-center shadow-[0_8px_24px_-4px_rgba(37,99,235,0.35)]">
-          <Shield size={48} className="text-white fill-white" strokeWidth={1.5} />
-        </div>
+        {/* SHIELD logo */}
+        <img
+          src="/logo.png"
+          alt="SHIELD"
+          className="w-[88px] h-[88px] object-contain"
+        />
 
         {/* Tagline */}
         <div className="text-center space-y-1">

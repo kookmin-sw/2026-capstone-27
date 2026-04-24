@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Shield, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
@@ -34,9 +34,7 @@ export function SideNav({ tabs, className }: SideNavProps) {
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/50',
         )}
       >
-        <div className="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-lg">
-          <Shield size={18} className="text-white" aria-hidden="true" />
-        </div>
+        <img src="/logo.png" alt="SHIELD" className="w-8 h-8 object-contain" />
         <span className="text-lg font-bold tracking-tight text-gray-900">
           SHIELD
         </span>

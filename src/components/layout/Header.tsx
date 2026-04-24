@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Shield } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 interface HeaderProps {
@@ -43,9 +43,9 @@ export function Header({
           <Link
             to="/"
             aria-label="홈으로 이동"
-            className="flex items-center justify-center w-11 h-11 -ml-2 rounded-lg text-brand hover:bg-gray-100 active:bg-gray-200 transition-colors"
+            className="flex items-center justify-center w-11 h-11 -ml-2 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors"
           >
-            <Shield size={20} aria-hidden="true" />
+            <img src="/logo.png" alt="SHIELD" className="w-5 h-5 object-contain" />
           </Link>
         )}
       </div>

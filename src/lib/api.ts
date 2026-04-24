@@ -4,7 +4,9 @@ import { getAccessToken, setAccessToken, clearTokens } from './auth';
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
-  timeout: 30_000,
+  // RAG Real 모드에서 chat 이 embed + 검색 + LLM 총합 30초 초과 사례 있어 여유 상향.
+  // BE read-chat 타임아웃 180s 와 맞춰 FE 가 먼저 끊지 않도록 120초로.
+  timeout: 120_000,
   headers: { 'Content-Type': 'application/json' },
 });
 

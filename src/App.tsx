@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
+import { useFcm } from '@/hooks/useFcm';
 
 // Guards
 import { ProtectedRoute } from '@/guards/ProtectedRoute';
@@ -166,6 +167,8 @@ export default function App() {
   useEffect(() => {
     initialize();
   }, [initialize]);
+
+  useFcm();
 
   return (
     <ErrorBoundary>

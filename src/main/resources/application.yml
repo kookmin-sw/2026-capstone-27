@@ -93,6 +93,11 @@ supabase:
   storage:
     bucket: lawyer_documents
 
+# Firebase Cloud Messaging
+firebase:
+  enabled: ${FIREBASE_ENABLED:true}
+  service-account-path: ${FIREBASE_SERVICE_ACCOUNT_PATH:firebase/service-account.json}
+
 # Swagger
 springdoc:
   swagger-ui:

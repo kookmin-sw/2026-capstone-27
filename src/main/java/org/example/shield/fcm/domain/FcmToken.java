@@ -2,6 +2,8 @@ package org.example.shield.fcm.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,16 +24,22 @@ public class FcmToken extends BaseEntity {
     @Column(nullable = false, unique = true, columnDefinition = "text")
     private String token;
 
-    @Column(length = 20)
-    private String deviceType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "device_type", length = 20)
+    private DeviceType deviceType;
 
-    private FcmToken(UUID userId, String token, String deviceType) {
+    private FcmToken(UUID userId, String token, DeviceType deviceType) {
         this.userId = userId;
         this.token = token;
         this.deviceType = deviceType;
     }
 
-    public static FcmToken create(UUID userId, String token, String deviceType) {
+    public static FcmToken create(UUID userId, String token, DeviceType deviceType) {
         return new FcmToken(userId, token, deviceType);
+    }
+
+    public void reassign(UUID userId, DeviceType deviceType) {
+        this.userId = userId;
+        this.deviceType = deviceType;
     }
 }

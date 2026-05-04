@@ -20,11 +20,14 @@ import org.example.shield.lawyer.infrastructure.LawyerEmbeddingRepository;
 import org.example.shield.lawyer.infrastructure.LawyerMatchProjection;
 import org.example.shield.user.domain.User;
 import org.example.shield.user.domain.UserReader;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.example.shield.common.config.RedisConfig.CACHE_LAWYER_RECOMMENDATIONS;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +62,24 @@ public class LawyerMatchingService {
     private final QueryEmbeddingService queryEmbeddingService;
     private final ObjectMapper objectMapper;
 
+    /**
+     * 변호사 매칭 결과 조회 (Issue #76 Phase 2 — Redis 캐싱 적용).
+     *
+     * <p>캐시 키 구성: {@code briefId:userId:page:size}
+     * <ul>
+     *   <li>briefId: 의뢰서마다 결과 다름</li>
+     *   <li>userId: 소유권 검증을 우회하지 않도록 키에 포함 — 다른 사용자가 같은 briefId 로
+     *       호출해도 캐시 히트 없이 본문이 실행되어 BriefNotFoundException 으로 거부된다</li>
+     *   <li>page/size: 페이지마다 결과 셋이 다름</li>
+     * </ul>
+     * TTL: 10분 ({@link org.example.shield.common.config.RedisConfig})
+     *
+     * <p>캐시 무효화는 Phase 3 ({@code @CacheEvict}) 에서 처리.
+     */
+    @Cacheable(
+            value = CACHE_LAWYER_RECOMMENDATIONS,
+            key = "#briefId + ':' + #userId + ':' + #pageable.pageNumber + ':' + #pageable.pageSize"
+    )
     public PageResponse<MatchingResponse> findMatching(UUID briefId, UUID userId, Pageable pageable) {
         Brief brief = briefReader.findById(briefId);
         if (!brief.getUserId().equals(userId)) {

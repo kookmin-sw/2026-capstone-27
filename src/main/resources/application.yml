@@ -20,6 +20,17 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
+  # Redis (Issue #76)
+  # - 캐시 (변호사 추천 등) + Refresh Token 블랙리스트
+  # - 운영 환경: EC2 내부 localhost 6379 (외부 미노출)
+  # - 로컬: REDIS_HOST 미설정이면 localhost 가정
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+      connect-timeout: 2000ms
+
   mail:
     host: smtp.gmail.com
     port: 587

@@ -42,8 +42,14 @@ public class LawyerEmbeddingService {
     /**
      * 변호사 id 로 프로필을 조회해 임베딩을 생성/갱신한다.
      * 프로필 또는 텍스트가 비면 skip.
+     *
+     * <p>{@code @CacheEvict} 를 이 메서드에도 직접 부착한다. Spring AOP 프록시는
+     * 동일 클래스 내부 호출(self-invocation)을 가로채지 못하므로,
+     * {@link #upsertEmbedding(LawyerProfile)} 의 어노테이션만으로는 이 진입점에서
+     * 캐시가 비워지지 않는다 (Issue #76 Phase 3 보안 리뷰 반영).</p>
      */
     @Transactional
+    @CacheEvict(value = CACHE_LAWYER_RECOMMENDATIONS, allEntries = true)
     public void upsertEmbedding(UUID lawyerId) {
         Optional<LawyerProfile> profileOpt = lawyerProfileRepository.findById(lawyerId);
         if (profileOpt.isEmpty()) {

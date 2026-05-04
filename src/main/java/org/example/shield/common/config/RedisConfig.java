@@ -80,7 +80,8 @@ public class RedisConfig {
     /**
      * 다형 타입 정보를 포함한 Jackson 기반 Redis 직렬화기.
      * - LocalDateTime 등 java.time 지원
-     * - 다형 타입 안전을 위해 PolymorphicTypeValidator 사용
+     * - 다형 타입 안전을 위해 PolymorphicTypeValidator 의 화이트리스트 사용
+     *   (allowIfBaseType(Object.class) 는 RCE 위험 → 명시적 prefix 만 허용)
      */
     private GenericJackson2JsonRedisSerializer jsonRedisSerializer() {
         ObjectMapper mapper = new ObjectMapper();
@@ -88,7 +89,16 @@ public class RedisConfig {
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper.activateDefaultTyping(
                 BasicPolymorphicTypeValidator.builder()
-                        .allowIfBaseType(Object.class)
+                        // 애플리케이션 도메인/DTO
+                        .allowIfBaseType("org.example.shield")
+                        .allowIfSubType("org.example.shield")
+                        // 컬렉션 (List, ArrayList, Map, HashMap 등)
+                        .allowIfBaseType("java.util.")
+                        .allowIfSubType("java.util.")
+                        // LocalDateTime, LocalDate, OffsetDateTime 등
+                        .allowIfBaseType("java.time.")
+                        .allowIfSubType("java.time.")
+                        // String, Number, Boolean 등 final 타입은 NON_FINAL 정책상 자동 통과
                         .build(),
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY

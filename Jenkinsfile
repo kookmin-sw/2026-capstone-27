@@ -47,7 +47,7 @@ pipeline {
 
         stage('Health Check') {
             steps {
-                sh 'sleep 20'
+                sh 'sleep 40'
                 sh 'curl -f http://localhost:8080/actuator/health || exit 1'
             }
         }

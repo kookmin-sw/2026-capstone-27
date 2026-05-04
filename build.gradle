@@ -28,7 +28,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    // spring-boot-starter-data-redis removed (Issue #38): 쿼리 임베딩 캐시 레이어 제거
+    // Redis (Issue #76): 변호사 추천 캐싱 + Refresh Token 블랙리스트
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // spring-boot-starter-data-mongodb removed: RAG storage migrated to PostgreSQL + pgvector
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
 

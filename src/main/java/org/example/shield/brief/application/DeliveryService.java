@@ -90,6 +90,7 @@ public class DeliveryService {
         User lawyer = userReader.findById(lawyerId);
 
         eventPublisher.publishEvent(new DeliveryStatusEvent(
+                client.getId(),
                 client.getEmail(),
                 client.getName(),
                 lawyer.getName(),

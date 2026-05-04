@@ -8,6 +8,7 @@ import org.example.shield.lawyer.domain.LawyerEmbedding;
 import org.example.shield.lawyer.domain.LawyerProfile;
 import org.example.shield.lawyer.infrastructure.LawyerEmbeddingRepository;
 import org.example.shield.lawyer.infrastructure.LawyerProfileRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ import java.util.HexFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.example.shield.common.config.RedisConfig.CACHE_LAWYER_RECOMMENDATIONS;
 
 /**
  * 변호사 임베딩 생성·재계산 서비스 (Issue #50).
@@ -52,8 +55,13 @@ public class LawyerEmbeddingService {
 
     /**
      * 변호사 프로필에서 텍스트를 조립 → 해시 비교 → 변경 시에만 Cohere 호출·저장.
+     *
+     * <p>임베딩이 갱신되면 추천 결과 점수 자체가 바뀌므로 추천 캐시 전체를 무효화한다
+     * (Issue #76 Phase 3). 해시 동일로 skip 되는 케이스에도 캐시는 비워지지만,
+     * 호출 빈도가 낮아 무시 가능한 비용.</p>
      */
     @Transactional
+    @CacheEvict(value = CACHE_LAWYER_RECOMMENDATIONS, allEntries = true)
     public void upsertEmbedding(LawyerProfile profile) {
         UUID lawyerId = profile.getId();
         String text = textBuilder.build(

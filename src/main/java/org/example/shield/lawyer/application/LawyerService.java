@@ -11,10 +11,13 @@ import org.example.shield.lawyer.domain.LawyerReader;
 import org.example.shield.lawyer.domain.LawyerWriter;
 import org.example.shield.user.domain.User;
 import org.example.shield.user.domain.UserReader;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.example.shield.common.config.RedisConfig.CACHE_LAWYER_RECOMMENDATIONS;
 
 import java.util.List;
 import java.util.Map;
@@ -63,7 +66,12 @@ public class LawyerService {
         return LawyerResponse.from(profile, user.getName(), user.getProfileImageUrl());
     }
 
+    /**
+     * 변호사 프로필 수정. 변경된 필드(분야/태그/소개 등)는 추천 결과에 영향을 주므로
+     * 전체 추천 캐시를 무효화한다 (Issue #76 Phase 3).
+     */
     @Transactional
+    @CacheEvict(value = CACHE_LAWYER_RECOMMENDATIONS, allEntries = true)
     public LawyerResponse updateMyProfile(UUID userId, ProfileUpdateRequest request) {
         LawyerProfile profile = lawyerReader.findByUserId(userId);
         profile.updateProfile(

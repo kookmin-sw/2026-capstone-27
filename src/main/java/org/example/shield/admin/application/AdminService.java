@@ -26,6 +26,7 @@ import org.example.shield.lawyer.infrastructure.LawyerDocumentRepository;
 import org.example.shield.lawyer.infrastructure.LawyerProfileRepository;
 import org.example.shield.user.domain.User;
 import org.example.shield.user.domain.UserReader;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static org.example.shield.common.config.RedisConfig.CACHE_LAWYER_RECOMMENDATIONS;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -185,7 +188,12 @@ public class AdminService {
         return LawyerDetailResponse.from(lawyer, user);
     }
 
+    /**
+     * 변호사 검증 상태 변경. VERIFIED 풀의 변동은 추천 결과 전체에 영향을 주므로
+     * 추천 캐시를 모두 무효화한다 (Issue #76 Phase 3).
+     */
     @Transactional
+    @CacheEvict(value = CACHE_LAWYER_RECOMMENDATIONS, allEntries = true)
     public VerificationResponse processVerification(UUID lawyerId, UUID adminId,
                                                      String statusStr, String reason) {
         log.info("변호사 인증 처리. lawyerId={}, adminId={}, status={}", lawyerId, adminId, statusStr);

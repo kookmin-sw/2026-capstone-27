@@ -23,6 +23,7 @@ import org.example.shield.consultation.domain.ConsultationReader;
 import org.example.shield.consultation.domain.ConsultationWriter;
 import org.example.shield.user.domain.User;
 import org.example.shield.user.domain.UserReader;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.example.shield.common.config.RedisConfig.CACHE_LAWYER_RECOMMENDATIONS;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +84,15 @@ public class BriefService {
         return BriefResponse.of(brief, accepted, lawyerName);
     }
 
+    /**
+     * 의뢰서 내용 수정. 키워드/내용 변경은 추천 결과를 좌우하므로 추천 캐시를
+     * 모두 무효화한다 (Issue #76 Phase 3).
+     *
+     * <p>키 패턴 매칭으로 해당 briefId 캐시만 비우는 방식도 가능하나, 호출 빈도가
+     * 낮아 안전하게 전체 무효화 채택.</p>
+     */
     @Transactional
+    @CacheEvict(value = CACHE_LAWYER_RECOMMENDATIONS, allEntries = true)
     public BriefUpdateResponse updateBrief(UUID briefId, UUID userId, BriefUpdateRequest request) {
         Brief brief = briefReader.findById(briefId);
         validateOwner(brief, userId);

@@ -25,6 +25,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserReader userReader;
     private final UserWriter userWriter;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public record LoginResult(LoginResponse response, String refreshToken) {}
 
@@ -93,14 +94,36 @@ public class AuthService {
         return new LoginResult(response, tokenPair.refreshToken());
     }
 
+    /**
+     * 로그아웃: 현재 Refresh Token 을 블랙리스트에 등록하고 DB 의 토큰을 비운다 (Issue #80).
+     *
+     * <p>블랙리스트 등록 후 즉시 모든 갱신 시도가 거부되므로, 단순 DB null 처리만 하던
+     * 기존 동작 대비 토큰 탈취 시점부터의 강제 무효화 보안이 강화된다.</p>
+     */
     public void logout(UUID userId) {
         User user = userReader.findById(userId);
+        String currentToken = user.getRefreshToken();
+        if (currentToken != null && !currentToken.isBlank()) {
+            try {
+                tokenBlacklistService.blacklist(
+                        currentToken,
+                        jwtService.getRemainingTtl(currentToken)
+                );
+            } catch (Exception e) {
+                // 토큰 자체가 이미 만료되어 파싱 실패 등의 케이스는 무시 (어차피 무효 토큰)
+            }
+        }
         user.updateRefreshToken(null);
     }
 
     public JwtToken refreshToken(String refreshToken) {
         if (!jwtService.validateToken(refreshToken)) {
             throw new InvalidTokenException(ErrorCode.TOKEN_EXPIRED);
+        }
+
+        // Issue #80: 블랙리스트 hit 이면 즉시 거부 (DB 검증 이전 단계에서 차단)
+        if (tokenBlacklistService.isBlacklisted(refreshToken)) {
+            throw new InvalidTokenException(ErrorCode.REFRESH_TOKEN_BLACKLISTED);
         }
 
         UUID userId = jwtService.getUserIdFromToken(refreshToken);

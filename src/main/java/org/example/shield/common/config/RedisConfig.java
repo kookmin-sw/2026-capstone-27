@@ -79,9 +79,19 @@ public class RedisConfig {
 
     /**
      * 다형 타입 정보를 포함한 Jackson 기반 Redis 직렬화기.
-     * - LocalDateTime 등 java.time 지원
-     * - 다형 타입 안전을 위해 PolymorphicTypeValidator 의 화이트리스트 사용
-     *   (allowIfBaseType(Object.class) 는 RCE 위험 → 명시적 prefix 만 허용)
+     *
+     * <p>역직렬화 시 GenericJackson2JsonRedisSerializer 가 root 를 Object 로 읽기 때문에
+     * 모든 객체(record 같은 final 포함)에 {@code @class} 가 필요하다.
+     * 따라서 {@link ObjectMapper.DefaultTyping#EVERYTHING} 사용.
+     * (NON_FINAL 사용 시 record 직렬화 후 역직렬화 단계에서 타입 정보 누락으로 실패함)</p>
+     *
+     * <p>다형 타입 안전을 위해 PolymorphicTypeValidator 화이트리스트 적용:
+     * <ul>
+     *   <li>{@code org.example.shield.*} — 애플리케이션 도메인/DTO</li>
+     *   <li>{@code java.util.*} — 컬렉션</li>
+     *   <li>{@code java.time.*} — LocalDateTime 등</li>
+     *   <li>{@code org.springframework.data.domain.*} — PageImpl, Sort 등 페이지네이션</li>
+     * </ul>
      */
     private GenericJackson2JsonRedisSerializer jsonRedisSerializer() {
         ObjectMapper mapper = new ObjectMapper();
@@ -89,18 +99,16 @@ public class RedisConfig {
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper.activateDefaultTyping(
                 BasicPolymorphicTypeValidator.builder()
-                        // 애플리케이션 도메인/DTO
                         .allowIfBaseType("org.example.shield")
                         .allowIfSubType("org.example.shield")
-                        // 컬렉션 (List, ArrayList, Map, HashMap 등)
                         .allowIfBaseType("java.util.")
                         .allowIfSubType("java.util.")
-                        // LocalDateTime, LocalDate, OffsetDateTime 등
                         .allowIfBaseType("java.time.")
                         .allowIfSubType("java.time.")
-                        // String, Number, Boolean 등 final 타입은 NON_FINAL 정책상 자동 통과
+                        .allowIfBaseType("org.springframework.data.domain.")
+                        .allowIfSubType("org.springframework.data.domain.")
                         .build(),
-                ObjectMapper.DefaultTyping.NON_FINAL,
+                ObjectMapper.DefaultTyping.EVERYTHING,
                 com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY
         );
         return new GenericJackson2JsonRedisSerializer(mapper);

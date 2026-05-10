@@ -1,0 +1,85 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### 환경변수 / 시크릿 (절대 커밋 금지) ###
+.env
+.env.local
+.env.*.local
+application-local.yml
+application-secret.yml
+**/secrets/
+
+### Firebase Service Account (절대 커밋 금지) ###
+src/main/resources/firebase/
+**/firebase-adminsdk-*.json
+*-firebase-adminsdk-*.json
+
+### OS ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### 로그 ###
+logs/
+*.log
+
+### Docker ###
+docker-compose.override.yml
+
+### Claude Code ###
+.claude/
+.claude.json
+.agents/
+skills-lock.json
+schema.sql
+CLAUDE.md
+
+### Python ###
+__pycache__/
+# scripts/ 디렉터리의 Python 스크립트는 추적
+!scripts/*.py
+
+### 기타 ###
+*.swp
+*.swo
+*~
+SHEILD-DOCX
+src/main/resources/seed/civil-law.backup.json
+
+# Runtime cache for scripts (e.g., cookies)
+.cache/

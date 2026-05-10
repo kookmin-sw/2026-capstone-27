@@ -1,0 +1,218 @@
+# category_ids (선택): 이 온톨로지 노드에 매핑되는 legal_chunks.category_ids 토큰.
+# 지정 시 PgLegalRetrievalService의 soft-filter로 작동하여 후보군을 우선 강화한다.
+# B-8a에서 민법 시맨틱 그룹(group:*) 7종에 한해 매핑을 추가했다. 미지정 노드는
+# 필터 없이 벡터/BM25/트라이그램 점수에만 의존한다.
+mappings:
+  # === 부동산 거래 (law-001) ===
+  law-001-01:  # 부동산 매매
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary:
+      - { law_id: "LSI265377", name: "부동산등기법" }
+      - { law_id: "LSI215759", name: "부동산 실권리자명의 등기에 관한 법률" }
+    category_ids: ["group:ownership"]
+
+  law-001-02:  # 부동산 임대차
+    primary:
+      - { law_id: "LSI249999", name: "주택임대차보호법" }
+      - { law_id: "LSI238797", name: "상가건물 임대차보호법" }
+    secondary:
+      - { law_id: "LSI265307", name: "민법" }
+    category_ids: ["group:leasing", "group:jeonse"]
+
+  law-001-03:  # 부동산 담보
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary:
+      - { law_id: "LSI265351", name: "민사집행법" }
+    category_ids: ["group:mortgage", "group:pledge"]
+
+  law-001-04:  # 부동산 권리관계
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary:
+      - { law_id: "LSI265377", name: "부동산등기법" }
+    category_ids: ["group:ownership"]
+
+  # === 이혼·위자료·재산분할 (law-002) ===
+  law-002-01:  # 이혼 절차
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary:
+      - { law_id: "LSI249997", name: "가사소송법" }
+
+  law-002-02:  # 위자료
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-002-03:  # 재산분할
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary:
+      - { law_id: "LSI249997", name: "가사소송법" }
+
+  law-002-04:  # 자녀 및 양육
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+      - { law_id: "LSI276893", name: "양육비 이행확보 및 지원에 관한 법률" }
+    secondary: []
+
+  # === 상속·유류분·유언 (law-003) ===
+  law-003-01:  # 상속 일반
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary:
+      - { law_id: "LSI276123", name: "상속세 및 증여세법" }
+
+  law-003-02:  # 상속재산 처리
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+      - { law_id: "LSI267359", name: "채무자 회생 및 파산에 관한 법률" }
+    secondary: []
+
+  law-003-03:  # 유언
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-003-04:  # 유류분
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  # === 근로계약·해고·임금 (law-004) ===
+  law-004-01:  # 근로계약
+    primary:
+      - { law_id: "EXTERNAL", name: "근로기준법" }
+    secondary: []
+
+  law-004-02:  # 임금 및 수당
+    primary:
+      - { law_id: "LSI259881", name: "임금채권보장법" }
+      - { law_id: "EXTERNAL", name: "근로기준법" }
+    secondary: []
+
+  law-004-03:  # 근로시간 및 휴가
+    primary:
+      - { law_id: "EXTERNAL", name: "근로기준법" }
+    secondary: []
+
+  law-004-04:  # 해고 및 징계
+    primary:
+      - { law_id: "EXTERNAL", name: "근로기준법" }
+    secondary: []
+
+  law-004-05:  # 직장 내 권리보호
+    primary:
+      - { law_id: "EXTERNAL", name: "근로기준법" }
+    secondary: []
+
+  # === 손해배상·불법행위 (law-005) ===
+  law-005-01:  # 손해배상 일반
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-005-02:  # 교통사고
+    primary:
+      - { law_id: "LSI277017", name: "자동차손해배상 보장법" }
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-005-03:  # 의료사고
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-005-04:  # 인격권 침해
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+      - { law_id: "LSI270351", name: "개인정보 보호법" }
+    secondary: []
+
+  law-005-05:  # 특수 불법행위 책임
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  # === 채무·보증·개인파산·회생 (law-006) ===
+  law-006-01:  # 금전채권 및 채무
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+    category_ids: ["group:claim_effect"]
+
+  law-006-02:  # 보증
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+      - { law_id: "LSI251943", name: "보증인 보호를 위한 특별법" }
+    secondary: []
+    category_ids: ["group:guaranty_debtors"]
+
+  law-006-03:  # 민사집행 및 보전처분
+    primary:
+      - { law_id: "LSI265351", name: "민사집행법" }
+      - { law_id: "LSI268669", name: "채권의 공정한 추심에 관한 법률" }
+    secondary: []
+
+  law-006-04:  # 개인파산
+    primary:
+      - { law_id: "LSI267359", name: "채무자 회생 및 파산에 관한 법률" }
+    secondary: []
+
+  law-006-05:  # 개인회생
+    primary:
+      - { law_id: "LSI267359", name: "채무자 회생 및 파산에 관한 법률" }
+    secondary: []
+
+  # === 임대차보호 (law-007) ===
+  law-007-01:  # 주택임대차보호
+    primary:
+      - { law_id: "LSI249999", name: "주택임대차보호법" }
+      - { law_id: "LSI271123", name: "전세사기피해자 지원 및 주거안정에 관한 특별법" }
+    secondary:
+      - { law_id: "LSI267649", name: "주택임대차보호법 시행령" }
+    category_ids: ["group:leasing", "group:jeonse"]
+
+  law-007-02:  # 상가건물임대차보호
+    primary:
+      - { law_id: "LSI238797", name: "상가건물 임대차보호법" }
+    secondary:
+      - { law_id: "LSI267689", name: "상가건물 임대차보호법 시행령" }
+    category_ids: ["group:leasing"]
+
+  law-007-03:  # 임차인 보호 절차
+    primary:
+      - { law_id: "LSI249999", name: "주택임대차보호법" }
+      - { law_id: "LSI265351", name: "민사집행법" }
+    secondary:
+      - { law_id: "LSI252747", name: "임차권등기명령 절차에 관한 규칙" }
+    category_ids: ["group:leasing", "group:jeonse"]
+
+  # === 기업·상사거래 (law-008) ===
+  law-008-01:  # 상사계약 일반
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-008-02:  # 납품·공급·도급
+    primary:
+      - { law_id: "LSI265307", name: "민법" }
+    secondary: []
+
+  law-008-03:  # 유통·가맹·대리점
+    primary:
+      - { law_id: "EXTERNAL", name: "가맹사업거래의 공정화에 관한 법률" }
+    secondary: []
+
+  law-008-04:  # 지분 및 주주 분쟁
+    primary:
+      - { law_id: "EXTERNAL", name: "상법" }
+    secondary: []
+
+  law-008-05:  # 임원 책임 및 영업보호
+    primary:
+      - { law_id: "EXTERNAL", name: "상법" }
+      - { law_id: "EXTERNAL", name: "부정경쟁방지 및 영업비밀보호에 관한 법률" }
+    secondary: []

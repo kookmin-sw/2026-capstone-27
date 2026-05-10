@@ -1,0 +1,566 @@
+{
+  "summary": {
+    "model": "command-a-03-2025",
+    "total_cases": 12,
+    "errors": 0,
+    "l1_accuracy": "10/12 = 83.3%",
+    "l2_accuracy": "8/12 = 66.7%",
+    "avg_confidence": 0.867,
+    "avg_latency_ms": 7502,
+    "p95_latency_ms": 11899,
+    "total_billed_input_tokens": 53190,
+    "total_billed_output_tokens": 2831,
+    "total_tokens_input": 59898,
+    "total_tokens_output": 2855
+  },
+  "results": [
+    {
+      "idx": 0,
+      "domain": "부동산",
+      "scenario": "매매계약 해제",
+      "query_used": "부동산 매매계약 해제",
+      "expected_l1": "law-001",
+      "expected_l2": "law-001-01",
+      "cohere": {
+        "actual_id": "law-001-01-03",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-001-01-03",
+            0.9
+          ]
+        ],
+        "intent_summary": "부동산 매매계약 해제에 대한 법률적 문의",
+        "latency_ms": 5036,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4427,
+            "output_tokens": 194
+          },
+          "tokens": {
+            "input_tokens": 4986,
+            "output_tokens": 196
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-001-01-03",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 1,
+      "domain": "부동산",
+      "scenario": "전세 보증금 미반환",
+      "query_used": "전세 계약 종료 후 집주인의 보증금 미반환",
+      "expected_l1": "law-001",
+      "expected_l2": "law-001-02",
+      "cohere": {
+        "actual_id": "law-007-01-05",
+        "confidence": 0.9,
+        "l1_match": false,
+        "l2_match": false,
+        "all_nodes": [
+          [
+            "law-007-01-05",
+            0.9
+          ],
+          [
+            "law-007-03-03",
+            0.8
+          ],
+          [
+            "law-001-02-02",
+            0.7
+          ]
+        ],
+        "intent_summary": "전세 계약 종료 후 집주인이 보증금을 반환하지 않는 문제 해결",
+        "latency_ms": 6376,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4433,
+            "output_tokens": 299
+          },
+          "tokens": {
+            "input_tokens": 4992,
+            "output_tokens": 301
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-001-02-03",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 10,
+      "domain": "이혼",
+      "scenario": "협의이혼 절차",
+      "query_used": "협의이혼 절차 문의",
+      "expected_l1": "law-002",
+      "expected_l2": "law-002-01",
+      "cohere": {
+        "actual_id": "law-002-01-01",
+        "confidence": 1.0,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-002-01-01",
+            1.0
+          ]
+        ],
+        "intent_summary": "협의이혼 절차에 대한 문의",
+        "latency_ms": 6040,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4427,
+            "output_tokens": 159
+          },
+          "tokens": {
+            "input_tokens": 4986,
+            "output_tokens": 161
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-002-01-01",
+        "confidence": 1.0,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 14,
+      "domain": "이혼",
+      "scenario": "양육권 결정",
+      "query_used": "이혼 후 자녀 양육권 문의",
+      "expected_l1": "law-002",
+      "expected_l2": "law-002-04",
+      "cohere": {
+        "actual_id": "law-002-04-01",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-002-04-01",
+            0.9
+          ]
+        ],
+        "intent_summary": "이혼 후 자녀 양육권 관련 문의",
+        "latency_ms": 3273,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4427,
+            "output_tokens": 182
+          },
+          "tokens": {
+            "input_tokens": 4986,
+            "output_tokens": 184
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-002-04-01",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 20,
+      "domain": "상속",
+      "scenario": "상속순위",
+      "query_used": "아버지의 사망으로 인한 상속인에 대한 문의",
+      "expected_l1": "law-003",
+      "expected_l2": "law-003-01",
+      "cohere": {
+        "actual_id": "law-003-01",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-003-01",
+            0.8
+          ],
+          [
+            "law-003-01-01",
+            0.9
+          ]
+        ],
+        "intent_summary": "아버지 사망으로 인한 상속인 관련 문의",
+        "latency_ms": 8883,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4430,
+            "output_tokens": 222
+          },
+          "tokens": {
+            "input_tokens": 4989,
+            "output_tokens": 224
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-003-01-01",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 30,
+      "domain": "손해배상",
+      "scenario": "교통사고 배상",
+      "query_used": "교통사고 후 보험사와의 합의금 분쟁",
+      "expected_l1": "law-005",
+      "expected_l2": "law-005-02",
+      "cohere": {
+        "actual_id": "law-005-02-02",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-005-02-02",
+            0.9
+          ],
+          [
+            "law-005-02",
+            0.8
+          ],
+          [
+            "law-005-01",
+            0.7
+          ]
+        ],
+        "intent_summary": "교통사고 발생 후 보험사와의 합의금 관련 분쟁 해결",
+        "latency_ms": 9084,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4430,
+            "output_tokens": 266
+          },
+          "tokens": {
+            "input_tokens": 4989,
+            "output_tokens": 268
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-005-02",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 23,
+      "domain": "상속",
+      "scenario": "유류분 청구",
+      "query_used": "유언 상속 관련 문의",
+      "expected_l1": "law-003",
+      "expected_l2": "law-003-04",
+      "cohere": {
+        "actual_id": "law-003-03",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": false,
+        "all_nodes": [
+          [
+            "law-003-03",
+            0.8
+          ],
+          [
+            "law-003-01",
+            0.7
+          ],
+          [
+            "law-003",
+            0.6
+          ]
+        ],
+        "intent_summary": "유언 상속 관련 법률 문의",
+        "latency_ms": 7868,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4426,
+            "output_tokens": 251
+          },
+          "tokens": {
+            "input_tokens": 4985,
+            "output_tokens": 253
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-003",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": false,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 21,
+      "domain": "상속",
+      "scenario": "상속포기",
+      "query_used": "상속 포기 문의",
+      "expected_l1": "law-003",
+      "expected_l2": "law-003-02",
+      "cohere": {
+        "actual_id": "law-003-02-03",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-003-02-03",
+            0.9
+          ],
+          [
+            "law-003-02",
+            0.8
+          ]
+        ],
+        "intent_summary": "상속 포기 절차 및 방법에 대한 문의",
+        "latency_ms": 6330,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4424,
+            "output_tokens": 203
+          },
+          "tokens": {
+            "input_tokens": 4983,
+            "output_tokens": 205
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-003-02-03",
+        "confidence": 1.0,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 31,
+      "domain": "손해배상",
+      "scenario": "의료사고",
+      "query_used": "사용자는 수술 후 후유증이 심한데 의사 과실이 의심되어 의료사고에 대한 법률 상담을 원하고 있습니다.",
+      "expected_l1": "law-005",
+      "expected_l2": "law-005-03",
+      "cohere": {
+        "actual_id": "law-005-03-01",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-005-03-01",
+            0.9
+          ],
+          [
+            "law-005-03-02",
+            0.85
+          ],
+          [
+            "law-005-03",
+            0.8
+          ]
+        ],
+        "intent_summary": "사용자는 수술 후 후유증이 심하며 의사 과실이 의심되어 의료사고 관련 법률 상담을 원함",
+        "latency_ms": 11899,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4452,
+            "output_tokens": 308
+          },
+          "tokens": {
+            "input_tokens": 5011,
+            "output_tokens": 310
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-005-03",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 34,
+      "domain": "손해배상",
+      "scenario": "사용자 책임",
+      "query_used": "사용자의 개가 행인을 물어 치료비를 배상해야 하는지 문의",
+      "expected_l1": "law-005",
+      "expected_l2": "law-005-05",
+      "cohere": {
+        "actual_id": "law-005-01-01",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": false,
+        "all_nodes": [
+          [
+            "law-005-01-01",
+            0.8
+          ],
+          [
+            "law-005-05-03",
+            0.7
+          ]
+        ],
+        "intent_summary": "사용자의 개가 행인을 물어 발생한 치료비 배상 책임에 대한 문의",
+        "latency_ms": 5504,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4436,
+            "output_tokens": 236
+          },
+          "tokens": {
+            "input_tokens": 4995,
+            "output_tokens": 238
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-005",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": false,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 3,
+      "domain": "부동산",
+      "scenario": "공유 지분 분쟁",
+      "query_used": "형제 3명이 부모님 땅을 공동 상속받은 후, 한 명이 지분을 매각하려고 할 때 필요한 법률 정보",
+      "expected_l1": "law-001",
+      "expected_l2": "law-001-04",
+      "cohere": {
+        "actual_id": "law-003-02-01",
+        "confidence": 0.8,
+        "l1_match": false,
+        "l2_match": false,
+        "all_nodes": [
+          [
+            "law-003-02-01",
+            0.8
+          ],
+          [
+            "law-001-04-01",
+            0.7
+          ],
+          [
+            "law-001-01-05",
+            0.6
+          ]
+        ],
+        "intent_summary": "공동 상속받은 부동산의 지분 매각 시 필요한 법률 정보",
+        "latency_ms": 12491,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4445,
+            "output_tokens": 285
+          },
+          "tokens": {
+            "input_tokens": 5004,
+            "output_tokens": 287
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-003-01-04",
+        "confidence": 0.8,
+        "l1_match": false,
+        "l2_match": false,
+        "model": "llama-4-scout"
+      }
+    },
+    {
+      "idx": 16,
+      "domain": "이혼",
+      "scenario": "제3자 위자료",
+      "query_used": "남편의 불륜 상대에게 위자료 청구 가능성 문의",
+      "expected_l1": "law-002",
+      "expected_l2": "law-002-02",
+      "cohere": {
+        "actual_id": "law-002-02-03",
+        "confidence": 0.8,
+        "l1_match": true,
+        "l2_match": true,
+        "all_nodes": [
+          [
+            "law-002-02-03",
+            0.8
+          ],
+          [
+            "law-002-02",
+            0.7
+          ]
+        ],
+        "intent_summary": "남편의 불륜 상대에게 위자료 청구 가능성 문의",
+        "latency_ms": 7244,
+        "usage": {
+          "billed_units": {
+            "input_tokens": 4433,
+            "output_tokens": 226
+          },
+          "tokens": {
+            "input_tokens": 4992,
+            "output_tokens": 228
+          },
+          "cached_tokens": 0
+        },
+        "error": null
+      },
+      "legacy_baseline": {
+        "actual_id": "law-002-02",
+        "confidence": 0.9,
+        "l1_match": true,
+        "l2_match": true,
+        "model": "llama-4-scout"
+      }
+    }
+  ]
+}

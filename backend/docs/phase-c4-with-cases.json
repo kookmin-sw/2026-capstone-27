@@ -1,0 +1,6893 @@
+{
+  "meta": {
+    "eval_path": "eval/eval-set.v1.5.jsonl",
+    "n_cases": 40,
+    "timestamp": "2026-04-19 09:22:52 UTC",
+    "use_rerank": false,
+    "pool": null,
+    "elapsed_sec": 71.29955697059631,
+    "law_id_filter": null,
+    "corpus_desc": "전체 법령 + 판례 코퍼스 (민법+특별법+대법원)"
+  },
+  "summary": {
+    "recall_at": {
+      "1": 0.7083333333333333,
+      "3": 0.8208333333333334,
+      "5": 0.8625,
+      "10": 0.8958333333333334
+    },
+    "mrr": 0.846875,
+    "ndcg5": 0.82495131753347,
+    "total_gold": 51,
+    "by_domain": {
+      "real_estate_lease": {
+        "n": 5,
+        "recall5": 0.8,
+        "mrr": 0.825
+      },
+      "real_estate_security": {
+        "n": 1,
+        "recall5": 0.5,
+        "mrr": 1.0
+      },
+      "real_estate_rights": {
+        "n": 2,
+        "recall5": 0.5,
+        "mrr": 0.5
+      },
+      "real_estate_sale": {
+        "n": 2,
+        "recall5": 0.5,
+        "mrr": 0.5
+      },
+      "inheritance": {
+        "n": 4,
+        "recall5": 0.875,
+        "mrr": 0.875
+      },
+      "inheritance_reserve": {
+        "n": 1,
+        "recall5": 0.5,
+        "mrr": 0.5
+      },
+      "tort": {
+        "n": 4,
+        "recall5": 0.75,
+        "mrr": 0.625
+      },
+      "debt_prescription": {
+        "n": 3,
+        "recall5": 1.0,
+        "mrr": 1.0
+      },
+      "debt_guaranty": {
+        "n": 2,
+        "recall5": 1.0,
+        "mrr": 1.0
+      },
+      "family_divorce": {
+        "n": 5,
+        "recall5": 1.0,
+        "mrr": 1.0
+      },
+      "family_parental": {
+        "n": 2,
+        "recall5": 1.0,
+        "mrr": 0.625
+      },
+      "contract_general": {
+        "n": 3,
+        "recall5": 1.0,
+        "mrr": 1.0
+      },
+      "misc": {
+        "n": 1,
+        "recall5": 1.0,
+        "mrr": 1.0
+      },
+      "real_estate_ownership": {
+        "n": 2,
+        "recall5": 1.0,
+        "mrr": 1.0
+      },
+      "damages_prescription": {
+        "n": 3,
+        "recall5": 1.0,
+        "mrr": 1.0
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "C1-Q01",
+      "domain": "real_estate_lease",
+      "query": "전세 계약이 끝났는데 집주인이 보증금을 돌려주지 않아요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제317조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제318조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제312조의2"
+        }
+      ],
+      "bm25_tsquery": "전세권:* | 전세금:* | 보증금:* | 반환:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제315조",
+          "title": "전세권자의 손해배상책임",
+          "score": "0.2594",
+          "vec_sim": "0.5000",
+          "bm25": "0.0230",
+          "trig": "0.0123",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제316조",
+          "title": "원상회복의무, 매수청구권",
+          "score": "0.2512",
+          "vec_sim": "0.4887",
+          "bm25": "0.0160",
+          "trig": "0.0105",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제3조의2",
+          "title": "보증금의 회수",
+          "score": "0.2512",
+          "vec_sim": "0.4901",
+          "bm25": "0.0119",
+          "trig": "0.0129",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제311조",
+          "title": "전세권의 소멸청구",
+          "score": "0.2490",
+          "vec_sim": "0.4822",
+          "bm25": "0.0161",
+          "trig": "0.0150",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다213466",
+          "title": "보증금[임차인이 임차주택의 소유권을 취득한 경우 주택임대차의 대항력과 우선변제권이 상실되는지 문제된 사건]",
+          "score": "0.2458",
+          "vec_sim": "0.4786",
+          "bm25": "0.0118",
+          "trig": "0.0150",
+          "case_no": "2025다213466",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제4조",
+          "title": "임대차기간 등",
+          "score": "0.2436",
+          "vec_sim": "0.4620",
+          "bm25": "0.0057",
+          "trig": "0.0543",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-commercial-lease",
+          "law_name": "상가건물 임대차보호법",
+          "article_no": "제5조",
+          "title": "보증금의 회수",
+          "score": "0.2413",
+          "vec_sim": "0.4700",
+          "bm25": "0.0122",
+          "trig": "0.0130",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제317조",
+          "title": "전세권의 소멸과 동시이행",
+          "score": "0.2411",
+          "vec_sim": "0.4583",
+          "bm25": "0.0227",
+          "trig": "0.0256",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제12조",
+          "title": "미등기 전세에의 준용",
+          "score": "0.2407",
+          "vec_sim": "0.4569",
+          "bm25": "0.0064",
+          "trig": "0.0515",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제308조",
+          "title": "전전세 등의 경우의 책임",
+          "score": "0.2358",
+          "vec_sim": "0.4576",
+          "bm25": "0.0060",
+          "trig": "0.0261",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          null,
+          8,
+          null
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 0,
+          "5": 0,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 0.0,
+          "5": 0.0,
+          "10": 0.3333333333333333
+        },
+        "first_hit_rank": 8,
+        "rr": 0.125,
+        "ndcg5": 0.0
+      }
+    },
+    {
+      "id": "C1-Q02",
+      "domain": "real_estate_lease",
+      "query": "임차인이 차임을 2기 이상 연체해서 임대차 계약을 해지하고 싶습니다",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제640조"
+        }
+      ],
+      "bm25_tsquery": "임대차:* | 차임:* | 연체:* | 해지:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제640조",
+          "title": "차임연체와 해지",
+          "score": "0.3853",
+          "vec_sim": "0.6902",
+          "bm25": "0.0218",
+          "trig": "0.1685",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-commercial-lease",
+          "law_name": "상가건물 임대차보호법",
+          "article_no": "제10조의8",
+          "title": "차임연체와 해지",
+          "score": "0.3566",
+          "vec_sim": "0.6387",
+          "bm25": "0.0229",
+          "trig": "0.1519",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제6조의3",
+          "title": "계약갱신 요구 등",
+          "score": "0.3015",
+          "vec_sim": "0.5770",
+          "bm25": "0.0223",
+          "trig": "0.0317",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2020다255429",
+          "title": "건물명도(인도)[점포 임대인이 임대차기간 중 차임연체액이 3기분에 달한 적이 있었다는 이유로 임차인의 계약갱신 요구를 거절하고 인도를 구하는 사건]",
+          "score": "0.2959",
+          "vec_sim": "0.5490",
+          "bm25": "0.0391",
+          "trig": "0.0482",
+          "case_no": "2020다255429",
+          "court": "대법원",
+          "decision_date": "2021-05-13"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제6조의2",
+          "title": "묵시적 갱신의 경우 계약의 해지",
+          "score": "0.2882",
+          "vec_sim": "0.5449",
+          "bm25": "0.0062",
+          "trig": "0.0696",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제627조",
+          "title": "일부멸실 등과 감액청구, 해지권",
+          "score": "0.2853",
+          "vec_sim": "0.5360",
+          "bm25": "0.0088",
+          "trig": "0.0733",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제6조",
+          "title": "계약의 갱신",
+          "score": "0.2840",
+          "vec_sim": "0.5333",
+          "bm25": "0.0149",
+          "trig": "0.0645",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제625조",
+          "title": "임차인의 의사에 반하는 보존행위와 해지권",
+          "score": "0.2754",
+          "vec_sim": "0.4958",
+          "bm25": "0.0067",
+          "trig": "0.1275",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-commercial-lease",
+          "law_name": "상가건물 임대차보호법",
+          "article_no": "제11조의2",
+          "title": "폐업으로 인한 임차인의 해지권",
+          "score": "0.2734",
+          "vec_sim": "0.5101",
+          "bm25": "0.0134",
+          "trig": "0.0714",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다258672",
+          "title": "임대차보증금등반환청구의소",
+          "score": "0.2730",
+          "vec_sim": "0.5028",
+          "bm25": "0.0443",
+          "trig": "0.0415",
+          "case_no": "2023다258672",
+          "court": "대법원",
+          "decision_date": "2024-01-11"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q03",
+      "domain": "real_estate_security",
+      "query": "채무자가 돈을 안 갚아서 담보 부동산 저당권을 실행하려고 합니다",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제356조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제363조"
+        }
+      ],
+      "bm25_tsquery": "저당권:* | 저당물:* | 경매:* | 실행:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제356조",
+          "title": "저당권의 내용",
+          "score": "0.2999",
+          "vec_sim": "0.5530",
+          "bm25": "0.0072",
+          "trig": "0.1062",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제360조",
+          "title": "피담보채권의 범위",
+          "score": "0.2954",
+          "vec_sim": "0.5510",
+          "bm25": "0.0122",
+          "trig": "0.0815",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제364조",
+          "title": "제삼취득자의 변제",
+          "score": "0.2935",
+          "vec_sim": "0.5472",
+          "bm25": "0.0064",
+          "trig": "0.0901",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil-exec",
+          "law_name": "민사집행법",
+          "article_no": "제228조",
+          "title": "저당권이 있는 채권의 압류",
+          "score": "0.2881",
+          "vec_sim": "0.5483",
+          "bm25": "0.0036",
+          "trig": "0.0643",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제362조",
+          "title": "저당물의 보충",
+          "score": "0.2849",
+          "vec_sim": "0.5444",
+          "bm25": "0.0138",
+          "trig": "0.0427",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제361조",
+          "title": "저당권의 처분제한",
+          "score": "0.2839",
+          "vec_sim": "0.5354",
+          "bm25": "0.0079",
+          "trig": "0.0690",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제369조",
+          "title": "부종성",
+          "score": "0.2761",
+          "vec_sim": "0.5142",
+          "bm25": "0.0073",
+          "trig": "0.0843",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제363조",
+          "title": "저당권자의 경매청구권, 경매인",
+          "score": "0.2709",
+          "vec_sim": "0.5071",
+          "bm25": "0.0250",
+          "trig": "0.0495",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제359조",
+          "title": "과실에 대한 효력",
+          "score": "0.2676",
+          "vec_sim": "0.5096",
+          "bm25": "0.0082",
+          "trig": "0.0516",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제365조",
+          "title": "저당지상의 건물에 대한 경매청구권",
+          "score": "0.2658",
+          "vec_sim": "0.5056",
+          "bm25": "0.0147",
+          "trig": "0.0429",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          8,
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 2
+        },
+        "recall_at": {
+          "1": 0.5,
+          "3": 0.5,
+          "5": 0.5,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 0.6131471927654584
+      }
+    },
+    {
+      "id": "C1-Q04",
+      "domain": "real_estate_rights",
+      "query": "부동산을 매수했는데 소유권이전등기를 하지 않으면 어떻게 되나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제186조"
+        }
+      ],
+      "bm25_tsquery": "소유권:* | 이전:* | 등기:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다248290",
+          "title": "소유권이전청구권가등기말소절차이행등[부동산의 매매로 인한 소유권이전등기청구권의 양수인 앞으로 마쳐진 가등기 이전의 부기등기 및 가등기에 기한 본등기의 효력이 문제된 사건]",
+          "score": "0.2824",
+          "vec_sim": "0.5235",
+          "bm25": "0.0407",
+          "trig": "0.0421",
+          "case_no": "2024다248290",
+          "court": "대법원",
+          "decision_date": "2025-04-24"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제64조",
+          "title": "소유권보존등기의 등기사항",
+          "score": "0.2808",
+          "vec_sim": "0.5212",
+          "bm25": "0.0262",
+          "trig": "0.0619",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제99조",
+          "title": "수용으로 인한 등기",
+          "score": "0.2755",
+          "vec_sim": "0.4990",
+          "bm25": "0.0495",
+          "trig": "0.0554",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제62조",
+          "title": "소유권변경 사실의 통지",
+          "score": "0.2703",
+          "vec_sim": "0.5103",
+          "bm25": "0.0237",
+          "trig": "0.0403",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제66조",
+          "title": "미등기부동산의 처분제한의 등기와 직권보존",
+          "score": "0.2702",
+          "vec_sim": "0.5105",
+          "bm25": "0.0264",
+          "trig": "0.0349",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제187조",
+          "title": "등기를 요하지 아니하는 부동산물권취득",
+          "score": "0.2639",
+          "vec_sim": "0.4969",
+          "bm25": "0.0057",
+          "trig": "0.0690",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-title",
+          "law_name": "부동산 실권리자명의 등기에 관한 법률",
+          "article_no": "제10조",
+          "title": "장기미등기자에 대한 벌칙 등",
+          "score": "0.2633",
+          "vec_sim": "0.5051",
+          "bm25": "0.0150",
+          "trig": "0.0313",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제60조",
+          "title": "대지사용권의 취득",
+          "score": "0.2593",
+          "vec_sim": "0.4831",
+          "bm25": "0.0200",
+          "trig": "0.0585",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-title",
+          "law_name": "부동산 실권리자명의 등기에 관한 법률",
+          "article_no": "제11조",
+          "title": "기존 명의신탁약정에 따른 등기의 실명등기 등",
+          "score": "0.2587",
+          "vec_sim": "0.4962",
+          "bm25": "0.0211",
+          "trig": "0.0216",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제44조",
+          "title": "건물의 부존재",
+          "score": "0.2561",
+          "vec_sim": "0.4801",
+          "bm25": "0.0195",
+          "trig": "0.0511",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          null
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 0,
+          "5": 0,
+          "10": 0
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 0.0,
+          "5": 0.0,
+          "10": 0.0
+        },
+        "first_hit_rank": null,
+        "rr": 0.0,
+        "ndcg5": 0.0
+      }
+    },
+    {
+      "id": "C1-Q05",
+      "domain": "real_estate_sale",
+      "query": "산 물건에 숨은 하자가 있어서 매도인에게 책임을 묻고 싶어요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제580조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제581조"
+        }
+      ],
+      "bm25_tsquery": "매매:* | 하자:* | 담보책임:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제580조",
+          "title": "매도인의 하자담보책임",
+          "score": "0.2591",
+          "vec_sim": "0.4848",
+          "bm25": "0.0168",
+          "trig": "0.0584",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제581조",
+          "title": "종류매매와 매도인의 담보책임",
+          "score": "0.2334",
+          "vec_sim": "0.4299",
+          "bm25": "0.0162",
+          "trig": "0.0680",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1082조",
+          "title": "불특정물유증의무자의 담보책임",
+          "score": "0.2291",
+          "vec_sim": "0.4138",
+          "bm25": "0.0172",
+          "trig": "0.0855",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제570조",
+          "title": "동전-매도인의 담보책임",
+          "score": "0.2262",
+          "vec_sim": "0.4285",
+          "bm25": "0.0047",
+          "trig": "0.0526",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제571조",
+          "title": "동전-선의의 매도인의 담보책임",
+          "score": "0.2257",
+          "vec_sim": "0.4295",
+          "bm25": "0.0076",
+          "trig": "0.0435",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제559조",
+          "title": "증여자의 담보책임",
+          "score": "0.2195",
+          "vec_sim": "0.3951",
+          "bm25": "0.0093",
+          "trig": "0.0959",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제270조",
+          "title": "분할로 인한 담보책임",
+          "score": "0.2152",
+          "vec_sim": "0.3850",
+          "bm25": "0.0098",
+          "trig": "0.0989",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제572조",
+          "title": "권리의 일부가 타인에게 속한 경우와 매도인의 담보책임",
+          "score": "0.2106",
+          "vec_sim": "0.4040",
+          "bm25": "0.0075",
+          "trig": "0.0317",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2017다202050",
+          "title": "손해배상(기)[매매계약에서 매도인의 하자담보책임이 문제된 사건]",
+          "score": "0.2103",
+          "vec_sim": "0.3872",
+          "bm25": "0.0392",
+          "trig": "0.0249",
+          "case_no": "2017다202050",
+          "court": "대법원",
+          "decision_date": "2021-04-08"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제669조",
+          "title": "동전-하자가 도급인의 제공한 재료 또는 지시에 기인한 경우의 면책",
+          "score": "0.2092",
+          "vec_sim": "0.3981",
+          "bm25": "0.0048",
+          "trig": "0.0438",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          2,
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 2,
+          "5": 2,
+          "10": 2
+        },
+        "recall_at": {
+          "1": 0.5,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q06",
+      "domain": "inheritance",
+      "query": "부모님이 돌아가셨는데 빚이 많아서 한정승인을 하고 싶어요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제1028조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제1030조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제1019조"
+        }
+      ],
+      "bm25_tsquery": "상속:* | 한정승인:* | 상속채무:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1028조",
+          "title": "한정승인의 효과",
+          "score": "0.2732",
+          "vec_sim": "0.5213",
+          "bm25": "0.0183",
+          "trig": "0.0354",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1029조",
+          "title": "공동상속인의 한정승인",
+          "score": "0.2710",
+          "vec_sim": "0.5152",
+          "bm25": "0.0223",
+          "trig": "0.0333",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1031조",
+          "title": "한정승인과 재산상 권리의무의 불소멸",
+          "score": "0.2572",
+          "vec_sim": "0.4754",
+          "bm25": "0.0190",
+          "trig": "0.0690",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1030조",
+          "title": "한정승인의 방식",
+          "score": "0.2501",
+          "vec_sim": "0.4715",
+          "bm25": "0.0200",
+          "trig": "0.0417",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1019조",
+          "title": "승인, 포기의 기간",
+          "score": "0.2479",
+          "vec_sim": "0.4612",
+          "bm25": "0.0405",
+          "trig": "0.0256",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제436조",
+          "title": "상속인의 한정승인",
+          "score": "0.2477",
+          "vec_sim": "0.4651",
+          "bm25": "0.0240",
+          "trig": "0.0397",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제346조",
+          "title": "파산과 한정승인 및 재산분리",
+          "score": "0.2330",
+          "vec_sim": "0.4456",
+          "bm25": "0.0128",
+          "trig": "0.0317",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1036조",
+          "title": "수증자에의 변제",
+          "score": "0.2326",
+          "vec_sim": "0.4441",
+          "bm25": "0.0091",
+          "trig": "0.0388",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제385조",
+          "title": "파산선고 후의 단순승인",
+          "score": "0.2319",
+          "vec_sim": "0.4430",
+          "bm25": "0.0081",
+          "trig": "0.0396",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1032조",
+          "title": "채권자에 대한 공고, 최고",
+          "score": "0.2305",
+          "vec_sim": "0.4398",
+          "bm25": "0.0110",
+          "trig": "0.0366",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1,
+          4,
+          5
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 3,
+          "10": 3
+        },
+        "recall_at": {
+          "1": 0.3333333333333333,
+          "3": 0.3333333333333333,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 0.8529278650606567
+      }
+    },
+    {
+      "id": "C1-Q07",
+      "domain": "inheritance_reserve",
+      "query": "아버지가 형에게만 재산을 주셔서 유류분을 반환 청구하고 싶습니다",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제1115조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제1112조"
+        }
+      ],
+      "bm25_tsquery": "유류분:* | 반환청구:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1117조",
+          "title": "소멸시효",
+          "score": "0.2752",
+          "vec_sim": "0.5230",
+          "bm25": "0.0060",
+          "trig": "0.0597",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1115조",
+          "title": "유류분의 보전",
+          "score": "0.2718",
+          "vec_sim": "0.5136",
+          "bm25": "0.0171",
+          "trig": "0.0495",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2020다247428",
+          "title": "유류분반환",
+          "score": "0.2675",
+          "vec_sim": "0.4870",
+          "bm25": "0.0687",
+          "trig": "0.0168",
+          "case_no": "2020다247428",
+          "court": "대법원",
+          "decision_date": "2022-08-11"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1116조",
+          "title": "반환의 순서",
+          "score": "0.2671",
+          "vec_sim": "0.5041",
+          "bm25": "0.0000",
+          "trig": "0.0750",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2017다235791",
+          "title": "유류분반환청구",
+          "score": "0.2481",
+          "vec_sim": "0.4646",
+          "bm25": "0.0340",
+          "trig": "0.0279",
+          "case_no": "2017다235791",
+          "court": "대법원",
+          "decision_date": "2021-08-19"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2016다210498",
+          "title": "임료/유류분",
+          "score": "0.2461",
+          "vec_sim": "0.4653",
+          "bm25": "0.0341",
+          "trig": "0.0161",
+          "case_no": "2016다210498",
+          "court": "대법원",
+          "decision_date": "2021-07-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2017다265884",
+          "title": "유류분반환청구의소",
+          "score": "0.2430",
+          "vec_sim": "0.4562",
+          "bm25": "0.0362",
+          "trig": "0.0201",
+          "case_no": "2017다265884",
+          "court": "대법원",
+          "decision_date": "2022-01-27"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2017다278422",
+          "title": "유류분반환",
+          "score": "0.2387",
+          "vec_sim": "0.4331",
+          "bm25": "0.0561",
+          "trig": "0.0265",
+          "case_no": "2017다278422",
+          "court": "대법원",
+          "decision_date": "2018-07-12"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제746조",
+          "title": "불법원인급여",
+          "score": "0.2384",
+          "vec_sim": "0.4331",
+          "bm25": "0.0000",
+          "trig": "0.1091",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1045조",
+          "title": "상속재산의 분리청구권",
+          "score": "0.2376",
+          "vec_sim": "0.4598",
+          "bm25": "0.0000",
+          "trig": "0.0387",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          null,
+          2
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 0.5,
+          "5": 0.5,
+          "10": 0.5
+        },
+        "first_hit_rank": 2,
+        "rr": 0.5,
+        "ndcg5": 0.38685280723454163
+      }
+    },
+    {
+      "id": "C1-Q08",
+      "domain": "tort",
+      "query": "타인의 고의 또는 과실로 손해를 입었을 때 손해배상을 청구하려 합니다",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제750조"
+        }
+      ],
+      "bm25_tsquery": "불법행위:* | 손해배상:* | 고의:* | 과실:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제750조",
+          "title": "불법행위의 내용",
+          "score": "0.3285",
+          "vec_sim": "0.5724",
+          "bm25": "0.0111",
+          "trig": "0.1951",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제390조",
+          "title": "채무불이행과 손해배상",
+          "score": "0.3046",
+          "vec_sim": "0.5547",
+          "bm25": "0.0129",
+          "trig": "0.1171",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제754조",
+          "title": "심신상실자의 책임능력",
+          "score": "0.2957",
+          "vec_sim": "0.5210",
+          "bm25": "0.0064",
+          "trig": "0.1667",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-privacy",
+          "law_name": "개인정보 보호법",
+          "article_no": "제39조의2",
+          "title": "법정손해배상의 청구",
+          "score": "0.2869",
+          "vec_sim": "0.5378",
+          "bm25": "0.0101",
+          "trig": "0.0748",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제391조",
+          "title": "이행보조자의 고의, 과실",
+          "score": "0.2850",
+          "vec_sim": "0.5106",
+          "bm25": "0.0180",
+          "trig": "0.1212",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제735조",
+          "title": "긴급사무관리",
+          "score": "0.2811",
+          "vec_sim": "0.5077",
+          "bm25": "0.0060",
+          "trig": "0.1270",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제751조",
+          "title": "재산 이외의 손해의 배상",
+          "score": "0.2797",
+          "vec_sim": "0.5239",
+          "bm25": "0.0027",
+          "trig": "0.0850",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제806조",
+          "title": "약혼해제와 손해배상청구권",
+          "score": "0.2770",
+          "vec_sim": "0.5165",
+          "bm25": "0.0086",
+          "trig": "0.0806",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제396조",
+          "title": "과실상계",
+          "score": "0.2724",
+          "vec_sim": "0.5110",
+          "bm25": "0.0111",
+          "trig": "0.0680",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제740조",
+          "title": "관리자의 무과실손해보상청구권",
+          "score": "0.2720",
+          "vec_sim": "0.5021",
+          "bm25": "0.0033",
+          "trig": "0.1000",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q09",
+      "domain": "debt_prescription",
+      "query": "빌려준 돈의 소멸시효 기간은 얼마나 되나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제162조"
+        }
+      ],
+      "bm25_tsquery": "소멸시효:* | 채권:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제162조",
+          "title": "채권, 재산권의 소멸시효",
+          "score": "0.2883",
+          "vec_sim": "0.5312",
+          "bm25": "0.0314",
+          "trig": "0.0667",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제165조",
+          "title": "판결 등에 의하여 확정된 채권의 소멸시효",
+          "score": "0.2641",
+          "vec_sim": "0.4866",
+          "bm25": "0.0445",
+          "trig": "0.0373",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제166조",
+          "title": "소멸시효의 기산점",
+          "score": "0.2552",
+          "vec_sim": "0.4727",
+          "bm25": "0.0232",
+          "trig": "0.0595",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제164조",
+          "title": "1년의 단기소멸시효",
+          "score": "0.2533",
+          "vec_sim": "0.4836",
+          "bm25": "0.0173",
+          "trig": "0.0317",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1117조",
+          "title": "소멸시효",
+          "score": "0.2511",
+          "vec_sim": "0.4817",
+          "bm25": "0.0075",
+          "trig": "0.0400",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제163조",
+          "title": "3년의 단기소멸시효",
+          "score": "0.2482",
+          "vec_sim": "0.4766",
+          "bm25": "0.0159",
+          "trig": "0.0259",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제167조",
+          "title": "소멸시효의 소급효",
+          "score": "0.2456",
+          "vec_sim": "0.4434",
+          "bm25": "0.0180",
+          "trig": "0.0926",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-wage-guarantee",
+          "law_name": "임금채권보장법",
+          "article_no": "제26조",
+          "title": "소멸시효",
+          "score": "0.2397",
+          "vec_sim": "0.4569",
+          "bm25": "0.0178",
+          "trig": "0.0296",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제326조",
+          "title": "피담보채권의 소멸시효",
+          "score": "0.2385",
+          "vec_sim": "0.4319",
+          "bm25": "0.0247",
+          "trig": "0.0758",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제421조",
+          "title": "소멸시효의 절대적 효력",
+          "score": "0.2346",
+          "vec_sim": "0.4418",
+          "bm25": "0.0151",
+          "trig": "0.0460",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q10",
+      "domain": "debt_guaranty",
+      "query": "보증인이 주채무자 대신 변제한 후 구상할 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제441조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제444조"
+        }
+      ],
+      "bm25_tsquery": "보증:* | 구상권:* | 변제:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제441조",
+          "title": "수탁보증인의 구상권",
+          "score": "0.3393",
+          "vec_sim": "0.6120",
+          "bm25": "0.0176",
+          "trig": "0.1404",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제448조",
+          "title": "공동보증인간의 구상권",
+          "score": "0.3197",
+          "vec_sim": "0.5846",
+          "bm25": "0.0143",
+          "trig": "0.1154",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제444조",
+          "title": "부탁없는 보증인의 구상권",
+          "score": "0.3090",
+          "vec_sim": "0.5707",
+          "bm25": "0.0201",
+          "trig": "0.0881",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제442조",
+          "title": "수탁보증인의 사전구상권",
+          "score": "0.2943",
+          "vec_sim": "0.5434",
+          "bm25": "0.0206",
+          "trig": "0.0821",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제437조",
+          "title": "보증인의 최고, 검색의 항변",
+          "score": "0.2874",
+          "vec_sim": "0.5223",
+          "bm25": "0.0189",
+          "trig": "0.1027",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제445조",
+          "title": "구상요건으로서의 통지",
+          "score": "0.2852",
+          "vec_sim": "0.5206",
+          "bm25": "0.0128",
+          "trig": "0.1049",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제447조",
+          "title": "연대, 불가분채무의 보증인의 구상권",
+          "score": "0.2804",
+          "vec_sim": "0.5047",
+          "bm25": "0.0186",
+          "trig": "0.1124",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제433조",
+          "title": "보증인과 주채무자항변권",
+          "score": "0.2790",
+          "vec_sim": "0.4894",
+          "bm25": "0.0152",
+          "trig": "0.1486",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제434조",
+          "title": "보증인과 주채무자상계권",
+          "score": "0.2699",
+          "vec_sim": "0.4654",
+          "bm25": "0.0112",
+          "trig": "0.1692",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제425조",
+          "title": "출재채무자의 구상권",
+          "score": "0.2611",
+          "vec_sim": "0.4860",
+          "bm25": "0.0163",
+          "trig": "0.0657",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1,
+          3
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 2,
+          "5": 2,
+          "10": 2
+        },
+        "recall_at": {
+          "1": 0.5,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 0.9197207891481876
+      }
+    },
+    {
+      "id": "C1-Q11",
+      "domain": "real_estate_lease",
+      "query": "임차인이 임대차 목적물에 붙인 부속물을 임대인에게 팔 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제646조"
+        }
+      ],
+      "bm25_tsquery": "임차인:* | 부속물:* | 매수청구:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제646조",
+          "title": "임차인의 부속물매수청구권",
+          "score": "0.3038",
+          "vec_sim": "0.5473",
+          "bm25": "0.0209",
+          "trig": "0.1194",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제647조",
+          "title": "전차인의 부속물매수청구권",
+          "score": "0.2753",
+          "vec_sim": "0.5005",
+          "bm25": "0.0189",
+          "trig": "0.0968",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제650조",
+          "title": "임차건물등의 부속물에 대한 법정질권",
+          "score": "0.2661",
+          "vec_sim": "0.4839",
+          "bm25": "0.0090",
+          "trig": "0.1071",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제648조",
+          "title": "임차지의 부속물, 과실 등에 대한 법정질권",
+          "score": "0.2534",
+          "vec_sim": "0.4675",
+          "bm25": "0.0086",
+          "trig": "0.0853",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제623조",
+          "title": "임대인의 의무",
+          "score": "0.2417",
+          "vec_sim": "0.4215",
+          "bm25": "0.0045",
+          "trig": "0.1477",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제632조",
+          "title": "임차건물의 소부분을 타인에게 사용케 하는 경우",
+          "score": "0.2292",
+          "vec_sim": "0.4244",
+          "bm25": "0.0042",
+          "trig": "0.0787",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제629조",
+          "title": "임차권의 양도, 전대의 제한",
+          "score": "0.2195",
+          "vec_sim": "0.3922",
+          "bm25": "0.0082",
+          "trig": "0.1048",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제625조",
+          "title": "임차인의 의사에 반하는 보존행위와 해지권",
+          "score": "0.2150",
+          "vec_sim": "0.3760",
+          "bm25": "0.0094",
+          "trig": "0.1212",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil-exec",
+          "law_name": "민사집행법",
+          "article_no": "제259조",
+          "title": "목적물을 제3자가 점유하는 경우",
+          "score": "0.2089",
+          "vec_sim": "0.3977",
+          "bm25": "0.0000",
+          "trig": "0.0504",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제627조",
+          "title": "일부멸실 등과 감액청구, 해지권",
+          "score": "0.2022",
+          "vec_sim": "0.3752",
+          "bm25": "0.0081",
+          "trig": "0.0608",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q12",
+      "domain": "real_estate_lease",
+      "query": "기간 정하지 않은 임대차를 해지하려면 통고 기간이 어떻게 되나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제635조"
+        }
+      ],
+      "bm25_tsquery": "임대차:* | 해지통고:* | 기간:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제635조",
+          "title": "기간의 약정없는 임대차의 해지통고",
+          "score": "0.3548",
+          "vec_sim": "0.6693",
+          "bm25": "0.0202",
+          "trig": "0.0706",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제636조",
+          "title": "기간의 약정있는 임대차의 해지통고",
+          "score": "0.3435",
+          "vec_sim": "0.6426",
+          "bm25": "0.0242",
+          "trig": "0.0748",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제637조",
+          "title": "임차인의 파산과 해지통고",
+          "score": "0.2800",
+          "vec_sim": "0.5321",
+          "bm25": "0.0085",
+          "trig": "0.0570",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제4조",
+          "title": "임대차기간 등",
+          "score": "0.2708",
+          "vec_sim": "0.4889",
+          "bm25": "0.0248",
+          "trig": "0.0945",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제638조",
+          "title": "해지통고의 전차인에 대한 통지",
+          "score": "0.2695",
+          "vec_sim": "0.5119",
+          "bm25": "0.0085",
+          "trig": "0.0552",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-commercial-lease",
+          "law_name": "상가건물 임대차보호법",
+          "article_no": "제9조",
+          "title": "임대차기간 등",
+          "score": "0.2647",
+          "vec_sim": "0.4758",
+          "bm25": "0.0284",
+          "trig": "0.0916",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제6조",
+          "title": "계약의 갱신",
+          "score": "0.2570",
+          "vec_sim": "0.4879",
+          "bm25": "0.0198",
+          "trig": "0.0357",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제640조",
+          "title": "차임연체와 해지",
+          "score": "0.2554",
+          "vec_sim": "0.4829",
+          "bm25": "0.0045",
+          "trig": "0.0632",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제6조의2",
+          "title": "묵시적 갱신의 경우 계약의 해지",
+          "score": "0.2483",
+          "vec_sim": "0.4842",
+          "bm25": "0.0000",
+          "trig": "0.0311",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다307024",
+          "title": "임대차보증금[상가건물 임대차계약의 묵시적 갱신이 문제된 사건]",
+          "score": "0.2451",
+          "vec_sim": "0.4519",
+          "bm25": "0.0500",
+          "trig": "0.0211",
+          "case_no": "2023다307024",
+          "court": "대법원",
+          "decision_date": "2024-06-27"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q13",
+      "domain": "real_estate_sale",
+      "query": "부동산을 산 지 오래됐는데 하자 담보책임을 언제까지 행사할 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제582조"
+        }
+      ],
+      "bm25_tsquery": "하자담보:* | 권리행사:* | 기간:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제674조의8",
+          "title": "담보책임의 존속기간",
+          "score": "0.2778",
+          "vec_sim": "0.5119",
+          "bm25": "0.0043",
+          "trig": "0.1028",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제671조",
+          "title": "수급인의 담보책임-토지, 건물 등에 대한 특칙",
+          "score": "0.2734",
+          "vec_sim": "0.5230",
+          "bm25": "0.0033",
+          "trig": "0.0545",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제575조",
+          "title": "제한물권있는 경우와 매도인의 담보책임",
+          "score": "0.2708",
+          "vec_sim": "0.5153",
+          "bm25": "0.0000",
+          "trig": "0.0655",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제559조",
+          "title": "증여자의 담보책임",
+          "score": "0.2542",
+          "vec_sim": "0.4770",
+          "bm25": "0.0000",
+          "trig": "0.0784",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1017조",
+          "title": "상속채무자의 자력에 대한 담보책임",
+          "score": "0.2534",
+          "vec_sim": "0.4862",
+          "bm25": "0.0000",
+          "trig": "0.0515",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제591조",
+          "title": "환매기간",
+          "score": "0.2519",
+          "vec_sim": "0.4913",
+          "bm25": "0.0038",
+          "trig": "0.0256",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제670조",
+          "title": "담보책임의 존속기간",
+          "score": "0.2490",
+          "vec_sim": "0.4794",
+          "bm25": "0.0039",
+          "trig": "0.0408",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1016조",
+          "title": "공동상속인의 담보책임",
+          "score": "0.2477",
+          "vec_sim": "0.4759",
+          "bm25": "0.0000",
+          "trig": "0.0490",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제360조",
+          "title": "피담보채권의 범위",
+          "score": "0.2465",
+          "vec_sim": "0.4612",
+          "bm25": "0.0000",
+          "trig": "0.0797",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제576조",
+          "title": "저당권, 전세권의 행사와 매도인의 담보책임",
+          "score": "0.2463",
+          "vec_sim": "0.4641",
+          "bm25": "0.0000",
+          "trig": "0.0710",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          null
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 0,
+          "5": 0,
+          "10": 0
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 0.0,
+          "5": 0.0,
+          "10": 0.0
+        },
+        "first_hit_rank": null,
+        "rr": 0.0,
+        "ndcg5": 0.0
+      }
+    },
+    {
+      "id": "C1-Q14",
+      "domain": "real_estate_rights",
+      "query": "20년 이상 평온·공연하게 부동산을 점유하면 소유권을 취득할 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제245조"
+        }
+      ],
+      "bm25_tsquery": "점유:* | 취득시효:* | 부동산:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제245조",
+          "title": "점유로 인한 부동산소유권의 취득기간",
+          "score": "0.3756",
+          "vec_sim": "0.6421",
+          "bm25": "0.0255",
+          "trig": "0.2342",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제246조",
+          "title": "점유로 인한 동산소유권의 취득기간",
+          "score": "0.3191",
+          "vec_sim": "0.5650",
+          "bm25": "0.0129",
+          "trig": "0.1638",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제249조",
+          "title": "선의취득",
+          "score": "0.2896",
+          "vec_sim": "0.5021",
+          "bm25": "0.0043",
+          "trig": "0.1863",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제295조",
+          "title": "취득과 불가분성",
+          "score": "0.2358",
+          "vec_sim": "0.4468",
+          "bm25": "0.0041",
+          "trig": "0.0560",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제197조",
+          "title": "점유의 태양",
+          "score": "0.2275",
+          "vec_sim": "0.4005",
+          "bm25": "0.0213",
+          "trig": "0.1043",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제192조",
+          "title": "점유권의 취득과 소멸",
+          "score": "0.2264",
+          "vec_sim": "0.4234",
+          "bm25": "0.0179",
+          "trig": "0.0469",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "96다41335",
+          "title": "시효취득완성을원인으로한소유권이전등기",
+          "score": "0.2240",
+          "vec_sim": "0.3992",
+          "bm25": "0.0384",
+          "trig": "0.0645",
+          "case_no": "96다41335",
+          "court": "대법원",
+          "decision_date": "1997-01-24"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제256조",
+          "title": "부동산에의 부합",
+          "score": "0.2207",
+          "vec_sim": "0.3916",
+          "bm25": "0.0144",
+          "trig": "0.1031",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제254조",
+          "title": "매장물의 소유권취득",
+          "score": "0.2152",
+          "vec_sim": "0.4038",
+          "bm25": "0.0000",
+          "trig": "0.0667",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제252조",
+          "title": "무주물의 귀속",
+          "score": "0.2143",
+          "vec_sim": "0.3750",
+          "bm25": "0.0081",
+          "trig": "0.1217",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q15",
+      "domain": "inheritance",
+      "query": "상속인의 상속 순위와 배우자의 지위는 어떻게 되나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제1000조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제1003조"
+        }
+      ],
+      "bm25_tsquery": "상속:* | 순위:* | 배우자:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1003조",
+          "title": "배우자의 상속순위",
+          "score": "0.3450",
+          "vec_sim": "0.6430",
+          "bm25": "0.0262",
+          "trig": "0.0786",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1009조",
+          "title": "법정상속분",
+          "score": "0.2988",
+          "vec_sim": "0.5521",
+          "bm25": "0.0219",
+          "trig": "0.0806",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1000조",
+          "title": "상속의 순위",
+          "score": "0.2782",
+          "vec_sim": "0.5248",
+          "bm25": "0.0242",
+          "trig": "0.0427",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-inheritance-tax",
+          "law_name": "상속세 및 증여세법",
+          "article_no": "제19조",
+          "title": "배우자 상속공제",
+          "score": "0.2754",
+          "vec_sim": "0.5091",
+          "bm25": "0.0577",
+          "trig": "0.0178",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제771조",
+          "title": "인척의 촌수의 계산",
+          "score": "0.2725",
+          "vec_sim": "0.5116",
+          "bm25": "0.0095",
+          "trig": "0.0694",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제444조",
+          "title": "상속인이 파산한 경우의 채권자간의 순위",
+          "score": "0.2622",
+          "vec_sim": "0.4825",
+          "bm25": "0.0255",
+          "trig": "0.0667",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제445조",
+          "title": "상속재산 및 상속인의 파산재단의 순위",
+          "score": "0.2609",
+          "vec_sim": "0.4728",
+          "bm25": "0.0231",
+          "trig": "0.0879",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1001조",
+          "title": "대습상속",
+          "score": "0.2549",
+          "vec_sim": "0.4784",
+          "bm25": "0.0135",
+          "trig": "0.0583",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1004조",
+          "title": "상속인의 결격사유",
+          "score": "0.2515",
+          "vec_sim": "0.4710",
+          "bm25": "0.0211",
+          "trig": "0.0485",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제779조",
+          "title": "가족의 범위",
+          "score": "0.2483",
+          "vec_sim": "0.4698",
+          "bm25": "0.0101",
+          "trig": "0.0521",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          3,
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 2,
+          "5": 2,
+          "10": 2
+        },
+        "recall_at": {
+          "1": 0.5,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 0.9197207891481876
+      }
+    },
+    {
+      "id": "C1-Q16",
+      "domain": "inheritance",
+      "query": "상속을 포기하려면 어떻게 해야 하나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제1041조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제1019조"
+        }
+      ],
+      "bm25_tsquery": "상속:* | 포기:* | 신고:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1041조",
+          "title": "포기의 방식",
+          "score": "0.3445",
+          "vec_sim": "0.6400",
+          "bm25": "0.0247",
+          "trig": "0.0854",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1043조",
+          "title": "포기한 상속재산의 귀속",
+          "score": "0.3064",
+          "vec_sim": "0.5533",
+          "bm25": "0.0378",
+          "trig": "0.0921",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1076조",
+          "title": "수증자의 상속인의 승인, 포기",
+          "score": "0.3011",
+          "vec_sim": "0.5689",
+          "bm25": "0.0251",
+          "trig": "0.0459",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1044조",
+          "title": "포기한 상속재산의 관리계속의무",
+          "score": "0.2896",
+          "vec_sim": "0.5417",
+          "bm25": "0.0261",
+          "trig": "0.0545",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1042조",
+          "title": "포기의 소급효",
+          "score": "0.2803",
+          "vec_sim": "0.5197",
+          "bm25": "0.0215",
+          "trig": "0.0702",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1024조",
+          "title": "승인, 포기의 취소금지",
+          "score": "0.2789",
+          "vec_sim": "0.5388",
+          "bm25": "0.0155",
+          "trig": "0.0242",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1027조",
+          "title": "법정단순승인의 예외",
+          "score": "0.2769",
+          "vec_sim": "0.5136",
+          "bm25": "0.0199",
+          "trig": "0.0706",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1021조",
+          "title": "승인, 포기기간의 계산에 관한 특칙",
+          "score": "0.2652",
+          "vec_sim": "0.5012",
+          "bm25": "0.0179",
+          "trig": "0.0459",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1019조",
+          "title": "승인, 포기의 기간",
+          "score": "0.2629",
+          "vec_sim": "0.4963",
+          "bm25": "0.0338",
+          "trig": "0.0232",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제386조",
+          "title": "파산선고 후의 상속포기",
+          "score": "0.2560",
+          "vec_sim": "0.4886",
+          "bm25": "0.0219",
+          "trig": "0.0256",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          9,
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 2
+        },
+        "recall_at": {
+          "1": 0.5,
+          "3": 0.5,
+          "5": 0.5,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 0.6131471927654584
+      }
+    },
+    {
+      "id": "C1-Q17",
+      "domain": "inheritance",
+      "query": "자필로 쓴 유언장이 법적 효력을 가지려면 어떤 요건이 필요한가요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제1066조"
+        }
+      ],
+      "bm25_tsquery": "자필증서:* | 유언:* | 요건:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1060조",
+          "title": "유언의 요식성",
+          "score": "0.3115",
+          "vec_sim": "0.5906",
+          "bm25": "0.0112",
+          "trig": "0.0641",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1066조",
+          "title": "자필증서에 의한 유언",
+          "score": "0.3111",
+          "vec_sim": "0.5968",
+          "bm25": "0.0192",
+          "trig": "0.0348",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1065조",
+          "title": "유언의 보통방식",
+          "score": "0.2743",
+          "vec_sim": "0.5225",
+          "bm25": "0.0117",
+          "trig": "0.0476",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1068조",
+          "title": "공정증서에 의한 유언",
+          "score": "0.2704",
+          "vec_sim": "0.5196",
+          "bm25": "0.0206",
+          "trig": "0.0224",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1069조",
+          "title": "비밀증서에 의한 유언",
+          "score": "0.2667",
+          "vec_sim": "0.5105",
+          "bm25": "0.0216",
+          "trig": "0.0249",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1073조",
+          "title": "유언의 효력발생시기",
+          "score": "0.2581",
+          "vec_sim": "0.4835",
+          "bm25": "0.0219",
+          "trig": "0.0490",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1071조",
+          "title": "비밀증서에 의한 유언의 전환",
+          "score": "0.2571",
+          "vec_sim": "0.4848",
+          "bm25": "0.0217",
+          "trig": "0.0408",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1067조",
+          "title": "녹음에 의한 유언",
+          "score": "0.2518",
+          "vec_sim": "0.4843",
+          "bm25": "0.0188",
+          "trig": "0.0198",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1091조",
+          "title": "유언증서, 녹음의 검인",
+          "score": "0.2480",
+          "vec_sim": "0.4746",
+          "bm25": "0.0167",
+          "trig": "0.0282",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1070조",
+          "title": "구수증서에 의한 유언",
+          "score": "0.2477",
+          "vec_sim": "0.4742",
+          "bm25": "0.0211",
+          "trig": "0.0216",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          2
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 2,
+        "rr": 0.5,
+        "ndcg5": 0.6309297535714575
+      }
+    },
+    {
+      "id": "C1-Q18",
+      "domain": "family_divorce",
+      "query": "이혼할 때 재산을 어떻게 나누는지 법적 근거가 궁금해요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제839조의2"
+        }
+      ],
+      "bm25_tsquery": "이혼:* | 재산분할:* | 청구권:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제839조의2",
+          "title": "재산분할청구권",
+          "score": "0.2913",
+          "vec_sim": "0.5598",
+          "bm25": "0.0196",
+          "trig": "0.0276",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제840조",
+          "title": "재판상 이혼원인",
+          "score": "0.2865",
+          "vec_sim": "0.5574",
+          "bm25": "0.0074",
+          "trig": "0.0282",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제830조",
+          "title": "특유재산과 귀속불명재산",
+          "score": "0.2752",
+          "vec_sim": "0.5444",
+          "bm25": "0.0000",
+          "trig": "0.0147",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제829조",
+          "title": "부부재산의 약정과 그 변경",
+          "score": "0.2646",
+          "vec_sim": "0.5188",
+          "bm25": "0.0000",
+          "trig": "0.0259",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024므13669, 13676",
+          "title": "이혼·이혼·위자료·재산분할[이혼에 따른 재산분할에서 일방 배우자의 기여 인정 여부, 분할대상 재산 산정 기준 시기와 대상이 문제된 사건]",
+          "score": "0.2645",
+          "vec_sim": "0.5107",
+          "bm25": "0.0209",
+          "trig": "0.0142",
+          "case_no": "2024므13669, 13676",
+          "court": "대법원",
+          "decision_date": "2025-10-16"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제834조",
+          "title": "협의상 이혼",
+          "score": "0.2644",
+          "vec_sim": "0.4936",
+          "bm25": "0.0120",
+          "trig": "0.0702",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10730",
+          "title": "이혼및재산분할[배우자가 일방적으로 당사자 쌍방의 협력으로 이룩한 재산을 처분한 것이 ‘혼인을 계속하기 어려운 중대한 사유’에 해당하는지 문제된 사건]",
+          "score": "0.2639",
+          "vec_sim": "0.5087",
+          "bm25": "0.0235",
+          "trig": "0.0126",
+          "case_no": "2025므10730",
+          "court": "대법원",
+          "decision_date": "2025-09-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024스876",
+          "title": "재산분할[협의이혼을 한 당사자 일방이 사망한 전 배우자의 상속인들을 상대로 재산분할을 청구한 사건]",
+          "score": "0.2606",
+          "vec_sim": "0.4899",
+          "bm25": "0.0401",
+          "trig": "0.0183",
+          "case_no": "2024스876",
+          "court": "대법원",
+          "decision_date": "2026-01-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025스595",
+          "title": "재산분할[재판상 이혼이 확정된 후 재산분할심판을 청구한 경우 재산분할의 기준시점이 문제된 사안]",
+          "score": "0.2599",
+          "vec_sim": "0.4830",
+          "bm25": "0.0512",
+          "trig": "0.0155",
+          "case_no": "2025스595",
+          "court": "대법원",
+          "decision_date": "2025-08-14"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제843조",
+          "title": "준용규정",
+          "score": "0.2587",
+          "vec_sim": "0.4975",
+          "bm25": "0.0127",
+          "trig": "0.0305",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q19",
+      "domain": "family_divorce",
+      "query": "재판상 이혼을 청구할 수 있는 사유에는 어떤 것이 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제840조"
+        }
+      ],
+      "bm25_tsquery": "재판상이혼:* | 이혼사유:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제840조",
+          "title": "재판상 이혼원인",
+          "score": "0.3755",
+          "vec_sim": "0.7086",
+          "bm25": "0.0000",
+          "trig": "0.1061",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제905조",
+          "title": "재판상 파양의 원인",
+          "score": "0.2919",
+          "vec_sim": "0.5464",
+          "bm25": "0.0000",
+          "trig": "0.0933",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제841조",
+          "title": "부정으로 인한 이혼청구권의 소멸",
+          "score": "0.2890",
+          "vec_sim": "0.5483",
+          "bm25": "0.0000",
+          "trig": "0.0744",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제816조",
+          "title": "혼인취소의 사유",
+          "score": "0.2844",
+          "vec_sim": "0.5459",
+          "bm25": "0.0000",
+          "trig": "0.0573",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제842조",
+          "title": "기타 원인으로 인한 이혼청구권의 소멸",
+          "score": "0.2796",
+          "vec_sim": "0.5287",
+          "bm25": "0.0000",
+          "trig": "0.0762",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제838조",
+          "title": "사기, 강박으로 인한 이혼의 취소청구권",
+          "score": "0.2674",
+          "vec_sim": "0.4928",
+          "bm25": "0.0000",
+          "trig": "0.1053",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2013므568",
+          "title": "이혼[유책배우자 이혼청구 사건]",
+          "score": "0.2617",
+          "vec_sim": "0.5051",
+          "bm25": "0.0210",
+          "trig": "0.0140",
+          "case_no": "2013므568",
+          "court": "대법원",
+          "decision_date": "2015-09-15"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-family-proc",
+          "law_name": "가사소송법",
+          "article_no": "제22조",
+          "title": "관할",
+          "score": "0.2569",
+          "vec_sim": "0.4901",
+          "bm25": "0.0000",
+          "trig": "0.0591",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10730",
+          "title": "이혼및재산분할[배우자가 일방적으로 당사자 쌍방의 협력으로 이룩한 재산을 처분한 것이 ‘혼인을 계속하기 어려운 중대한 사유’에 해당하는지 문제된 사건]",
+          "score": "0.2509",
+          "vec_sim": "0.4901",
+          "bm25": "0.0069",
+          "trig": "0.0190",
+          "case_no": "2025므10730",
+          "court": "대법원",
+          "decision_date": "2025-09-04"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제804조",
+          "title": "약혼해제의 사유",
+          "score": "0.2496",
+          "vec_sim": "0.4798",
+          "bm25": "0.0000",
+          "trig": "0.0487",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q20",
+      "domain": "family_parental",
+      "query": "미성년 자녀의 친권은 누가 행사하나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제909조"
+        }
+      ],
+      "bm25_tsquery": "친권:* | 자녀:* | 행사:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제911조",
+          "title": "미성년자인 자의 법정대리인",
+          "score": "0.3407",
+          "vec_sim": "0.6103",
+          "bm25": "0.0095",
+          "trig": "0.1636",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제928조",
+          "title": "미성년자에 대한 후견의 개시",
+          "score": "0.3159",
+          "vec_sim": "0.5997",
+          "bm25": "0.0128",
+          "trig": "0.0609",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제948조",
+          "title": "미성년자의 친권의 대행",
+          "score": "0.3147",
+          "vec_sim": "0.5717",
+          "bm25": "0.0229",
+          "trig": "0.1098",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제909조",
+          "title": "친권자",
+          "score": "0.3028",
+          "vec_sim": "0.5774",
+          "bm25": "0.0236",
+          "trig": "0.0351",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제931조",
+          "title": "유언에 의한 미성년후견인의 지정 등",
+          "score": "0.2964",
+          "vec_sim": "0.5658",
+          "bm25": "0.0138",
+          "trig": "0.0468",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제946조",
+          "title": "친권 중 일부에 한정된 후견",
+          "score": "0.2903",
+          "vec_sim": "0.5446",
+          "bm25": "0.0170",
+          "trig": "0.0642",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-family-proc",
+          "law_name": "가사소송법",
+          "article_no": "제25조",
+          "title": "친권자 지정 등에 관한 협의권고",
+          "score": "0.2761",
+          "vec_sim": "0.5229",
+          "bm25": "0.0182",
+          "trig": "0.0457",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제912조",
+          "title": "친권 행사와 친권자 지정의 기준",
+          "score": "0.2738",
+          "vec_sim": "0.5189",
+          "bm25": "0.0245",
+          "trig": "0.0350",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제924조",
+          "title": "친권의 상실 또는 일시 정지의 선고",
+          "score": "0.2535",
+          "vec_sim": "0.4810",
+          "bm25": "0.0156",
+          "trig": "0.0417",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-child-support",
+          "law_name": "양육비 이행확보 및 지원에 관한 법률",
+          "article_no": "제3조",
+          "title": "미성년 자녀에 대한 양육 책임",
+          "score": "0.2534",
+          "vec_sim": "0.4903",
+          "bm25": "0.0074",
+          "trig": "0.0302",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          4
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 0,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 0.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 4,
+        "rr": 0.25,
+        "ndcg5": 0.43067655807339306
+      }
+    },
+    {
+      "id": "C1-Q21",
+      "domain": "debt_guaranty",
+      "query": "수탁보증인이 주채무자에게 변제하기 전에 미리 구상할 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제442조"
+        }
+      ],
+      "bm25_tsquery": "수탁보증인:* | 사전구상:* | 변제:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제442조",
+          "title": "수탁보증인의 사전구상권",
+          "score": "0.3190",
+          "vec_sim": "0.5842",
+          "bm25": "0.0115",
+          "trig": "0.1171",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제441조",
+          "title": "수탁보증인의 구상권",
+          "score": "0.3171",
+          "vec_sim": "0.5670",
+          "bm25": "0.0093",
+          "trig": "0.1538",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제444조",
+          "title": "부탁없는 보증인의 구상권",
+          "score": "0.2884",
+          "vec_sim": "0.5374",
+          "bm25": "0.0042",
+          "trig": "0.0920",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제448조",
+          "title": "공동보증인간의 구상권",
+          "score": "0.2697",
+          "vec_sim": "0.4987",
+          "bm25": "0.0046",
+          "trig": "0.0949",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제445조",
+          "title": "구상요건으로서의 통지",
+          "score": "0.2617",
+          "vec_sim": "0.4800",
+          "bm25": "0.0045",
+          "trig": "0.1018",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제443조",
+          "title": "주채무자의 면책청구",
+          "score": "0.2513",
+          "vec_sim": "0.4701",
+          "bm25": "0.0000",
+          "trig": "0.0815",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제437조",
+          "title": "보증인의 최고, 검색의 항변",
+          "score": "0.2436",
+          "vec_sim": "0.4454",
+          "bm25": "0.0036",
+          "trig": "0.0993",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제446조",
+          "title": "주채무자의 보증인에 대한 면책통지의무",
+          "score": "0.2422",
+          "vec_sim": "0.4398",
+          "bm25": "0.0038",
+          "trig": "0.1061",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제434조",
+          "title": "보증인과 주채무자상계권",
+          "score": "0.2303",
+          "vec_sim": "0.4044",
+          "bm25": "0.0000",
+          "trig": "0.1408",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제435조",
+          "title": "보증인과 주채무자의 취소권 등",
+          "score": "0.2274",
+          "vec_sim": "0.4219",
+          "bm25": "0.0000",
+          "trig": "0.0825",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q22",
+      "domain": "debt_prescription",
+      "query": "1년짜리 단기 소멸시효가 적용되는 채권은 어떤 것이 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제164조"
+        }
+      ],
+      "bm25_tsquery": "소멸시효:* | 단기:* | 1년:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제164조",
+          "title": "1년의 단기소멸시효",
+          "score": "0.3286",
+          "vec_sim": "0.6184",
+          "bm25": "0.0154",
+          "trig": "0.0737",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제163조",
+          "title": "3년의 단기소멸시효",
+          "score": "0.2878",
+          "vec_sim": "0.5490",
+          "bm25": "0.0099",
+          "trig": "0.0515",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제162조",
+          "title": "채권, 재산권의 소멸시효",
+          "score": "0.2802",
+          "vec_sim": "0.4975",
+          "bm25": "0.0108",
+          "trig": "0.1410",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제165조",
+          "title": "판결 등에 의하여 확정된 채권의 소멸시효",
+          "score": "0.2786",
+          "vec_sim": "0.5083",
+          "bm25": "0.0148",
+          "trig": "0.1000",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제326조",
+          "title": "피담보채권의 소멸시효",
+          "score": "0.2645",
+          "vec_sim": "0.4898",
+          "bm25": "0.0114",
+          "trig": "0.0811",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제1117조",
+          "title": "소멸시효",
+          "score": "0.2243",
+          "vec_sim": "0.4220",
+          "bm25": "0.0090",
+          "trig": "0.0530",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제168조",
+          "title": "소멸시효의 중단사유",
+          "score": "0.2230",
+          "vec_sim": "0.4175",
+          "bm25": "0.0101",
+          "trig": "0.0562",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제360조",
+          "title": "피담보채권의 범위",
+          "score": "0.2229",
+          "vec_sim": "0.4288",
+          "bm25": "0.0041",
+          "trig": "0.0362",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제421조",
+          "title": "소멸시효의 절대적 효력",
+          "score": "0.2215",
+          "vec_sim": "0.4068",
+          "bm25": "0.0101",
+          "trig": "0.0753",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제166조",
+          "title": "소멸시효의 기산점",
+          "score": "0.2206",
+          "vec_sim": "0.4038",
+          "bm25": "0.0110",
+          "trig": "0.0769",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q23",
+      "domain": "debt_prescription",
+      "query": "최고를 하면 소멸시효가 중단되나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제174조"
+        }
+      ],
+      "bm25_tsquery": "최고:* | 시효중단:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제174조",
+          "title": "최고와 시효중단",
+          "score": "0.2985",
+          "vec_sim": "0.5588",
+          "bm25": "0.0291",
+          "trig": "0.0521",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제182조",
+          "title": "천재 기타 사변과 시효정지",
+          "score": "0.2546",
+          "vec_sim": "0.4729",
+          "bm25": "0.0000",
+          "trig": "0.0909",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제168조",
+          "title": "소멸시효의 중단사유",
+          "score": "0.2508",
+          "vec_sim": "0.4691",
+          "bm25": "0.0000",
+          "trig": "0.0811",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제167조",
+          "title": "소멸시효의 소급효",
+          "score": "0.2370",
+          "vec_sim": "0.4420",
+          "bm25": "0.0000",
+          "trig": "0.0800",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제296조",
+          "title": "소멸시효의 중단, 정지와 불가분성",
+          "score": "0.2345",
+          "vec_sim": "0.4423",
+          "bm25": "0.0000",
+          "trig": "0.0667",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제184조",
+          "title": "시효의 이익의 포기 기타",
+          "score": "0.2338",
+          "vec_sim": "0.4506",
+          "bm25": "0.0000",
+          "trig": "0.0426",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제183조",
+          "title": "종속된 권리에 대한 소멸시효의 효력",
+          "score": "0.2268",
+          "vec_sim": "0.4150",
+          "bm25": "0.0000",
+          "trig": "0.0968",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제162조",
+          "title": "채권, 재산권의 소멸시효",
+          "score": "0.2260",
+          "vec_sim": "0.4108",
+          "bm25": "0.0000",
+          "trig": "0.1029",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제179조",
+          "title": "제한능력자의 시효정지",
+          "score": "0.2257",
+          "vec_sim": "0.4274",
+          "bm25": "0.0000",
+          "trig": "0.0600",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제521조",
+          "title": "공시최고절차에 의한 증서의 실효",
+          "score": "0.2245",
+          "vec_sim": "0.4441",
+          "bm25": "0.0000",
+          "trig": "0.0123",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q24",
+      "domain": "contract_general",
+      "query": "상대방이 계약을 이행하지 않아 해제하고 원상회복을 받고 싶어요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제544조"
+        },
+        {
+          "law_id": "law-civil",
+          "article_no": "제548조"
+        }
+      ],
+      "bm25_tsquery": "이행지체:* | 해제:* | 원상회복:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제548조",
+          "title": "해제의 효과, 원상회복의무",
+          "score": "0.3446",
+          "vec_sim": "0.6273",
+          "bm25": "0.0174",
+          "trig": "0.1288",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제544조",
+          "title": "이행지체와 해제",
+          "score": "0.3069",
+          "vec_sim": "0.5562",
+          "bm25": "0.0132",
+          "trig": "0.1240",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제545조",
+          "title": "정기행위와 해제",
+          "score": "0.3004",
+          "vec_sim": "0.5486",
+          "bm25": "0.0084",
+          "trig": "0.1176",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제546조",
+          "title": "이행불능과 해제",
+          "score": "0.2913",
+          "vec_sim": "0.5382",
+          "bm25": "0.0105",
+          "trig": "0.0952",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제674조의3",
+          "title": "여행 개시 전의 계약 해제",
+          "score": "0.2809",
+          "vec_sim": "0.5209",
+          "bm25": "0.0093",
+          "trig": "0.0882",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제601조",
+          "title": "무이자소비대차와 해제권",
+          "score": "0.2795",
+          "vec_sim": "0.5194",
+          "bm25": "0.0096",
+          "trig": "0.0847",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제543조",
+          "title": "해지, 해제권",
+          "score": "0.2789",
+          "vec_sim": "0.5193",
+          "bm25": "0.0129",
+          "trig": "0.0769",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제558조",
+          "title": "해제와 이행완료부분",
+          "score": "0.2761",
+          "vec_sim": "0.5192",
+          "bm25": "0.0105",
+          "trig": "0.0667",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제547조",
+          "title": "해지, 해제권의 불가분성",
+          "score": "0.2749",
+          "vec_sim": "0.5272",
+          "bm25": "0.0124",
+          "trig": "0.0379",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제551조",
+          "title": "해지, 해제와 손해배상",
+          "score": "0.2686",
+          "vec_sim": "0.5097",
+          "bm25": "0.0107",
+          "trig": "0.0526",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1,
+          2
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 2,
+          "5": 2,
+          "10": 2
+        },
+        "recall_at": {
+          "1": 0.5,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q25",
+      "domain": "contract_general",
+      "query": "쌍방 채무가 있는 계약에서 내가 먼저 이행할 필요가 없다는 항변을 하고 싶어요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제536조"
+        }
+      ],
+      "bm25_tsquery": "동시이행:* | 항변권:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제536조",
+          "title": "동시이행의 항변권",
+          "score": "0.3200",
+          "vec_sim": "0.5956",
+          "bm25": "0.0136",
+          "trig": "0.0909",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제537조",
+          "title": "채무자위험부담주의",
+          "score": "0.2744",
+          "vec_sim": "0.5124",
+          "bm25": "0.0000",
+          "trig": "0.0909",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제542조",
+          "title": "채무자의 항변권",
+          "score": "0.2593",
+          "vec_sim": "0.4744",
+          "bm25": "0.0087",
+          "trig": "0.0978",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제121조",
+          "title": "쌍방미이행 쌍무계약의 해제 또는 해지",
+          "score": "0.2533",
+          "vec_sim": "0.4916",
+          "bm25": "0.0000",
+          "trig": "0.0376",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제538조",
+          "title": "채권자귀책사유로 인한 이행불능",
+          "score": "0.2501",
+          "vec_sim": "0.4714",
+          "bm25": "0.0000",
+          "trig": "0.0719",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제477조",
+          "title": "법정변제충당",
+          "score": "0.2478",
+          "vec_sim": "0.4778",
+          "bm25": "0.0000",
+          "trig": "0.0447",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제335조",
+          "title": "쌍방미이행 쌍무계약에 관한 선택",
+          "score": "0.2474",
+          "vec_sim": "0.4765",
+          "bm25": "0.0000",
+          "trig": "0.0458",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제412조",
+          "title": "가분채권, 가분채무에의 변경",
+          "score": "0.2451",
+          "vec_sim": "0.4591",
+          "bm25": "0.0000",
+          "trig": "0.0776",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제437조",
+          "title": "보증인의 최고, 검색의 항변",
+          "score": "0.2439",
+          "vec_sim": "0.4559",
+          "bm25": "0.0000",
+          "trig": "0.0798",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제124조",
+          "title": "자기계약, 쌍방대리",
+          "score": "0.2432",
+          "vec_sim": "0.4582",
+          "bm25": "0.0000",
+          "trig": "0.0703",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q26",
+      "domain": "contract_general",
+      "query": "미리 정한 배상액이 과도한 경우 법원이 감액할 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제398조"
+        }
+      ],
+      "bm25_tsquery": "배상액:* | 예정:* | 감액:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제398조",
+          "title": "배상액의 예정",
+          "score": "0.2848",
+          "vec_sim": "0.5094",
+          "bm25": "0.0302",
+          "trig": "0.1053",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제765조",
+          "title": "배상액의 경감청구",
+          "score": "0.2831",
+          "vec_sim": "0.5322",
+          "bm25": "0.0083",
+          "trig": "0.0727",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제751조",
+          "title": "재산 이외의 손해의 배상",
+          "score": "0.2057",
+          "vec_sim": "0.3906",
+          "bm25": "0.0000",
+          "trig": "0.0523",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2022스646",
+          "title": "양육비변경(감액)청구",
+          "score": "0.2053",
+          "vec_sim": "0.3859",
+          "bm25": "0.0181",
+          "trig": "0.0348",
+          "case_no": "2022스646",
+          "court": "대법원",
+          "decision_date": "2022-09-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2022다311736",
+          "title": "임대차보증금[임대차보증금에서 위약벌 및 손해배상예정액을 공제하기로 약정한 임차인에 대해 회생절차가 개시된 경우, 임대인이 회생채권으로 주장할 수 있는 임대차보증금반환채권의 범위가 다투어진 사건]",
+          "score": "0.2002",
+          "vec_sim": "0.3730",
+          "bm25": "0.0332",
+          "trig": "0.0188",
+          "case_no": "2022다311736",
+          "court": "대법원",
+          "decision_date": "2025-07-18"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제303조",
+          "title": "파산절차비용의 예납",
+          "score": "0.1936",
+          "vec_sim": "0.3561",
+          "bm25": "0.0000",
+          "trig": "0.0778",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제396조",
+          "title": "과실상계",
+          "score": "0.1925",
+          "vec_sim": "0.3651",
+          "bm25": "0.0000",
+          "trig": "0.0500",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제362조",
+          "title": "저당물의 보충",
+          "score": "0.1919",
+          "vec_sim": "0.3661",
+          "bm25": "0.0000",
+          "trig": "0.0442",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제674조의6",
+          "title": "여행주최자의 담보책임",
+          "score": "0.1919",
+          "vec_sim": "0.3628",
+          "bm25": "0.0073",
+          "trig": "0.0415",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-privacy",
+          "law_name": "개인정보 보호법",
+          "article_no": "제39조의2",
+          "title": "법정손해배상의 청구",
+          "score": "0.1877",
+          "vec_sim": "0.3567",
+          "bm25": "0.0000",
+          "trig": "0.0469",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q27",
+      "domain": "tort",
+      "query": "교통사고로 정신적 고통을 입은 경우 위자료를 청구할 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제751조"
+        }
+      ],
+      "bm25_tsquery": "위자료:* | 정신적:* | 손해:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2017다231119",
+          "title": "구상금[근로복지공단이 산업재해보상보험법에 따라 지급한 보험급여에 기하여 자동차손해배상 보장법상 피해자의 보험자에 대한 위자료청구권을 대위할 수 있는지 문제된 사건]",
+          "score": "0.2372",
+          "vec_sim": "0.4205",
+          "bm25": "0.0673",
+          "trig": "0.0340",
+          "case_no": "2017다231119",
+          "court": "대법원",
+          "decision_date": "2017-10-12"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제752조",
+          "title": "생명침해로 인한 위자료",
+          "score": "0.2318",
+          "vec_sim": "0.4333",
+          "bm25": "0.0140",
+          "trig": "0.0545",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10716",
+          "title": "이혼등[부부의 일방이 제3자와 부정행위를 한 경우 상대방 배우자의 제3자에 대한 이혼을 원인으로 하는 위자료청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.2164",
+          "vec_sim": "0.3837",
+          "bm25": "0.0549",
+          "trig": "0.0407",
+          "case_no": "2025므10716",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제806조",
+          "title": "약혼해제와 손해배상청구권",
+          "score": "0.2083",
+          "vec_sim": "0.3796",
+          "bm25": "0.0150",
+          "trig": "0.0699",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-auto-accident",
+          "law_name": "자동차손해배상 보장법",
+          "article_no": "제23조",
+          "title": "위법 사실의 통보 등",
+          "score": "0.2074",
+          "vec_sim": "0.4048",
+          "bm25": "0.0000",
+          "trig": "0.0250",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2022다246146",
+          "title": "구상금[「자동차손해배상 보장법」 시행령 제3조 제1항 제2호 단서의 적용 여부가 문제된 사건]",
+          "score": "0.2017",
+          "vec_sim": "0.3752",
+          "bm25": "0.0319",
+          "trig": "0.0225",
+          "case_no": "2022다246146",
+          "court": "대법원",
+          "decision_date": "2025-05-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다285162",
+          "title": "손해배상(국)[5·18민주화운동 관련자 가족 고유의 위자료 청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.1948",
+          "vec_sim": "0.3690",
+          "bm25": "0.0262",
+          "trig": "0.0125",
+          "case_no": "2023다285162",
+          "court": "대법원",
+          "decision_date": "2026-01-22"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다311184",
+          "title": "손해배상(기)[개인정보 보호법 제39조의2에 따른 법정손해배상책임의 성립 여부가 문제된 사건]",
+          "score": "0.1937",
+          "vec_sim": "0.3565",
+          "bm25": "0.0355",
+          "trig": "0.0241",
+          "case_no": "2023다311184",
+          "court": "대법원",
+          "decision_date": "2025-12-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024도9537",
+          "title": "도로교통법위반(음주운전)·도로교통법위반(무면허운전)·도로교통법위반·도로교통법위반(사고후미조치)·자동차손해배상보장법위반[치료감호청구 요구에 관한 법관 재량의 한계가 문제된 사건]",
+          "score": "0.1909",
+          "vec_sim": "0.3742",
+          "bm25": "0.0000",
+          "trig": "0.0190",
+          "case_no": "2024도9537",
+          "court": "대법원",
+          "decision_date": "2024-12-26"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제740조",
+          "title": "관리자의 무과실손해보상청구권",
+          "score": "0.1879",
+          "vec_sim": "0.3455",
+          "bm25": "0.0087",
+          "trig": "0.0625",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          null
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 0,
+          "5": 0,
+          "10": 0
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 0.0,
+          "5": 0.0,
+          "10": 0.0
+        },
+        "first_hit_rank": null,
+        "rr": 0.0,
+        "ndcg5": 0.0
+      }
+    },
+    {
+      "id": "C1-Q28",
+      "domain": "tort",
+      "query": "채무불이행으로 손해가 발생하면 어떤 근거로 배상받을 수 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제390조"
+        }
+      ],
+      "bm25_tsquery": "채무불이행:* | 손해배상:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제393조",
+          "title": "손해배상의 범위",
+          "score": "0.3307",
+          "vec_sim": "0.5907",
+          "bm25": "0.0198",
+          "trig": "0.1471",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제390조",
+          "title": "채무불이행과 손해배상",
+          "score": "0.3259",
+          "vec_sim": "0.6033",
+          "bm25": "0.0213",
+          "trig": "0.0893",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제397조",
+          "title": "금전채무불이행에 대한 특칙",
+          "score": "0.2786",
+          "vec_sim": "0.5276",
+          "bm25": "0.0118",
+          "trig": "0.0563",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제392조",
+          "title": "이행지체 중의 손해배상",
+          "score": "0.2738",
+          "vec_sim": "0.5148",
+          "bm25": "0.0075",
+          "trig": "0.0708",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제396조",
+          "title": "과실상계",
+          "score": "0.2698",
+          "vec_sim": "0.4994",
+          "bm25": "0.0136",
+          "trig": "0.0800",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제394조",
+          "title": "손해배상의 방법",
+          "score": "0.2500",
+          "vec_sim": "0.4654",
+          "bm25": "0.0100",
+          "trig": "0.0714",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제751조",
+          "title": "재산 이외의 손해의 배상",
+          "score": "0.2497",
+          "vec_sim": "0.4782",
+          "bm25": "0.0054",
+          "trig": "0.0446",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제399조",
+          "title": "손해배상자의 대위",
+          "score": "0.2472",
+          "vec_sim": "0.4666",
+          "bm25": "0.0142",
+          "trig": "0.0481",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제617조",
+          "title": "손해배상, 비용상환청구의 기간",
+          "score": "0.2419",
+          "vec_sim": "0.4641",
+          "bm25": "0.0136",
+          "trig": "0.0290",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제398조",
+          "title": "배상액의 예정",
+          "score": "0.2399",
+          "vec_sim": "0.4372",
+          "bm25": "0.0227",
+          "trig": "0.0726",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          2
+        ],
+        "hits_at": {
+          "1": 0,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 0.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 2,
+        "rr": 0.5,
+        "ndcg5": 0.6309297535714575
+      }
+    },
+    {
+      "id": "C1-Q29",
+      "domain": "misc",
+      "query": "서로에게 같은 종류의 채무가 있을 때 상계하려면 어떤 요건이 필요한가요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제492조"
+        }
+      ],
+      "bm25_tsquery": "상계:* | 요건:* | 채권:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제492조",
+          "title": "상계의 요건",
+          "score": "0.3392",
+          "vec_sim": "0.6342",
+          "bm25": "0.0158",
+          "trig": "0.0870",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제494조",
+          "title": "이행지를 달리하는 채무의 상계",
+          "score": "0.2939",
+          "vec_sim": "0.5515",
+          "bm25": "0.0177",
+          "trig": "0.0642",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제493조",
+          "title": "상계의 방법, 효과",
+          "score": "0.2837",
+          "vec_sim": "0.5339",
+          "bm25": "0.0133",
+          "trig": "0.0640",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제495조",
+          "title": "소멸시효완성된 채권에 의한 상계",
+          "score": "0.2792",
+          "vec_sim": "0.5253",
+          "bm25": "0.0248",
+          "trig": "0.0455",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제507조",
+          "title": "혼동의 요건, 효과",
+          "score": "0.2693",
+          "vec_sim": "0.5014",
+          "bm25": "0.0181",
+          "trig": "0.0660",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제715조",
+          "title": "조합채무자의 상계의 금지",
+          "score": "0.2669",
+          "vec_sim": "0.5002",
+          "bm25": "0.0155",
+          "trig": "0.0610",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제419조",
+          "title": "해제조건부채권의 상계",
+          "score": "0.2668",
+          "vec_sim": "0.5133",
+          "bm25": "0.0139",
+          "trig": "0.0300",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제417조",
+          "title": "기한부 및 해제조건부 등 채권채무의 상계",
+          "score": "0.2662",
+          "vec_sim": "0.4918",
+          "bm25": "0.0165",
+          "trig": "0.0769",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제418조",
+          "title": "상계의 절대적 효력",
+          "score": "0.2581",
+          "vec_sim": "0.4741",
+          "bm25": "0.0289",
+          "trig": "0.0615",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-debtor-rehab",
+          "law_name": "채무자 회생 및 파산에 관한 법률",
+          "article_no": "제416조",
+          "title": "상계권",
+          "score": "0.2449",
+          "vec_sim": "0.4593",
+          "bm25": "0.0098",
+          "trig": "0.0619",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C1-Q30",
+      "domain": "family_parental",
+      "query": "직계혈족 사이의 부양의무는 법적으로 어떻게 정해져 있나요",
+      "gold_articles": [
+        {
+          "law_id": "law-civil",
+          "article_no": "제974조"
+        }
+      ],
+      "bm25_tsquery": "부양:* | 의무:* | 직계혈족:*",
+      "rows": [
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제974조",
+          "title": "부양의무",
+          "score": "0.3566",
+          "vec_sim": "0.6653",
+          "bm25": "0.0177",
+          "trig": "0.0935",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제975조",
+          "title": "부양의무와 생활능력",
+          "score": "0.2803",
+          "vec_sim": "0.5221",
+          "bm25": "0.0179",
+          "trig": "0.0693",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제768조",
+          "title": "혈족의 정의",
+          "score": "0.2784",
+          "vec_sim": "0.5332",
+          "bm25": "0.0043",
+          "trig": "0.0526",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제976조",
+          "title": "부양의 순위",
+          "score": "0.2691",
+          "vec_sim": "0.5050",
+          "bm25": "0.0235",
+          "trig": "0.0479",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제770조",
+          "title": "혈족의 촌수의 계산",
+          "score": "0.2681",
+          "vec_sim": "0.5136",
+          "bm25": "0.0039",
+          "trig": "0.0505",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제779조",
+          "title": "가족의 범위",
+          "score": "0.2636",
+          "vec_sim": "0.4977",
+          "bm25": "0.0091",
+          "trig": "0.0600",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제978조",
+          "title": "부양관계의 변경 또는 취소",
+          "score": "0.2568",
+          "vec_sim": "0.4842",
+          "bm25": "0.0127",
+          "trig": "0.0543",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제977조",
+          "title": "부양의 정도, 방법",
+          "score": "0.2552",
+          "vec_sim": "0.4819",
+          "bm25": "0.0134",
+          "trig": "0.0513",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제772조",
+          "title": "양자와의 친계와 촌수",
+          "score": "0.2443",
+          "vec_sim": "0.4663",
+          "bm25": "0.0000",
+          "trig": "0.0560",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제767조",
+          "title": "친족의 정의",
+          "score": "0.2418",
+          "vec_sim": "0.4639",
+          "bm25": "0.0000",
+          "trig": "0.0492",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q01",
+      "domain": "real_estate_lease",
+      "query": "임차인이 살던 집을 매수해서 주인이 된 경우에도 기존 대항력과 우선변제권이 유지되나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025다213466"
+        }
+      ],
+      "bm25_tsquery": "대항력:* | 우선변제권:* | 소유권:* | 혼동:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다213466",
+          "title": "보증금[임차인이 임차주택의 소유권을 취득한 경우 주택임대차의 대항력과 우선변제권이 상실되는지 문제된 사건]",
+          "score": "0.2898",
+          "vec_sim": "0.5473",
+          "bm25": "0.0277",
+          "trig": "0.0390",
+          "case_no": "2025다213466",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다326398",
+          "title": "임대차보증금반환[주택 임차인의 점유 상실 후 마쳐진 임차권등기의 대항력이 문제된 사건]",
+          "score": "0.2886",
+          "vec_sim": "0.5471",
+          "bm25": "0.0207",
+          "trig": "0.0441",
+          "case_no": "2024다326398",
+          "court": "대법원",
+          "decision_date": "2025-04-15"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제622조",
+          "title": "건물등기있는 차지권의 대항력",
+          "score": "0.2717",
+          "vec_sim": "0.5085",
+          "bm25": "0.0036",
+          "trig": "0.0818",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2022다255126",
+          "title": "구상금[주택임대차보호법 제3조의2 제7항에서 정한 금융기관이 임차인으로부터 보증금반환채권을 양수한 후 그에 기해 경매절차에서 배당요구를 하여 보증금 일부를 배당받고, 경매절차에서 임차주택을 매수한 피고들을 상대로 전세보증금 잔액에 대해 양수금 또는 구상금 지급을 구한 사안]",
+          "score": "0.2645",
+          "vec_sim": "0.4923",
+          "bm25": "0.0148",
+          "trig": "0.0695",
+          "case_no": "2022다255126",
+          "court": "대법원",
+          "decision_date": "2023-02-02"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제3조",
+          "title": "대항력 등",
+          "score": "0.2613",
+          "vec_sim": "0.5050",
+          "bm25": "0.0046",
+          "trig": "0.0373",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-commercial-lease",
+          "law_name": "상가건물 임대차보호법",
+          "article_no": "제8조",
+          "title": "경매에 의한 임차권의 소멸",
+          "score": "0.2573",
+          "vec_sim": "0.4860",
+          "bm25": "0.0029",
+          "trig": "0.0672",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-housing-lease",
+          "law_name": "주택임대차보호법",
+          "article_no": "제3조의5",
+          "title": "경매에 의한 임차권의 소멸",
+          "score": "0.2540",
+          "vec_sim": "0.4835",
+          "bm25": "0.0029",
+          "trig": "0.0571",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-commercial-lease",
+          "law_name": "상가건물 임대차보호법",
+          "article_no": "제3조",
+          "title": "대항력 등",
+          "score": "0.2492",
+          "vec_sim": "0.4708",
+          "bm25": "0.0031",
+          "trig": "0.0643",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제647조",
+          "title": "전차인의 부속물매수청구권",
+          "score": "0.2462",
+          "vec_sim": "0.4645",
+          "bm25": "0.0000",
+          "trig": "0.0698",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제646조",
+          "title": "임차인의 부속물매수청구권",
+          "score": "0.2427",
+          "vec_sim": "0.4622",
+          "bm25": "0.0000",
+          "trig": "0.0581",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q02",
+      "domain": "real_estate_ownership",
+      "query": "상법 374조 위반 부동산 이전등기를 믿고 근저당권을 설정받은 선의의 제3자 보호 문제",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025다210092, 210093"
+        }
+      ],
+      "bm25_tsquery": "근저당권:* | 선의:* | 제3자:* | 신의성실:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다210092, 210093",
+          "title": "근저당권말소·손해배상청구의소[주식회사가 상법 제374조 제1항에 위반하여 마쳐진 부동산 소유권이전등기를 신뢰하고 근저당권을 설정받은 선의의 제3자를 상대로 근저당권말소를 청구한 사건]",
+          "score": "0.2791",
+          "vec_sim": "0.5311",
+          "bm25": "0.0214",
+          "trig": "0.0357",
+          "case_no": "2025다210092, 210093",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제371조",
+          "title": "지상권, 전세권을 목적으로 하는 저당권",
+          "score": "0.2520",
+          "vec_sim": "0.4811",
+          "bm25": "0.0000",
+          "trig": "0.0569",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제364조",
+          "title": "제삼취득자의 변제",
+          "score": "0.2464",
+          "vec_sim": "0.4674",
+          "bm25": "0.0000",
+          "trig": "0.0635",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2016도18761",
+          "title": "사기ㆍ횡령[부동산 실권리자명의 등기에 관한 법률에 위반한 이른바 양자간 명의신탁에서 명의수탁자가 신탁부동산을 임의로 처분한 경우 횡령죄가 성립하는지 여부가 문제된 사건]",
+          "score": "0.2427",
+          "vec_sim": "0.4730",
+          "bm25": "0.0033",
+          "trig": "0.0257",
+          "case_no": "2016도18761",
+          "court": "대법원",
+          "decision_date": "2021-02-18"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제357조",
+          "title": "근저당",
+          "score": "0.2380",
+          "vec_sim": "0.4480",
+          "bm25": "0.0000",
+          "trig": "0.0701",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "63다610",
+          "title": "원인무효에인한근저당권설정등기말소등기",
+          "score": "0.2371",
+          "vec_sim": "0.4544",
+          "bm25": "0.0042",
+          "trig": "0.0435",
+          "case_no": "63다610",
+          "court": "대법원",
+          "decision_date": "1963-11-07"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-title",
+          "law_name": "부동산 실권리자명의 등기에 관한 법률",
+          "article_no": "제3조",
+          "title": "실권리자명의 등기의무 등",
+          "score": "0.2365",
+          "vec_sim": "0.4529",
+          "bm25": "0.0000",
+          "trig": "0.0506",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제372조",
+          "title": "타법률에 의한 저당권",
+          "score": "0.2363",
+          "vec_sim": "0.4501",
+          "bm25": "0.0000",
+          "trig": "0.0562",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-civil",
+          "law_name": "민법",
+          "article_no": "제356조",
+          "title": "저당권의 내용",
+          "score": "0.2314",
+          "vec_sim": "0.4381",
+          "bm25": "0.0000",
+          "trig": "0.0615",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2009다49193",
+          "title": "3자간 등기명의신탁에서 부동산 실권리자명의 등기에 관한 법률에서 정한 유예기간이 경과하여 명의신탁약정과 그에 따른 등기가 무효인 경우, 명의신탁자가 매도인을 대위하여 명의수탁자에게 무효인 명의 등기의 말소를 구할 수 있는지 여부",
+          "score": "0.2301",
+          "vec_sim": "0.4381",
+          "bm25": "0.0000",
+          "trig": "0.0553",
+          "case_no": "2009다49193",
+          "court": "대법원",
+          "decision_date": "2011-09-08"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q03",
+      "domain": "damages_prescription",
+      "query": "배우자가 바람난 상대방을 상대로 위자료를 청구할 때 소멸시효는 언제부터 시작되나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025므10716"
+        }
+      ],
+      "bm25_tsquery": "위자료:* | 부정행위:* | 소멸시효:* | 단기:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10716",
+          "title": "이혼등[부부의 일방이 제3자와 부정행위를 한 경우 상대방 배우자의 제3자에 대한 이혼을 원인으로 하는 위자료청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.2865",
+          "vec_sim": "0.5336",
+          "bm25": "0.0403",
+          "trig": "0.0382",
+          "case_no": "2025므10716",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다285162",
+          "title": "손해배상(국)[5·18민주화운동 관련자 가족 고유의 위자료 청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.2114",
+          "vec_sim": "0.4074",
+          "bm25": "0.0157",
+          "trig": "0.0148",
+          "case_no": "2023다285162",
+          "court": "대법원",
+          "decision_date": "2026-01-22"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다254387",
+          "title": "대여금등청구의소[사해행위취소소송에서 피보전채권의 소멸시효 완성 및 시효이익 포기 여부가 문제된 사건]",
+          "score": "0.1934",
+          "vec_sim": "0.3749",
+          "bm25": "0.0079",
+          "trig": "0.0178",
+          "case_no": "2024다254387",
+          "court": "대법원",
+          "decision_date": "2025-09-25"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다249729",
+          "title": "구상금[공동불법행위자 중 1인의 보험자가 보험자대위에 따라 취득한 구상금채권을 행사하는 경우 소멸시효기간이 문제된 사건]",
+          "score": "0.1910",
+          "vec_sim": "0.3668",
+          "bm25": "0.0099",
+          "trig": "0.0234",
+          "case_no": "2024다249729",
+          "court": "대법원",
+          "decision_date": "2024-09-27"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다211537, 211538",
+          "title": "손해배상청구의소·손해배상청구의소[불법행위에 기한 손해배상채권의 장기소멸시효 기산점이 문제된 사건]",
+          "score": "0.1828",
+          "vec_sim": "0.3511",
+          "bm25": "0.0073",
+          "trig": "0.0253",
+          "case_no": "2025다211537, 211538",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다203655",
+          "title": "구상금[학교안전공제회가 수급권자에게 공제급여 등을 지급한 후 대위취득한 수급권자의 학교안전사고를 일으킨 자 등에 대한 손해배상청구권의 소멸시효 등이 문제 된 사건]",
+          "score": "0.1828",
+          "vec_sim": "0.3535",
+          "bm25": "0.0038",
+          "trig": "0.0243",
+          "case_no": "2024다203655",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2018다303653",
+          "title": "손해배상(기)[일제 강제동원 피해자들이 일본 기업을 상대로 불법행위로 인한 위자료 지급을 구하는 사건]",
+          "score": "0.1791",
+          "vec_sim": "0.3413",
+          "bm25": "0.0127",
+          "trig": "0.0235",
+          "case_no": "2018다303653",
+          "court": "대법원",
+          "decision_date": "2023-12-21"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025두34494",
+          "title": "증여세부과처분취소[주주의 특수관계인이 회사에 무상으로 대여한 금전채권의 소멸시효가 완성된 이후 시기의 적정 이자 상당액을 증여이익으로 의제하여 증여세를 과세한 사건]",
+          "score": "0.1768",
+          "vec_sim": "0.3439",
+          "bm25": "0.0077",
+          "trig": "0.0126",
+          "case_no": "2025두34494",
+          "court": "대법원",
+          "decision_date": "2025-12-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2020도17883",
+          "title": "자동차관리법위반·자동차손해배상보장법위반",
+          "score": "0.1670",
+          "vec_sim": "0.3276",
+          "bm25": "0.0015",
+          "trig": "0.0140",
+          "case_no": "2020도17883",
+          "court": "대법원",
+          "decision_date": "2023-04-27"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2017다231119",
+          "title": "구상금[근로복지공단이 산업재해보상보험법에 따라 지급한 보험급여에 기하여 자동차손해배상 보장법상 피해자의 보험자에 대한 위자료청구권을 대위할 수 있는지 문제된 사건]",
+          "score": "0.1665",
+          "vec_sim": "0.3193",
+          "bm25": "0.0073",
+          "trig": "0.0232",
+          "case_no": "2017다231119",
+          "court": "대법원",
+          "decision_date": "2017-10-12"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q04",
+      "domain": "damages_prescription",
+      "query": "불법행위 손해배상청구권의 장기소멸시효 기산점은 언제인가요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025다211537, 211538"
+        }
+      ],
+      "bm25_tsquery": "불법행위:* | 손해배상:* | 장기소멸시효:* | 민법제766조:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다211537, 211538",
+          "title": "손해배상청구의소·손해배상청구의소[불법행위에 기한 손해배상채권의 장기소멸시효 기산점이 문제된 사건]",
+          "score": "0.3023",
+          "vec_sim": "0.5766",
+          "bm25": "0.0211",
+          "trig": "0.0384",
+          "case_no": "2025다211537, 211538",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다285162",
+          "title": "손해배상(국)[5·18민주화운동 관련자 가족 고유의 위자료 청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.2902",
+          "vec_sim": "0.5671",
+          "bm25": "0.0129",
+          "trig": "0.0137",
+          "case_no": "2023다285162",
+          "court": "대법원",
+          "decision_date": "2026-01-22"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다203655",
+          "title": "구상금[학교안전공제회가 수급권자에게 공제급여 등을 지급한 후 대위취득한 수급권자의 학교안전사고를 일으킨 자 등에 대한 손해배상청구권의 소멸시효 등이 문제 된 사건]",
+          "score": "0.2516",
+          "vec_sim": "0.4812",
+          "bm25": "0.0219",
+          "trig": "0.0220",
+          "case_no": "2024다203655",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2018다303653",
+          "title": "손해배상(기)[일제 강제동원 피해자들이 일본 기업을 상대로 불법행위로 인한 위자료 지급을 구하는 사건]",
+          "score": "0.2485",
+          "vec_sim": "0.4783",
+          "bm25": "0.0142",
+          "trig": "0.0254",
+          "case_no": "2018다303653",
+          "court": "대법원",
+          "decision_date": "2023-12-21"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10716",
+          "title": "이혼등[부부의 일방이 제3자와 부정행위를 한 경우 상대방 배우자의 제3자에 대한 이혼을 원인으로 하는 위자료청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.2469",
+          "vec_sim": "0.4683",
+          "bm25": "0.0252",
+          "trig": "0.0257",
+          "case_no": "2025므10716",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다205487",
+          "title": "손해배상(기)[다초점 인공수정체 삽입술 비용의 보험금 청구와 관련된 불법행위 손해배상청구 사건]",
+          "score": "0.2284",
+          "vec_sim": "0.4458",
+          "bm25": "0.0102",
+          "trig": "0.0125",
+          "case_no": "2023다205487",
+          "court": "대법원",
+          "decision_date": "2024-12-24"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다249729",
+          "title": "구상금[공동불법행위자 중 1인의 보험자가 보험자대위에 따라 취득한 구상금채권을 행사하는 경우 소멸시효기간이 문제된 사건]",
+          "score": "0.2248",
+          "vec_sim": "0.4340",
+          "bm25": "0.0090",
+          "trig": "0.0254",
+          "case_no": "2024다249729",
+          "court": "대법원",
+          "decision_date": "2024-09-27"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2013다59142",
+          "title": "손해배상(기)[인접 건물 외벽의 유리에서 반사되는 강한 태양반사광으로 인한 생활방해에 대하여 인접 주거지의 거주자가 불법행위를 원인으로 손해배상을 구하는 사건]",
+          "score": "0.2006",
+          "vec_sim": "0.3926",
+          "bm25": "0.0067",
+          "trig": "0.0111",
+          "case_no": "2013다59142",
+          "court": "대법원",
+          "decision_date": "2021-03-11"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다288915",
+          "title": "토지인도[지역권자를 상대로 지역권설정계약의 해지를 주장하며 부당이득반환, 불법행위 손해배상을 청구하는 사건]",
+          "score": "0.2002",
+          "vec_sim": "0.3881",
+          "bm25": "0.0090",
+          "trig": "0.0173",
+          "case_no": "2024다288915",
+          "court": "대법원",
+          "decision_date": "2025-06-12"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다314022",
+          "title": "손해배상(기)[비법인사단의 대표자가 선량한 관리자의 주의의무를 위반한 경우, 비법인사단의 구성원에 대한 불법행위 손해배상책임의 성립 여부가 문제된 사건]",
+          "score": "0.1997",
+          "vec_sim": "0.3876",
+          "bm25": "0.0128",
+          "trig": "0.0101",
+          "case_no": "2023다314022",
+          "court": "대법원",
+          "decision_date": "2024-07-11"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q05",
+      "domain": "family_divorce",
+      "query": "재판상 이혼이 확정된 뒤에 재산분할을 다시 청구하면 어느 시점 재산을 기준으로 하나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025스595"
+        }
+      ],
+      "bm25_tsquery": "재판상이혼:* | 재산분할:* | 기준시점:* | 심판:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025스595",
+          "title": "재산분할[재판상 이혼이 확정된 후 재산분할심판을 청구한 경우 재산분할의 기준시점이 문제된 사안]",
+          "score": "0.3202",
+          "vec_sim": "0.6031",
+          "bm25": "0.0236",
+          "trig": "0.0577",
+          "case_no": "2025스595",
+          "court": "대법원",
+          "decision_date": "2025-08-14"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024스876",
+          "title": "재산분할[협의이혼을 한 당사자 일방이 사망한 전 배우자의 상속인들을 상대로 재산분할을 청구한 사건]",
+          "score": "0.2913",
+          "vec_sim": "0.5502",
+          "bm25": "0.0205",
+          "trig": "0.0503",
+          "case_no": "2024스876",
+          "court": "대법원",
+          "decision_date": "2026-01-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024므13669, 13676",
+          "title": "이혼·이혼·위자료·재산분할[이혼에 따른 재산분할에서 일방 배우자의 기여 인정 여부, 분할대상 재산 산정 기준 시기와 대상이 문제된 사건]",
+          "score": "0.2473",
+          "vec_sim": "0.4798",
+          "bm25": "0.0098",
+          "trig": "0.0223",
+          "case_no": "2024므13669, 13676",
+          "court": "대법원",
+          "decision_date": "2025-10-16"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10730",
+          "title": "이혼및재산분할[배우자가 일방적으로 당사자 쌍방의 협력으로 이룩한 재산을 처분한 것이 ‘혼인을 계속하기 어려운 중대한 사유’에 해당하는지 문제된 사건]",
+          "score": "0.2308",
+          "vec_sim": "0.4520",
+          "bm25": "0.0036",
+          "trig": "0.0186",
+          "case_no": "2025므10730",
+          "court": "대법원",
+          "decision_date": "2025-09-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024두31185",
+          "title": "조합원지위확인[주택재개발사업에서 권리산정기준일 이전에 상속이 개시되었으나 그 이후에 상속재산분할협의를 거쳐 상속등기를 마친 상속인들에 대한 분양주택 수가 문제된 사건]",
+          "score": "0.2078",
+          "vec_sim": "0.4074",
+          "bm25": "0.0000",
+          "trig": "0.0202",
+          "case_no": "2024두31185",
+          "court": "대법원",
+          "decision_date": "2025-05-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2013므568",
+          "title": "이혼[유책배우자 이혼청구 사건]",
+          "score": "0.2027",
+          "vec_sim": "0.3960",
+          "bm25": "0.0056",
+          "trig": "0.0151",
+          "case_no": "2013므568",
+          "court": "대법원",
+          "decision_date": "2015-09-15"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q06",
+      "domain": "family_divorce",
+      "query": "협의이혼한 뒤 상대가 사망했는데 그 상속인에게 재산분할을 청구할 수 있나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2024스876"
+        }
+      ],
+      "bm25_tsquery": "협의이혼:* | 재산분할:* | 상속인:* | 사망:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024스876",
+          "title": "재산분할[협의이혼을 한 당사자 일방이 사망한 전 배우자의 상속인들을 상대로 재산분할을 청구한 사건]",
+          "score": "0.3449",
+          "vec_sim": "0.6446",
+          "bm25": "0.0348",
+          "trig": "0.0606",
+          "case_no": "2024스876",
+          "court": "대법원",
+          "decision_date": "2026-01-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025스595",
+          "title": "재산분할[재판상 이혼이 확정된 후 재산분할심판을 청구한 경우 재산분할의 기준시점이 문제된 사안]",
+          "score": "0.2603",
+          "vec_sim": "0.4933",
+          "bm25": "0.0189",
+          "trig": "0.0398",
+          "case_no": "2025스595",
+          "court": "대법원",
+          "decision_date": "2025-08-14"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10730",
+          "title": "이혼및재산분할[배우자가 일방적으로 당사자 쌍방의 협력으로 이룩한 재산을 처분한 것이 ‘혼인을 계속하기 어려운 중대한 사유’에 해당하는지 문제된 사건]",
+          "score": "0.2329",
+          "vec_sim": "0.4527",
+          "bm25": "0.0051",
+          "trig": "0.0251",
+          "case_no": "2025므10730",
+          "court": "대법원",
+          "decision_date": "2025-09-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024므13669, 13676",
+          "title": "이혼·이혼·위자료·재산분할[이혼에 따른 재산분할에서 일방 배우자의 기여 인정 여부, 분할대상 재산 산정 기준 시기와 대상이 문제된 사건]",
+          "score": "0.2300",
+          "vec_sim": "0.4466",
+          "bm25": "0.0098",
+          "trig": "0.0188",
+          "case_no": "2024므13669, 13676",
+          "court": "대법원",
+          "decision_date": "2025-10-16"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024두31185",
+          "title": "조합원지위확인[주택재개발사업에서 권리산정기준일 이전에 상속이 개시되었으나 그 이후에 상속재산분할협의를 거쳐 상속등기를 마친 상속인들에 대한 분양주택 수가 문제된 사건]",
+          "score": "0.2282",
+          "vec_sim": "0.4310",
+          "bm25": "0.0187",
+          "trig": "0.0356",
+          "case_no": "2024두31185",
+          "court": "대법원",
+          "decision_date": "2025-05-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2013므568",
+          "title": "이혼[유책배우자 이혼청구 사건]",
+          "score": "0.2059",
+          "vec_sim": "0.4038",
+          "bm25": "0.0056",
+          "trig": "0.0113",
+          "case_no": "2013므568",
+          "court": "대법원",
+          "decision_date": "2015-09-15"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q07",
+      "domain": "family_divorce",
+      "query": "이혼 재산분할에서 일방이 일방적으로 재산을 처분한 것이 이혼사유가 될까요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025므10730"
+        }
+      ],
+      "bm25_tsquery": "이혼사유:* | 재산분할:* | 일방적처분:* | 중대한사유:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10730",
+          "title": "이혼및재산분할[배우자가 일방적으로 당사자 쌍방의 협력으로 이룩한 재산을 처분한 것이 ‘혼인을 계속하기 어려운 중대한 사유’에 해당하는지 문제된 사건]",
+          "score": "0.3013",
+          "vec_sim": "0.5845",
+          "bm25": "0.0071",
+          "trig": "0.0345",
+          "case_no": "2025므10730",
+          "court": "대법원",
+          "decision_date": "2025-09-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024므13669, 13676",
+          "title": "이혼·이혼·위자료·재산분할[이혼에 따른 재산분할에서 일방 배우자의 기여 인정 여부, 분할대상 재산 산정 기준 시기와 대상이 문제된 사건]",
+          "score": "0.2782",
+          "vec_sim": "0.5410",
+          "bm25": "0.0098",
+          "trig": "0.0238",
+          "case_no": "2024므13669, 13676",
+          "court": "대법원",
+          "decision_date": "2025-10-16"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024스876",
+          "title": "재산분할[협의이혼을 한 당사자 일방이 사망한 전 배우자의 상속인들을 상대로 재산분할을 청구한 사건]",
+          "score": "0.2554",
+          "vec_sim": "0.4838",
+          "bm25": "0.0189",
+          "trig": "0.0394",
+          "case_no": "2024스876",
+          "court": "대법원",
+          "decision_date": "2026-01-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025스595",
+          "title": "재산분할[재판상 이혼이 확정된 후 재산분할심판을 청구한 경우 재산분할의 기준시점이 문제된 사안]",
+          "score": "0.2418",
+          "vec_sim": "0.4598",
+          "bm25": "0.0189",
+          "trig": "0.0312",
+          "case_no": "2025스595",
+          "court": "대법원",
+          "decision_date": "2025-08-14"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2013므568",
+          "title": "이혼[유책배우자 이혼청구 사건]",
+          "score": "0.2067",
+          "vec_sim": "0.3969",
+          "bm25": "0.0161",
+          "trig": "0.0172",
+          "case_no": "2013므568",
+          "court": "대법원",
+          "decision_date": "2015-09-15"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024두31185",
+          "title": "조합원지위확인[주택재개발사업에서 권리산정기준일 이전에 상속이 개시되었으나 그 이후에 상속재산분할협의를 거쳐 상속등기를 마친 상속인들에 대한 분양주택 수가 문제된 사건]",
+          "score": "0.1789",
+          "vec_sim": "0.3482",
+          "bm25": "0.0000",
+          "trig": "0.0239",
+          "case_no": "2024두31185",
+          "court": "대법원",
+          "decision_date": "2025-05-29"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q08",
+      "domain": "tort",
+      "query": "상대방 모르게 대화를 녹음한 행위가 불법행위 손해배상 대상이 되나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2025다204730"
+        }
+      ],
+      "bm25_tsquery": "대화녹음:* | 음성권:* | 불법행위:* | 손해배상:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다204730",
+          "title": "손해배상청구의소[대화녹음행위가 음성권 침해로 인한 불법행위에 해당한다는 이유로 손해배상을 청구하는 사건]",
+          "score": "0.3137",
+          "vec_sim": "0.5930",
+          "bm25": "0.0204",
+          "trig": "0.0554",
+          "case_no": "2025다204730",
+          "court": "대법원",
+          "decision_date": "2025-10-16"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다205487",
+          "title": "손해배상(기)[다초점 인공수정체 삽입술 비용의 보험금 청구와 관련된 불법행위 손해배상청구 사건]",
+          "score": "0.2262",
+          "vec_sim": "0.4362",
+          "bm25": "0.0102",
+          "trig": "0.0251",
+          "case_no": "2023다205487",
+          "court": "대법원",
+          "decision_date": "2024-12-24"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2020다240021",
+          "title": "손해배상(기)[비양육친이 미성년 자녀의 불법행위에 대한 감독의무자책임을 지는지 여부가 문제된 사건]",
+          "score": "0.2225",
+          "vec_sim": "0.4286",
+          "bm25": "0.0158",
+          "trig": "0.0171",
+          "case_no": "2020다240021",
+          "court": "대법원",
+          "decision_date": "2022-04-14"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2018다300364",
+          "title": "손해배상[법무법인에 소송대리를 위임한 의뢰인과 그의 대리인이 담당변호사의 잘못된 답변을 믿고 행위한 탓에 형사처벌을 받았다고 주장하면서 그 담당변호사를 상대로 불법행위를 이유로 한 손해배상을 청구한 사건]",
+          "score": "0.2190",
+          "vec_sim": "0.4232",
+          "bm25": "0.0124",
+          "trig": "0.0187",
+          "case_no": "2018다300364",
+          "court": "대법원",
+          "decision_date": "2022-11-17"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다211430",
+          "title": "손해배상(기)[신체접촉행위를 당한 중학생이 동급생을 상대로 불법행위에 기한 손해배상을 구하는 사건]",
+          "score": "0.2181",
+          "vec_sim": "0.4219",
+          "bm25": "0.0093",
+          "trig": "0.0216",
+          "case_no": "2025다211430",
+          "court": "대법원",
+          "decision_date": "2025-12-11"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다314022",
+          "title": "손해배상(기)[비법인사단의 대표자가 선량한 관리자의 주의의무를 위반한 경우, 비법인사단의 구성원에 대한 불법행위 손해배상책임의 성립 여부가 문제된 사건]",
+          "score": "0.2133",
+          "vec_sim": "0.4101",
+          "bm25": "0.0128",
+          "trig": "0.0218",
+          "case_no": "2023다314022",
+          "court": "대법원",
+          "decision_date": "2024-07-11"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2020다208997",
+          "title": "손해배상(기)[3자간 등기명의신탁에서 명의수탁자가 신탁부동산을 임의로 처분한 행위가 명의신탁자에 대해 불법행위를 구성하는지 문제된 사안]",
+          "score": "0.2131",
+          "vec_sim": "0.4079",
+          "bm25": "0.0185",
+          "trig": "0.0184",
+          "case_no": "2020다208997",
+          "court": "대법원",
+          "decision_date": "2022-06-09"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다211537, 211538",
+          "title": "손해배상청구의소·손해배상청구의소[불법행위에 기한 손해배상채권의 장기소멸시효 기산점이 문제된 사건]",
+          "score": "0.2102",
+          "vec_sim": "0.4018",
+          "bm25": "0.0191",
+          "trig": "0.0179",
+          "case_no": "2025다211537, 211538",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2022다227688",
+          "title": "손해배상(기)[특정 종교단체 소속 신도들의 기망적 선교행위로 인하여 민사상 불법행위책임이 성립될 수 있는지 여부가 문제된 사건]",
+          "score": "0.2057",
+          "vec_sim": "0.3983",
+          "bm25": "0.0098",
+          "trig": "0.0179",
+          "case_no": "2022다227688",
+          "court": "대법원",
+          "decision_date": "2022-08-11"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2013다59142",
+          "title": "손해배상(기)[인접 건물 외벽의 유리에서 반사되는 강한 태양반사광으로 인한 생활방해에 대하여 인접 주거지의 거주자가 불법행위를 원인으로 손해배상을 구하는 사건]",
+          "score": "0.2055",
+          "vec_sim": "0.4014",
+          "bm25": "0.0067",
+          "trig": "0.0138",
+          "case_no": "2013다59142",
+          "court": "대법원",
+          "decision_date": "2021-03-11"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q09",
+      "domain": "damages_prescription",
+      "query": "소멸시효가 이미 지난 채권에 대해 나중에 시효이익을 포기했다면 어떻게 되나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2024다254387"
+        }
+      ],
+      "bm25_tsquery": "소멸시효:* | 시효이익:* | 포기:* | 사해행위:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다254387",
+          "title": "대여금등청구의소[사해행위취소소송에서 피보전채권의 소멸시효 완성 및 시효이익 포기 여부가 문제된 사건]",
+          "score": "0.2589",
+          "vec_sim": "0.4668",
+          "bm25": "0.0510",
+          "trig": "0.0511",
+          "case_no": "2024다254387",
+          "court": "대법원",
+          "decision_date": "2025-09-25"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025두34494",
+          "title": "증여세부과처분취소[주주의 특수관계인이 회사에 무상으로 대여한 금전채권의 소멸시효가 완성된 이후 시기의 적정 이자 상당액을 증여이익으로 의제하여 증여세를 과세한 사건]",
+          "score": "0.2255",
+          "vec_sim": "0.4322",
+          "bm25": "0.0077",
+          "trig": "0.0355",
+          "case_no": "2025두34494",
+          "court": "대법원",
+          "decision_date": "2025-12-04"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025다211537, 211538",
+          "title": "손해배상청구의소·손해배상청구의소[불법행위에 기한 손해배상채권의 장기소멸시효 기산점이 문제된 사건]",
+          "score": "0.1834",
+          "vec_sim": "0.3542",
+          "bm25": "0.0073",
+          "trig": "0.0208",
+          "case_no": "2025다211537, 211538",
+          "court": "대법원",
+          "decision_date": "2026-01-08"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다203655",
+          "title": "구상금[학교안전공제회가 수급권자에게 공제급여 등을 지급한 후 대위취득한 수급권자의 학교안전사고를 일으킨 자 등에 대한 손해배상청구권의 소멸시효 등이 문제 된 사건]",
+          "score": "0.1672",
+          "vec_sim": "0.3251",
+          "bm25": "0.0038",
+          "trig": "0.0178",
+          "case_no": "2024다203655",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다285162",
+          "title": "손해배상(국)[5·18민주화운동 관련자 가족 고유의 위자료 청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.1621",
+          "vec_sim": "0.3153",
+          "bm25": "0.0070",
+          "trig": "0.0118",
+          "case_no": "2023다285162",
+          "court": "대법원",
+          "decision_date": "2026-01-22"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2025므10716",
+          "title": "이혼등[부부의 일방이 제3자와 부정행위를 한 경우 상대방 배우자의 제3자에 대한 이혼을 원인으로 하는 위자료청구권의 단기소멸시효 기산점이 문제된 사건]",
+          "score": "0.1457",
+          "vec_sim": "0.2820",
+          "bm25": "0.0049",
+          "trig": "0.0160",
+          "case_no": "2025므10716",
+          "court": "대법원",
+          "decision_date": "2026-01-29"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    },
+    {
+      "id": "C4-Q10",
+      "domain": "real_estate_ownership",
+      "query": "소유권이전등기의 추정력은 전 소유자에 대해서도 인정되나요?",
+      "gold_articles": [
+        {
+          "kind": "case",
+          "case_no": "2023다316363"
+        }
+      ],
+      "bm25_tsquery": "소유권이전등기:* | 추정력:* | 전소유자:* | 등기명의자:*",
+      "rows": [
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2023다316363",
+          "title": "대여금[소유권이전등기의 추정력이 문제된 사건]",
+          "score": "0.2815",
+          "vec_sim": "0.5020",
+          "bm25": "0.0159",
+          "trig": "0.1284",
+          "case_no": "2023다316363",
+          "court": "대법원",
+          "decision_date": "2025-08-14"
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "2024다248290",
+          "title": "소유권이전청구권가등기말소절차이행등[부동산의 매매로 인한 소유권이전등기청구권의 양수인 앞으로 마쳐진 가등기 이전의 부기등기 및 가등기에 기한 본등기의 효력이 문제된 사건]",
+          "score": "0.2490",
+          "vec_sim": "0.4829",
+          "bm25": "0.0088",
+          "trig": "0.0242",
+          "case_no": "2024다248290",
+          "court": "대법원",
+          "decision_date": "2025-04-24"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제99조",
+          "title": "수용으로 인한 등기",
+          "score": "0.2391",
+          "vec_sim": "0.4640",
+          "bm25": "0.0043",
+          "trig": "0.0290",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "63다262",
+          "title": "시효취득으로인한토지소유권확인등",
+          "score": "0.2303",
+          "vec_sim": "0.4379",
+          "bm25": "0.0049",
+          "trig": "0.0495",
+          "case_no": "63다262",
+          "court": "대법원",
+          "decision_date": "1963-06-20"
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제65조",
+          "title": "소유권보존등기의 신청인",
+          "score": "0.2271",
+          "vec_sim": "0.4414",
+          "bm25": "0.0000",
+          "trig": "0.0321",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제67조",
+          "title": "소유권의 일부이전",
+          "score": "0.2233",
+          "vec_sim": "0.4300",
+          "bm25": "0.0000",
+          "trig": "0.0417",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제62조",
+          "title": "소유권변경 사실의 통지",
+          "score": "0.2092",
+          "vec_sim": "0.4103",
+          "bm25": "0.0000",
+          "trig": "0.0204",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제38조",
+          "title": "합필의 특례",
+          "score": "0.2059",
+          "vec_sim": "0.3955",
+          "bm25": "0.0022",
+          "trig": "0.0375",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "law",
+          "law_id": "law-real-estate-reg",
+          "law_name": "부동산등기법",
+          "article_no": "제64조",
+          "title": "소유권보존등기의 등기사항",
+          "score": "0.2056",
+          "vec_sim": "0.3897",
+          "bm25": "0.0000",
+          "trig": "0.0538",
+          "case_no": "",
+          "court": "",
+          "decision_date": ""
+        },
+        {
+          "kind": "case",
+          "law_id": "",
+          "law_name": "대법원",
+          "article_no": "96다41335",
+          "title": "시효취득완성을원인으로한소유권이전등기",
+          "score": "0.2050",
+          "vec_sim": "0.3995",
+          "bm25": "0.0039",
+          "trig": "0.0201",
+          "case_no": "96다41335",
+          "court": "대법원",
+          "decision_date": "1997-01-24"
+        }
+      ],
+      "metrics": {
+        "gold_ranks": [
+          1
+        ],
+        "hits_at": {
+          "1": 1,
+          "3": 1,
+          "5": 1,
+          "10": 1
+        },
+        "recall_at": {
+          "1": 1.0,
+          "3": 1.0,
+          "5": 1.0,
+          "10": 1.0
+        },
+        "first_hit_rank": 1,
+        "rr": 1.0,
+        "ndcg5": 1.0
+      }
+    }
+  ]
+}

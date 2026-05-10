@@ -1,0 +1,214 @@
+spring:
+  application:
+    name: shield
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # PostgreSQL
+  datasource:
+    url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  # Redis (Issue #76)
+  # - 캐시 (변호사 추천 등) + Refresh Token 블랙리스트
+  # - 운영 환경: EC2 내부 localhost 6379 (외부 미노출)
+  # - 로컬: REDIS_HOST 미설정이면 localhost 가정
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+      connect-timeout: 2000ms
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # Jackson 직렬화 타임존 — API 응답의 LocalDateTime 필드를 KST 로 직렬화
+  jackson:
+    time-zone: Asia/Seoul
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    # Hibernate 가 LocalDateTime 을 DB 에 저장/조회할 때 사용할 타임존.
+    # EC2 가 UTC 라도 KST 로 일관된 시각이 저장되도록 강제.
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+
+  # Flyway (Phase A: PostgreSQL 마이그레이션 단일 소스화)
+  # - ddl-auto: none 과 짝을 이뤄 Flyway가 스키마 관리자
+  # - flyway_schema_history 부재 가정 → baseline-on-migrate=true, baseline-version=1 (V2부터 apply)
+  # - placeholder-replacement=false: V3의 PL/pgSQL $$...$$ 및 SQL 내 ${...} 치환 사고 사전 차단
+  flyway:
+    enabled: true
+    url: ${DB_URL}?prepareThreshold=0&stringtype=unspecified
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    locations: classpath:db/migration
+    schemas: public
+    table: flyway_schema_history
+    baseline-on-migrate: true
+    baseline-version: 1
+    baseline-description: "Initial baseline before Flyway adoption"
+    validate-on-migrate: true
+    out-of-order: false
+    placeholder-replacement: false
+
+# 상담 (대화) 정책
+# - max-user-turns: 사용자 메시지 상한. 도달 시 서버가 allCompleted=true 를 강제 반환해
+#   FE 가 자연스럽게 /analyze (의뢰서 생성) 로 전환. 초과 호출(N+1 번째)은 400 거부.
+shield:
+  consultation:
+    max-user-turns: 10
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiry: 1800000
+  refresh-token-expiry: 1209600000
+
+# Google OAuth
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: ${GOOGLE_REDIRECT_URI}
+
+# Supabase Storage
+supabase:
+  url: ${SUPABASE_URL}
+  service-role-key: ${SUPABASE_SERVICE_ROLE_KEY}
+  storage:
+    bucket: lawyer_documents
+
+# Firebase Cloud Messaging
+firebase:
+  enabled: ${FIREBASE_ENABLED:true}
+  service-account-path: ${FIREBASE_SERVICE_ACCOUNT_PATH:firebase/service-account.json}
+
+# Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs
+
+# Cohere Chat API (v2)
+# - Endpoint: POST https://api.cohere.com/v2/chat
+# - Trial API Key 해도 주요 프로덕션 모델을 모두 호출 가능 (무료 티어)
+# - 모델 후보: command-a-03-2025(최신 플래그십), command-r-plus-08-2024, command-r-08-2024
+cohere:
+  api-key: ${COHERE_API_KEY}
+  base-url: https://api.cohere.com
+  model:
+    chat: command-a-03-2025
+    brief: command-a-03-2025
+    embed: embed-v4.0
+  timeout:
+    connect: 5000
+    read-chat: 180000
+    read-brief: 60000
+    read-classify: 15000
+    read-embed: 30000
+  embed:
+    batch-size: 96
+    dimension: 1024
+  chat:
+    max-history-messages: 20
+  classify:
+    model: command-a-03-2025
+    temperature: 0.1
+    max-tokens: 512
+    context-window-messages: 6
+
+# RAG 검색 설정
+#
+# 기본값 false (운영 전환 — Phase B-7, 2026-04-19):
+#   B-2 인제스트로 민법 조문 1,193건이 적재되고 B-4 3-way 하이브리드 검색이
+#   실데이터 검증을 마친 상태. 실제 운영에서는 PgLegalRetrievalService가 사용된다.
+#
+# Stub으로 되돌리고 싶을 때 (로컬 개발‧Cohere 키 없는 테스트 등):
+#   RAG_STUB=true 환경변수로 override. StubLegalRetrievalService가 활성화되어
+#   빈 청크 리스트를 반환한다 — RAG 파이프라인은 그대로 동작하고
+#   MessageService는 ragContext가 비었을 때의 RAG-less 경로로 내려간다.
+rag:
+  retrieval:
+    stub: ${RAG_STUB:false}
+    # C-5 (Issue #42): 법령 + 판례 병합 검색 사용 여부.
+    #   false          : legal_chunks 만 검색 (Phase C-4 동작 호환)
+    #   true(기본)  : legal_chunks + legal_cases 3-way 하이브리드 병합 후 score DESC merge
+    # Phase C-4 벤치마크에서 MRR +0.246 / nDCG@5 +0.250 검증.
+    # 판례 183건 인제스트 완료로 true 기본 적용. 이상 발생 시 RAG_INCLUDE_CASES=false 로 즉시 롤백.
+    include-cases: ${RAG_INCLUDE_CASES:true}
+    # 3-way 하이브리드 점수 가중치 (Phase B-4 재설계)
+    # 경로:
+    #  - vector:  Cohere embed-v4.0 임베딩 ↔ pgvector cosine similarity (0~1)
+    #  - keyword: BM25 ts_rank on content_tsv (to_tsquery OR)
+    #  - trigram: pg_trgm similarity (오탈자/부분일치 보조)
+    # 합이 1.0일 필요는 없지만 해석을 위해 권장.
+    # 중기적으로 실데이터 기반 MRR 그리드 서치로 튜닝.
+    weights:
+      vector: ${RAG_W_VECTOR:0.5}    # pgvector cosine similarity
+      keyword: ${RAG_W_KEYWORD:0.3}  # BM25 ts_rank
+      trigram: ${RAG_W_TRIGRAM:0.2}  # pg_trgm similarity
+    # HNSW 튜닝 (Phase B-5)
+    # - ef_search: 쿼리 시점 탐색 큐 크기. 높을수록 recall 상승, 지연 증가.
+    #   pgvector 기본값 40. 1,193행 규모의 실측 벤치마크에서 topK=10 기준
+    #   ef=40에서 이미 recall 100% 달성 (scripts/benchmark_hnsw_ef_search.py).
+    #   데이터 규모가 커지면 80~200 권장. 재빌드 없이 환경변수로 조정 가능.
+    hnsw:
+      ef-search: ${RAG_HNSW_EF_SEARCH:40}
+
+# 온톨로지 설정
+ontology:
+  slim-json-path: classpath:ontology/legal-ontology-slim.json
+  cache-ttl-minutes: 60
+
+server:
+  port: 8080
+
+# Observability (Phase B-8b)
+# - /actuator/health : 상태 체크 (로드밸런서 등 헬스체크용)
+# - /actuator/prometheus : Prometheus scrape endpoint (RAG 전용 메트릭 포함)
+# 운영 환경에서는 Spring Security나 IP allow list로 접근 제한 권장.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true

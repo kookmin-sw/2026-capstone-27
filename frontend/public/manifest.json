@@ -1,0 +1,17 @@
+{
+  "name": "SHIELD",
+  "short_name": "SHIELD",
+  "description": "AI 법률 정보 구조화 플랫폼",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1512x1512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

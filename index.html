@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHIELD — AI 법률 상담 자동 의뢰서 생성 플랫폼</title>
+  <meta name="description" content="변호사를 만나기 전, AI 가 함께 정리해주는 법률 상담 자동 의뢰서 생성 서비스. 국민대학교 캡스톤디자인 2026 27조." />
+  <meta property="og:title" content="SHIELD — AI 법률 상담 자동 의뢰서 생성 플랫폼" />
+  <meta property="og:description" content="변호사를 만나기 전, AI 가 함께 정리해주는 법률 상담 서비스" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kookmin-sw.github.io/2026-capstone-27/" />
+  <meta property="og:image" content="https://kookmin-sw.github.io/2026-capstone-27/docs/logo.png" />
+
+  <link rel="icon" type="image/png" href="docs/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #0F172A;
+      line-height: 1.6;
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ====== Hero ====== */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at top, rgba(37, 99, 235, 0.10) 0%, transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, #F0F7FF 100%);
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      max-width: 920px;
+      animation: fadeUp 0.8s ease-out;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-logo {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 32px;
+      filter: drop-shadow(0 8px 24px rgba(37, 99, 235, 0.25));
+    }
+    .hero-title {
+      font-family: 'Pretendard', sans-serif;
+      font-size: clamp(72px, 14vw, 160px);
+      font-weight: 900;
+      color: #2563EB;
+      letter-spacing: -0.06em;
+      line-height: 0.9;
+      margin-bottom: 28px;
+      background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: clamp(20px, 2.4vw, 30px);
+      font-weight: 600;
+      color: #1E293B;
+      margin-bottom: 16px;
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+    }
+    .hero-team {
+      font-size: 15px;
+      color: #64748B;
+      margin-bottom: 48px;
+      letter-spacing: 0.02em;
+    }
+    .cta-group {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 36px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 16px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+      color: #ffffff;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.5);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      color: #2563EB;
+      border: 2px solid #DBEAFE;
+    }
+    .btn-secondary:hover {
+      background: #F0F7FF;
+      border-color: #2563EB;
+    }
+
+    /* ====== Sections ====== */
+    section.block {
+      padding: 120px 24px;
+    }
+    section.alt {
+      background: #F8FAFC;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #2563EB;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 900;
+      color: #0F172A;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    .section-subtitle {
+      font-size: 18px;
+      color: #64748B;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 72px;
+      line-height: 1.6;
+    }
+    .section-center { text-align: center; }
+
+    /* ====== Quote Cards ====== */
+    .quote-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .quote-card {
+      background: #ffffff;
+      padding: 36px 32px;
+      border-radius: 20px;
+      border-left: 4px solid #2563EB;
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05);
+      font-size: 17px;
+      color: #334155;
+      line-height: 1.7;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .quote-card::before {
+      content: '"';
+      position: absolute;
+      top: 8px;
+      left: 24px;
+      font-size: 72px;
+      color: rgba(37, 99, 235, 0.15);
+      font-weight: 900;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+    .quote-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+    }
+    .quote-card p {
+      position: relative;
+      padding-top: 24px;
+    }
+
+    /* ====== Steps ====== */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+    }
+    .step-card {
+      text-align: center;
+      padding: 24px;
+      position: relative;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3);
+    }
+    .step-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .step-desc {
+      font-size: 15px;
+      color: #64748B;
+      line-height: 1.6;
+    }
+
+    /* ====== Features ====== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .feature-card {
+      background: #ffffff;
+      padding: 44px 36px;
+      border-radius: 24px;
+      border: 1px solid #E2E8F0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563EB, #60A5FA);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .feature-card:hover {
+      border-color: #2563EB;
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(37, 99, 235, 0.12);
+    }
+    .feature-card:hover::after {
+      transform: scaleX(1);
+    }
+    .feature-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #2563EB;
+      background: #EFF6FF;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .feature-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .feature-desc {
+      font-size: 15.5px;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    /* ====== Architecture ====== */
+    .architecture-img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 24px 72px rgba(15, 23, 42, 0.15);
+      border: 1px solid #E2E8F0;
+    }
+
+    /* ====== Team ====== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .team-card {
+      background: #ffffff;
+      padding: 40px 24px;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid #E2E8F0;
+    }
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(37, 99, 235, 0.18);
+      border-color: #BFDBFE;
+    }
+    .team-avatar {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      border: 4px solid #DBEAFE;
+      transition: border-color 0.3s;
+    }
+    .team-card:hover .team-avatar {
+      border-color: #2563EB;
+    }
+    .team-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .team-role {
+      font-size: 14px;
+      color: #64748B;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .team-github {
+      display: inline-block;
+      font-size: 14px;
+      color: #2563EB;
+      font-weight: 600;
+      padding: 6px 14px;
+      background: #EFF6FF;
+      border-radius: 999px;
+    }
+
+    /* ====== Footer ====== */
+    .footer {
+      background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+      color: #ffffff;
+      padding: 80px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2563EB, transparent);
+    }
+    .footer h3 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .footer-tagline {
+      color: #94A3B8;
+      margin-bottom: 40px;
+      font-size: 17px;
+    }
+    .footer-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: #ffffff;
+      color: #2563EB;
+      border-radius: 999px;
+      font-weight: 700;
+      margin-bottom: 56px;
+      transition: all 0.25s;
+    }
+    .footer-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(255, 255, 255, 0.15);
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .footer-links a {
+      color: #CBD5E1;
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+    .footer-bottom {
+      font-size: 14px;
+      color: #64748B;
+    }
+
+    @media (max-width: 768px) {
+      section.block { padding: 80px 20px; }
+      .hero { padding: 80px 20px 60px; }
+      .section-subtitle { margin-bottom: 48px; }
+      .footer-links { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Hero ====== -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="docs/logo.png" alt="SHIELD" class="hero-logo" />
+      <h1 class="hero-title">SHIELD</h1>
+      <p class="hero-subtitle">AI 가 함께 정리해주는<br/>변호사 상담 전 의뢰서 생성 서비스</p>
+      <p class="hero-team">국민대학교 소프트웨어학부 캡스톤디자인 2026 · 27조</p>
+      <div class="cta-group">
+        <a href="https://shieldai.kr" class="btn btn-primary">▶ 지금 체험하기</a>
+        <a href="https://github.com/kookmin-sw/2026-capstone-27" class="btn btn-secondary">GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Problem ====== -->
+  <section class="block alt">
+    <div class="container">
+      <div class="section-center">
+        <span class="eyebrow">PROBLEM</span>
+        <h2 class="section-title">이런 경험, 있으시지 않나요?</h2>
+        <p class="section-subtitle">법률 상담은 비싸고 짧지만, 일반인은 자기 상황이 어떤 분야에 속하는지조차 알기 어렵습니다.</p>
+      </div>
+      <div class="quote-grid">
+        <div class="quote-card"><p>변호사한테 가긴 가야 할 것 같은데, 내가 겪은 일이 정확히 뭐 때문에 일어난 건지도 모르겠어요.</p></div>
+        <div class="quote-card"><p>상담료가 1시간에 11만원인데, 막상 갔더니 30분 동안 상황 설명하다 다 끝났어요.</p></div>
+        <div class="quote-card"><p>이게 임대차 문제인 줄 알았는데, 알고 보니 부동산 계약 문제였다고 하더라고요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Solution Steps ====== -->
+  <section class="block">
+    <div class="container">
+      <div class="section-center">
+        <span class="eyebrow">SOLUTION</span>
+        <h2 class="section-title">SHIELD 가 해결합니다</h2>
+        <p class="section-subtitle">변호사를 만나기 전 단계를, 가장 정확하게.</p>
+      </div>
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-title">대화 시작</div>
+          <div class="step-desc">채팅하듯 상황을 말씀해주세요</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-title">AI 가 후속 질문</div>
+          <div class="step-desc">법령·판례를 검색하며 필요한 정보를 끌어냅니다</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-title">의뢰서 자동 생성</div>
+          <div class="step-desc">분야 자동 분류 + 핵심 쟁점 정리</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-title">변호사 매칭</div>
+          <div class="step-desc">분야 전문 변호사가 24시간 안에 응답</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Features ====== -->
+  <section class="block alt">
+    <div class="container">
+      <div class="section-center">
+        <span class="eyebrow">WHY SHIELD</span>
+        <h2 class="section-title">기존 챗봇과 다릅니다</h2>
+        <p class="section-subtitle">사전 학습 지식이 아니라, 매 질문마다 실제 법률 데이터를 검색해 답합니다.</p>
+      </div>
+      <div class="features">
+        <div class="feature-card">
+          <span class="feature-tag">RAG</span>
+          <div class="feature-title">실시간 법령·판례 검색</div>
+          <div class="feature-desc">한국법제연구원(KLRI) 온톨로지 위에서 1,193개 민법 조문과 대법원 판례를 임베딩. 벡터 + 키워드 + 유사도 3-way 하이브리드 검색.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-tag">CLASSIFICATION</span>
+          <div class="feature-title">8개 분야 자동 분류</div>
+          <div class="feature-desc">부동산 거래 · 이혼 · 상속 · 근로 · 손해배상 · 채무 · 임대차 · 기업거래 — 분야를 몰라도 됩니다. AI 가 대화 중 자동 분류합니다.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-tag">MATCHING</span>
+          <div class="feature-title">변호사 매칭 워크플로</div>
+          <div class="feature-desc">생성된 의뢰서는 분야별 인증 변호사에게 전송. 24시간 안에 수락/거절을 결정하고, 수락 시 본격 상담으로 연결됩니다.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Architecture ====== -->
+  <section class="block">
+    <div class="container">
+      <div class="section-center">
+        <span class="eyebrow">ARCHITECTURE</span>
+        <h2 class="section-title">시스템 구조</h2>
+        <p class="section-subtitle">React · Spring Boot 4 · PostgreSQL + pgvector · Cohere</p>
+      </div>
+      <img src="docs/architecture.png" alt="SHIELD 시스템 아키텍처" class="architecture-img" />
+    </div>
+  </section>
+
+  <!-- ====== Team ====== -->
+  <section class="block alt">
+    <div class="container">
+      <div class="section-center">
+        <span class="eyebrow">TEAM</span>
+        <h2 class="section-title">팀원 소개</h2>
+        <p class="section-subtitle">국민대학교 소프트웨어학부 캡스톤디자인 27조</p>
+      </div>
+      <div class="team-grid">
+        <a href="https://github.com/intelligent04" class="team-card" target="_blank" rel="noopener">
+          <img src="https://github.com/intelligent04.png" alt="이총명" class="team-avatar" />
+          <div class="team-name">이총명</div>
+          <div class="team-role">FE / AI</div>
+          <span class="team-github">@intelligent04</span>
+        </a>
+        <a href="https://github.com/luckyisjelly" class="team-card" target="_blank" rel="noopener">
+          <img src="https://github.com/luckyisjelly.png" alt="이승진" class="team-avatar" />
+          <div class="team-name">이승진</div>
+          <div class="team-role">BE / PM</div>
+          <span class="team-github">@luckyisjelly</span>
+        </a>
+        <a href="https://github.com/chyopriushy" class="team-card" target="_blank" rel="noopener">
+          <img src="https://github.com/chyopriushy.png" alt="강문경" class="team-avatar" />
+          <div class="team-name">강문경</div>
+          <div class="team-role">FE / BE</div>
+          <span class="team-github">@chyopriushy</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Footer ====== -->
+  <footer class="footer">
+    <div class="container">
+      <h3>지금 바로 경험해보세요</h3>
+      <p class="footer-tagline">변호사를 만나기 전, 사건은 이미 정리되어 있습니다</p>
+      <a href="https://shieldai.kr" class="footer-cta">shieldai.kr 방문하기 →</a>
+      <div class="footer-links">
+        <a href="https://shieldai.kr">Live 서비스</a>
+        <a href="https://github.com/kookmin-sw/2026-capstone-27">GitHub Repository</a>
+        <a href="https://github.com/capstoneSHIELD/SHIELD_FE">Frontend</a>
+        <a href="https://github.com/capstoneSHIELD/SHIELD_BE">Backend</a>
+      </div>
+      <div class="footer-bottom">
+        © 2026 SHIELD · 국민대학교 소프트웨어학부 캡스톤디자인 27조
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

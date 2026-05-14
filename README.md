@@ -50,46 +50,9 @@
 
 ## 3. 시스템 구조
 
-<!-- 시스템 구조도 이미지: docs/architecture.png 로 추가하세요 -->
 <div align="center">
   <img src="docs/architecture.png" alt="SHIELD 시스템 아키텍처" width="100%"/>
 </div>
-
-```mermaid
-flowchart LR
-    subgraph Client["1 Client"]
-        FE["React + Vite<br/>(SHIELD_FE)<br/>Vercel"]
-    end
-
-    subgraph Server["2 Backend Server (AWS EC2)"]
-        NGINX["Nginx<br/>Reverse Proxy"]
-        API["Spring Boot 4<br/>Layered Architecture"]
-        JWT["JWT 인증"]
-        SVC["RAG Pipeline<br/>+ Domain Services"]
-    end
-
-    subgraph Data["3 Data Layer"]
-        PG[("PostgreSQL 16<br/>+ pgvector")]
-        VEC[("HNSW Index<br/>legal_chunks<br/>legal_cases")]
-    end
-
-    subgraph External["4 External APIs"]
-        COHERE["Cohere API<br/>embed-v4 · chat · classify"]
-        OAUTH["OAuth 2.0<br/>Google · Naver · Kakao"]
-        KLRI["KLRI LOD<br/>법률 온톨로지"]
-    end
-
-    FE -->|HTTPS / JWT| NGINX
-    NGINX --> API
-    API --> JWT
-    API --> SVC
-    SVC -->|"Hybrid Retrieval<br/>(Vector + BM25 + pg_trgm)"| PG
-    PG --- VEC
-    SVC -->|embed · chat| COHERE
-    FE -->|로그인| OAUTH
-    API -.->|토큰 발급| OAUTH
-    PG -.->|시드 데이터| KLRI
-```
 
 ### RAG 파이프라인 — 3-way Hybrid Search
 
@@ -167,27 +130,22 @@ flowchart LR
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src="docs/team/kang.png" width="120" height="120" alt="강문경"/><br/>
-      <b>강문경</b><br/>
-      <sub>Full-stack · PM</sub><br/>
-      <a href="https://github.com/TODO">@TODO</a>
-    </td>
-    <td align="center" width="33%">
-      <img src="docs/team/lee_sj.png" width="120" height="120" alt="이승진"/><br/>
-      <b>이승진</b><br/>
-      <sub>Backend</sub><br/>
-      <a href="https://github.com/TODO">@TODO</a>
-    </td>
-    <td align="center" width="33%">
-      <img src="docs/team/lee_cm.png" width="120" height="120" alt="이총명"/><br/>
+      <img src="docs/team/lee_cm.png" width="200" alt="이총명"/><br/>
       <b>이총명</b><br/>
-      <sub>TODO</sub><br/>
-      <a href="https://github.com/TODO">@TODO</a>
+      <sub>TODO</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/team/lee_sj.jpg" width="200" alt="이승진"/><br/>
+      <b>이승진</b><br/>
+      <sub>Backend</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/team/kang.jpg" width="200" alt="강문경"/><br/>
+      <b>강문경</b><br/>
+      <sub>Full-stack · PM</sub>
     </td>
   </tr>
 </table>
-
-> 사진은 `docs/team/` 폴더에 `kang.png`, `lee_sj.png`, `lee_cm.png` 로 추가하고, GitHub 아이디·역할은 `@TODO` 부분을 본인 정보로 교체해주세요.
 
 ---
 

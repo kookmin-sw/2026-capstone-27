@@ -132,26 +132,32 @@
   <tr>
     <td align="center">
       <a href="https://github.com/intelligent04">
-        <img src="https://github.com/intelligent04.png" width="90" alt="이총명"/>
-      </a><br/>
-      <b>이총명</b><br/>
-      <sub>FE / AI</sub><br/>
+        <img src="https://github.com/intelligent04.png" width="90" height="90" alt="이총명"/>
+      </a>
+      <br/><b>이총명</b>
+      <hr/>
+      <sub>FE / AI</sub>
+      <hr/>
       <a href="https://github.com/intelligent04">@intelligent04</a>
     </td>
     <td align="center">
       <a href="https://github.com/luckyisjelly">
-        <img src="https://github.com/luckyisjelly.png" width="90" alt="이승진"/>
-      </a><br/>
-      <b>이승진</b><br/>
-      <sub>BE / PM</sub><br/>
+        <img src="https://github.com/luckyisjelly.png" width="90" height="90" alt="이승진"/>
+      </a>
+      <br/><b>이승진</b>
+      <hr/>
+      <sub>BE / PM</sub>
+      <hr/>
       <a href="https://github.com/luckyisjelly">@luckyisjelly</a>
     </td>
     <td align="center">
       <a href="https://github.com/chyopriushy">
-        <img src="https://github.com/chyopriushy.png" width="90" alt="강문경"/>
-      </a><br/>
-      <b>강문경</b><br/>
-      <sub>FE / BE</sub><br/>
+        <img src="https://github.com/chyopriushy.png" width="90" height="90" alt="강문경"/>
+      </a>
+      <br/><b>강문경</b>
+      <hr/>
+      <sub>FE / BE</sub>
+      <hr/>
       <a href="https://github.com/chyopriushy">@chyopriushy</a>
     </td>
   </tr>

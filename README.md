@@ -131,7 +131,7 @@
   <tr>
     <td align="center" width="33%">
       <a href="https://github.com/intelligent04">
-        <img src="docs/team/lee_cm.png" width="200" alt="이총명"/>
+        <img src="https://github.com/intelligent04.png" width="120" alt="이총명"/>
       </a><br/>
       <b>이총명</b><br/>
       <sub>FE / AI</sub><br/>
@@ -139,7 +139,7 @@
     </td>
     <td align="center" width="33%">
       <a href="https://github.com/luckyisjelly">
-        <img src="docs/team/lee_sj.jpg" width="200" alt="이승진"/>
+        <img src="https://github.com/luckyisjelly.png" width="120" alt="이승진"/>
       </a><br/>
       <b>이승진</b><br/>
       <sub>BE / PM</sub><br/>
@@ -147,7 +147,7 @@
     </td>
     <td align="center" width="33%">
       <a href="https://github.com/chyopriushy">
-        <img src="docs/team/kang.jpg" width="200" alt="강문경"/>
+        <img src="https://github.com/chyopriushy.png" width="120" alt="강문경"/>
       </a><br/>
       <b>강문경</b><br/>
       <sub>FE / BE</sub><br/>

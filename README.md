@@ -130,19 +130,28 @@
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src="docs/team/lee_cm.png" width="200" alt="이총명"/><br/>
+      <a href="https://github.com/intelligent04">
+        <img src="docs/team/lee_cm.png" width="200" alt="이총명"/>
+      </a><br/>
       <b>이총명</b><br/>
-      <sub>TODO</sub>
+      <sub>FE / AI</sub><br/>
+      <a href="https://github.com/intelligent04">@intelligent04</a>
     </td>
     <td align="center" width="33%">
-      <img src="docs/team/lee_sj.jpg" width="200" alt="이승진"/><br/>
+      <a href="https://github.com/luckyisjelly">
+        <img src="docs/team/lee_sj.jpg" width="200" alt="이승진"/>
+      </a><br/>
       <b>이승진</b><br/>
-      <sub>Backend</sub>
+      <sub>BE / PM</sub><br/>
+      <a href="https://github.com/luckyisjelly">@luckyisjelly</a>
     </td>
     <td align="center" width="33%">
-      <img src="docs/team/kang.jpg" width="200" alt="강문경"/><br/>
+      <a href="https://github.com/chyopriushy">
+        <img src="docs/team/kang.jpg" width="200" alt="강문경"/>
+      </a><br/>
       <b>강문경</b><br/>
-      <sub>Full-stack · PM</sub>
+      <sub>FE / BE</sub><br/>
+      <a href="https://github.com/chyopriushy">@chyopriushy</a>
     </td>
   </tr>
 </table>

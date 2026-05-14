@@ -3,7 +3,10 @@ layout: default
 title: SHIELD — AI 법률 상담 자동 의뢰서 생성 플랫폼
 ---
 
-<h1 align="center">SHIELD</h1>
+<h1 align="center">
+  <img src="docs/logo.png" width="60" alt="SHIELD logo" style="vertical-align: middle;"/>
+  <span style="color: #2563EB; vertical-align: middle;">SHIELD</span>
+</h1>
 <h3 align="center">AI 가 함께 정리해주는, 변호사 상담 전 의뢰서 생성 서비스</h3>
 
 <p align="center">

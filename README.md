@@ -127,27 +127,28 @@
 
 ## 5. 팀원 소개
 
+<div align="center">
 <table>
   <tr>
-    <td align="center" width="33%">
+    <td align="center">
       <a href="https://github.com/intelligent04">
-        <img src="https://github.com/intelligent04.png" width="120" alt="이총명"/>
+        <img src="https://github.com/intelligent04.png" width="90" alt="이총명"/>
       </a><br/>
       <b>이총명</b><br/>
       <sub>FE / AI</sub><br/>
       <a href="https://github.com/intelligent04">@intelligent04</a>
     </td>
-    <td align="center" width="33%">
+    <td align="center">
       <a href="https://github.com/luckyisjelly">
-        <img src="https://github.com/luckyisjelly.png" width="120" alt="이승진"/>
+        <img src="https://github.com/luckyisjelly.png" width="90" alt="이승진"/>
       </a><br/>
       <b>이승진</b><br/>
       <sub>BE / PM</sub><br/>
       <a href="https://github.com/luckyisjelly">@luckyisjelly</a>
     </td>
-    <td align="center" width="33%">
+    <td align="center">
       <a href="https://github.com/chyopriushy">
-        <img src="https://github.com/chyopriushy.png" width="120" alt="강문경"/>
+        <img src="https://github.com/chyopriushy.png" width="90" alt="강문경"/>
       </a><br/>
       <b>강문경</b><br/>
       <sub>FE / BE</sub><br/>
@@ -155,6 +156,7 @@
     </td>
   </tr>
 </table>
+</div>
 
 ---
 

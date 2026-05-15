@@ -125,7 +125,66 @@
 
 ---
 
-## 5. 팀원 소개
+## 5. 디렉토리 구조
+
+### Backend — Clean Architecture
+
+모든 도메인이 `domain` (순수 비즈니스) → `application` (유스케이스) → `infrastructure` (JPA) → `controller` (REST API) 의 4-레이어로 분리되어 있습니다. Spring 의존성은 `domain` 레이어에 침투하지 않습니다.
+
+```
+SHIELD_BE/src/main/
+├── java/org/example/shield/
+│   ├── consultation/         # 상담 도메인 (Brief 생성 흐름)
+│   │   ├── domain/           # 엔티티 · Reader/Writer 인터페이스
+│   │   ├── application/      # 유스케이스 서비스 (트랜잭션 경계)
+│   │   ├── controller/       # REST API
+│   │   ├── infrastructure/   # JPA 구현체
+│   │   └── exception/        # 도메인 예외
+│   ├── brief/                # 의뢰서 도메인 (동일 4-레이어)
+│   ├── lawyer/               # 변호사 도메인 (자격 심사 · 매칭)
+│   ├── user/                 # 사용자 (의뢰인 공통)
+│   ├── auth/                 # JWT + OAuth (Google · Naver · Kakao)
+│   ├── admin/                # 관리자 운영 기능
+│   ├── ai/                   # Cohere API 클라이언트 + RAG 통합
+│   ├── fcm/                  # 푸시 알림
+│   ├── common/               # BaseEntity 등 공통 모델
+│   └── config/               # Spring 설정
+└── resources/
+    ├── ai/prompts/           # LLM 프롬프트 템플릿
+    ├── db/migration/         # Flyway 마이그레이션
+    ├── ontology/             # KLRI LOD 온톨로지 (3-level · 8 도메인)
+    └── seed/                 # 시드 데이터 (민법 1,193개 조문)
+```
+
+### Frontend — 도메인별 라우트 분리
+
+페이지는 사용자 역할 (`auth` / `client` / `lawyer` / `admin`) 별 폴더로 분리되어 있어 권한별 흐름이 한눈에 보입니다.
+
+```
+SHIELD_FE/src/
+├── routes/                   # 페이지 (롤별 분리)
+│   ├── auth/                 # 로그인 · 회원가입 (Google · Naver · Kakao)
+│   ├── client/               # 의뢰인 (ChatPage · AnalyzingPage · BriefDetailPage 등 15 페이지)
+│   ├── lawyer/               # 변호사 (InboxPage · CasesPage · DocumentsPage 등 8 페이지)
+│   ├── admin/                # 관리자 (AdminDashboardPage · LawyerReviewPage 등 5 페이지)
+│   └── legal/                # 약관 · 개인정보 처리방침
+├── components/
+│   ├── ui/                   # 기본 UI (Button · Modal · Badge · CategoryPicker)
+│   ├── layout/               # Header · SideNav · BottomNav
+│   ├── chat/                 # 채팅 UI
+│   ├── client/               # 의뢰인 전용 컴포넌트
+│   └── consultation/         # 상담 진행 컴포넌트
+├── hooks/                    # TanStack Query 커스텀 훅
+├── stores/                   # Zustand 상태 (authStore · chatStore)
+├── guards/                   # 라우트 가드 (인증 · 롤 체크)
+├── layouts/                  # 페이지 레이아웃
+├── lib/                      # 유틸리티 (domainIcons · dateUtils · cn)
+└── types/                    # TypeScript 타입 정의
+```
+
+---
+
+## 6. 팀원 소개
 
 <div align="center">
 <table>
@@ -160,7 +219,7 @@
 
 ---
 
-## 6. 시작하기
+## 7. 시작하기
 
 ### 사전 요구사항
 - Java 21+
@@ -186,7 +245,7 @@ npm run dev
 
 ---
 
-## 7. 링크
+## 8. 링크
 
 - **Live 서비스**: https://shieldai.kr
 - **Backend 레포**: https://github.com/capstoneSHIELD/SHIELD_BE

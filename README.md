@@ -191,3 +191,4 @@ npm run dev
 - **Live 서비스**: https://shieldai.kr
 - **Backend 레포**: https://github.com/capstoneSHIELD/SHIELD_BE
 - **Frontend 레포**: https://github.com/capstoneSHIELD/SHIELD_FE
+- **Notion 협업 문서**: https://www.notion.so/2026-1-2ebc5ff050068075abc2f4e0ebb764a1

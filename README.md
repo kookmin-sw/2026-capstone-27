@@ -1,6 +1,6 @@
 <div align="center">
 
-# SHIELD
+<img src="docs/header.png" alt="SHIELD" width="420"/>
 
 ### AI 기반 법률 상담 자동 의뢰서 생성 플랫폼
 
